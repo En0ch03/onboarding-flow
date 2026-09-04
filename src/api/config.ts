@@ -39,7 +39,18 @@ export function readCachedOptionGroups(): OptionGroups | null {
   return cached;
 }
 
-/** Test ve oturum kapanisi icin. */
+/**
+ * Onbellegi bosaltir. Bugun yalnizca testler cagiriyor.
+ *
+ * Oturum kapanisinda **bilerek** cagrilmiyor. Cagrilsaydi tekrar giris yapan
+ * kullanici icin listeler yeniden alinana kadar hicbir liste olmayacakti ve
+ * taslak uzlastirmasi (`reconcileDraftWithOptions`) atlanacakti; cevrimdisi
+ * bir girise denk gelirse de secim adimlari bos kalacakti. Bayat bir liste,
+ * hic liste olmamasindan iyi.
+ *
+ * Bunun bedeli su: sunucudaki bir degisiklik uygulama yeniden acilana kadar
+ * gorunmuyor. Kabul edildi - listeler saatte bir degisen seyler degil.
+ */
 export function clearOptionGroupCache(): void {
   cached = null;
   inFlight = null;

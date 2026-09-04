@@ -128,6 +128,10 @@ Inside that shell the action button stays at the foot of the page rather than ri
 
 **Nothing that can change is hardcoded.** Option lists, numeric thresholds and step requirements all come from the server. Gender, intent and interest taxonomies shift over time and by region, and a change to one of them should not require a new app release.
 
+That holds in both directions. No option id appears anywhere in the app: an option carries which options it covers, which conditional list it unlocks, and whether its group must be answered, so adding one, renaming one or removing one is a change to the data alone. When an answer the user gave is no longer offered, the app drops it and asks that step again rather than carrying a value nothing on screen can show.
+
+**Nothing that is a date is typed.** Day, month and year are three separate fields, each opening a sheet with only its own question. Nothing about a date is easier on a keyboard, and a keyboard covers half the screen to collect it. The day list is only as long as the chosen month allows, so an impossible date cannot be assembled rather than being refused after the fact. The wheel the two platforms offer natively was not used, because each gives a different one: a rolling wheel on iOS, a calendar dialog on Android, which is two gestures for one question.
+
 **Steps are data, not routes.** The flow is a list the app walks, so inserting a step, reordering two, or making one conditional is an edit to that list rather than a change to the navigator.
 
 **Every response is validated at the boundary.** Bodies are parsed against a schema before they reach application code, so a `null` where an object was expected surfaces as a handled error instead of a crash three screens later.
@@ -135,6 +139,8 @@ Inside that shell the action button stays at the foot of the page rather than ri
 **Every asynchronous action models four states.** Idle, loading, error, success, none of them skipped. Errors are written for someone who does not know what a status code is, and every one of them offers a way forward.
 
 **A failed save does not stop the flow.** If a step cannot be sent, the user keeps going and the step is remembered as unsent; the app retries before it will let the profile be completed. Losing the connection for a moment should not cost someone their progress or their place.
+
+**Touch is answered, sparingly.** Three moments carry a haptic and nothing else does: a selection changes, a step advances, a step refuses to. Vibrating on every touch turns feedback into noise. A device with no motor, or one whose owner has turned haptics off, loses nothing but the feel.
 
 **Progress survives a restart.** Close the app halfway through and it reopens on the same step, with the answers still in the fields. Tokens live in the device keystore, never in plain storage. Passwords are never stored at all.
 
