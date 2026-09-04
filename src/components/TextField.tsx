@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { forwardRef, useState } from 'react';
 import { Pressable, TextInput, View, type TextInputProps } from 'react-native';
 
@@ -5,6 +6,10 @@ import { strings } from '@/constants/strings';
 import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
+import { EyeIcon } from './EyeIcon';
+
+/** Gorunurluk anahtarinin dokunma hedefi. Platformlarin asgarisi. */
+const TOGGLE_SIZE = 44;
 
 type TextFieldProps = Omit<TextInputProps, 'style'> & {
   label: string;
@@ -55,28 +60,52 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
             borderCurve: 'continuous',
             paddingVertical: spacing.lg,
             paddingLeft: spacing.lg,
-            paddingRight: secure ? spacing.xxl + spacing.lg : spacing.lg,
+            // Sifre alaninda metin, anahtarin ve ayirici cizginin altina
+            // girmiyor: imlec goz ikonunun arkasinda kaybolmamali.
+            paddingRight: secure ? TOGGLE_SIZE + spacing.lg : spacing.lg,
           }}
         />
 
         {secure ? (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={revealed ? strings.auth.hidePassword : strings.auth.showPassword}
-            onPress={() => setRevealed((current) => !current)}
-            hitSlop={8}
+          <View
             style={{
               position: 'absolute',
-              right: spacing.sm,
-              padding: spacing.sm,
+              right: 0,
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
-            {/* Sifre tekrari alani yerine gorunurluk anahtari: yaziyi iki kez
-                yazdirmadan ayni yazim hatasini yakaliyor. */}
-            <AppText variant="label" tone="inkSoft">
-              {revealed ? 'Gizle' : 'Göster'}
-            </AppText>
-          </Pressable>
+            {/* Ayirici cizgi uclarinda soluyor: sert biten bir cizgi, alanin
+                icine cizilmis ikinci bir kenarlik gibi duruyor. Uclar
+                `transparent` degil alanin kendi zemini: saydam uc Android'de
+                griye caliyor. */}
+            <LinearGradient
+              colors={[colors.surface, colors.hairline, colors.surface]}
+              style={{ width: 1, height: spacing.xl }}
+            />
+
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ selected: revealed }}
+              accessibilityLabel={revealed ? strings.auth.hidePassword : strings.auth.showPassword}
+              onPress={() => setRevealed((current) => !current)}
+              style={({ pressed }) => ({
+                width: TOGGLE_SIZE,
+                height: TOGGLE_SIZE,
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: pressed ? 0.6 : 1,
+              })}
+            >
+              {/* Sifre tekrari alani yerine gorunurluk anahtari: yaziyi iki kez
+                  yazdirmadan ayni yazim hatasini yakaliyor. */}
+              <EyeIcon
+                open={revealed}
+                color={revealed ? colors.clay : colors.inkSoft}
+                background={colors.surface}
+              />
+            </Pressable>
+          </View>
         ) : null}
       </View>
 
