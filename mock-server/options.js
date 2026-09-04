@@ -24,7 +24,19 @@ const optionGroups = {
     options: [
       { id: 'woman', label: 'Kadınım', order: 1 },
       { id: 'man', label: 'Erkeğim', order: 2 },
-      { id: 'nonbinary', label: 'Başka bir şekilde tanımlıyorum', order: 3 },
+      {
+        id: 'nonbinary',
+        label: 'Non-binary’im',
+        hint: 'İkili cinsiyetin dışında',
+        order: 3,
+      },
+      {
+        id: 'genderfluid',
+        label: 'Akışkanım',
+        hint: 'Zamanla değişebiliyor',
+        order: 4,
+      },
+      { id: 'other', label: 'Başka bir şekilde tanımlıyorum', order: 5 },
     ],
   },
 
@@ -61,12 +73,18 @@ const optionGroups = {
         hint: 'Önceliğim uzun vadeli',
         order: 2,
       },
-      { id: 'friendship', label: 'Arkadaşlık', hint: 'Önce tanışalım', order: 3 },
+      {
+        id: 'short_term',
+        label: 'Kısa süreli bir ilişki',
+        hint: 'Şimdilik hafif',
+        order: 3,
+      },
+      { id: 'friendship', label: 'Arkadaşlık', hint: 'Önce tanışalım', order: 4 },
       {
         id: 'unsure',
         label: 'Henüz emin değilim',
         hint: 'Bakalım nereye gidiyor',
-        order: 4,
+        order: 5,
       },
     ],
   },
