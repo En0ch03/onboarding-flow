@@ -6,6 +6,7 @@ import {
   type InternalAxiosRequestConfig,
 } from 'axios';
 
+import { resolveBaseUrl } from './baseUrl';
 import { createRefreshQueue } from './refresh';
 import { RefreshResponseSchema } from './schemas';
 
@@ -139,8 +140,9 @@ const delegatingBridge: AuthBridge = {
 
 /**
  * Uygulamanin sunucu hakkinda bildigi tek sey. Sahte veri, sahte dal veya
- * ortama gore degisen bir kod yolu yok; gercek sunucuya gecis bu degisken.
+ * ortama gore degisen bir kod yolu yok; gercek sunucuya gecis tek bir ortam
+ * degiskeni. Adresin nasil bulundugu `baseUrl.ts` icinde.
  */
-export const baseURL = process.env.EXPO_PUBLIC_API_URL ?? '';
+export const baseURL = resolveBaseUrl();
 
 export const api = createApiClient({ baseURL, bridge: delegatingBridge });
