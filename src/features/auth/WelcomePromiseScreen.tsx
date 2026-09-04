@@ -17,13 +17,17 @@ type WelcomePromiseScreenProps = {
  * Olcek bilerek buyuk: bu gorsel yonun en buyuk riski sablon hissi ve o riske
  * kucuk basliklarla uygulandiginda dusuluyor. Boslugun kendisi de bir arac;
  * algilanan kalite renkten once yogunluktan geliyor.
+ *
+ * Cumle dikeyde ortalanmiyor. Ortalanmis bir baslik afis gibi duruyor ve
+ * okuma dogal olarak ust sol kosede basliyor; metin oraya dogru cekildi ama
+ * kosaye yaslanmadi, iceriden bir bosluk birakildi.
  */
 export function WelcomePromiseScreen({ onStart, onSignIn }: WelcomePromiseScreenProps) {
   const { spacing } = useTheme();
 
   return (
     <Screen
-      centered
+      align="upper"
       footer={
         <View>
           <Button title={strings.welcome.promisePrimary} onPress={onStart} />
