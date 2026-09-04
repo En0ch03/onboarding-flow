@@ -18,6 +18,11 @@ type ProgressBarProps = {
  *
  * Hareket `scaleX` uzerinden, genislik uzerinden degil: genislik yerel
  * suruculu calismiyor ve her karede yerlesim hesabi yeniden kosuyor.
+ *
+ * **Sayacla birlikte kullanilir.** Cubuk ekran okuyucudan gizli; tasidigi
+ * bilgiyi ust seritteki sayac kelimelerle soyluyor. Sayacin olmadigi bir
+ * ekrana konulursa ilerleme bilgisi ekran okuyucu kullanicisi icin tamamen
+ * kaybolur.
  */
 export function ProgressBar({ current, total }: ProgressBarProps) {
   const { colors, radius, motion } = useTheme();
@@ -36,6 +41,7 @@ export function ProgressBar({ current, total }: ProgressBarProps) {
 
   return (
     <View
+      testID="progress-track"
       // Ekran okuyucudan gizli. Tasidigi bilginin tamamini ust seritteki
       // sayac zaten kelimelerle soyluyor ("bes adimdan iki"); ikisini birden
       // duyurmak ayni cumleyi iki kez okutmak olurdu. Cubuk burada gozun
@@ -50,6 +56,7 @@ export function ProgressBar({ current, total }: ProgressBarProps) {
       }}
     >
       <Animated.View
+        testID="progress-fill"
         style={{
           width: '100%',
           height: '100%',

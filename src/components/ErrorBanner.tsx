@@ -24,6 +24,9 @@ export function ErrorBanner({ message, action }: ErrorBannerProps) {
       accessibilityLiveRegion="polite"
       style={{
         backgroundColor: colors.dangerTint,
+        // Kartlardan bir kademe dar: bu bir kart degil, icerigin uzerine
+        // gecici olarak binen bir serit. Ayni yaricapi vermek onu ekranin
+        // kalici bir parcasi gibi gosteriyor.
         borderRadius: radius.sm,
         borderCurve: 'continuous',
         borderWidth: 1,

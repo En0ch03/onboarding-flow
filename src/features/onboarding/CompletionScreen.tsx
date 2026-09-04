@@ -121,13 +121,13 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
         />
       </View>
 
+      {/* Sarmalayici yok: bandin kendi alt boslugu var ve giristen sonra
+          ikinci bir ust bosluk eklemek, bandi basliktan kopariyor. */}
       {failure ? (
-        <View style={{ marginTop: spacing.xl }}>
-          <ErrorBanner
-            message={presentError(failure).message}
-            action={{ label: strings.common.retry, onPress: () => void finish.run() }}
-          />
-        </View>
+        <ErrorBanner
+          message={presentError(failure).message}
+          action={{ label: strings.common.retry, onPress: () => void finish.run() }}
+        />
       ) : null}
 
       {/* Ozet bir kart: cevaplar ekranin geri kalanina karismiyor, kendi
