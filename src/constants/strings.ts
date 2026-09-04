@@ -13,8 +13,7 @@ export const strings = {
     skipForNow: 'Şimdilik geç',
     retry: 'Tekrar dene',
     finish: 'Bitir',
-    done: 'Tamam',
-    cancel: 'Vazgeç',
+    close: 'Kapat',
   },
 
   welcome: {
@@ -53,8 +52,6 @@ export const strings = {
     identitySubtitle: 'Adın profilinde görünür. Doğum tarihin görünmez, yalnızca yaşın görünür.',
     nameLabel: 'Ad',
     birthDateLabel: 'Doğum tarihi',
-    birthDatePlaceholder: 'Gün, ay ve yıl seç',
-    birthDateSheetTitle: 'Doğum tarihin',
     dayLabel: 'Gün',
     monthLabel: 'Ay',
     yearLabel: 'Yıl',
@@ -146,11 +143,6 @@ export const monthNames = [
   'Kasım',
   'Aralık',
 ] as const;
-
-/** Secili dogum tarihi alanda boyle okunuyor. */
-export function birthDateSummary(day: number, month: number, year: number): string {
-  return `${day} ${monthNames[month - 1]} ${year}`;
-}
 
 /** Adim sayaci. Yuzde degil sayac: akisla birebir ve dogruyu soyluyor. */
 export function stepCounter(current: number, total: number): string {

@@ -6,7 +6,7 @@ import { strings } from '@/constants/strings';
 
 import type { StepProps } from '../engine/types';
 import { BirthDateField } from './BirthDateField';
-import { chosenParts, draftFromParts, partsFromDraft } from './dateWheel';
+import { draftFromParts, partsFromDraft } from './dateParts';
 
 /**
  * Yas kapisi akisin ilk adiminda.
@@ -19,15 +19,10 @@ import { chosenParts, draftFromParts, partsFromDraft } from './dateWheel';
  * yarisini klavyeye verip ustune "31 Subat" yazma imkani birakiyordu.
  */
 export function IdentityStep({ values, onChange }: StepProps) {
-  // Bugun her isteyisde yeniden hesaplanirsa yil listesi ve acilis satiri
-  // referans olarak degisip carki gereksiz yere yeniden kuruyor.
+  // Bugun her cizimde yeniden hesaplanirsa yil listesi referans olarak
+  // degisip listeyi gereksiz yere yeniden kuruyor.
   const today = useMemo(() => new Date(), []);
-
-  // Cark her zaman bir satir gostermek zorunda, ama alan bos kalabilmeli.
-  // `opening` carkin acilacagi yer, `parts` ise kullanicinin gercekten
-  // sectigi deger; ikisi ayni sey degil.
-  const opening = useMemo(() => partsFromDraft(values.birthDate, today), [values.birthDate, today]);
-  const parts = useMemo(() => chosenParts(values.birthDate), [values.birthDate]);
+  const parts = useMemo(() => partsFromDraft(values.birthDate), [values.birthDate]);
 
   return (
     <View>
@@ -43,7 +38,6 @@ export function IdentityStep({ values, onChange }: StepProps) {
 
       <BirthDateField
         value={parts}
-        opening={opening}
         onChange={(next) => onChange({ birthDate: draftFromParts(next) })}
         today={today}
       />
