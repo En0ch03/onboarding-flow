@@ -25,18 +25,20 @@ const optionGroups = {
       { id: 'woman', label: 'Kadınım', order: 1 },
       { id: 'man', label: 'Erkeğim', order: 2 },
       {
-        id: 'nonbinary',
-        label: 'Non-binary’im',
-        hint: 'İkili cinsiyetin dışında',
+        id: 'non_binary',
+        label: 'Non-binary biriyim',
+        hint: 'Kadın ve erkek ikiliğinin dışında',
         order: 3,
       },
       {
         id: 'genderfluid',
-        label: 'Akışkanım',
+        label: 'Cinsiyetim akışkan',
         hint: 'Zamanla değişebiliyor',
         order: 4,
       },
-      { id: 'other', label: 'Başka bir şekilde tanımlıyorum', order: 5 },
+      // Bu kimlik ve etiketi yerinde birakildi. Anlamini degistirmek, o cevabi
+      // vermis bir kullanicinin profilini sessizce baska bir cevaba tasirdi.
+      { id: 'nonbinary', label: 'Başka bir şekilde tanımlıyorum', order: 5 },
     ],
   },
 
@@ -69,6 +71,9 @@ const optionGroups = {
       },
       {
         id: 'long_term_open',
+        // Bu cevap iki cevabin toplami: ikisi birden isaretlendiginde
+        // secim buna toplaniyor. Iliski burada, secenegin kendi verisinde.
+        covers: ['long_term', 'short_term'],
         label: 'Uzun soluklu, kısaya da açığım',
         hint: 'Önceliğim uzun vadeli',
         order: 2,
@@ -76,7 +81,7 @@ const optionGroups = {
       {
         id: 'short_term',
         label: 'Kısa süreli bir ilişki',
-        hint: 'Şimdilik hafif',
+        hint: 'Şimdilik ciddi bir bağ aramıyorum',
         order: 3,
       },
       { id: 'friendship', label: 'Arkadaşlık', hint: 'Önce tanışalım', order: 4 },
