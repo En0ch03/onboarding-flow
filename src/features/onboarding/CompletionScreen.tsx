@@ -154,8 +154,9 @@ export function CompletionScreen({
             title={strings.completion.secondary}
             onPress={onEditProfile}
             variant="ghost"
-            // Onay ucustayken bekliyor; sebebi yukarida, geri tusunu tutan
-            // etkinin yaninda yaziyor. Ikisi ayni cikisi kapatiyor.
+            // Onay ucustayken bekliyor. Geri tusu ve bu buton iki ayri
+            // cikis ama ayni tehlikeye karsi kapaniyor; gerekcesi yukarida,
+            // geri tusunu tutan etkinin yaninda.
             disabled={pending}
             style={{ marginTop: spacing.sm }}
           />

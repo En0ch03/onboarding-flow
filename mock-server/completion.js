@@ -177,8 +177,9 @@ function chosenIds(answer) {
 function inspectAnswer(key, group, preferences, optionGroups, unlocked) {
   const answer = preferences[key];
 
-  // Tekli bir soruya dizi gelmesi bir bicim hatasi: iki cevap veren bir
-  // istemci, tek cevap kuralini hic uygulamamis demektir.
+  // Tekli bir soruya dizi gelmesi bir bicim hatasi -- tek elemanli olsa
+  // bile. Tek cevap kuralini uygulayan bir istemci duz bir deger gonderir;
+  // dizi gonderen, kurali hic gormemis demektir.
   if (!group.multiSelect && (Array.isArray(answer) || chosenIds(answer).length > 1)) {
     return 'invalid';
   }

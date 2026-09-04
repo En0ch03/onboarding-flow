@@ -101,7 +101,8 @@ const specificMessages: Record<string, string> = {
  * yaziliyordu. Sebep kodu tarafinda uc ayri sonuc vardi: `'constructor'`
  * metin yerine bir `String` **nesnesi** dondurup React'e gecersiz bir cocuk
  * veriyor, `'valueOf'` ve `'__proto__'` ise calisma aninda `TypeError`
- * atiyordu -- hata yolunda cokmek, bu projede en pahali yer.
+ * atiyordu -- hata yolunda cokmek, bu projede en pahali yer. `'toString'`
+ * daha sessiz bozuluyordu: ekrana `"[object Undefined]"` yaziyordu.
  */
 function own<T>(table: Record<string, T>, key: string): T | undefined {
   return Object.prototype.hasOwnProperty.call(table, key) ? table[key] : undefined;

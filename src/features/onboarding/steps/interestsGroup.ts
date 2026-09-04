@@ -6,6 +6,15 @@ import { sortedOptions } from './useSelection';
 export const DEFAULT_INTERESTS_GROUP = 'interests';
 
 /**
+ * Sunucudan gelen bir anahtarla duz nesneye bakmak yetmiyor: `'toString'`
+ * gibi bir deger kalitilan bir ozellige denk geliyor, "var" gorunuyor ve
+ * hemen ardindaki `group.options` erisimi cokuyordu.
+ */
+function groupAt(options: OptionGroups, key: string) {
+  return Object.prototype.hasOwnProperty.call(options, key) ? options[key] : undefined;
+}
+
+/**
  * Niyet cevabina gore hangi ilgi alani listesinin gosterilecegi.
  *
  * Hangi cevabin hangi listeyi actigi secenegin kendi verisinde (`unlocks`).
@@ -20,15 +29,6 @@ export const DEFAULT_INTERESTS_GROUP = 'interests';
  * yerde: cagiranlar kendi geri dususlerini yazsaydi ekran bir listeye,
  * temizlik baska bir listeye bakabilirdi.
  */
-/**
- * Sunucudan gelen bir anahtarla duz nesneye bakmak yetmiyor: `'toString'`
- * gibi bir deger kalitilan bir ozellige denk geliyor, "var" gorunuyor ve
- * hemen ardindaki `group.options` erisimi cokuyordu.
- */
-function groupAt(options: OptionGroups, key: string) {
-  return Object.prototype.hasOwnProperty.call(options, key) ? options[key] : undefined;
-}
-
 export function groupKeyForIntent(intent: string[] | undefined, options: OptionGroups): string {
   const group = options.intent;
   if (!group) return DEFAULT_INTERESTS_GROUP;
