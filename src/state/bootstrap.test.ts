@@ -163,6 +163,43 @@ describe('sunucudan dusen secenekler', () => {
     },
   };
 
+  it('cevabi dusen adim yeniden soruluyor', async () => {
+    await signIn();
+    fetchOptionGroups.mockResolvedValue(groups);
+    readCachedOptionGroups.mockReturnValue(groups);
+    fetchProfile.mockResolvedValue({
+      ...incompleteProfile,
+      preferences: { intent: ['kaldirilmis'] },
+    });
+    // Kullanici akisin sonundaydi ve niyet adimini tamamlamis sayiliyordu.
+    useOnboardingStore.setState({ activeStepId: 'interests', completedStepIds: ['intent'] });
+
+    await bootstrap();
+
+    // Yalnizca cevabi dusurmek yetmiyordu: tamamlanmis isaret yerinde kalinca
+    // kullanici o adimi hic gormeden akisi bitirebiliyordu.
+    const state = useOnboardingStore.getState();
+    expect(state.answers.intent).toEqual([]);
+    expect(state.activeStepId).toBe('intent');
+    expect(state.completedStepIds).not.toContain('intent');
+  });
+
+  it('hicbir cevap dusmediyse kullanici yerinde kaliyor', async () => {
+    await signIn();
+    fetchOptionGroups.mockResolvedValue(groups);
+    readCachedOptionGroups.mockReturnValue(groups);
+    fetchProfile.mockResolvedValue({
+      ...incompleteProfile,
+      preferences: { intent: ['long_term'] },
+    });
+    useOnboardingStore.setState({ activeStepId: 'photos', completedStepIds: ['intent'] });
+
+    await bootstrap();
+
+    // Her acilista geri sarmak, akisin ortasindaki birini nedensiz geriye atardi.
+    expect(useOnboardingStore.getState().activeStepId).toBe('photos');
+  });
+
   it('artik sunulmayan bir cevap acilista taslaktan dusuyor', async () => {
     await signIn();
     fetchOptionGroups.mockResolvedValue(groups);

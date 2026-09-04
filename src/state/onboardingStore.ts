@@ -38,6 +38,11 @@ type OnboardingState = {
    */
   replaceAnswers: (answers: DraftAnswers) => void;
   setActiveStep: (stepId: string) => void;
+  /**
+   * Kullaniciyi bir adima geri alir ve o adimin tamamlanmis isaretini kaldirir.
+   * Cevabi elinden alinan bir adim, tamamlanmis sayilmaya devam edemez.
+   */
+  rewindTo: (stepId: string) => void;
   markStepCompleted: (stepId: string) => void;
   markStepUnsynced: (stepId: string) => void;
   markStepSynced: (stepId: string) => void;
@@ -68,6 +73,13 @@ export const useOnboardingStore = create<OnboardingState>()(
 
       setActiveStep(stepId) {
         set({ activeStepId: stepId });
+      },
+
+      rewindTo(stepId) {
+        set({
+          activeStepId: stepId,
+          completedStepIds: get().completedStepIds.filter((id) => id !== stepId),
+        });
       },
 
       markStepCompleted(stepId) {

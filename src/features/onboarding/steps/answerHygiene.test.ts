@@ -86,6 +86,23 @@ describe('pruneAnswers', () => {
     expect(pruneAnswers({ gender: 'woman' }, withoutGender).gender).toBe('woman');
   });
 
+  it('acilan grup sunulmuyorsa genel listeye karsi suzuyor', () => {
+    // Sunucu `unlocks` gonderip o grubu sunmazsa ekran genel listeyi
+    // ciziyordu; temizlik baska bir listeye baksaydi hayalet cevap kalirdi.
+    const { interests_friendship: _missing, ...partial } = options;
+    expect(
+      pruneAnswers({ intent: ['friendship'], interests: ['board_games', 'books'] }, partial)
+        .interests,
+    ).toEqual(['books']);
+  });
+
+  it('hicbir sey dusmediyse ayni nesneyi donduruyor', () => {
+    // Cagiran, temizligin gercekten bir sey degistirip degistirmedigini
+    // referans karsilastirmasiyla anliyor.
+    const answers = { gender: 'woman', audience: ['women'] };
+    expect(pruneAnswers(answers, options)).toBe(answers);
+  });
+
   it('verilmemis alanlari uydurmuyor', () => {
     expect(pruneAnswers({ name: 'Deniz' }, options)).toEqual({ name: 'Deniz' });
   });

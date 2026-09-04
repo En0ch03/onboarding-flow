@@ -69,12 +69,14 @@ export const strings = {
     genderHelp: 'Profilinde görünür. Bir tane seç.',
     audienceLabel: 'Beni görsün',
     audienceHelp: 'Birden fazla seçebilirsin.',
+    audienceSkipCost: 'Bu iki cevap olmadan sana kimseyi gösteremeyiz.',
     audienceHint:
       'İki soruyu da yanıtlaman gerekiyor: kendini nasıl tanımladığın ve kimlere görünmek istediğin.',
 
     intentTitle: 'Ne arıyorsun?',
     intentSubtitle: 'Bu cevap profilinde görünür ve kimleri göreceğini etkiler.',
     intentHint: 'En az bir seçenek işaretlemen gerekiyor.',
+    intentSkipCost: 'Ne aradığını yazmayan profiller çok daha az yanıt alıyor.',
 
     photosTitle: 'Birkaç fotoğraf ekle',
     photosSubtitle:
@@ -87,6 +89,7 @@ export const strings = {
     interestsTitle: 'Neye vakit ayırırsın?',
     interestsSubtitle: 'Birkaç tane seç. Sohbet başlatmayı kolaylaştırıyor.',
     interestsSkipCost: 'Ortak ilgi alanı, ilk mesajı yazmayı kolaylaştırıyor.',
+    interestsHint: 'En az bir ilgi alanı seçmen gerekiyor.',
   },
 
   birthDate: {

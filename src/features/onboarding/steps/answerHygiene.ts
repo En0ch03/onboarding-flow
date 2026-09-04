@@ -1,7 +1,7 @@
 import type { OptionGroups } from '@/api/schemas';
 import type { DraftAnswers } from '@/state/onboardingStore';
 
-import { groupKeyForIntent } from './interests.step';
+import { groupKeyForIntent } from './interestsGroup';
 
 function served(options: OptionGroups, key: string): Set<string> | null {
   const group = options[key];
@@ -42,6 +42,9 @@ function keep(ids: string[] | undefined, valid: Set<string> | null): string[] | 
  */
 export function pruneAnswers(answers: DraftAnswers, options: OptionGroups): DraftAnswers {
   const next: DraftAnswers = { ...answers };
+  // Cevabin hangi alanini hangi grubun karsiladigi istemcide sayiliyor:
+  // taslak alan adlariyla grup anahtarlarinin eslemesi sozlesmede yok.
+  // Sunucu yeni bir grup eklerse bu liste de buyumeli.
 
   const genders = served(options, 'gender');
   if (next.gender !== undefined && genders !== null && !genders.has(next.gender)) {
@@ -58,5 +61,17 @@ export function pruneAnswers(answers: DraftAnswers, options: OptionGroups): Draf
     keep(next.interests, served(options, groupKeyForIntent(next.intent, options))),
   );
 
-  return next;
+  // Hicbir sey dusmediyse ayni nesne donuyor: cagiran, temizligin gercekten
+  // bir sey degistirip degistirmedigini referans karsilastirmasiyla anlasin.
+  return same(answers, next) ? answers : next;
+}
+
+function same(before: DraftAnswers, after: DraftAnswers): boolean {
+  if (before.gender !== after.gender) return false;
+  return (['audience', 'intent', 'interests'] as const).every((key) => {
+    const a = before[key];
+    const b = after[key];
+    if (a === undefined || b === undefined) return a === b;
+    return a.length === b.length && a.every((id, index) => id === b[index]);
+  });
 }
