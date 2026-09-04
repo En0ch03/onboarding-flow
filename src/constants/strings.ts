@@ -173,7 +173,10 @@ export function photoSummary(count: number): string {
  * tek sayi; dogum tarihi gorunmuyor.
  */
 export function nameWithAge(name: string, age: number | null): string {
-  return age === null ? name : `${name}, ${age}`;
+  const trimmed = name.trim();
+  // Ad yoksa satir yasin tek basina durdugu bozuk bir hale dusmuyor.
+  if (trimmed === '') return '';
+  return age === null ? trimmed : `${trimmed}, ${age}`;
 }
 
 /** Kapanis cumlesi. Isim yalin birakiliyor; ek getirilmiyor. */

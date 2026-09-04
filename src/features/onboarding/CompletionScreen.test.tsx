@@ -69,7 +69,9 @@ describe('CompletionScreen', () => {
     expect(view.getByText('Herkes')).toBeTruthy();
     expect(view.getByText('Uzun soluklu bir ilişki')).toBeTruthy();
     expect(view.getByText('Kitap')).toBeTruthy();
-    // "Ilgi alanlari 1" kullaniciya ne sectigini hatirlatmiyordu.
+    // "Ilgi alanlari 1" kullaniciya ne sectigini hatirlatmiyordu; ham kimlik
+    // de hatirlatmaz.
+    expect(view.queryByText('books')).toBeNull();
     expect(view.queryByText('1')).toBeNull();
   });
 
@@ -105,6 +107,22 @@ describe('CompletionScreen', () => {
 
   it('fotograf yoksa adin ilk harfini gosteriyor', async () => {
     const view = await mount({ ...answers, photos: [] });
-    expect(view.getByText('D')).toBeTruthy();
+    // Isaret ekran okuyucudan gizli oldugu icin sorgu gizli ogeleri de kapsiyor.
+    expect(view.getByText('D', { includeHiddenElements: true })).toBeTruthy();
+  });
+
+  it('cozulemeyen bir cevabi ham kimlik olarak gostermiyor', async () => {
+    // Kullanici arkadaslik secip bir etiket isaretledikten sonra niyetini
+    // degistirirse cevabi artik gosterilmeyen bir listeye ait kaliyordu ve
+    // ozete "board_games" diye dusuyordu.
+    const view = await mount({ ...answers, intent: ['long_term'], interests: ['board_games'] });
+
+    expect(view.queryByText('board_games')).toBeNull();
+    expect(view.getByText(strings.completion.recapEmpty)).toBeTruthy();
+  });
+
+  it('etiket ve degeri ekran okuyucuya tek parca veriyor', async () => {
+    const view = await mount(answers);
+    expect(view.getByLabelText(`${strings.completion.recapAudience}: Herkes`)).toBeTruthy();
   });
 });

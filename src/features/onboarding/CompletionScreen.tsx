@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, View } from 'react-native';
 
 import { completeOnboarding } from '@/api/endpoints';
@@ -60,14 +60,21 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
   }, []);
 
   const labelsFor = (groupKey: string, ids: string[] | undefined) => {
-    const group = options[groupKey];
     if (!ids?.length) return strings.completion.recapEmpty;
-    // Grup gelmediginde kullaniciyi suclamiyoruz: cevabi vermis olabilir,
-    // eksik olan sunucunun etiket katalogu. Ham deger etiketsiz gosterilir.
-    if (!group) return ids.join(', ');
-    return ids
-      .map((id) => group.options.find((option) => option.id === id)?.label ?? id)
-      .join(', ');
+
+    const group = options[groupKey];
+    // Grup hic gelmediginde kullaniciyi suclamiyoruz: cevabi vermis olabilir,
+    // eksik olan sunucunun etiket katalogu.
+    if (!group) return strings.completion.recapEmpty;
+
+    // Cozulemeyen bir kimlik gosterilmiyor. Ham kimlikler Ingilizce ve
+    // kullanicinin hicbir yerde gormedigi seyler; ekrana dusmeleri, ozeti
+    // "board_games" yazan bir satira cevirir.
+    const labels = ids
+      .map((id) => group.options.find((option) => option.id === id)?.label)
+      .filter((label): label is string => label !== undefined);
+
+    return labels.length > 0 ? labels.join(', ') : strings.completion.recapEmpty;
   };
 
   const failure = finish.state.status === 'error' ? finish.state.error : null;
@@ -165,9 +172,16 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
  * Once burada soyut bir amblem vardi ve kullanicinin kendisiyle hicbir
  * ilgisi yoktu. Kapanis ekraninin isi kullaniciya ne kurdugunu gostermek;
  * gosterilecek en dogru sey profilinin yuzu.
+ *
+ * Ekran okuyucudan gizli: tasidigi bilginin tamami (ad) iki satir asagida
+ * zaten okunuyor ve ciplak bir "D" harfi orada yalnizca gurultu olurdu.
  */
 function ProfileMark({ name, cover }: { name: string; cover?: string | undefined }) {
   const { colors, radius } = useTheme();
+  // Medya sunucuda yasiyor ve taslak diskte; sunucu yeniden baslatildiginda
+  // kayitli bir adres 404 doner. Hata yakalanmazsa geriye ne fotograf ne
+  // harf kalir, yalnizca bos bir daire.
+  const [broken, setBroken] = useState(false);
   const size = 88;
 
   const shape = {
@@ -180,24 +194,40 @@ function ProfileMark({ name, cover }: { name: string; cover?: string | undefined
     justifyContent: 'center' as const,
   };
 
-  if (cover !== undefined) {
+  if (cover && !broken) {
     return (
-      <View style={shape}>
-        <Image source={{ uri: cover }} style={{ width: '100%', height: '100%' }} />
+      <View
+        style={shape}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
+        <Image
+          source={{ uri: cover }}
+          onError={() => setBroken(true)}
+          style={{ width: '100%', height: '100%' }}
+        />
       </View>
     );
   }
 
+  // `slice` cok kodlu bir harfte yarim karakter uretir; `Array.from` tam
+  // harfi veriyor.
+  const first = Array.from(name.trim())[0] ?? '';
+
   return (
-    <View style={shape}>
+    <View style={shape} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       <AppText variant="title" tone="onClay" style={{ lineHeight: 40 }}>
-        {name.trim().slice(0, 1).toLocaleUpperCase('tr-TR')}
+        {first === 'i' ? 'İ' : first.toLocaleUpperCase('tr-TR')}
       </AppText>
     </View>
   );
 }
 
-/** Yas yalnizca gecerli bir tarihten okunuyor; yarim bir taslak yas uretmiyor. */
+/**
+ * Yas yalnizca dogrulamadan gecen bir tarihten okunuyor: yarim, takvimde
+ * olmayan veya yas sinirinin altinda bir taslak yas uretmiyor. Son sart
+ * savunma amacli - kapiyi gecmeden bu ekrana gelinemiyor.
+ */
 function readAge(
   birthDate: { day: string; month: string; year: string } | undefined,
 ): number | null {
@@ -214,7 +244,13 @@ function RecapRow({ label, value }: { label: string; value: string }) {
   const { spacing } = useTheme();
 
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: spacing.lg }}>
+    // Etiket ve deger tek bir odak: ayri ayri okundugunda ekran okuyucu
+    // kullanicisi "Kimler gorecek" ile "Herkes" arasindaki bagi kaybediyor.
+    <View
+      accessible
+      accessibilityLabel={`${label}: ${value}`}
+      style={{ flexDirection: 'row', justifyContent: 'space-between', gap: spacing.lg }}
+    >
       <AppText variant="label" tone="inkSoft">
         {label}
       </AppText>

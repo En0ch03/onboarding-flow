@@ -7,6 +7,7 @@ import { selectionLimit } from '@/constants/strings';
 import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
+import { interestsForIntent } from './interestsGroup';
 import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection';
 
 /**
@@ -37,7 +38,16 @@ export function IntentStep({ values, onChange, options }: StepProps) {
           onPress={() => {
             const result = toggleSelection(group, selected, option.id);
             setRefused(result.refused);
-            if (!result.refused) onChange({ intent: result.next });
+            if (result.refused) return;
+
+            // Ilgi alanlari niyete bagli: cevabin ait oldugu liste
+            // degistiginde cevap da dusuyor, yoksa gorunmeyen bir secim
+            // taslakta yasamaya devam ediyor.
+            const interests = interestsForIntent(values.interests, result.next, options);
+            onChange({
+              intent: result.next,
+              ...(interests === undefined ? {} : { interests }),
+            });
           }}
         />
       ))}
