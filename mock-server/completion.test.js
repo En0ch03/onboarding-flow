@@ -272,6 +272,13 @@ describe('completionProblems', () => {
     }
   });
 
+  it('arkadaslik listesinin tabani, istemcinin sordugu grupla ayni anahtar', () => {
+    // Istemci o adimda `interests` grubunu soruyor ve kosullu listeye
+    // gecerken tabani orada biliyor. Sunucu baska bir taban yazarsa
+    // kullanici, verdigi gecerli cevapla aciklanamayan bir ret aliyor.
+    expect(realOptionGroups.interests_friendship.variantOf).toBe('interests');
+  });
+
   it('karsilikli varyant baglantisi iki soruyu birden dusurmuyor', () => {
     const mutual = {
       x: {

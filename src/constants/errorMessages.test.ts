@@ -19,9 +19,10 @@ describe('fieldErrorMessage', () => {
   });
 
   it('kalitilan bir anahtar ekrana ic JS metni tasimiyor', () => {
-    // `fieldLabels['constructor']` duz indekslemede `function Object() {
-    // [native code] }` donuyordu; sebep tarafinda ise metin degil fonksiyon
-    // donup React cocugu olarak gecersiz bir deger uretiyordu.
+    // Alan adinda `'constructor'` ekrana `function Object() { [native code]
+    // }` yaziyordu; sebep kodunda `'constructor'` metin yerine bir `String`
+    // nesnesi donduruyor, `'valueOf'` ve `'__proto__'` ise `TypeError`
+    // atiyordu.
     for (const key of ['constructor', 'toString', 'valueOf', '__proto__']) {
       const byField = fieldErrorMessage(key, 'required');
       const byCode = fieldErrorMessage('email', key);

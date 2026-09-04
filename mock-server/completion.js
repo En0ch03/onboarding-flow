@@ -16,6 +16,11 @@
  * soruyu zorunlu yapmak icin sunucuda tek bir alan degisiyor, iki yerde
  * iki kural degil.
  *
+ * Bicim kurallari zorunluluktan bagimsiz isliyor: zorunlu olmayan bir
+ * listeye sinirdan fazla secim veya tekli soruya iki cevap gelirse o da
+ * tamamlamayi engelliyor. Zorunsuz olmak "kural yok" demek degil,
+ * "cevapsiz birakilabilir" demek.
+ *
  * Sayisal esikler (yas, fotograf tabani) burada sabit. Bunlar taksonomi
  * degil; bolgeye gore degismiyorlar ve bir liste gelmediginde ne yapilacagi
  * sorusunu acmiyorlar.
@@ -135,7 +140,9 @@ function unlockedKeys(preferences, optionGroups) {
  * denetleniyor -- yapilandirma hatasinda kapi sıkı tarafa bozuluyor.
  */
 function variantBase(key, optionGroups) {
-  const base = optionGroups[key]?.variantOf;
+  if (!owns(optionGroups, key)) return null;
+
+  const base = optionGroups[key].variantOf;
   if (typeof base !== 'string') return null;
 
   // Kendini gosteren veya olmayan bir listeyi gosteren baglanti gecersiz.
@@ -178,8 +185,9 @@ function inspectAnswer(key, group, preferences, optionGroups, unlocked) {
 
   const acceptable = new Set((group.options ?? []).map((option) => option.id));
   for (const unlockedKey of unlocked) {
+    // `variantBase` anahtarin gercekten bu nesneye ait oldugunu zaten
+    // dogruluyor; buradaki erisim guvenli.
     if (variantBase(unlockedKey, optionGroups) !== key) continue;
-    if (!owns(optionGroups, unlockedKey)) continue;
     for (const option of optionGroups[unlockedKey].options ?? []) acceptable.add(option.id);
   }
 

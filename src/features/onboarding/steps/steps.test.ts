@@ -92,9 +92,9 @@ describe('secim hissi yalnizca secim degistiginde', () => {
   });
 
   it('ilgi adiminin sordugu liste, varyant tabaniyla ayni', () => {
-    // Sunucu varyantin tabanini `variantOf` ile soyluyor, istemci ise
-    // adimin kendi grubuyla. Ikisi ayrisirsa kullanici, verdigi gecerli
-    // cevapla aciklanamayan bir ret aliyor.
+    // Istemci tarafindaki iki yer ayni anahtari soyluyor: adimin sordugu
+    // grup ve kosullu listenin geri dusus tabani. Sunucu ucu ayri bir
+    // testte bagli (`mock-server/completion.test.js`).
     const interests = steps.find((step) => step.id === 'interests');
     const group = interests?.questions?.[0]?.group;
 

@@ -105,16 +105,15 @@ describe('StepScreen', () => {
 
   it('ayni adimin gec donen eski gonderimi yenisini ezmiyor', async () => {
     // Kullanici geri gidip ayni adimi tekrar ilerletirse iki istek ucusta
-    // olabiliyor. Once baslayanin gec donen basarisi, sonrakinin
-    // basarisizligini "yazildi" diye ezmemeli.
-    const resolvers: ((value?: unknown) => void)[] = [];
-    const rejecters: ((reason?: unknown) => void)[] = [];
+    // olabiliyor. Once baslayanin gec donen basarisi, hala ucusta olan
+    // ikincisini "yazildi" diye kapatmamali: adim yazilmamis kalmali ki
+    // tamamlanmadan once tekrar denensin.
+    const resolvers: (() => void)[] = [];
 
     asMock(saveStep).mockImplementation(
       () =>
-        new Promise((resolve, reject) => {
+        new Promise<void>((resolve) => {
           resolvers.push(resolve);
-          rejecters.push(reject);
         }),
     );
 
@@ -125,19 +124,20 @@ describe('StepScreen', () => {
     fireEvent.press(view.getByText(strings.common.continue));
     await waitFor(() => expect(resolvers).toHaveLength(1));
 
-    // Geri don ve ayni adimi tekrar ilerlet.
+    // Geri don ve ayni adimi tekrar ilerlet: ikinci gonderim ucusa cikiyor.
     await act(async () => {
       useOnboardingStore.setState({ activeStepId: 'identity' });
     });
     fireEvent.press(await view.findByText(strings.common.continue));
     await waitFor(() => expect(resolvers).toHaveLength(2));
 
-    // Ikinci gonderim basarisiz, birincisi sonradan basarili donuyor.
-    rejecters[1]?.(new Error('network'));
-    resolvers[0]?.();
+    // Yalnizca eskisi doniyor. Korumasiz haliyle burada adim "yazildi"
+    // isaretlenip listeden dusuyor.
+    await act(async () => {
+      resolvers[0]?.();
+      await Promise.resolve();
+    });
 
-    await waitFor(() =>
-      expect(useOnboardingStore.getState().unsyncedStepIds).toContain('identity'),
-    );
+    expect(useOnboardingStore.getState().unsyncedStepIds).toContain('identity');
   });
 });

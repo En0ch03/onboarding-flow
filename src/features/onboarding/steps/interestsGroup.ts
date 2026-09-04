@@ -20,6 +20,15 @@ export const DEFAULT_INTERESTS_GROUP = 'interests';
  * yerde: cagiranlar kendi geri dususlerini yazsaydi ekran bir listeye,
  * temizlik baska bir listeye bakabilirdi.
  */
+/**
+ * Sunucudan gelen bir anahtarla duz nesneye bakmak yetmiyor: `'toString'`
+ * gibi bir deger kalitilan bir ozellige denk geliyor, "var" gorunuyor ve
+ * hemen ardindaki `group.options` erisimi cokuyordu.
+ */
+function groupAt(options: OptionGroups, key: string) {
+  return Object.prototype.hasOwnProperty.call(options, key) ? options[key] : undefined;
+}
+
 export function groupKeyForIntent(intent: string[] | undefined, options: OptionGroups): string {
   const group = options.intent;
   if (!group) return DEFAULT_INTERESTS_GROUP;
@@ -28,7 +37,9 @@ export function groupKeyForIntent(intent: string[] | undefined, options: OptionG
     (option) => option.unlocks !== undefined && intent?.includes(option.id),
   )?.unlocks;
 
-  if (unlocked === undefined || options[unlocked] === undefined) return DEFAULT_INTERESTS_GROUP;
+  if (unlocked === undefined || groupAt(options, unlocked) === undefined) {
+    return DEFAULT_INTERESTS_GROUP;
+  }
   return unlocked;
 }
 
@@ -48,9 +59,9 @@ export function interestsForIntent(
 ): string[] | undefined {
   if (interests === undefined) return undefined;
 
-  const group = options[groupKeyForIntent(intent, options)];
-  if (group === undefined) return interests;
+  const served = groupAt(options, groupKeyForIntent(intent, options));
+  if (served === undefined) return interests;
 
-  const served = new Set(group.options.map((option) => option.id));
-  return interests.filter((id) => served.has(id));
+  const ids = new Set(served.options.map((option) => option.id));
+  return interests.filter((id) => ids.has(id));
 }

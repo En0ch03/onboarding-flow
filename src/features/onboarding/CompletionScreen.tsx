@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BackHandler, View } from 'react-native';
 
 import { completeOnboarding } from '@/api/endpoints';
+import type { ApiError } from '@/api/errors';
 import type { OptionGroups } from '@/api/schemas';
 import { Button } from '@/components/Button';
 import { ErrorBanner } from '@/components/ErrorBanner';
@@ -63,7 +64,13 @@ export function CompletionScreen({
     // sessizce reddetmek kullaniciyi aciklamasiz, olu bir butonla
     // birakiyordu.
     if (!onboarding_complete) {
-      throw { kind: 'unexpected_response', detail: 'onboarding_complete false' };
+      // Tipli bir deger olarak firlatiliyor: `kind` yanlis yazilirsa
+      // `presentError` tanimsiz doner ve ekran tam da hata yolunda coker.
+      const contradiction: ApiError = {
+        kind: 'unexpected_response',
+        detail: 'onboarding_complete false',
+      };
+      throw contradiction;
     }
 
     markOnboardingComplete();
@@ -147,10 +154,8 @@ export function CompletionScreen({
             title={strings.completion.secondary}
             onPress={onEditProfile}
             variant="ghost"
-            // Onay uçuştayken de bekliyor. Ekran bu sirada sökülürse istek
-            // devam ediyor ve profil "tamamlandi" damgasini aliyor; kullanici
-            // ise adimlarda duzeltme yaptigini saniyor ve uygulamayi kapatip
-            // actiginda akista degil ana ekranda buluyor kendini.
+            // Onay ucustayken bekliyor; sebebi yukarida, geri tusunu tutan
+            // etkinin yaninda yaziyor. Ikisi ayni cikisi kapatiyor.
             disabled={pending}
             style={{ marginTop: spacing.sm }}
           />

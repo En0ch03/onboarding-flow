@@ -96,11 +96,12 @@ const specificMessages: Record<string, string> = {
  * Alan adi ve sebep kodu sunucudan geliyor, yani kullanicinin yazdigi bir
  * sey degil ama bizim de yazmadigimiz bir sey.
  *
- * Duz nesnede dogrudan indekslemek yetmiyor: `'constructor'` gibi bir alan
- * adi kalitilan bir ozellige denk geliyor ve ekrana `function Object() {
- * [native code] }` yaziyordu. Sebep tarafinda daha kotusu oluyordu -- kod
- * `'toString'` ise geriye bir metin degil bir fonksiyon donuyor ve React
- * cocugu olarak gecersiz bir deger uretiyordu.
+ * Duz nesnede dogrudan indekslemek yetmiyor. Alan adi `'constructor'`
+ * geldiginde ekrana `function Object() { [native code] } bos birakilamaz.`
+ * yaziliyordu. Sebep kodu tarafinda uc ayri sonuc vardi: `'constructor'`
+ * metin yerine bir `String` **nesnesi** dondurup React'e gecersiz bir cocuk
+ * veriyor, `'valueOf'` ve `'__proto__'` ise calisma aninda `TypeError`
+ * atiyordu -- hata yolunda cokmek, bu projede en pahali yer.
  */
 function own<T>(table: Record<string, T>, key: string): T | undefined {
   return Object.prototype.hasOwnProperty.call(table, key) ? table[key] : undefined;
