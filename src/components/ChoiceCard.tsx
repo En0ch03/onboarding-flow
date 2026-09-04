@@ -1,7 +1,7 @@
 import { Pressable, View } from 'react-native';
 
 import type { Option } from '@/api/schemas';
-import { useTheme } from '@/theme';
+import { haptics, useTheme } from '@/theme';
 
 import { AppText } from './AppText';
 
@@ -30,7 +30,11 @@ export function ChoiceCard({ option, selected, onPress, disabled = false }: Choi
       accessibilityLabel={option.label}
       {...(option.hint ? { accessibilityHint: option.hint } : {})}
       disabled={disabled}
-      onPress={onPress}
+      onPress={() => {
+        // His yalnizca bir sey oldugunda: secim degisti.
+        haptics.select();
+        onPress();
+      }}
       style={({ pressed }) => ({
         flexDirection: 'row',
         alignItems: 'center',

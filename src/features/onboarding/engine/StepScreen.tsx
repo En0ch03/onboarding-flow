@@ -9,7 +9,7 @@ import { Screen } from '@/components/Screen';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { strings } from '@/constants/strings';
 import { useOnboardingStore } from '@/state/onboardingStore';
-import { useTheme } from '@/theme';
+import { haptics, useTheme } from '@/theme';
 
 import { saveStep } from '../saveStep';
 import type { StepDefinition } from './types';
@@ -85,7 +85,15 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
             }}
             step={engine.progress}
             {...(step.skippable
-              ? { skip: { label: strings.common.skipForNow, onPress: () => advance(true) } }
+              ? {
+                  skip: {
+                    label: strings.common.skipForNow,
+                    onPress: () => {
+                      haptics.advance();
+                      advance(true);
+                    },
+                  },
+                }
               : {})}
           />
           <ProgressBar current={engine.progress.current} total={engine.progress.total} />
@@ -114,6 +122,7 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
             }
             onPress={() => {
               if (!engine.canContinue) {
+                haptics.refuse();
                 // Klavye kapaniyor: uyari butonun hemen ustunde ve acik
                 // klavyeyle orasi gorunmuyor. Hatayi gostermek, gosterilecek
                 // yeri acmayi da kapsiyor.
@@ -121,6 +130,7 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
                 setHintShown(true);
                 return;
               }
+              haptics.advance();
               setHintShown(false);
               advance(false);
             }}

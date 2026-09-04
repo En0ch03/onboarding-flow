@@ -1,7 +1,7 @@
 import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import type { Option } from '@/api/schemas';
-import { useTheme } from '@/theme';
+import { haptics, useTheme } from '@/theme';
 
 import { AppText } from './AppText';
 
@@ -40,7 +40,11 @@ export function Chip({ option, selected, onPress, disabled = false, style }: Chi
       accessibilityLabel={option.label}
       {...(option.hint ? { accessibilityHint: option.hint } : {})}
       disabled={disabled}
-      onPress={onPress}
+      onPress={() => {
+        // His yalnizca bir sey oldugunda: secim degisti.
+        haptics.select();
+        onPress();
+      }}
       style={({ pressed }) => [
         {
           flexDirection: 'row',
