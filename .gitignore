@@ -2,21 +2,37 @@ node_modules/
 .expo/
 dist/
 web-build/
+*.tsbuildinfo
 
 *.log
 npm-debug.*
 yarn-debug.*
 yarn-error.*
 
+# Environment and secrets
 .env
-.env.local
-.env*.local
+.env.*
+!.env.example
+secrets.json
+credentials.json
+service-account*.json
+google-services.json
+GoogleService-Info.plist
 
-*.jks
+# Keys and certificates
+*.pem
+*.key
 *.p8
 *.p12
-*.key
+*.pfx
+*.jks
+*.keystore
 *.mobileprovision
+*.cer
+*.certSigningRequest
+id_rsa*
+id_ed25519*
+
 *.orig.*
 
 ios/
