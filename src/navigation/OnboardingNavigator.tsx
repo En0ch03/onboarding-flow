@@ -5,6 +5,8 @@ import { Alert } from 'react-native';
 import type { OptionGroups } from '@/api/schemas';
 import { CompletionScreen } from '@/features/onboarding/CompletionScreen';
 import { StepScreen } from '@/features/onboarding/engine/StepScreen';
+import { firstIncompleteStepId } from '@/features/onboarding/engine/stepFlow';
+import { stepForFields } from '@/features/onboarding/steps/blockingStep';
 import { resolveSteps } from '@/features/onboarding/steps/resolveSteps';
 import { steps } from '@/features/onboarding/steps/steps';
 import { strings } from '@/constants/strings';
@@ -60,12 +62,34 @@ export function OnboardingNavigator({
           <CompletionScreen
             options={options}
             onEnterApp={onEnterApp}
+            onFixProfile={(fields) => {
+              // Once sunucunun soyledigi alan, sonra istemcinin kendi gordugu
+              // engel. Ikisi de yoksa son adim kaliyor; o durumda kullanici
+              // ayni reddi bir daha alabilir, bu yuzden bant hangi alanin
+              // sorunlu oldugunu ayrica yaziyor.
+              const answers = useOnboardingStore.getState().answers;
+              const target =
+                stepForFields(flow, fields) ??
+                firstIncompleteStepId(flow, answers) ??
+                flow[flow.length - 1]?.id ??
+                '';
+
+              setActiveStep(target);
+              navigation.popTo('Steps');
+            }}
             onEditProfile={() => {
               // Bir adim geriye: kullanici tamamlanmadan hemen once neredeyse
               // oraya donuyor. Akisin basina atmak, duzeltmek istedigi tek
               // cevap icin bes adimi yeniden gezdirmek olurdu.
               setActiveStep(flow[flow.length - 1]?.id ?? '');
-              navigation.navigate('Steps');
+
+              // `navigate` degil `popTo`: bu surumde `navigate` yiginda
+              // geriye donmuyor, ayni ada ikinci bir ekran itiyor. Tamamlanma
+              // ekrani adimlarin altinda asili kaliyor ve kullanici herhangi
+              // bir adimda geri kaydirdiginda oraya dusuyordu. Kapanis
+              // ekranina yalnizca akisi bitirerek gelinir; asagisinda
+              // beklemez.
+              navigation.popTo('Steps');
             }}
           />
         )}

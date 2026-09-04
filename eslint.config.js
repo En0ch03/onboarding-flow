@@ -14,4 +14,16 @@ module.exports = defineConfig([
       'react-native/no-raw-text': 'off',
     },
   },
+  {
+    // Sahte sunucu Node tarafinda ve kendi testleri var; uygulama tarafinin
+    // ortam varsayimlari oraya uymuyor.
+    files: ['mock-server/**/*.test.js'],
+    languageOptions: {
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+      },
+    },
+  },
 ]);

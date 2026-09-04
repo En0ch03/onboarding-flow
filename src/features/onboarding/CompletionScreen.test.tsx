@@ -1,11 +1,21 @@
-import { cleanup } from '@testing-library/react-native';
+import { cleanup, fireEvent, waitFor } from '@testing-library/react-native';
+import { BackHandler } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
+import { presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
 import { useOnboardingStore, type DraftAnswers } from '@/state/onboardingStore';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
+import { completeOnboarding } from '@/api/endpoints';
+
 import { CompletionScreen } from './CompletionScreen';
+import { saveStep } from './saveStep';
+
+/** Sahte modulun tipi cagri tarafindan okunmuyor; testte yeniden baglaniyor. */
+function asMock<T extends (...args: never[]) => unknown>(fn: T) {
+  return fn as unknown as jest.Mock;
+}
 
 jest.mock('@/api/endpoints', () => ({ completeOnboarding: jest.fn(async () => {}) }));
 jest.mock('./saveStep', () => ({ saveStep: jest.fn(async () => {}) }));
@@ -54,11 +64,36 @@ const answers: DraftAnswers = {
 };
 
 afterEach(cleanup);
+afterEach(() => jest.restoreAllMocks());
 
-async function mount(draft: DraftAnswers) {
-  useOnboardingStore.setState({ answers: draft, unsyncedStepIds: [] });
+// Sahte modul testler arasinda basarili haline donuyor: bir testin kurdugu
+// hata, sirasi degistiginde baska bir testi dusurmemeli.
+beforeEach(() => {
+  // Yalnizca cagri gecmisi siliniyor. `clearAllMocks` uygulamayi da
+  // siliyor ve sahte modul cagirilamaz hale geliyor.
+  asMock(completeOnboarding).mockClear();
+  asMock(saveStep).mockClear();
+
+  asMock(completeOnboarding).mockImplementation(async () => ({ onboarding_complete: true }));
+  asMock(saveStep).mockImplementation(async () => {});
+});
+
+type Handlers = {
+  onEnterApp?: () => void;
+  onEditProfile?: () => void;
+  onFixProfile?: () => void;
+};
+
+async function mount(draft: DraftAnswers, handlers: Handlers = {}, unsynced: string[] = []) {
+  useOnboardingStore.setState({ answers: draft, unsyncedStepIds: unsynced });
+
   return renderWithTheme(
-    <CompletionScreen options={options} onEnterApp={() => {}} onEditProfile={() => {}} />,
+    <CompletionScreen
+      options={options}
+      onEnterApp={handlers.onEnterApp ?? (() => {})}
+      onEditProfile={handlers.onEditProfile ?? (() => {})}
+      onFixProfile={handlers.onFixProfile ?? (() => {})}
+    />,
   );
 }
 
@@ -124,5 +159,151 @@ describe('CompletionScreen', () => {
   it('etiket ve degeri ekran okuyucuya tek parca veriyor', async () => {
     const view = await mount(answers);
     expect(view.getByLabelText(`${strings.completion.recapAudience}: Herkes`)).toBeTruthy();
+  });
+
+  it('sunucu onaylayinca uygulamaya giriyor', async () => {
+    asMock(completeOnboarding).mockImplementation(async () => ({ onboarding_complete: true }));
+    const onEnterApp = jest.fn();
+    const view = await mount(answers, { onEnterApp });
+
+    fireEvent.press(await view.findByText(strings.completion.primary));
+
+    await waitFor(() => expect(onEnterApp).toHaveBeenCalled());
+  });
+
+  it('sunucu profili eksik bulduysa uygulamaya sokmuyor', async () => {
+    // Kullanici buraya bir navigasyon hatasiyla da gelebiliyordu; ekrani
+    // gormek profilin tamamlandigi anlamina gelmemeli.
+    asMock(completeOnboarding).mockImplementation(async () => {
+      throw { kind: 'validation_failed', fields: { gender: 'required' } };
+    });
+    const onEnterApp = jest.fn();
+    const view = await mount(answers, { onEnterApp });
+
+    // Bant belirdiyse sunucu cevabi islenmis demektir.
+    const banner = new RegExp(strings.completion.incomplete);
+    await view.findByText(banner);
+    fireEvent.press(view.getByText(strings.completion.primary));
+    await view.findByText(banner);
+
+    expect(onEnterApp).not.toHaveBeenCalled();
+  });
+
+  it('eksik profilde cikis yolu tekrar denemek degil cevaplara donmek', async () => {
+    asMock(completeOnboarding).mockImplementation(async () => {
+      throw { kind: 'validation_failed', fields: { gender: 'required' } };
+    });
+    const onFixProfile = jest.fn();
+    const view = await mount(answers, { onFixProfile });
+
+    expect(await view.findByText(new RegExp(strings.completion.incomplete))).toBeTruthy();
+
+    fireEvent.press(view.getByText(strings.completion.incompleteAction));
+
+    // Hangi alanin reddedildigi cagiran tarafa gidiyor: donulecek adim
+    // sunucunun soyledigi alandan cozuluyor.
+    await waitFor(() => expect(onFixProfile).toHaveBeenCalledWith(['gender']));
+  });
+
+  it('sunucunun reddettigi alani kullaniciya adiyla soyluyor', async () => {
+    // "Bir sey eksik" tek basina kullaniciyi ayni ekrana geri gonderiyordu.
+    asMock(completeOnboarding).mockImplementation(async () => {
+      throw { kind: 'validation_failed', fields: { photos: 'required' } };
+    });
+    const view = await mount(answers);
+
+    expect(await view.findByText(/Fotoğraflar/)).toBeTruthy();
+  });
+
+  it('tanimadigi bir alan adinda genel cumleye dusuyor', async () => {
+    asMock(completeOnboarding).mockImplementation(async () => {
+      throw { kind: 'validation_failed', fields: {} };
+    });
+    const view = await mount(answers);
+
+    expect(await view.findByText(strings.completion.incomplete)).toBeTruthy();
+  });
+
+  it('yazilamamis adimi tamamlamadan once gonderiyor', async () => {
+    // Sunucu, henuz ulasmamis bir cevaba gore karar veremesin.
+    const order: string[] = [];
+    asMock(saveStep).mockImplementation(async () => {
+      order.push('saveStep');
+    });
+    asMock(completeOnboarding).mockImplementation(async () => {
+      order.push('complete');
+      return { onboarding_complete: true };
+    });
+
+    await mount(answers, {}, ['interests']);
+
+    await waitFor(() => expect(order).toEqual(['saveStep', 'complete']));
+  });
+
+  it('bekleyen adim gonderilemezse tamamlamayi hic denemiyor', async () => {
+    asMock(saveStep).mockImplementation(async () => {
+      throw { kind: 'network' };
+    });
+
+    const onEnterApp = jest.fn();
+    const view = await mount(answers, { onEnterApp }, ['interests']);
+
+    await view.findByText(presentError({ kind: 'network' }).message);
+
+    expect(asMock(completeOnboarding)).not.toHaveBeenCalled();
+
+    fireEvent.press(view.getByText(strings.completion.primary));
+    expect(onEnterApp).not.toHaveBeenCalled();
+  });
+
+  it('sunucu 200 donup tamamlanmadi derse iceri almiyor ve sebebini soyluyor', async () => {
+    // Karari sunucu veriyorsa cevabinin govdesi de okunmali. Sessizce
+    // reddetmek kullaniciyi aciklamasiz, olu bir butonla birakiyordu.
+    asMock(completeOnboarding).mockImplementation(async () => ({ onboarding_complete: false }));
+
+    const onEnterApp = jest.fn();
+    const view = await mount(answers, { onEnterApp });
+
+    await view.findByText(presentError({ kind: 'unexpected_response', detail: '' }).message);
+
+    fireEvent.press(view.getByText(strings.completion.primary));
+    expect(onEnterApp).not.toHaveBeenCalled();
+  });
+
+  it('istek ucustayken donanimsal geri tusu ekrandan cikarmiyor', async () => {
+    // Cikis engellenmezse istek devam ediyor ve profil sunucuda
+    // "tamamlandi" damgasini aliyor; kullanici ise duzeltme yaptigini
+    // saniyor.
+    const handlers: (() => boolean)[] = [];
+    jest.spyOn(BackHandler, 'addEventListener').mockImplementation(((
+      _event: string,
+      handler: () => boolean,
+    ) => {
+      handlers.push(handler);
+      return {
+        remove: () => {
+          const index = handlers.indexOf(handler);
+          if (index >= 0) handlers.splice(index, 1);
+        },
+      };
+    }) as unknown as typeof BackHandler.addEventListener);
+
+    let release = (): void => {};
+    asMock(completeOnboarding).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          release = () => resolve({ onboarding_complete: true });
+        }),
+    );
+
+    const view = await mount(answers);
+    await view.findByText(strings.completion.primary);
+
+    // Kayitli isleyici `true` donuyorsa geri tusu yutuluyor demektir.
+    expect(handlers).toHaveLength(1);
+    expect(handlers[0]?.()).toBe(true);
+
+    release();
+    await waitFor(() => expect(handlers).toHaveLength(0));
   });
 });

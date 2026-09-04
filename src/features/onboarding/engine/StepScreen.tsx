@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Keyboard, View } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
@@ -38,6 +38,14 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
   const markStepSynced = useOnboardingStore((state) => state.markStepSynced);
   const [hintShown, setHintShown] = useState(false);
 
+  /**
+   * Adim basina son gonderim. Kullanici geri gidip ayni adimi tekrar
+   * ilerletirse iki istek ucusta olabiliyor ve once baslayanin gec donen
+   * cevabi, sonrakinin sonucunu eziyordu: basarisiz bir yazim "yazildi"
+   * isaretlenebiliyordu.
+   */
+  const attempts = useRef<Record<string, number>>({});
+
   // Uyari adima bagli: geri donuldugunde veya bir adim atlandiginda acik
   // kaliyordu ve kullanici hic dokunmadigi bir adimi kirmizi uyariyla
   // aciyordu. Adim kimligi degisince uyari kapaniyor.
@@ -49,11 +57,23 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
     (skipped: boolean) => {
       if (!step) return;
 
-      // Kayit ilerlemeyi bloke etmiyor: cevap zaten cihazda duruyor ve
-      // basarisiz kalan adim tamamlanmadan once tekrar deneniyor.
+      // Adim gonderilmeden once yazilmamis sayiliyor, gonderim bittiginde
+      // yazilmis. Yalnizca hatada isaretlemek son adimda bir yaris
+      // biraktiyordu: istek daha yoldayken tamamlanma ekrani aciliyor ve
+      // sunucu, henuz ulasmamis bir cevaba gore karar veriyordu. Bekleyen
+      // kayitlari tamamlanmadan once tekrar deneyen mekanizma zaten var;
+      // adimin ona dahil olmasi yetiyor.
+      const attempt = (attempts.current[step.id] ?? 0) + 1;
+      attempts.current[step.id] = attempt;
+
+      markStepUnsynced(step.id);
       void saveStep(step.id, engine.answers)
-        .then(() => markStepSynced(step.id))
-        .catch(() => markStepUnsynced(step.id));
+        .then(() => {
+          if (attempts.current[step.id] === attempt) markStepSynced(step.id);
+        })
+        .catch(() => {
+          if (attempts.current[step.id] === attempt) markStepUnsynced(step.id);
+        });
 
       if (skipped) engine.skip();
       else engine.goNext();

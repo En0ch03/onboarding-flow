@@ -5,6 +5,7 @@ import type { OptionGroup } from '@/api/schemas';
 
 import { birthDateMessages } from './birthDate';
 import { toggleSelection } from './useSelection';
+import { DEFAULT_INTERESTS_GROUP } from './interestsGroup';
 import { steps } from './steps';
 
 const identity = steps.find((step) => step.id === 'identity');
@@ -88,5 +89,15 @@ describe('secim hissi yalnizca secim degistiginde', () => {
     const current = ['a'];
     expect(toggleSelection(group, current, 'b').next).toBe(current);
     expect(toggleSelection(group, current, 'a').next).not.toBe(current);
+  });
+
+  it('ilgi adiminin sordugu liste, varyant tabaniyla ayni', () => {
+    // Istemci tarafindaki iki yer ayni anahtari soyluyor: adimin sordugu
+    // grup ve kosullu listenin geri dusus tabani. Sunucu ucu ayri bir
+    // testte bagli (`mock-server/completion.test.js`).
+    const interests = steps.find((step) => step.id === 'interests');
+    const group = interests?.questions?.[0]?.group;
+
+    expect(group).toBe(DEFAULT_INTERESTS_GROUP);
   });
 });

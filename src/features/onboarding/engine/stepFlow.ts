@@ -89,3 +89,21 @@ export function stackUpTo(
 export function canLeaveStep(step: StepDefinition, answers: DraftAnswers): boolean {
   return step.skippable || step.isComplete(answers);
 }
+
+/**
+ * Ileri gitmeye engel olan ilk adim; yoksa `null`.
+ *
+ * Sunucu profili eksik bulup tamamlamayi reddettiginde ikinci basvuru
+ * yeri burasi: once sunucunun adiyla soyledigi alan cozuluyor, o
+ * cozulemezse istemcinin kendi gordugu engel kullaniliyor. Ikisi de yoksa
+ * geriye son adim kaliyor ve kullanici ayni reddi tekrar alabilir; o
+ * durumda hangi alanin sorunlu oldugu bantta yaziyor.
+ */
+export function firstIncompleteStepId(
+  steps: StepDefinition[],
+  answers: DraftAnswers,
+): string | null {
+  const blocking = computeVisibleSteps(steps, answers).find((step) => !canLeaveStep(step, answers));
+
+  return blocking?.id ?? null;
+}

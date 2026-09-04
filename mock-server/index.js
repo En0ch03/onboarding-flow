@@ -11,6 +11,7 @@ const express = require('express');
 const multer = require('multer');
 
 const { chaos, setArmed, readArmed, MODES } = require('./chaos');
+const { completionProblems } = require('./completion');
 const { optionGroups } = require('./options');
 const state = require('./state');
 
@@ -168,6 +169,13 @@ app.patch('/api/v1/profile', requireAuth, (req, res) => {
 });
 
 app.post('/api/v1/onboarding/complete', requireAuth, (req, res) => {
+  // Damgayi vuran taraf sarti da sormali; ayrintisi `completion.js` icinde.
+  const fields = completionProblems(req.user, optionGroups);
+
+  if (Object.keys(fields).length > 0) {
+    return res.status(422).json({ error: 'validation_failed', fields });
+  }
+
   req.user.onboarding_complete = true;
   res.status(200).json({ onboarding_complete: true });
 });

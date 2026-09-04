@@ -123,6 +123,12 @@ const optionGroups = {
    */
   interests_friendship: {
     key: 'interests_friendship',
+    // Bu liste ayri bir soru degil, `interests` sorusunun baska bir etiket
+    // seti. Cevap taban listenin anahtari altinda saklaniyor, o yuzden
+    // hangi tabanin varyanti oldugu veride yaziyor: sunucu, buradan secilen
+    // bir etiketi yalnizca `interests` icin gecerli sayiyor, her liste icin
+    // degil.
+    variantOf: 'interests',
     multiSelect: true,
     maxSelection: 8,
     required: false,

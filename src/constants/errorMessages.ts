@@ -60,6 +60,14 @@ const fieldLabels: Record<string, string> = {
   avatar_url: 'Fotoğraf',
   preferences: 'Tercihler',
   file: 'Dosya',
+  // Tamamlanma reddinde sunucu bu adlarla konusuyor; kullaniciya alan adini
+  // degil sorunun adini gostermek gerekiyor.
+  birth_date: 'Doğum tarihi',
+  photos: 'Fotoğraflar',
+  gender: 'Cinsiyet',
+  audience: 'Kimlerin göreceği',
+  intent: 'Ne aradığın',
+  interests: 'İlgi alanları',
 };
 
 /**
@@ -84,11 +92,27 @@ const specificMessages: Record<string, string> = {
   'email:invalid': 'Bu e-posta adresi geçerli görünmüyor. Yazımını kontrol eder misin?',
 };
 
-export function fieldErrorMessage(field: string, code: string): string {
-  const specific = specificMessages[`${field}:${code}`];
-  if (specific) return specific;
+/**
+ * Alan adi ve sebep kodu sunucudan geliyor, yani kullanicinin yazdigi bir
+ * sey degil ama bizim de yazmadigimiz bir sey.
+ *
+ * Duz nesnede dogrudan indekslemek yetmiyor. Alan adi `'constructor'`
+ * geldiginde ekrana `function Object() { [native code] } bos birakilamaz.`
+ * yaziliyordu. Sebep kodu tarafinda uc ayri sonuc vardi: `'constructor'`
+ * metin yerine bir `String` **nesnesi** dondurup React'e gecersiz bir cocuk
+ * veriyor, `'valueOf'` ve `'__proto__'` ise calisma aninda `TypeError`
+ * atiyordu -- hata yolunda cokmek, bu projede en pahali yer. `'toString'`
+ * daha sessiz bozuluyordu: ekrana `"[object Undefined]"` yaziyordu.
+ */
+function own<T>(table: Record<string, T>, key: string): T | undefined {
+  return Object.prototype.hasOwnProperty.call(table, key) ? table[key] : undefined;
+}
 
-  const label = fieldLabels[field] ?? 'Bu alan';
-  const reason = fieldReasons[code];
+export function fieldErrorMessage(field: string, code: string): string {
+  const specific = own(specificMessages, `${field}:${code}`);
+  if (specific !== undefined) return specific;
+
+  const label = own(fieldLabels, field) ?? 'Bu alan';
+  const reason = own(fieldReasons, code);
   return reason ? reason(label) : `${label} kabul edilmedi. Gözden geçirir misin?`;
 }

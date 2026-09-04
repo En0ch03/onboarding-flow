@@ -129,6 +129,10 @@ export const strings = {
     recapInterests: 'İlgi alanları',
     primary: 'Onboarding’a gir',
     secondary: 'Profilimi düzenle',
+    // Sunucu profili eksik buldugunda: sebep degil cikis yolu soyleniyor,
+    // cunku eksigin ne oldugunu adimin kendisi zaten gosterecek.
+    incomplete: 'Profilinde tamamlanmamış bir soru kalmış. Cevaplara dönüp bitirelim.',
+    incompleteAction: 'Cevaplara dön',
   },
 } as const;
 
