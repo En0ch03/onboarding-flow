@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { View } from 'react-native';
 
 import { completeOnboarding } from '@/api/endpoints';
@@ -32,10 +32,6 @@ type CompletionScreenProps = {
 export function CompletionScreen({ options, onEnterApp, onEditProfile }: CompletionScreenProps) {
   const { colors, radius, spacing } = useTheme();
 
-  // Ozet, ekran acilirken alinan bir goruntuden okunuyor. Bu ekran isini
-  // bitirdiginde taslagi siliyor; canli okumak, gosterecegi veriyi kendi
-  // silmesi ve ozetin bir anda bosalmasi demekti.
-  const [summary] = useState(() => useOnboardingStore.getState().answers);
   const answers = useOnboardingStore((state) => state.answers);
   const unsynced = useOnboardingStore((state) => state.unsyncedStepIds);
   const markStepSynced = useOnboardingStore((state) => state.markStepSynced);
@@ -52,7 +48,6 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
 
     await completeOnboarding();
     markOnboardingComplete();
-    clearDraft();
     return true;
   });
 
@@ -79,7 +74,14 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
         <View>
           <Button
             title={strings.completion.primary}
-            onPress={onEnterApp}
+            // Taslak burada siliniyor, tamamlanma aninda degil. Tamamlanmada
+            // silmek iki seyi bozuyordu: ekran gosterecegi ozeti kendi
+            // siliyordu, ve "profilimi duzenle" yolu adimlari bos aciyordu.
+            // Burasi akisin geri donulemez tek noktasi.
+            onPress={() => {
+              clearDraft();
+              onEnterApp();
+            }}
             loading={finish.state.status === 'loading'}
           />
           <Button
@@ -109,7 +111,7 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
 
       {/* Isim yalin birakiliyor: ek getirmek bir isimde dogru, digerinde bozuk. */}
       <AppText variant="title" accessibilityRole="header">
-        {completionTitle(summary.name ?? '')}
+        {completionTitle(answers.name ?? '')}
       </AppText>
       <AppText variant="subhead" tone="inkSoft" style={{ marginTop: spacing.md }}>
         {strings.completion.subtitle}
@@ -135,12 +137,12 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
       >
         <RecapRow
           label={strings.completion.recapIntent}
-          value={labelsFor('intent', summary.intent)}
+          value={labelsFor('intent', answers.intent)}
         />
-        <RecapRow label={strings.completion.recapPhotos} value={`${summary.photos?.length ?? 0}`} />
+        <RecapRow label={strings.completion.recapPhotos} value={`${answers.photos?.length ?? 0}`} />
         <RecapRow
           label={strings.completion.recapInterests}
-          value={`${summary.interests?.length ?? 0}`}
+          value={`${answers.interests?.length ?? 0}`}
         />
       </View>
     </Screen>
