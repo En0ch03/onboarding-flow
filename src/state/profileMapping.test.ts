@@ -45,13 +45,16 @@ describe('draftFromProfile', () => {
     expect(answers.name).toBe('Deniz');
   });
 
-  it('treats a stored orientation as consent already given', () => {
+  it('ignores an orientation already stored on the server', () => {
+    // Alan profil duzenlemeye ait; onboarding taslagi onu tasimiyor ve
+    // dolayisiyla bir sonraki adim kaydinda geri gondermiyor.
     const answers = draftFromProfile({
       ...profile,
-      preferences: { orientation: ['bisexual'] },
+      preferences: { gender: 'woman', orientation: ['bisexual'] },
     });
 
-    expect(answers.orientationConsent).toBe(true);
+    expect(answers.gender).toBe('woman');
+    expect('orientation' in answers).toBe(false);
   });
 });
 
@@ -66,28 +69,10 @@ describe('patchFromAnswers', () => {
     expect(patch.preferences).toEqual({ birth_date: { day: '14', month: '3', year: '1996' } });
   });
 
-  it('omits orientation entirely when consent was not given', () => {
-    const patch = patchFromAnswers(
-      { gender: 'woman', audience: ['men'], orientation: ['bisexual'] },
-      'audience',
-    );
+  it('sends only the two matching fields for the audience step', () => {
+    const patch = patchFromAnswers({ gender: 'woman', audience: ['men'] }, 'audience');
 
     expect(patch.preferences).toEqual({ gender: 'woman', audience: ['men'] });
-    expect('orientation' in (patch.preferences ?? {})).toBe(false);
-  });
-
-  it('includes orientation once consent is given', () => {
-    const patch = patchFromAnswers(
-      {
-        gender: 'woman',
-        audience: ['men'],
-        orientation: ['bisexual'],
-        orientationConsent: true,
-      },
-      'audience',
-    );
-
-    expect(patch.preferences?.orientation).toEqual(['bisexual']);
   });
 
   it('fills the single avatar field from the cover photo', () => {

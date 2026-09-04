@@ -62,8 +62,6 @@ export const strings = {
     audienceLabel: 'Beni görsün',
     audienceHint:
       'İki soruyu da yanıtlaman gerekiyor: kendini nasıl tanımladığın ve kimlere görünmek istediğin.',
-    orientationConsent: 'Yönelimimi paylaşmak istiyorum',
-    orientationConsentHint: 'İstemezsen bu alanı hiç göndermiyoruz. Sonradan da ekleyebilirsin.',
 
     intentTitle: 'Ne arıyorsun?',
     intentSubtitle: 'Bu cevap profilinde görünür ve kimleri göreceğini etkiler.',

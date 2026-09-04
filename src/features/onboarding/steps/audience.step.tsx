@@ -1,4 +1,4 @@
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { Chip } from '@/components/Chip';
@@ -10,23 +10,21 @@ import type { StepProps } from '../engine/types';
 import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection';
 
 /**
- * Eslesme havuzunu belirleyen iki cevap, ve istege bagli ucuncusu.
+ * Eslesme havuzunu belirleyen iki cevap: kendini nasil tanimladigin ve
+ * kimlere gorunmek istedigin. Ucuncu bir alan yok.
  *
- * Yonelim ozel nitelikli veri: atlanabilir ve yaninda varsayilan olarak
- * isaretsiz bir riza kutusu var. Riza verilmediyse alan istege bos olarak
- * degil, hic eklenmiyor - saklamadigimiz bir seyi saklamis gibi gostermemek
- * icin.
+ * Yonelim etiketi bilerek burada sorulmuyor. Ozel nitelikli veriyi bir kayit
+ * akisinda toplamak, kullanicinin hizli gecmeye calistigi bir anda en agir
+ * kararlardan birini vermesini istemek demek. Alan profil duzenlemede,
+ * kullanici kendi zamaninda ve kendi istegiyle geldiginde bulunuyor.
  */
 export function AudienceStep({ values, onChange, options }: StepProps) {
-  const { colors, radius, spacing } = useTheme();
+  const { spacing } = useTheme();
 
   const gender = options.gender;
   const audience = options.audience;
-  const orientation = options.orientation;
 
   const selectedAudience = values.audience ?? [];
-  const selectedOrientation = values.orientation ?? [];
-  const consent = values.orientationConsent === true;
 
   return (
     <View>
@@ -47,7 +45,7 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
       ) : null}
 
       {audience ? (
-        <View style={{ marginBottom: spacing.xl }}>
+        <View>
           <AppText variant="label" tone="inkSoft" style={{ marginBottom: spacing.md }}>
             {strings.steps.audienceLabel}
           </AppText>
@@ -66,82 +64,6 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
               />
             ))}
           </View>
-        </View>
-      ) : null}
-
-      {orientation ? (
-        <View>
-          <Pressable
-            accessibilityRole="checkbox"
-            accessibilityState={{ checked: consent }}
-            accessibilityLabel={strings.steps.orientationConsent}
-            onPress={() =>
-              onChange({
-                orientationConsent: !consent,
-                // Riza geri alindiginda secim de temizleniyor: ekranda
-                // gorunmeyen bir cevabin arka planda durmasi dogru degil.
-                ...(consent ? { orientation: [] } : {}),
-              })
-            }
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: spacing.md,
-              paddingVertical: spacing.md,
-            }}
-          >
-            <View
-              style={{
-                width: 20,
-                height: 20,
-                borderRadius: radius.sm,
-                borderCurve: 'continuous',
-                borderWidth: 1,
-                borderColor: consent ? colors.clay : colors.hairline,
-                backgroundColor: consent ? colors.clay : 'transparent',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {consent ? (
-                <AppText variant="caption" tone="onClay" style={{ lineHeight: 14 }}>
-                  ✓
-                </AppText>
-              ) : null}
-            </View>
-            <View style={{ flex: 1 }}>
-              <AppText variant="control">{strings.steps.orientationConsent}</AppText>
-              <AppText variant="caption" tone="inkSoft">
-                {strings.steps.orientationConsentHint}
-              </AppText>
-            </View>
-          </Pressable>
-
-          {consent ? (
-            <View
-              style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                gap: spacing.sm,
-                marginTop: spacing.md,
-              }}
-            >
-              {sortedOptions(orientation).map((option) => (
-                <Chip
-                  key={option.id}
-                  option={option}
-                  selected={selectedOrientation.includes(option.id)}
-                  disabled={isBlockedByLimit(orientation, selectedOrientation, option.id)}
-                  onPress={() =>
-                    onChange({
-                      orientation: toggleSelection(orientation, selectedOrientation, option.id)
-                        .next,
-                    })
-                  }
-                />
-              ))}
-            </View>
-          ) : null}
         </View>
       ) : null}
     </View>

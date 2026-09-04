@@ -40,21 +40,6 @@ const optionGroups = {
     ],
   },
 
-  orientation: {
-    key: 'orientation',
-    multiSelect: true,
-    maxSelection: 2,
-    required: false,
-    options: [
-      { id: 'straight', label: 'Heteroseksüel', order: 1 },
-      { id: 'gay', label: 'Eşcinsel', order: 2 },
-      { id: 'bisexual', label: 'Biseksüel', order: 3 },
-      { id: 'pansexual', label: 'Panseksüel', order: 4 },
-      { id: 'asexual', label: 'Aseksüel', order: 5 },
-      { id: 'questioning', label: 'Henüz tanımlamadım', order: 6 },
-    ],
-  },
-
   intent: {
     key: 'intent',
     multiSelect: true,
