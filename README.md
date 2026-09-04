@@ -129,6 +129,7 @@ src/components/   the hand-written UI primitives
 src/navigation/   three macro phases: auth, onboarding, app
 src/features/     the screens, and the step engine that drives them
 mock-server/      a standalone fake API, run separately
+design/           the flow diagram, screen sketches and token sheet
 assets/           icons and images
 ```
 

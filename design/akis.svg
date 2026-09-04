@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1780" viewBox="0 0 1500 1780" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B6259"/>
+</marker>
+<marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#8A4A42"/>
+</marker>
+<marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A6350"/>
+</marker>
+</defs>
+<rect width="1500" height="1780" fill="#FBF8F3"/>
+<text x="56" y="72" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="40" fill="#1A1614">Onboarding — kayıt akışı</text>
+<text x="56" y="102" font-size="14" fill="#6B6259">İnşa edilen akış. Dallar dâhil: atlama, yaş kapısı, kesinti-devam, kayıt başarısızlığı ve oturum sonu.</text>
+<line x1="56" y1="124" x2="1444" y2="124" stroke="#E3DCD1"/>
+<text x="56" y="172" font-size="13" letter-spacing="1.4" fill="#7A4A3A">1 — AÇILIŞ SEKANSI</text>
+<rect x="56" y="190" width="190" height="68" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="2"/>
+<text x="151" y="218" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Uygulama açılır</text>
+<text x="151" y="238" text-anchor="middle" font-size="12" fill="#6B6259">Bekleme ekranı;</text>
+<text x="151" y="254" text-anchor="middle" font-size="12" fill="#6B6259">henüz yönlendirme yok</text>
+<path d="M 246 224 L 296 224" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="296" y="190" width="210" height="68" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="401" y="218" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Oturum geri yüklenir</text>
+<text x="401" y="238" text-anchor="middle" font-size="12" fill="#6B6259">Token keystore’dan;</text>
+<text x="401" y="254" text-anchor="middle" font-size="12" fill="#6B6259">taslak diskten okunur</text>
+<path d="M 506 224 L 556 224" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="556" y="190" width="200" height="68" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="656" y="218" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Seçenek listeleri</text>
+<text x="656" y="238" text-anchor="middle" font-size="12" fill="#6B6259">Sunucudan; gelmezse</text>
+<text x="656" y="254" text-anchor="middle" font-size="12" fill="#6B6259">önbellek denenir</text>
+<path d="M 756 224 L 806 224" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 900 170 L 994 224 L 900 278 L 806 224 Z" fill="#F0E6E1" stroke="#7A4A3A"/>
+<text x="900" y="221.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">Oturum</text>
+<text x="900" y="236.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">var mı?</text>
+<text x="56" y="292" font-size="12" fill="#6B6259">Sıra kasıtlı: taslak okunmadan hiçbir hedef hesaplanmıyor. En sık yapılan hata hidrasyon bitmeden yönlendirmek —</text>
+<text x="56" y="308" font-size="12" fill="#6B6259">kullanıcı bir an karşılama ekranını görüp sonra adımına fırlar.</text>
+<path d="M 900 278 L 900 330" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="898.75" y="295" width="50.5" height="19" rx="9" fill="#FBF8F3"/>
+<text x="924" y="309" text-anchor="middle" font-size="12" fill="#6B6259">hayır</text>
+<path d="M 994 224 L 1120 224" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="1035.2" y="201" width="43.6" height="19" rx="9" fill="#FBF8F3"/>
+<text x="1057" y="215" text-anchor="middle" font-size="12" fill="#6B6259">evet</text>
+<rect x="1120" y="190" width="200" height="68" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="1220" y="218" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Profil sorulur</text>
+<text x="1220" y="238" text-anchor="middle" font-size="12" fill="#6B6259">Sunucu tek gerçek kaynak;</text>
+<text x="1220" y="254" text-anchor="middle" font-size="12" fill="#6B6259">çakışmada sunucu kazanır</text>
+<path d="M 1220 258 L 1220 330" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 1220 330 L 1320 384 L 1220 438 L 1120 384 Z" fill="#F0E6E1" stroke="#7A4A3A"/>
+<text x="1220" y="381.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">Profil</text>
+<text x="1220" y="396.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">tamam mı?</text>
+<text x="56" y="368" font-size="13" letter-spacing="1.4" fill="#7A4A3A">2 — KARŞILAMA VE HESAP</text>
+<rect x="56" y="386" width="190" height="68" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="151" y="414" text-anchor="middle" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="18" font-weight="400" fill="#1A1614">Karşılama 1</text>
+<text x="151" y="434" text-anchor="middle" font-size="12" fill="#6B6259">Söz</text>
+<path d="M 246 420 L 296 420" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="296" y="386" width="190" height="68" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="391" y="414" text-anchor="middle" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="18" font-weight="400" fill="#1A1614">Karşılama 2</text>
+<text x="391" y="434" text-anchor="middle" font-size="12" fill="#6B6259">Fark</text>
+<path d="M 486 420 L 536 420" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 630 366 L 724 420 L 630 474 L 536 420 Z" fill="#F0E6E1" stroke="#7A4A3A"/>
+<text x="630" y="417.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">Hesabı</text>
+<text x="630" y="432.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">var mı?</text>
+<path d="M 724 420 L 800 420" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="736.75" y="397" width="50.5" height="19" rx="9" fill="#FBF8F3"/>
+<text x="762" y="411" text-anchor="middle" font-size="12" fill="#6B6259">hayır</text>
+<rect x="800" y="386" width="180" height="68" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="890" y="414" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Kayıt ol</text>
+<text x="890" y="434" text-anchor="middle" font-size="12" fill="#6B6259">E-posta + şifre</text>
+<path d="M 630 474 L 630 530" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="632.2" y="491" width="43.6" height="19" rx="9" fill="#FBF8F3"/>
+<text x="654" y="505" text-anchor="middle" font-size="12" fill="#6B6259">evet</text>
+<rect x="540" y="530" width="180" height="62" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="630" y="558" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Giriş yap</text>
+<text x="630" y="578" text-anchor="middle" font-size="12" fill="#6B6259">Var olan hesap</text>
+<path d="M 890 454 L 890 500 L 720 500 L 720 545" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="746.25" y="489" width="119.5" height="19" rx="9" fill="#FBF8F3"/>
+<text x="806" y="503" text-anchor="middle" font-size="12" fill="#6B6259">e-posta alınmış</text>
+<path d="M 890 454 L 890 630 L 150 630 L 150 686" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 630 592 L 630 630" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 900 330 L 900 348 L 151 348 L 151 386" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 1320 384 L 1348 384" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="1312.2" y="353" width="43.6" height="19" rx="9" fill="#FBF8F3"/>
+<text x="1334" y="367" text-anchor="middle" font-size="12" fill="#6B6259">evet</text>
+<rect x="1348" y="353" width="150" height="62" rx="16" fill="#E7EDE8" stroke="#4A6350" stroke-width="1"/>
+<text x="1423" y="381" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Ana ekran</text>
+<text x="1423" y="401" text-anchor="middle" font-size="12" fill="#6B6259">Taslak silinir</text>
+<path d="M 1220 438 L 1220 500" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="1226.75" y="459" width="50.5" height="19" rx="9" fill="#FBF8F3"/>
+<text x="1252" y="473" text-anchor="middle" font-size="12" fill="#6B6259">hayır</text>
+<rect x="1100" y="500" width="240" height="62" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="1220" y="528" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Kaldığı adıma dönülür</text>
+<text x="1220" y="548" text-anchor="middle" font-size="12" fill="#6B6259">Yığın yeniden kurulur:</text>
+<text x="1220" y="564" text-anchor="middle" font-size="12" fill="#6B6259">geri tuşu önceki adıma gider</text>
+<path d="M 1100 531 L 1040 531 L 1040 660 L 300 660 L 300 686" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="56" y="716" font-size="13" letter-spacing="1.4" fill="#7A4A3A">3 — PROFİL ADIMLARI · 5 adım, sayaçla gösterilir (yüzde değil)</text>
+<rect x="56" y="736" width="208" height="96" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="160" y="764" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">1. Ad ve doğum tarihi</text>
+<text x="160" y="784" text-anchor="middle" font-size="12" fill="#6B6259">yaş kapısı burada</text>
+<text x="160" y="824" text-anchor="middle" font-size="10" letter-spacing="0.8" fill="#6B6259">zorunlu</text>
+<path d="M 264 784 L 280 784" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="288" y="736" width="208" height="96" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="392" y="764" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">2. Kimlik ve kitle</text>
+<text x="392" y="784" text-anchor="middle" font-size="12" fill="#6B6259">cinsiyet + kime gösterilsin</text>
+<text x="392" y="824" text-anchor="middle" font-size="10" letter-spacing="0.8" fill="#6B6259">zorunlu</text>
+<path d="M 496 784 L 512 784" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="520" y="736" width="208" height="96" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="624" y="764" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">3. Ne arıyorsun</text>
+<text x="624" y="784" text-anchor="middle" font-size="12" fill="#6B6259">en fazla 2 seçim</text>
+<text x="624" y="824" text-anchor="middle" font-size="10" letter-spacing="0.8" fill="#6B6259">zorunlu</text>
+<path d="M 728 784 L 744 784" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="752" y="736" width="208" height="96" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="856" y="764" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">4. Fotoğraflar</text>
+<text x="856" y="784" text-anchor="middle" font-size="12" fill="#6B6259">en az 2, 6 slot</text>
+<text x="856" y="824" text-anchor="middle" font-size="10" letter-spacing="0.8" fill="#6B6259">zorunlu</text>
+<path d="M 960 784 L 976 784" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="984" y="736" width="208" height="96" rx="16" fill="#FBF8F3" stroke="#7A4A3A" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="1088" y="764" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">5. İlgi alanları</text>
+<text x="1088" y="784" text-anchor="middle" font-size="12" fill="#6B6259">akışın tek atlanabilir adımı,</text>
+<text x="1088" y="800" text-anchor="middle" font-size="12" fill="#6B6259">bilerek en sonda</text>
+<text x="1088" y="824" text-anchor="middle" font-size="10" letter-spacing="0.8" fill="#7A4A3A">ATLANABİLİR</text>
+<path d="M 160 860 L 264 906 L 160 952 L 56 906 Z" fill="#F0E6E1" stroke="#7A4A3A"/>
+<text x="160" y="903.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">18 yaşından</text>
+<text x="160" y="918.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">büyük mü?</text>
+<path d="M 160 832 L 160 860" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 56 906 L 34 906 L 34 1161 L 52 1161" fill="none" stroke="#8A4A42" stroke-width="1.6" marker-end="url(#arrowRed)"/>
+<rect x="50.75" y="933" width="50.5" height="19" rx="9" fill="#FBF8F3"/>
+<text x="76" y="947" text-anchor="middle" font-size="12" fill="#8A4A42">hayır</text>
+<rect x="56" y="1130" width="250" height="62" rx="16" fill="#F5E9E7" stroke="#8A4A42" stroke-width="1"/>
+<text x="181" y="1158" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="14" font-weight="600" fill="#8A4A42">Akış burada biter</text>
+<text x="181" y="1178" text-anchor="middle" font-size="12" fill="#6B6259">Onboarding 18 yaşından küçüklere açık değil</text>
+<path d="M 160 952 L 160 1037 L 326 1037" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="164.2" y="975" width="43.6" height="19" rx="9" fill="#FBF8F3"/>
+<text x="186" y="989" text-anchor="middle" font-size="12" fill="#6B6259">evet</text>
+<rect x="330" y="1000" width="240" height="74" rx="16" fill="#E7EDE8" stroke="#4A6350" stroke-width="1"/>
+<text x="450" y="1028" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Adım sunucuya yazılır</text>
+<text x="450" y="1048" text-anchor="middle" font-size="12" fill="#6B6259">Kısmi gövde; her adım</text>
+<text x="450" y="1064" text-anchor="middle" font-size="12" fill="#6B6259">kendi cevabını yazar</text>
+<path d="M 570 1037 L 588 1037" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 680 987 L 768 1037 L 680 1087 L 592 1037 Z" fill="#F0E6E1" stroke="#7A4A3A"/>
+<text x="680" y="1034.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">Yazma</text>
+<text x="680" y="1049.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">başarılı?</text>
+<path d="M 768 1037 L 796 1037" fill="none" stroke="#4A6350" stroke-width="1.6" marker-end="url(#arrowGreen)"/>
+<rect x="760.2" y="1006" width="43.6" height="19" rx="9" fill="#FBF8F3"/>
+<text x="782" y="1020" text-anchor="middle" font-size="12" fill="#4A6350">evet</text>
+<rect x="800" y="1006" width="200" height="62" rx="16" fill="#E7EDE8" stroke="#4A6350" stroke-width="1"/>
+<text x="900" y="1034" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Sonraki adım</text>
+<text x="900" y="1054" text-anchor="middle" font-size="12" fill="#6B6259">Sayaç ilerler</text>
+<path d="M 680 1087 L 680 1116" fill="none" stroke="#8A4A42" stroke-width="1.6" marker-end="url(#arrowRed)"/>
+<rect x="686.75" y="1091" width="50.5" height="19" rx="9" fill="#FBF8F3"/>
+<text x="712" y="1105" text-anchor="middle" font-size="12" fill="#8A4A42">hayır</text>
+<rect x="530" y="1120" width="300" height="76" rx="16" fill="#F5E9E7" stroke="#8A4A42" stroke-width="1"/>
+<text x="680" y="1148" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="14" font-weight="600" fill="#1A1614">Adım "gönderilmedi" diye işaretlenir</text>
+<text x="680" y="1168" text-anchor="middle" font-size="12" fill="#6B6259">Akış DURMAZ — kullanıcı devam eder.</text>
+<text x="680" y="1184" text-anchor="middle" font-size="12" fill="#6B6259">Tamamlanmadan önce zorunlu olarak tekrar denenir</text>
+<text x="56" y="1240" font-size="12" fill="#6B6259">İlerleme yüzdeyle değil sayaçla gösteriliyor. Yüzde, koşullu adımlar yüzünden geri gidebilir ve bu kullanıcıya akışın uzadığını hissettirir.</text>
+<text x="56" y="1256" font-size="12" fill="#6B6259">Adımlar rota değil veri: diziye bir eleman eklemek akışa bir adım eklemeye yetiyor — sayaç, geri davranışı ve yığın kurulumu hepsi aynı yerden okuyor.</text>
+<text x="56" y="1310" font-size="13" letter-spacing="1.4" fill="#7A4A3A">4 — TAMAMLANMA</text>
+<rect x="56" y="1328" width="240" height="74" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
+<text x="176" y="1356" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Tamamlanma ekranı</text>
+<text x="176" y="1376" text-anchor="middle" font-size="12" fill="#6B6259">Gönderilmemiş adımlar</text>
+<text x="176" y="1392" text-anchor="middle" font-size="12" fill="#6B6259">burada tekrar denenir</text>
+<path d="M 296 1365 L 356 1365" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 450 1315 L 542 1365 L 450 1415 L 358 1365 Z" fill="#F0E6E1" stroke="#7A4A3A"/>
+<text x="450" y="1362.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">Hepsi</text>
+<text x="450" y="1377.5" text-anchor="middle" font-size="13" font-weight="600" fill="#5F3729">yazıldı mı?</text>
+<path d="M 542 1365 L 610 1365" fill="none" stroke="#4A6350" stroke-width="1.6" marker-end="url(#arrowGreen)"/>
+<rect x="554.2" y="1342" width="43.6" height="19" rx="9" fill="#FBF8F3"/>
+<text x="576" y="1356" text-anchor="middle" font-size="12" fill="#4A6350">evet</text>
+<rect x="610" y="1334" width="230" height="62" rx="16" fill="#E7EDE8" stroke="#4A6350" stroke-width="1"/>
+<text x="725" y="1362" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Profil tamamlandı</text>
+<text x="725" y="1382" text-anchor="middle" font-size="12" fill="#6B6259">Sunucuya bildirilir</text>
+<path d="M 840 1365 L 900 1365" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="900" y="1334" width="200" height="62" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="2"/>
+<text x="1000" y="1362" text-anchor="middle" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="18" font-weight="400" fill="#1A1614">Ana ekran</text>
+<text x="1000" y="1382" text-anchor="middle" font-size="12" fill="#6B6259">Taslak silinir</text>
+<path d="M 450 1415 L 450 1452" fill="none" stroke="#8A4A42" stroke-width="1.6" marker-end="url(#arrowRed)"/>
+<rect x="456.75" y="1423" width="50.5" height="19" rx="9" fill="#FBF8F3"/>
+<text x="482" y="1437" text-anchor="middle" font-size="12" fill="#8A4A42">hayır</text>
+<rect x="330" y="1452" width="280" height="62" rx="16" fill="#F5E9E7" stroke="#8A4A42" stroke-width="1"/>
+<text x="470" y="1480" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="14" font-weight="600" fill="#1A1614">Anlamı olan hata ve tekrar dene</text>
+<text x="470" y="1500" text-anchor="middle" font-size="12" fill="#6B6259">Taslak yerinde durur</text>
+<text x="56" y="1570" font-size="13" letter-spacing="1.4" fill="#7A4A3A">5 — AKIŞIN HER YERİNDEN ÇIKABİLEN DALLAR</text>
+<rect x="56" y="1590" width="440" height="76" rx="16" fill="#FBF8F3" stroke="#E3DCD1" stroke-width="1"/>
+<text x="276" y="1618" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Uygulama kapatılıp açılır</text>
+<text x="276" y="1638" text-anchor="middle" font-size="12" fill="#6B6259">Aynı adım, aynı değerler. Taslak diskte,</text>
+<text x="276" y="1654" text-anchor="middle" font-size="12" fill="#6B6259">token keystore’da; yığın yeniden kurulur.</text>
+<rect x="526" y="1590" width="440" height="76" rx="16" fill="#FBF8F3" stroke="#E3DCD1" stroke-width="1"/>
+<text x="746" y="1618" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Access token süresi dolar</text>
+<text x="746" y="1638" text-anchor="middle" font-size="12" fill="#6B6259">Kullanıcı görmez. İstemci sessizce yeniler</text>
+<text x="746" y="1654" text-anchor="middle" font-size="12" fill="#6B6259">ve isteği tekrarlar.</text>
+<rect x="996" y="1590" width="440" height="76" rx="16" fill="#FBF8F3" stroke="#E3DCD1" stroke-width="1"/>
+<text x="1216" y="1618" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Yenileme de başarısız</text>
+<text x="1216" y="1638" text-anchor="middle" font-size="12" fill="#6B6259">Oturum kibarca biter, taslak korunur.</text>
+<text x="1216" y="1654" text-anchor="middle" font-size="12" fill="#6B6259">Giriş yapınca kaldığı adımdan devam.</text>
+<rect x="56" y="1682" width="440" height="76" rx="16" fill="#FBF8F3" stroke="#E3DCD1" stroke-width="1"/>
+<text x="276" y="1710" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Ağ gider / sunucu 500</text>
+<text x="276" y="1730" text-anchor="middle" font-size="12" fill="#6B6259">Sade dilde hata, girdi korunur, tekrar dene.</text>
+<text x="276" y="1746" text-anchor="middle" font-size="12" fill="#6B6259">Akış bir yere kilitlenmez.</text>
+<rect x="526" y="1682" width="440" height="76" rx="16" fill="#FBF8F3" stroke="#E3DCD1" stroke-width="1"/>
+<text x="746" y="1710" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Seçenek listeleri gelmez</text>
+<text x="746" y="1730" text-anchor="middle" font-size="12" fill="#6B6259">Boş seçim ekranı gösterilmez;</text>
+<text x="746" y="1746" text-anchor="middle" font-size="12" fill="#6B6259">anlamı olan hata ve tekrar dene.</text>
+<rect x="996" y="1682" width="440" height="76" rx="16" fill="#FBF8F3" stroke="#E3DCD1" stroke-width="1"/>
+<text x="1216" y="1710" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Android donanımsal geri</text>
+<text x="1216" y="1730" text-anchor="middle" font-size="12" fill="#6B6259">Önceki adıma gider. İlk adımda akıştan çıkar,</text>
+<text x="1216" y="1746" text-anchor="middle" font-size="12" fill="#6B6259">tamamlandıktan sonra geri dönüş yok.</text>
+</svg>
