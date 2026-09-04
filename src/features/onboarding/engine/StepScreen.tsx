@@ -91,8 +91,10 @@ export function StepScreen({ steps, options, onFinish, onExit, focused = true }:
    * burada adim adim gerilemiyor; yiginin ilk rotasindayiz ve tus dogrudan
    * uygulamadan cikariyordu.
    *
-   * `true` donmek olayi tuketiyor; donmezse navigasyon kendi geri
-   * davranisini da uygular ve iki geri birden olur.
+   * `true` donmek olayi tuketiyor. Donmezse olayi sahiplenen kimse kalmaz
+   * ve sistem uygulamayi kapatir -- bu isleyicinin duzeltmek icin var
+   * oldugu davranisin ta kendisi. Navigasyonun kendi geri davranisi burada
+   * zaten devreye girmiyor: yiginin ilk rotasindayiz.
    *
    * Alttan acilan sayfalar buraya hic ulasmiyor; onlar `Modal` icinde ve
    * `Modal` geri tusunu kendi kapanisina bagliyor. Kapanis ekrani onde
