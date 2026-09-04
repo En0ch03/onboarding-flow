@@ -2,6 +2,7 @@
  * Temanin tek giris noktasi. Bilesenler belirtecleri buradan alir; hicbir
  * bilesen ayri bir belirtec dosyasi acmaz.
  */
+export { withAlpha } from './color';
 export { motion, type MotionSpeed } from './motion';
 export { palettes, type ColorScheme, type Palette } from './palette';
 export { radius, type Radius } from './radius';

@@ -1,7 +1,8 @@
+import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
-import { Chip } from '@/components/Chip';
+import { ChipGrid } from '@/components/ChipGrid';
 import { ChoiceCard } from '@/components/ChoiceCard';
 import { strings } from '@/constants/strings';
 import { useTheme } from '@/theme';
@@ -17,10 +18,11 @@ import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection
  * akisinda toplamak, kullanicinin hizli gecmeye calistigi bir anda en agir
  * kararlardan birini vermesini istemek demek. Alan profil duzenlemede,
  * kullanici kendi zamaninda ve kendi istegiyle geldiginde bulunuyor.
+ *
+ * Iki soru ayri bolumler halinde duruyor. Tek bir liste gibi gorundugunde
+ * ikinci sorunun birincinin devami sanildigi, cihazda gorulen bir sey.
  */
 export function AudienceStep({ values, onChange, options }: StepProps) {
-  const { spacing } = useTheme();
-
   const gender = options.gender;
   const audience = options.audience;
 
@@ -29,10 +31,7 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
   return (
     <View>
       {gender ? (
-        <View style={{ marginBottom: spacing.xl }}>
-          <AppText variant="label" tone="inkSoft" style={{ marginBottom: spacing.md }}>
-            {strings.steps.genderLabel}
-          </AppText>
+        <Section title={strings.steps.genderLabel} help={strings.steps.genderHelp}>
           {sortedOptions(gender).map((option) => (
             <ChoiceCard
               key={option.id}
@@ -41,31 +40,65 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
               onPress={() => onChange({ gender: option.id })}
             />
           ))}
-        </View>
+        </Section>
       ) : null}
 
       {audience ? (
-        <View>
-          <AppText variant="label" tone="inkSoft" style={{ marginBottom: spacing.md }}>
-            {strings.steps.audienceLabel}
-          </AppText>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
-            {sortedOptions(audience).map((option) => (
-              <Chip
-                key={option.id}
-                option={option}
-                selected={selectedAudience.includes(option.id)}
-                disabled={isBlockedByLimit(audience, selectedAudience, option.id)}
-                onPress={() =>
-                  onChange({
-                    audience: toggleSelection(audience, selectedAudience, option.id).next,
-                  })
-                }
-              />
-            ))}
-          </View>
-        </View>
+        <Section
+          title={strings.steps.audienceLabel}
+          help={strings.steps.audienceHelp}
+          // Ayrac yalnizca ayiracak bir sey varsa cizilir: sunucu cinsiyet
+          // grubunu kaldirirsa tepede sahipsiz bir cizgi kalmasin.
+          divided={Boolean(gender)}
+        >
+          <ChipGrid
+            options={sortedOptions(audience)}
+            isSelected={(id) => selectedAudience.includes(id)}
+            isDisabled={(id) => isBlockedByLimit(audience, selectedAudience, id)}
+            onPress={(id) =>
+              onChange({ audience: toggleSelection(audience, selectedAudience, id).next })
+            }
+          />
+        </Section>
       ) : null}
+    </View>
+  );
+}
+
+/** Iki soruyu birbirinden ayiran bolum basligi ve tek satirlik aciklamasi. */
+function Section({
+  title,
+  help,
+  divided = false,
+  children,
+}: {
+  title: string;
+  help: string;
+  divided?: boolean;
+  children: ReactNode;
+}) {
+  const { colors, spacing } = useTheme();
+
+  return (
+    <View
+      style={
+        divided
+          ? {
+              marginTop: spacing.xl,
+              paddingTop: spacing.xl,
+              borderTopWidth: 1,
+              borderTopColor: colors.hairline,
+            }
+          : undefined
+      }
+    >
+      <AppText variant="heading" accessibilityRole="header">
+        {title}
+      </AppText>
+      <AppText variant="caption" tone="inkSoft" style={{ marginTop: spacing.xs }}>
+        {help}
+      </AppText>
+      <View style={{ marginTop: spacing.lg }}>{children}</View>
     </View>
   );
 }

@@ -1,3 +1,4 @@
+import { strings } from '@/constants/strings';
 import type { DraftAnswers } from '@/state/onboardingStore';
 
 export const MINIMUM_AGE = 18;
@@ -43,7 +44,9 @@ export function ageOn(birth: Date, today: Date): number {
 }
 
 export const birthDateMessages: Record<Exclude<BirthDateProblem, null>, string> = {
-  incomplete: 'Doğum tarihinin üç alanını da doldurman gerekiyor.',
-  invalid: 'Böyle bir tarih yok. Gün, ay ve yılı kontrol eder misin?',
-  too_young: `Onboarding ${MINIMUM_AGE} yaşından küçüklere açık değil. Seni burada göremeyeceğiz.`,
+  incomplete: strings.birthDate.incomplete,
+  invalid: strings.birthDate.invalid,
+  // Yas sinirinin kendisi kodda; metin sozlukte. Sinir degistiginde mesajin
+  // da degismesi icin sayiyi metne gomup iki yerde tutmuyoruz.
+  too_young: strings.birthDate.tooYoung.replace('{age}', String(MINIMUM_AGE)),
 };
