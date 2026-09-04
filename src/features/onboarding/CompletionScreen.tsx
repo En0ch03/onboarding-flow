@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { completeOnboarding } from '@/api/endpoints';
@@ -32,6 +32,10 @@ type CompletionScreenProps = {
 export function CompletionScreen({ options, onEnterApp, onEditProfile }: CompletionScreenProps) {
   const { colors, radius, spacing } = useTheme();
 
+  // Ozet, ekran acilirken alinan bir goruntuden okunuyor. Bu ekran isini
+  // bitirdiginde taslagi siliyor; canli okumak, gosterecegi veriyi kendi
+  // silmesi ve ozetin bir anda bosalmasi demekti.
+  const [summary] = useState(() => useOnboardingStore.getState().answers);
   const answers = useOnboardingStore((state) => state.answers);
   const unsynced = useOnboardingStore((state) => state.unsyncedStepIds);
   const markStepSynced = useOnboardingStore((state) => state.markStepSynced);
@@ -105,7 +109,7 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
 
       {/* Isim yalin birakiliyor: ek getirmek bir isimde dogru, digerinde bozuk. */}
       <AppText variant="title" accessibilityRole="header">
-        {completionTitle(answers.name ?? '')}
+        {completionTitle(summary.name ?? '')}
       </AppText>
       <AppText variant="subhead" tone="inkSoft" style={{ marginTop: spacing.md }}>
         {strings.completion.subtitle}
@@ -131,12 +135,12 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
       >
         <RecapRow
           label={strings.completion.recapIntent}
-          value={labelsFor('intent', answers.intent)}
+          value={labelsFor('intent', summary.intent)}
         />
-        <RecapRow label={strings.completion.recapPhotos} value={`${answers.photos?.length ?? 0}`} />
+        <RecapRow label={strings.completion.recapPhotos} value={`${summary.photos?.length ?? 0}`} />
         <RecapRow
           label={strings.completion.recapInterests}
-          value={`${answers.interests?.length ?? 0}`}
+          value={`${summary.interests?.length ?? 0}`}
         />
       </View>
     </Screen>
