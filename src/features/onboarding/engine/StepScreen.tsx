@@ -6,6 +6,7 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { ProgressBar } from '@/components/ProgressBar';
 import { Screen } from '@/components/Screen';
+import { ScreenIntro } from '@/components/ScreenIntro';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { strings } from '@/constants/strings';
 import { useOnboardingStore } from '@/state/onboardingStore';
@@ -149,16 +150,7 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
         </View>
       }
     >
-      <AppText variant="title" accessibilityRole="header" style={{ marginTop: spacing.lg }}>
-        {step.title}
-      </AppText>
-      <AppText
-        variant="subhead"
-        tone="inkSoft"
-        style={{ marginTop: spacing.sm, marginBottom: spacing.xl }}
-      >
-        {step.subtitle}
-      </AppText>
+      <ScreenIntro title={step.title} subtitle={step.subtitle} />
 
       <StepBody values={engine.answers} onChange={engine.setAnswers} options={options} />
     </Screen>

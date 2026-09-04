@@ -2,16 +2,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { login } from '@/api/endpoints';
-import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { ErrorBanner } from '@/components/ErrorBanner';
 import { Screen } from '@/components/Screen';
+import { ScreenIntro } from '@/components/ScreenIntro';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
 import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthStore } from '@/state/authStore';
-import { useTheme } from '@/theme';
 
 import { CredentialsFields } from './CredentialsFields';
 import { credentialsFormSchema, type CredentialsForm } from './credentialsForm';
@@ -24,7 +23,6 @@ type LoginScreenProps = {
 };
 
 export function LoginScreen({ onBack, onSignedIn, initialEmail = '' }: LoginScreenProps) {
-  const { spacing } = useTheme();
   const startSession = useAuthStore((state) => state.startSession);
 
   const form = useForm<CredentialsForm>({
@@ -56,16 +54,7 @@ export function LoginScreen({ onBack, onSignedIn, initialEmail = '' }: LoginScre
         />
       }
     >
-      <AppText variant="title" accessibilityRole="header">
-        {strings.auth.loginTitle}
-      </AppText>
-      <AppText
-        variant="subhead"
-        tone="inkSoft"
-        style={{ marginTop: spacing.sm, marginBottom: spacing.xl }}
-      >
-        {strings.auth.loginSubtitle}
-      </AppText>
+      <ScreenIntro title={strings.auth.loginTitle} subtitle={strings.auth.loginSubtitle} />
 
       {/* Hatali giriste alanlar bosaltilmiyor: kullanici genellikle tek bir
           karakteri duzeltecek, hepsini yeniden yazmayacak. */}
