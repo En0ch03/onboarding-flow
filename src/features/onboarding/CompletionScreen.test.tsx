@@ -171,9 +171,10 @@ describe('CompletionScreen', () => {
     const view = await mount(answers, { onEnterApp });
 
     // Bant belirdiyse sunucu cevabi islenmis demektir.
-    await view.findByText(strings.completion.incomplete);
+    const banner = new RegExp(strings.completion.incomplete);
+    await view.findByText(banner);
     fireEvent.press(view.getByText(strings.completion.primary));
-    await view.findByText(strings.completion.incomplete);
+    await view.findByText(banner);
 
     expect(onEnterApp).not.toHaveBeenCalled();
   });
@@ -185,10 +186,31 @@ describe('CompletionScreen', () => {
     const onFixProfile = jest.fn();
     const view = await mount(answers, { onFixProfile });
 
-    expect(await view.findByText(strings.completion.incomplete)).toBeTruthy();
+    expect(await view.findByText(new RegExp(strings.completion.incomplete))).toBeTruthy();
 
     fireEvent.press(view.getByText(strings.completion.incompleteAction));
 
-    await waitFor(() => expect(onFixProfile).toHaveBeenCalled());
+    // Hangi alanin reddedildigi cagiran tarafa gidiyor: donulecek adim
+    // sunucunun soyledigi alandan cozuluyor.
+    await waitFor(() => expect(onFixProfile).toHaveBeenCalledWith(['gender']));
+  });
+
+  it('sunucunun reddettigi alani kullaniciya adiyla soyluyor', async () => {
+    // "Bir sey eksik" tek basina kullaniciyi ayni ekrana geri gonderiyordu.
+    asMock(completeOnboarding).mockImplementation(async () => {
+      throw { kind: 'validation_failed', fields: { photos: 'required' } };
+    });
+    const view = await mount(answers);
+
+    expect(await view.findByText(/Fotoğraflar/)).toBeTruthy();
+  });
+
+  it('tanimadigi bir alan adinda genel cumleye dusuyor', async () => {
+    asMock(completeOnboarding).mockImplementation(async () => {
+      throw { kind: 'validation_failed', fields: {} };
+    });
+    const view = await mount(answers);
+
+    expect(await view.findByText(strings.completion.incomplete)).toBeTruthy();
   });
 });

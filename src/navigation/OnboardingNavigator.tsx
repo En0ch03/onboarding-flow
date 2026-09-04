@@ -6,6 +6,7 @@ import type { OptionGroups } from '@/api/schemas';
 import { CompletionScreen } from '@/features/onboarding/CompletionScreen';
 import { StepScreen } from '@/features/onboarding/engine/StepScreen';
 import { firstIncompleteStepId } from '@/features/onboarding/engine/stepFlow';
+import { stepForFields } from '@/features/onboarding/steps/blockingStep';
 import { resolveSteps } from '@/features/onboarding/steps/resolveSteps';
 import { steps } from '@/features/onboarding/steps/steps';
 import { strings } from '@/constants/strings';
@@ -61,13 +62,19 @@ export function OnboardingNavigator({
           <CompletionScreen
             options={options}
             onEnterApp={onEnterApp}
-            onFixProfile={() => {
-              // Sunucu profili eksik buldu: kullanici son adima degil,
-              // ileri gitmesine engel olan ilk adima donuyor. Son adim zaten
-              // doluysa oraya birakmak ayni reddi bir daha almak olurdu.
+            onFixProfile={(fields) => {
+              // Once sunucunun soyledigi alan, sonra istemcinin kendi gordugu
+              // engel. Ikisi de yoksa son adim kaliyor; o durumda kullanici
+              // ayni reddi bir daha alabilir, bu yuzden bant hangi alanin
+              // sorunlu oldugunu ayrica yaziyor.
               const answers = useOnboardingStore.getState().answers;
-              const blocking = firstIncompleteStepId(flow, answers);
-              setActiveStep(blocking ?? flow[flow.length - 1]?.id ?? '');
+              const target =
+                stepForFields(flow, fields) ??
+                firstIncompleteStepId(flow, answers) ??
+                flow[flow.length - 1]?.id ??
+                '';
+
+              setActiveStep(target);
               navigation.popTo('Steps');
             }}
             onEditProfile={() => {

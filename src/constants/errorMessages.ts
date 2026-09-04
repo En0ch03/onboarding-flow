@@ -60,6 +60,14 @@ const fieldLabels: Record<string, string> = {
   avatar_url: 'Fotoğraf',
   preferences: 'Tercihler',
   file: 'Dosya',
+  // Tamamlanma reddinde sunucu bu adlarla konusuyor; kullaniciya alan adini
+  // degil sorunun adini gostermek gerekiyor.
+  birth_date: 'Doğum tarihi',
+  photos: 'Fotoğraflar',
+  gender: 'Cinsiyet',
+  audience: 'Kimlerin göreceği',
+  intent: 'Ne aradığın',
+  interests: 'İlgi alanları',
 };
 
 /**

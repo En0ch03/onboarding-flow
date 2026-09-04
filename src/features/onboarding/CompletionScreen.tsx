@@ -7,7 +7,7 @@ import { Button } from '@/components/Button';
 import { ErrorBanner } from '@/components/ErrorBanner';
 import { Screen } from '@/components/Screen';
 import { ScreenIntro } from '@/components/ScreenIntro';
-import { presentError } from '@/constants/errorMessages';
+import { fieldErrorMessage, presentError } from '@/constants/errorMessages';
 import { completionTitle, strings } from '@/constants/strings';
 import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthStore } from '@/state/authStore';
@@ -23,8 +23,8 @@ type CompletionScreenProps = {
   /** Ana uygulamaya geri donulemez gecis. */
   onEnterApp: () => void;
   onEditProfile: () => void;
-  /** Sunucu profili eksik buldu: engelleyen ilk adima donus. */
-  onFixProfile: () => void;
+  /** Sunucu profili eksik buldu; reddettigi alanlarla birlikte donus. */
+  onFixProfile: (fields: string[]) => void;
 };
 
 /**
@@ -75,7 +75,18 @@ export function CompletionScreen({
 
   // Eksik profil bir sunucu arizasi degil; bandin cikis yolu "tekrar dene"
   // degil "cevaplara don" olmali, cunku tekrar denemek ayni cevabi verecek.
-  const incomplete = failure?.kind === 'validation_failed';
+  const incomplete = failure?.kind === 'validation_failed' ? failure.fields : null;
+  const blocked = incomplete === null ? [] : Object.keys(incomplete);
+
+  // Alanin kendi cumlesi varsa o yaziliyor. Genel cumle yalnizca sunucu
+  // tanimadigimiz bir alan adi verdiginde kaliyor; o durumda kullaniciyi
+  // hangi adima birakacagimizi da bilmiyoruz ve en azindan neyin eksik
+  // oldugunu soylememiz gerekiyor.
+  const firstBlocked = blocked[0];
+  const incompleteMessage =
+    firstBlocked === undefined || incomplete === null
+      ? strings.completion.incomplete
+      : `${strings.completion.incomplete} ${fieldErrorMessage(firstBlocked, incomplete[firstBlocked] ?? '')}`;
 
   return (
     <Screen
@@ -124,11 +135,14 @@ export function CompletionScreen({
           ikinci bir ust bosluk eklemek, bandi basliktan kopariyor. */}
       {failure ? (
         <ErrorBanner
-          message={incomplete ? strings.completion.incomplete : presentError(failure).message}
+          message={incomplete === null ? presentError(failure).message : incompleteMessage}
           action={
-            incomplete
-              ? { label: strings.completion.incompleteAction, onPress: onFixProfile }
-              : { label: strings.common.retry, onPress: () => void finish.run() }
+            incomplete === null
+              ? { label: strings.common.retry, onPress: () => void finish.run() }
+              : {
+                  label: strings.completion.incompleteAction,
+                  onPress: () => onFixProfile(blocked),
+                }
           }
         />
       ) : null}

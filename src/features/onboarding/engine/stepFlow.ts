@@ -93,9 +93,11 @@ export function canLeaveStep(step: StepDefinition, answers: DraftAnswers): boole
 /**
  * Ileri gitmeye engel olan ilk adim; yoksa `null`.
  *
- * Sunucu profili eksik bulup tamamlamayi reddettiginde kullanicinin
- * donecegi yer burasi. Son adima birakmak dongu kurardi: son adim zaten
- * doluysa "Bitir" ayni reddi bir daha alirdi.
+ * Sunucu profili eksik bulup tamamlamayi reddettiginde ikinci basvuru
+ * yeri burasi: once sunucunun adiyla soyledigi alan cozuluyor, o
+ * cozulemezse istemcinin kendi gordugu engel kullaniliyor. Ikisi de yoksa
+ * geriye son adim kaliyor ve kullanici ayni reddi tekrar alabilir; o
+ * durumda hangi alanin sorunlu oldugu bantta yaziyor.
  */
 export function firstIncompleteStepId(
   steps: StepDefinition[],

@@ -3,6 +3,7 @@ import type { DraftAnswers } from '@/state/onboardingStore';
 import {
   canLeaveStep,
   computeVisibleSteps,
+  firstIncompleteStepId,
   firstStepId,
   nextStepId,
   prevStepId,
@@ -120,5 +121,38 @@ describe('leaving a step', () => {
   it('lets a skippable step through even when empty', () => {
     const optional = step('interests', { isComplete: () => false, skippable: true });
     expect(canLeaveStep(optional, noAnswers)).toBe(true);
+  });
+});
+
+describe('firstIncompleteStepId', () => {
+  const blocked: StepDefinition[] = [
+    step('identity'),
+    step('audience', { isComplete: () => false }),
+    step('intent', { isComplete: () => false }),
+    step('interests', { skippable: true, isComplete: () => false }),
+  ];
+
+  it('ileri gitmeye engel olan ilk adimi veriyor', () => {
+    expect(firstIncompleteStepId(blocked, {})).toBe('audience');
+  });
+
+  it('atlanabilir bir adim engel sayilmiyor', () => {
+    const onlySkippable = [
+      step('identity'),
+      step('interests', { skippable: true, isComplete: () => false }),
+    ];
+    expect(firstIncompleteStepId(onlySkippable, {})).toBeNull();
+  });
+
+  it('hepsi tamamsa null donuyor', () => {
+    expect(firstIncompleteStepId([step('identity'), step('audience')], {})).toBeNull();
+  });
+
+  it('gorunmeyen bir adim engel sayilmiyor', () => {
+    const conditional = [
+      step('identity'),
+      step('extra', { isComplete: () => false, shouldShow: () => false }),
+    ];
+    expect(firstIncompleteStepId(conditional, {})).toBeNull();
   });
 });
