@@ -21,12 +21,18 @@ describe('haptics', () => {
     expect(mocked.notificationAsync).toHaveBeenCalledTimes(1);
   });
 
-  it('titresim veremeyen bir cihazda akisi durdurmuyor', async () => {
+  it('titresim veremeyen bir cihazda hatayi yutuyor', async () => {
     // His bir ek, bilginin tasiyicisi degil: motoru olmayan ya da izin
-    // vermeyen bir cihazda hata akisa cikmamali.
+    // vermeyen bir cihazda hata akisa cikmamali. `not.toThrow()` yetmiyor,
+    // o yalnizca senkron firlatmayi olcuyor.
     mocked.selectionAsync.mockRejectedValue(new Error('no motor'));
+    await expect(haptics.select()).resolves.toBeUndefined();
+  });
 
-    expect(() => haptics.select()).not.toThrow();
-    await Promise.resolve();
+  it('modul beklenmedik bicimde yoksa akisa hata kacirmiyor', async () => {
+    mocked.impactAsync.mockImplementation(() => {
+      throw new TypeError('not a function');
+    });
+    await expect(haptics.advance()).resolves.toBeUndefined();
   });
 });

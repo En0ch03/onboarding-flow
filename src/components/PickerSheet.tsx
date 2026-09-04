@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { FlatList, Pressable, View } from 'react-native';
 
+import { haptics } from '@/feedback/haptics';
 import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
@@ -69,7 +70,12 @@ export function PickerSheet({
               accessibilityRole="radio"
               accessibilityState={{ selected }}
               accessibilityLabel={item.label}
-              onPress={() => onSelect(item.value)}
+              onPress={() => {
+                // Bir satira dokunmak da bir secim: cipteki hissin ayni
+                // sinifta olani, iki ekran otede farkli davranmamali.
+                if (!selected) haptics.select();
+                onSelect(item.value);
+              }}
               style={({ pressed }) => ({
                 height: ROW_HEIGHT,
                 flexDirection: 'row',

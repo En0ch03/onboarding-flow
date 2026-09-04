@@ -9,12 +9,20 @@ import * as Haptics from 'expo-haptics';
  * hareketle ayni: arayuz bir sey **oldugunu** onayliyorsa his var, aksi
  * halde yok.
  *
- * Cagrilar beklenmiyor ve hatalari yutuluyor: titresim motoru olmayan ya da
- * izin vermeyen bir cihazda akisin durmasi icin hicbir sebep yok. His bir
- * ek, bilginin tasiyicisi degil.
+ * Hatalari yutuluyor: titresim motoru olmayan ya da izin vermeyen bir cihazda
+ * akisin durmasi icin hicbir sebep yok. His bir ek, bilginin tasiyicisi degil
+ * - o yuzden bir titresim eksikligi cagiran tarafa kacamiyor.
+ *
+ * Bu dosya temanin yaninda degil: tema saf deger sozlukleri tasiyor, burasi
+ * cihaza giden yan etkili bir surucu.
  */
-function fire(run: () => Promise<void>): void {
-  void run().catch(() => {});
+function fire(run: () => Promise<void>): Promise<void> {
+  try {
+    return run().catch(() => {});
+  } catch {
+    // Modul beklenmedik bicimde yoksa his kayboluyor, akis kaybolmuyor.
+    return Promise.resolve();
+  }
 }
 
 export const haptics = {

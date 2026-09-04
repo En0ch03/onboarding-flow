@@ -3,7 +3,6 @@
  * bilesen ayri bir belirtec dosyasi acmaz.
  */
 export { withAlpha } from './color';
-export { haptics } from './haptics';
 export { motion, type MotionSpeed } from './motion';
 export { palettes, type ColorScheme, type Palette } from './palette';
 export { radius, type Radius } from './radius';

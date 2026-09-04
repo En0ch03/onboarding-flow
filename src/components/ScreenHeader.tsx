@@ -1,6 +1,6 @@
 import { Pressable, View } from 'react-native';
 
-import { stepCounter, strings } from '@/constants/strings';
+import { stepCounter, stepCounterLabel, strings } from '@/constants/strings';
 import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
@@ -19,7 +19,9 @@ type ScreenHeaderProps = {
  *
  * Dokunma alanini `hitSlop` ile buyutmek yetmiyordu: kullanici gordugu
  * daireye nisan aliyor ve gorunmez bir alani hedefleyemiyor. Basilan sey
- * gorunen sey olmali, o yuzden dairenin kendisi buyudu.
+ * gorunen sey olmali, o yuzden dairenin kendisi buyudu. Ustundeki kucuk
+ * `hitSlop` bir hedef degil kenar payi: nisanin birkac nokta kacmasi
+ * dugmeyi kacirmak olmasin.
  */
 const BACK_SIZE = 48;
 
@@ -47,6 +49,7 @@ export function ScreenHeader({ onBack, step, skip }: ScreenHeaderProps) {
             accessibilityRole="button"
             accessibilityLabel={strings.common.back}
             onPress={onBack}
+            hitSlop={8}
             style={({ pressed }) => ({
               width: BACK_SIZE,
               height: BACK_SIZE,
@@ -68,7 +71,11 @@ export function ScreenHeader({ onBack, step, skip }: ScreenHeaderProps) {
       </View>
 
       {step ? (
-        <AppText variant="label" tone="inkSoft" accessibilityLabel={`Adım ${step.current}`}>
+        <AppText
+          variant="label"
+          tone="inkSoft"
+          accessibilityLabel={stepCounterLabel(step.current, step.total)}
+        >
           {stepCounter(step.current, step.total)}
         </AppText>
       ) : (
@@ -77,8 +84,10 @@ export function ScreenHeader({ onBack, step, skip }: ScreenHeaderProps) {
 
       <View style={{ minWidth: BACK_SIZE, alignItems: 'flex-end' }}>
         {skip ? (
-          // Atlama bir baglanti gibi duruyor ama hedefi dugme kadar: metnin
-          // kendisi kucuk, dokunulacak alan degil.
+          // Atlama bilerek bir baglanti gibi duruyor: ikincil bir cikis yolu
+          // birincil eylem kadar yer kaplamamali. Geri dugmesinin aksine
+          // gorunur bir hedefe buyutulmuyor, ama dokunulacak alan asgariyi
+          // karsiliyor.
           <Pressable
             accessibilityRole="button"
             onPress={skip.onPress}

@@ -9,7 +9,8 @@ import { Screen } from '@/components/Screen';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { strings } from '@/constants/strings';
 import { useOnboardingStore } from '@/state/onboardingStore';
-import { haptics, useTheme } from '@/theme';
+import { haptics } from '@/feedback/haptics';
+import { useTheme } from '@/theme';
 
 import { saveStep } from '../saveStep';
 import type { StepDefinition } from './types';
