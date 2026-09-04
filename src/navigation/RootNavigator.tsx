@@ -108,7 +108,7 @@ function OptionsUnavailableScreen({ onRetry }: { onRetry: () => void }) {
   const { spacing } = useTheme();
 
   return (
-    <Screen centered footer={<Button title={strings.common.retry} onPress={onRetry} />}>
+    <Screen align="center" footer={<Button title={strings.common.retry} onPress={onRetry} />}>
       <AppText variant="title">{strings.errors.optionsUnavailableTitle}</AppText>
       <AppText variant="subhead" tone="inkSoft" style={{ marginTop: spacing.md }}>
         {strings.errors.optionsUnavailableBody}

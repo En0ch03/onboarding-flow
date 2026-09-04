@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import type { ReactNode } from 'react';
-import { Platform, ScrollView, View } from 'react-native';
+import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useTheme } from '@/theme';
@@ -30,9 +30,23 @@ type ScreenProps = {
   children: ReactNode;
   /** Birincil eylem. Icerigin sonunda, sayfanin dibinde. */
   footer?: ReactNode;
-  /** Karsilama ekranlari icerigi dikeyde ortalar. */
-  centered?: boolean;
+  /**
+   * Icerigin dikey yeri.
+   *
+   * `top` icerigi ust seridin hemen altina koyar. `upper` onu asagi dogru
+   * biraz iter ama ortalamaz: metin ust sol bolgede, kosede degil, iceriden
+   * bir bosluk birakarak duruyor. `center` dikeyde ortalar.
+   */
+  align?: ScreenAlign;
 };
+
+export type ScreenAlign = 'top' | 'upper' | 'center';
+
+/**
+ * `upper` bosluğu sabit degil oranli: sabit bir deger kucuk ekranda icerigi
+ * asagi itip butonun uzerine bindiriyor, buyuk ekranda ise kaybolu yor.
+ */
+const UPPER_INSET_RATIO = 0.12;
 
 /**
  * Akistaki her ekranin kabugu.
@@ -47,16 +61,19 @@ type ScreenProps = {
  * acildiginda onun ustunu ortuyor ve kullanici klavyeyi kapatinca geri
  * geliyor. Brief'in sarti girdi alaninin ortulmemesi, ki o korunuyor.
  *
- * Ust serit kaydirilmiyor: `centered` ekranlarda icerikle birlikte ortalaniyor
- * ve geri dugmesi ekranin ortasinda kaliyordu.
+ * Ust serit kaydirilmiyor: ortalanan ekranlarda icerikle birlikte ortalaniyor
+ * ve geri dugmesi ekranin ortasinda kaliyordu. Seridin ustunde de gercek bir
+ * bosluk var: cihazin durum cubuguna yaslanan bir dugme dokunulmasi zor bir
+ * dugme.
  */
-export function Screen({ header, children, footer, centered = false }: ScreenProps) {
+export function Screen({ header, children, footer, align = 'top' }: ScreenProps) {
   const { colors, screenPadding, spacing } = useTheme();
+  const { height } = useWindowDimensions();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.paper }} edges={['top', 'bottom']}>
       {header ? (
-        <View style={{ paddingHorizontal: screenPadding, paddingTop: spacing.sm }}>{header}</View>
+        <View style={{ paddingHorizontal: screenPadding, paddingTop: spacing.lg }}>{header}</View>
       ) : null}
 
       <View style={{ flex: 1 }}>
@@ -83,7 +100,13 @@ export function Screen({ header, children, footer, centered = false }: ScreenPro
               ScrollView kaydirmiyor - tasan icerik kirpiliyor. `flexGrow` ile
               kutu kisa icerikte bosluğu dolduruyor, uzun icerikte kendi
               yuksekligini aliyor. */}
-          <View style={{ flexGrow: 1, ...(centered ? { justifyContent: 'center' } : null) }}>
+          <View
+            style={{
+              flexGrow: 1,
+              ...(align === 'center' ? { justifyContent: 'center' } : null),
+              ...(align === 'upper' ? { paddingTop: Math.round(height * UPPER_INSET_RATIO) } : null),
+            }}
+          >
             {children}
           </View>
 

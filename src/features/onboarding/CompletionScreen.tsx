@@ -72,7 +72,7 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
 
   return (
     <Screen
-      centered
+      align="center"
       footer={
         <View>
           <Button
