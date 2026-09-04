@@ -126,6 +126,15 @@ export const OptionSchema = z.object({
    * Alan istege bagli: sunucu gondermezse davranis bugunkuyle ayni kaliyor.
    */
   covers: z.array(z.string()).optional(),
+  /**
+   * Bu secenek isaretlendiginde acilan secenek grubu. "Arkadaslik" cevabi
+   * ilgi alanlarinin baska bir setini aciyor.
+   *
+   * Iliski burada duruyor cunku istemcinin hangi cevabin hangi listeyi
+   * actigini bilmesi, listeyi sunucudan alip anlamini gomulu birakmak olurdu:
+   * sunucu kimligi degistirdiginde kosullu liste sessizce kapanirdi.
+   */
+  unlocks: z.string().optional(),
   order: z.number().optional(),
 });
 

@@ -17,6 +17,12 @@ export type StepProps = {
   options: OptionGroups;
 };
 
+/** Bir soru: hangi sunucu grubundan geliyor, cevabi taslakta hangi alanda. */
+export type StepQuestion = {
+  group: string;
+  answer: 'gender' | 'audience' | 'intent' | 'interests';
+};
+
 export type StepDefinition = {
   id: string;
   /** Ekranin basligi ve alt satiri; ikisi de metin sozlugunden gelir. */
@@ -35,8 +41,20 @@ export type StepDefinition = {
    * tekrar etmek kesin olani bastirir.
    */
   incompleteHint?: string | ((answers: DraftAnswers) => string | null);
-  /** Atlanabilir adimlarda cikis yolu gizlenmez. */
+  /**
+   * Atlanabilir adimlarda cikis yolu gizlenmez.
+   *
+   * Buradaki deger sunucu bir sey soylemediginde gecerli olan. `questions`
+   * verilmisse ve sunucu o gruplari gonderiyorsa zorunluluk kararini sunucu
+   * veriyor: bir sorunun zorunlu olup olmadigi bir urun karari ve istemci
+   * surumune gomulmemeli.
+   */
   skippable: boolean;
+  /**
+   * Adimin sunucuya bagli sorulari. Zorunluluk buradan okunuyor; bir adim
+   * birden fazla soru sorabiliyor ve her birinin zorunlulugu ayri.
+   */
+  questions?: StepQuestion[];
   /** Atlamanin ne kaybettirdigini soyleyen tek satir. Zorlama degil bilgilendirme. */
   skipCost?: string;
   /**

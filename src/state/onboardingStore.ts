@@ -31,7 +31,18 @@ type OnboardingState = {
   hydrated: boolean;
 
   setAnswers: (patch: DraftAnswers) => void;
+  /**
+   * Cevaplarin tamamini degistirir. `setAnswers` birlestirdigi icin bir alani
+   * kaldiramiyor; kaldirmanin gerektigi tek yer sunucudan dusen seceneklerin
+   * temizligi ve orasi tam bir kume yaziyor.
+   */
+  replaceAnswers: (answers: DraftAnswers) => void;
   setActiveStep: (stepId: string) => void;
+  /**
+   * Kullaniciyi bir adima geri alir ve o adimin tamamlanmis isaretini kaldirir.
+   * Cevabi elinden alinan bir adim, tamamlanmis sayilmaya devam edemez.
+   */
+  rewindTo: (stepId: string) => void;
   markStepCompleted: (stepId: string) => void;
   markStepUnsynced: (stepId: string) => void;
   markStepSynced: (stepId: string) => void;
@@ -56,8 +67,19 @@ export const useOnboardingStore = create<OnboardingState>()(
         set({ answers: { ...get().answers, ...patch } });
       },
 
+      replaceAnswers(answers) {
+        set({ answers });
+      },
+
       setActiveStep(stepId) {
         set({ activeStepId: stepId });
+      },
+
+      rewindTo(stepId) {
+        set({
+          activeStepId: stepId,
+          completedStepIds: get().completedStepIds.filter((id) => id !== stepId),
+        });
       },
 
       markStepCompleted(stepId) {

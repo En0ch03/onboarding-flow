@@ -1,9 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useMemo } from 'react';
 import { Alert } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { CompletionScreen } from '@/features/onboarding/CompletionScreen';
 import { StepScreen } from '@/features/onboarding/engine/StepScreen';
+import { resolveSteps } from '@/features/onboarding/steps/resolveSteps';
 import { steps } from '@/features/onboarding/steps/steps';
 import { strings } from '@/constants/strings';
 import { useOnboardingStore } from '@/state/onboardingStore';
@@ -36,12 +38,16 @@ export function OnboardingNavigator({
 }: OnboardingNavigatorProps) {
   const setActiveStep = useOnboardingStore((state) => state.setActiveStep);
 
+  // Zorunluluk kurallari sunucudan; tanimdaki degerler yalnizca sunucu
+  // sussa gecerli olan.
+  const flow = useMemo(() => resolveSteps(steps, options), [options]);
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
       <Stack.Screen name="Steps">
         {({ navigation }) => (
           <StepScreen
-            steps={steps}
+            steps={flow}
             options={options}
             onFinish={() => navigation.navigate('Completion')}
             onExit={() => confirmExit(onLeaveFlow)}
@@ -55,9 +61,10 @@ export function OnboardingNavigator({
             options={options}
             onEnterApp={onEnterApp}
             onEditProfile={() => {
-              // Atlanan bir adima donmek icin: akisin basina degil, ilk
-              // adima donuluyor ve cevaplar yerinde duruyor.
-              setActiveStep(steps[0]?.id ?? '');
+              // Bir adim geriye: kullanici tamamlanmadan hemen once neredeyse
+              // oraya donuyor. Akisin basina atmak, duzeltmek istedigi tek
+              // cevap icin bes adimi yeniden gezdirmek olurdu.
+              setActiveStep(flow[flow.length - 1]?.id ?? '');
               navigation.navigate('Steps');
             }}
           />

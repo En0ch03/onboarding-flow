@@ -1,6 +1,7 @@
 import { ChipGrid } from '@/components/ChipGrid';
 
 import type { StepProps } from '../engine/types';
+import { groupKeyForIntent } from './interestsGroup';
 import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection';
 
 /**
@@ -10,14 +11,10 @@ import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection
  * cevabi sorup dikkate almamak demek. Kosullu adim mekanizmasinin gercek
  * kullanimi bu.
  */
-export function groupKeyForIntent(intent: string[] | undefined): string {
-  return intent?.includes('friendship') ? 'interests_friendship' : 'interests';
-}
-
 export function InterestsStep({ values, onChange, options }: StepProps) {
-  // Istenen grup yoksa genel listeye dusuluyor: sunucu bir grubu
-  // kaldirdiginda adim bos kalmamali.
-  const group = options[groupKeyForIntent(values.intent)] ?? options.interests;
+  // Geri dusus `groupKeyForIntent` icinde: burada ikinci bir tane yazmak,
+  // ekranin bir listeye, temizligin baska bir listeye bakmasina yol aciyordu.
+  const group = options[groupKeyForIntent(values.intent, options)];
   const selected = values.interests ?? [];
 
   if (!group) return null;

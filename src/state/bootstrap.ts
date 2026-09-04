@@ -2,6 +2,8 @@ import { fetchOptionGroups, readCachedOptionGroups } from '@/api/config';
 import { fetchProfile } from '@/api/endpoints';
 import { normalizeApiError } from '@/api/errors';
 
+import { reconcileDraftWithOptions } from '@/features/onboarding/steps/reconcileDraft';
+
 import { connectAuthBridge, useAuthStore } from './authStore';
 import { useOnboardingStore, whenDraftHydrated } from './onboardingStore';
 import { draftFromProfile } from './profileMapping';
@@ -64,6 +66,12 @@ export async function bootstrap(): Promise<BootstrapResult> {
     }
     // Diger hatalar akisi durdurmuyor: elimizdeki taslakla devam ediliyor.
   }
+
+  // Sunucunun artik sunmadigi cevaplar burada dusuyor ve cevabi dusen adim
+  // yeniden soruluyor. Tek yer ve tek an: bundan sonra ekran, tamamlanma
+  // kontrolu ve sunucuya yazma ayni gercegi goruyor.
+  const groups = readCachedOptionGroups();
+  if (groups !== null) reconcileDraftWithOptions(groups);
 
   return {
     destination: 'onboarding',
