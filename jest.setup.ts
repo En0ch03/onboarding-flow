@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- jest taklitleri require ile yukleniyor */
 // Test ortami, cihazda calisan yerel modullerin yerine sade taklitler kullanir.
 // Amac modulun kendisini dogrulamak degil; onu kullanan mantigi yalitmak.
 
