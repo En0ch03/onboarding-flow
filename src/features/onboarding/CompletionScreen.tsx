@@ -59,7 +59,10 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
 
   const labelsFor = (groupKey: string, ids: string[] | undefined) => {
     const group = options[groupKey];
-    if (!group || !ids?.length) return strings.completion.recapEmpty;
+    if (!ids?.length) return strings.completion.recapEmpty;
+    // Grup gelmediginde kullaniciyi suclamiyoruz: cevabi vermis olabilir,
+    // eksik olan sunucunun etiket katalogu. Ham deger etiketsiz gosterilir.
+    if (!group) return ids.join(', ');
     return ids
       .map((id) => group.options.find((option) => option.id === id)?.label ?? id)
       .join(', ');

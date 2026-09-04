@@ -71,7 +71,7 @@ export const strings = {
 
     photosTitle: 'Birkaç fotoğraf ekle',
     photosSubtitle:
-      'En az iki tane. İlk fotoğraf kapak olur, yüzünün göründüğü bir kare iyi çalışıyor.',
+      'En az iki tane. İlk fotoğraf kapak olur. Yüzünün göründüğü bir kare iyi çalışıyor.',
     photosCover: 'Kapak',
     photosHint: 'Devam etmek için en az iki fotoğraf gerekiyor.',
     photosReorderHint: 'sürükleyerek sıralayabilirsin',
