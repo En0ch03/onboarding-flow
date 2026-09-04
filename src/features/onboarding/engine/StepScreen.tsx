@@ -1,5 +1,5 @@
-import { useCallback, useRef, useState } from 'react';
-import { Keyboard, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { BackHandler, Keyboard, View } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { AppText } from '@/components/AppText';
@@ -23,6 +23,13 @@ type StepScreenProps = {
   onFinish: () => void;
   /** Ilk adimdan geri: akisin disina cikis cagirana birakiliyor. */
   onExit: () => void;
+  /**
+   * Ekran onde mi. Donanimsal geri tusu yalnizca onde olan ekrandan
+   * dinleniyor: adimlar, kapanis ekrani ustlerine gelse de yiginda mount
+   * halinde kaliyor ve dinlemeye devam etselerdi kapanis ekranindaki bir
+   * geri basisi, altta duran adimi degistirirdi.
+   */
+  focused?: boolean;
 };
 
 /**
@@ -31,7 +38,7 @@ type StepScreenProps = {
  * Ekran, adim bilesenine yalnizca cevaplari ve bir degistirici veriyor;
  * adimlar navigasyonu, ilerlemeyi veya kaydetmeyi bilmiyor.
  */
-export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps) {
+export function StepScreen({ steps, options, onFinish, onExit, focused = true }: StepScreenProps) {
   const { spacing } = useTheme();
   const engine = useStepEngine(steps, { onFinish });
   const markStepUnsynced = useOnboardingStore((state) => state.markStepUnsynced);
@@ -52,6 +59,34 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
   const [hintStepId, setHintStepId] = useState<string | null>(null);
 
   const step = engine.currentStep;
+
+  /**
+   * Donanimsal geri tusu, ustteki geri dugmesiyle ayni sey.
+   *
+   * Adimlar tek bir rotada yasadigi icin navigasyonun kendi geri davranisi
+   * burada adim adim gerilemiyor; yiginin ilk rotasindayiz ve tus dogrudan
+   * uygulamadan cikariyordu. Iki yolun ayni davranmasi gerekiyor: bir adim
+   * geri, ilk adimda ise cikis onayi.
+   *
+   * Alttan acilan sayfalar bu isleyiciye hic ulasmiyor; onlar `Modal`
+   * icinde ve `Modal` geri tusunu kendi kapanislarina baglıyor.
+   */
+  const latest = useRef({ goBack: engine.goBack, onExit });
+
+  useEffect(() => {
+    latest.current = { goBack: engine.goBack, onExit };
+  });
+
+  useEffect(() => {
+    if (!focused) return;
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (!latest.current.goBack()) latest.current.onExit();
+      return true;
+    });
+
+    return () => subscription.remove();
+  }, [focused]);
 
   const advance = useCallback(
     (skipped: boolean) => {

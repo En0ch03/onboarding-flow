@@ -1,4 +1,5 @@
 import { act, cleanup, fireEvent, waitFor } from '@testing-library/react-native';
+import { BackHandler } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { strings } from '@/constants/strings';
@@ -38,6 +39,27 @@ const flow: StepDefinition[] = [
 ];
 
 afterEach(cleanup);
+afterEach(() => jest.restoreAllMocks());
+
+/** Kayitli donanimsal geri isleyicilerini toplayan casus. */
+function watchBackHandler() {
+  const handlers: (() => boolean)[] = [];
+
+  jest.spyOn(BackHandler, 'addEventListener').mockImplementation(((
+    _event: string,
+    handler: () => boolean,
+  ) => {
+    handlers.push(handler);
+    return {
+      remove: () => {
+        const index = handlers.indexOf(handler);
+        if (index >= 0) handlers.splice(index, 1);
+      },
+    };
+  }) as unknown as typeof BackHandler.addEventListener);
+
+  return handlers;
+}
 
 beforeEach(() => {
   useOnboardingStore.setState({ answers: {}, unsyncedStepIds: [], activeStepId: 'identity' });
@@ -139,5 +161,57 @@ describe('StepScreen', () => {
     });
 
     expect(useOnboardingStore.getState().unsyncedStepIds).toContain('identity');
+  });
+
+  describe('donanimsal geri tusu', () => {
+    it('bir onceki adima gidiyor', async () => {
+      const handlers = watchBackHandler();
+      useOnboardingStore.setState({ activeStepId: 'audience' });
+
+      await renderWithTheme(
+        <StepScreen steps={flow} options={options} onFinish={() => {}} onExit={() => {}} />,
+      );
+
+      await act(async () => {
+        expect(handlers[0]?.()).toBe(true);
+      });
+
+      expect(useOnboardingStore.getState().activeStepId).toBe('identity');
+    });
+
+    it('ilk adimda akisin disina cikisi cagiriyor', async () => {
+      const handlers = watchBackHandler();
+      const onExit = jest.fn();
+
+      await renderWithTheme(
+        <StepScreen steps={flow} options={options} onFinish={() => {}} onExit={onExit} />,
+      );
+
+      await act(async () => {
+        expect(handlers[0]?.()).toBe(true);
+      });
+
+      expect(onExit).toHaveBeenCalled();
+      expect(useOnboardingStore.getState().activeStepId).toBe('identity');
+    });
+
+    it('ekran onde degilken dinlemiyor', async () => {
+      // Kapanis ekrani ustune geldiginde adimlar yiginda mount halinde
+      // kaliyor; dinlemeye devam etselerdi oradaki bir geri basisi alttaki
+      // adimi degistirirdi.
+      const handlers = watchBackHandler();
+
+      await renderWithTheme(
+        <StepScreen
+          steps={flow}
+          options={options}
+          onFinish={() => {}}
+          onExit={() => {}}
+          focused={false}
+        />,
+      );
+
+      expect(handlers).toHaveLength(0);
+    });
   });
 });

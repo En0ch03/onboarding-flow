@@ -1,5 +1,6 @@
+import { useIsFocused } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useMemo } from 'react';
+import { useMemo, type ComponentProps } from 'react';
 import { Alert } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
@@ -48,7 +49,7 @@ export function OnboardingNavigator({
     <Stack.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
       <Stack.Screen name="Steps">
         {({ navigation }) => (
-          <StepScreen
+          <StepsRoute
             steps={flow}
             options={options}
             onFinish={() => navigation.navigate('Completion')}
@@ -96,6 +97,18 @@ export function OnboardingNavigator({
       </Stack.Screen>
     </Stack.Navigator>
   );
+}
+
+/**
+ * Adim ekranina yalnizca "onde miyim" bilgisini tasiyan kabuk.
+ *
+ * Kanca burada cagriliyor cunku adim ekrani navigasyondan habersiz kalmali:
+ * onun bildigi tek sey akis. Kapanis ekrani ustune geldiginde adimlar
+ * yiginda mount halinde kaliyor ve donanimsal geri tusunu dinlemeye devam
+ * etselerdi, oradaki bir geri basisi alttaki adimi degistirirdi.
+ */
+function StepsRoute(props: Omit<ComponentProps<typeof StepScreen>, 'focused'>) {
+  return <StepScreen {...props} focused={useIsFocused()} />;
 }
 
 /**
