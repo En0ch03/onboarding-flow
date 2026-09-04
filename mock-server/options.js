@@ -50,10 +50,7 @@ const optionGroups = {
     options: [
       { id: 'women', label: 'Kadınlar', order: 1 },
       { id: 'men', label: 'Erkekler', order: 2 },
-      // "Herkes" digerlerini kapsiyor. Iliski burada duruyor cunku istemci
-      // hangi secenegin hangisini kapsadigini bilmemeli; listeyi buradan
-      // servis edip anlamini istemciye gomsek isin yarisini yapmis olurduk.
-      { id: 'everyone', label: 'Herkes', covers: ['women', 'men'], order: 3 },
+      { id: 'everyone', label: 'Herkes', order: 3 },
     ],
   },
 
@@ -71,9 +68,6 @@ const optionGroups = {
       },
       {
         id: 'long_term_open',
-        // Bu cevap iki cevabin toplami: ikisi birden isaretlendiginde
-        // secim buna toplaniyor. Iliski burada, secenegin kendi verisinde.
-        covers: ['long_term', 'short_term'],
         label: 'Uzun soluklu, kısaya da açığım',
         hint: 'Önceliğim uzun vadeli',
         order: 2,

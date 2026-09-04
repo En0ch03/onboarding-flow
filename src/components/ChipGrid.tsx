@@ -1,4 +1,5 @@
-import { View } from 'react-native';
+import { useState } from 'react';
+import { View, type LayoutChangeEvent } from 'react-native';
 
 import type { Option } from '@/api/schemas';
 import { useTheme } from '@/theme';
@@ -13,27 +14,62 @@ type ChipGridProps = {
 };
 
 /**
- * Sarilan cip listesi.
+ * Esit genislikte sutunlara dizilen cip izgarasi.
  *
- * Her cip kendi etiketinin gerektirdigi kadar genis; kisa etiket kisa bir cip
- * demek. Esit sutunlu bir izgara denendi ve geri alindi: hucreleri esitlemek
- * "Kahve" ile "Doga yuruyusu"ne ayni yeri vermek demek ve liste bir tablo gibi
- * okunmaya basliyor.
+ * Iki yerlesim de denendi. Dogal genislikte her cip kendi etiketi kadardi
+ * ve satirlar buyume payiyla doluyordu; asil fark sutun kenarinin hizali
+ * olup olmamasiydi. Tercih hizali sutunlardan yana ve ekranda verildi:
+ * telefonda daha derli toplu duruyor. Bedeli, son satir tam dolmadiginda
+ * bosluk kalmasi -- buyume payi onu kapatiyordu, esit sutun kapatmiyor.
  *
- * Satirlar yine de tam doluyor. Yoga sarma kipinde artan bosluğu **satir
- * satir** dagitiyor, dolayisiyla her cipe `flexGrow` vermek, o satira sigan
- * ciplerin dogal genislikleri oraninda genisleyip satiri kapatmasini sagliyor.
- * Satir sonlarinda tirtikli bosluk kalmiyor, boyut farklari korunuyor.
+ * Yerlesimin yan faydasi da var: hucre genisligi icerikten bagimsiz oldugu
+ * icin hicbir secim yerlesimi yeniden akitamiyor. Asil koruma yine de
+ * cipin icindeki sabit isaret yuvasi; o, iki yerlesimde de duruyor.
  *
- * Secim yerlesimi yine akitamiyor: isaret sabit genislikte bir yuvada
- * duruyor ve o yuva secili olmayan cipte de var, yani cipin dogal genisligi
- * secimle degismiyor.
+ * Sutun sayisi olculen genislikten geliyor, cihaz turunden degil: "telefon
+ * mu tablet mi" sorusu bolunmus ekranda ve katlanabilir cihazda yanlis
+ * cevap veriyor.
+ *
+ * Hucre dar kaldiginda -- dar bir ekranda, ya da sistem yazisi buyudugunde
+ * -- etiket kirpilmiyor, satir sayisini artiriyor. Ayrintisi `Chip` icinde,
+ * kararin uygulandigi yerde.
  */
+function columnsFor(width: number): number {
+  if (width >= 520) return 4;
+  if (width >= 300) return 3;
+  return 2;
+}
+
 export function ChipGrid({ options, isSelected, isDisabled, onPress }: ChipGridProps) {
   const { spacing } = useTheme();
+  const [width, setWidth] = useState(0);
+
+  const gap = spacing.sm;
+  const columns = columnsFor(width);
+  // Olculmeden once genislik verilmiyor: cipler bir kare boyunca dogal
+  // genisliklerinde duruyor, sonra izgaraya oturuyor.
+  const chipWidth = width === 0 ? undefined : Math.floor((width - gap * (columns - 1)) / columns);
+
+  const measure = (event: LayoutChangeEvent) => {
+    const next = event.nativeEvent.layout.width;
+    if (next !== width) setWidth(next);
+  };
 
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
+    <View
+      onLayout={measure}
+      style={{
+        // Genislik ebeveynden geliyor, icerikten degil: aksi halde hucre
+        // genisligi kabin genisligini besler ve olcum salinmaya baslar.
+        width: '100%',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap,
+        // Olculmeden onceki tek kare gorunmuyor; cipler dogal genisliklerinden
+        // izgaraya otururken siçrama olarak okunmasin.
+        opacity: width === 0 ? 0 : 1,
+      }}
+    >
       {options.map((option) => (
         <Chip
           key={option.id}
@@ -41,7 +77,7 @@ export function ChipGrid({ options, isSelected, isDisabled, onPress }: ChipGridP
           selected={isSelected(option.id)}
           disabled={isDisabled(option.id)}
           onPress={() => onPress(option.id)}
-          style={{ flexGrow: 1 }}
+          style={chipWidth === undefined ? undefined : { width: chipWidth }}
         />
       ))}
     </View>
