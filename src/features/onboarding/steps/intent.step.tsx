@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
+import { haptics } from '@/feedback/haptics';
 import { ChoiceCard } from '@/components/ChoiceCard';
 import { selectionLimit } from '@/constants/strings';
 import { useTheme } from '@/theme';
@@ -37,7 +38,9 @@ export function IntentStep({ values, onChange, options }: StepProps) {
           onPress={() => {
             const result = toggleSelection(group, selected, option.id);
             setRefused(result.refused);
-            if (!result.refused) onChange({ intent: result.next });
+            if (result.refused) return;
+            haptics.select();
+            onChange({ intent: result.next });
           }}
         />
       ))}

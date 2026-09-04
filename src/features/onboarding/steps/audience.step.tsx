@@ -5,6 +5,7 @@ import { AppText } from '@/components/AppText';
 import { ChipGrid } from '@/components/ChipGrid';
 import { ChoiceCard } from '@/components/ChoiceCard';
 import { strings } from '@/constants/strings';
+import { haptics } from '@/feedback/haptics';
 import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
@@ -37,7 +38,13 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
               key={option.id}
               option={option}
               selected={values.gender === option.id}
-              onPress={() => onChange({ gender: option.id })}
+              onPress={() => {
+                // Zaten secili olana tekrar dokunmak bir olay degil: his
+                // gorunen bir degisikligi onayliyor, dokunusun kendisini degil.
+                if (values.gender === option.id) return;
+                haptics.select();
+                onChange({ gender: option.id });
+              }}
             />
           ))}
         </Section>
@@ -55,9 +62,14 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
             options={sortedOptions(audience)}
             isSelected={(id) => selectedAudience.includes(id)}
             isDisabled={(id) => isBlockedByLimit(audience, selectedAudience, id)}
-            onPress={(id) =>
-              onChange({ audience: toggleSelection(audience, selectedAudience, id).next })
-            }
+            onPress={(id) => {
+              const { next } = toggleSelection(audience, selectedAudience, id);
+              // Reddedilen bir dokunusta `next` ayni dizi donuyor; degismeyen
+              // secim his uretmiyor.
+              if (next === selectedAudience) return;
+              haptics.select();
+              onChange({ audience: next });
+            }}
           />
         </Section>
       ) : null}

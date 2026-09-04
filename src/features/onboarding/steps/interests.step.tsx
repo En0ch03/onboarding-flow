@@ -1,4 +1,5 @@
 import { ChipGrid } from '@/components/ChipGrid';
+import { haptics } from '@/feedback/haptics';
 
 import type { StepProps } from '../engine/types';
 import { groupKeyForIntent } from './interestsGroup';
@@ -24,7 +25,12 @@ export function InterestsStep({ values, onChange, options }: StepProps) {
       options={sortedOptions(group)}
       isSelected={(id) => selected.includes(id)}
       isDisabled={(id) => isBlockedByLimit(group, selected, id)}
-      onPress={(id) => onChange({ interests: toggleSelection(group, selected, id).next })}
+      onPress={(id) => {
+        const { next } = toggleSelection(group, selected, id);
+        if (next === selected) return;
+        haptics.select();
+        onChange({ interests: next });
+      }}
     />
   );
 }

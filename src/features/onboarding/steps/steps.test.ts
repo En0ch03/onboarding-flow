@@ -1,7 +1,10 @@
 import { strings } from '@/constants/strings';
 import type { DraftAnswers } from '@/state/onboardingStore';
 
+import type { OptionGroup } from '@/api/schemas';
+
 import { birthDateMessages } from './birthDate';
+import { toggleSelection } from './useSelection';
 import { steps } from './steps';
 
 const identity = steps.find((step) => step.id === 'identity');
@@ -64,5 +67,26 @@ describe('step flow shape', () => {
 
   it('gives every skippable step a line saying what skipping costs', () => {
     steps.filter((step) => step.skippable).forEach((step) => expect(step.skipCost).toBeTruthy());
+  });
+});
+
+describe('secim hissi yalnizca secim degistiginde', () => {
+  it('degismeyen bir secim yeni bir dizi uretmiyor', () => {
+    // Adimlar hissi bu referans karsilastirmasiyla karar veriyor: yeni dizi
+    // yoksa gorunen bir degisiklik de yok.
+    const group: OptionGroup = {
+      key: 'intent',
+      multiSelect: true,
+      maxSelection: 1,
+      required: true,
+      options: [
+        { id: 'a', label: 'A' },
+        { id: 'b', label: 'B' },
+      ],
+    };
+
+    const current = ['a'];
+    expect(toggleSelection(group, current, 'b').next).toBe(current);
+    expect(toggleSelection(group, current, 'a').next).not.toBe(current);
   });
 });
