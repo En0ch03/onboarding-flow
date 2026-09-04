@@ -59,7 +59,7 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
 
   const labelsFor = (groupKey: string, ids: string[] | undefined) => {
     const group = options[groupKey];
-    if (!group || !ids?.length) return '—';
+    if (!group || !ids?.length) return strings.completion.recapEmpty;
     return ids
       .map((id) => group.options.find((option) => option.id === id)?.label ?? id)
       .join(', ');

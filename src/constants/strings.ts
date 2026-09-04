@@ -23,7 +23,7 @@ export const strings = {
 
     differenceTitle: 'Belki de birbirinizi aramıyordunuz. Sadece henüz karşılaşmamıştınız.',
     differenceSubtitle:
-      'Onboarding’da günde birkaç kişi görürsün. Herkes ne aradığını yazmıştır — gerisi size kalmış.',
+      'Onboarding’da günde birkaç kişi görürsün. Herkes ne aradığını yazmıştır. Gerisi size kalmış.',
     differencePrimary: 'Anladım, devam',
   },
 
@@ -71,7 +71,7 @@ export const strings = {
 
     photosTitle: 'Birkaç fotoğraf ekle',
     photosSubtitle:
-      'En az iki tane. İlk fotoğraf kapak olur — yüzünün göründüğü bir kare iyi çalışıyor.',
+      'En az iki tane. İlk fotoğraf kapak olur, yüzünün göründüğü bir kare iyi çalışıyor.',
     photosCover: 'Kapak',
     photosHint: 'Devam etmek için en az iki fotoğraf gerekiyor.',
     photosReorderHint: 'sürükleyerek sıralayabilirsin',
@@ -108,8 +108,9 @@ export const strings = {
   },
 
   completion: {
-    subtitle: 'Profilin yayında. İlk önerilerin yarın sabah burada olacak — acelesi yok.',
+    subtitle: 'Profilin yayında. İlk önerilerin yarın sabah burada olacak. Acelesi yok.',
     recapIntent: 'Ne aradığın',
+    recapEmpty: 'Belirtmedin',
     recapPhotos: 'Fotoğraf',
     recapInterests: 'İlgi alanları',
     primary: 'Onboarding’a gir',

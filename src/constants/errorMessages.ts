@@ -37,7 +37,7 @@ const presentations: Record<ApiErrorKind, ErrorPresentation> = {
     action: 'Tekrar dene',
   },
   network: {
-    message: 'Sunucuya ulaşamadık. Bağlantını kontrol edip tekrar dene — yazdıkların duruyor.',
+    message: 'Sunucuya ulaşamadık. Bağlantını kontrol edip tekrar dene, yazdıkların duruyor.',
     action: 'Tekrar dene',
   },
   // Sozlesme sapmasi kullaniciyi ilgilendirmiyor; onun icin sunucu hatasindan
