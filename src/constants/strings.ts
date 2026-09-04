@@ -122,6 +122,7 @@ export const strings = {
 
   completion: {
     subtitle: 'Profilin yayında. İlk önerilerin yarın sabah burada olacak. Acelesi yok.',
+    recapAudience: 'Kimler görecek',
     recapIntent: 'Ne aradığın',
     recapEmpty: 'Belirtmedin',
     recapPhotos: 'Fotoğraf',
@@ -160,6 +161,19 @@ export function selectionLimit(max: number, selected: number): string {
 /** Fotograf sayaci. */
 export function photoCount(added: number, total: number): string {
   return `${added} / ${total} eklendi`;
+}
+
+/** Ozet satirinda fotograf sayisi. Cıplak bir rakam ne oldugunu soylemiyor. */
+export function photoSummary(count: number): string {
+  return count === 1 ? '1 fotoğraf' : `${count} fotoğraf`;
+}
+
+/**
+ * Ozet basligindaki ad ve yas. Yas, kullanicinin profilde gorunecek olan
+ * tek sayi; dogum tarihi gorunmuyor.
+ */
+export function nameWithAge(name: string, age: number | null): string {
+  return age === null ? name : `${name}, ${age}`;
 }
 
 /** Kapanis cumlesi. Isim yalin birakiliyor; ek getirilmiyor. */
