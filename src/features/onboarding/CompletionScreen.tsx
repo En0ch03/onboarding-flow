@@ -8,7 +8,7 @@ import { Button } from '@/components/Button';
 import { ErrorBanner } from '@/components/ErrorBanner';
 import { Screen } from '@/components/Screen';
 import { ScreenIntro } from '@/components/ScreenIntro';
-import { fieldErrorMessage, presentError } from '@/constants/errorMessages';
+import { fieldErrorMessage, isRetryable, presentError } from '@/constants/errorMessages';
 import { completionTitle, strings } from '@/constants/strings';
 import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthStore } from '@/state/authStore';
@@ -181,9 +181,12 @@ export function CompletionScreen({
           action={
             incomplete === null
               ? {
-                  // Etiket sozlukten: hangi hatanin ne dedigini tek bir yer
-                  // biliyor. Davranis ekranin kaliyor.
-                  label: presentError(failure).action ?? strings.common.retry,
+                  // Etiket sozlukten, ama yalnizca yeniden denemenin cozum
+                  // oldugu turlerde: bu dugme istegi tekrarliyor ve baska
+                  // bir yere goturen bir etiket tasiyamaz.
+                  label: isRetryable(failure)
+                    ? (presentError(failure).action ?? strings.common.retry)
+                    : strings.common.retry,
                   onPress: () => void finish.run(),
                 }
               : {

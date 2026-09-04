@@ -7,7 +7,7 @@ import { ErrorBanner } from '@/components/ErrorBanner';
 import { Screen } from '@/components/Screen';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { ScreenIntro } from '@/components/ScreenIntro';
-import { presentError } from '@/constants/errorMessages';
+import { isRetryable, presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
 import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthStore } from '@/state/authStore';
@@ -65,7 +65,7 @@ export function LoginScreen({ onBack, onSignedIn, initialEmail = '' }: LoginScre
       {failure ? (
         <ErrorBanner
           message={presentError(failure).message}
-          {...(failure.kind === 'network' || failure.kind === 'server_error'
+          {...(isRetryable(failure)
             ? {
                 action: {
                   label: presentError(failure).action ?? strings.common.retry,

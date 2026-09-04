@@ -3,7 +3,7 @@ import type { OptionGroups } from '@/api/schemas';
 import { fetchProfile } from '@/api/endpoints';
 import { normalizeApiError } from '@/api/errors';
 
-import { firstIncompleteStepId } from '@/features/onboarding/engine/stepFlow';
+import { computeVisibleSteps, firstIncompleteStepId } from '@/features/onboarding/engine/stepFlow';
 import { reconcileDraftWithOptions } from '@/features/onboarding/steps/reconcileDraft';
 import { resolveSteps } from '@/features/onboarding/steps/resolveSteps';
 import { steps } from '@/features/onboarding/steps/steps';
@@ -87,6 +87,8 @@ export type ProfileAdoption = 'complete' | 'in-progress' | 'session-lost';
  * durdugu yer orasi.
  */
 export async function adoptServerProfile(): Promise<ProfileAdoption> {
+  let adopted = false;
+
   try {
     const profile = await fetchProfile();
 
@@ -98,6 +100,7 @@ export async function adoptServerProfile(): Promise<ProfileAdoption> {
     }
 
     useOnboardingStore.getState().setAnswers(draftFromProfile(profile));
+    adopted = true;
   } catch (thrown) {
     // Yenileme de basarisiz olduysa oturum bitti; taslak yerinde duruyor ve
     // kullanici giris yapinca kaldigi adimdan devam edecek.
@@ -111,7 +114,11 @@ export async function adoptServerProfile(): Promise<ProfileAdoption> {
   const groups = readCachedOptionGroups();
   if (groups !== null) reconcileDraftWithOptions(groups);
 
-  resumeWhereTheFlowStopped(groups);
+  // Yalnizca profil gercekten okunduysa. Basarisiz bir okumadan sonra yer
+  // kurmak, uygulamanin kendi yazdigi bir yer tutucuyu kullanicinin durdugu
+  // yer gibi diske yaziyordu: sonraki acilista cevaplar dolu gelse bile
+  // "cihazda bir yer var" denip birinci adimda kalinirdi.
+  if (adopted) resumeWhereTheFlowStopped(groups);
 
   return 'in-progress';
 }
@@ -133,7 +140,12 @@ function resumeWhereTheFlowStopped(groups: OptionGroups | null): void {
   const flow = resolveSteps(steps, groups ?? {});
   const blocking = firstIncompleteStepId(flow, store.answers);
 
-  const target = blocking ?? flow[flow.length - 1]?.id;
+  // Yedek yol da gorunur listeden okunuyor: kosullu bir son adim
+  // eklendiginde gorunmeyen bir adima yer yazmak, ilerleme sayacini sifira
+  // dusururdu.
+  const visible = computeVisibleSteps(flow, store.answers);
+  const target = blocking ?? visible[visible.length - 1]?.id;
+
   if (target !== undefined) store.setActiveStep(target);
 }
 

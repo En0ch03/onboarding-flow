@@ -64,6 +64,23 @@ export function presentError(error: ApiError): ErrorPresentation {
   return presentations[error.kind];
 }
 
+/**
+ * Ayni istegi yeniden denemenin cozum oldugu hatalar.
+ *
+ * Bir bandin etiketi sozlukten, davranisi ekrandan geliyor. Ikisi yalnizca
+ * bu turlerde ayni seyi soyluyor: gerisi icin sozlukteki etiket baska bir
+ * yere goturuyor -- `refresh_expired` "Giris yap" diyor -- ve o etiketi
+ * yeniden deneyen bir dugmeye yapistirmak, gidecegi yeri adiyla soyleyip
+ * oraya gitmeyen bir dugme uretiyor.
+ */
+export function isRetryable(error: ApiError): boolean {
+  return (
+    error.kind === 'network' ||
+    error.kind === 'server_error' ||
+    error.kind === 'unexpected_response'
+  );
+}
+
 /** Sunucunun bildigi alan adlari; bilinmeyen alan adi oldugu gibi kullanilmaz. */
 const fieldLabels: Record<string, string> = {
   email: 'E-posta',

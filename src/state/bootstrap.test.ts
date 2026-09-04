@@ -295,6 +295,19 @@ describe('adoptServerProfile', () => {
     expect(await adoptServerProfile()).toBe('session-lost');
   });
 
+  it('okunamayan bir profilden sonra yer yazmiyor', async () => {
+    // Basarisiz bir okumadan sonra yer kurmak, uygulamanin kendi yazdigi bir
+    // yer tutucuyu diske yaziyordu; sonraki acilista cevaplar dolu gelse
+    // bile "cihazda bir yer var" denip birinci adimda kalinirdi.
+    await signIn();
+    readCachedOptionGroups.mockReturnValue({});
+    fetchProfile.mockRejectedValue(new AxiosError('offline'));
+
+    await adoptServerProfile();
+
+    expect(useOnboardingStore.getState().activeStepId).toBeNull();
+  });
+
   it('keeps the local draft when the profile cannot be read', async () => {
     // Baglantiyi kaybetmek, cihazdaki cevaplara mal olmamali.
     await signIn();

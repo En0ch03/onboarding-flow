@@ -1,11 +1,37 @@
-import { resolveSignIn } from './RootNavigator';
+import { act, cleanup, waitFor } from '@testing-library/react-native';
+
+import { useAuthStore } from '@/state/authStore';
+import { renderWithTheme } from '@/test/renderWithTheme';
+
+import { RootNavigator, resolveSignIn } from './RootNavigator';
 
 jest.mock('@/state/bootstrap', () => ({
   bootstrap: jest.fn(),
   adoptServerProfile: jest.fn(),
 }));
+jest.mock('@/api/config', () => ({
+  fetchOptionGroups: jest.fn(),
+  readCachedOptionGroups: jest.fn(() => ({})),
+}));
 
-const { adoptServerProfile } = jest.requireMock('@/state/bootstrap');
+/**
+ * Karsilama yigini yerine, `onAuthenticated`'i disaridan cagirabilecegimiz
+ * bir kanca birakiyoruz: sinanan sey giris ekranlarinin kendisi degil, kok
+ * navigatorun giristen sonra ne yaptigi.
+ */
+let signedIn: ((onboardingComplete: boolean) => void) | null = null;
+
+jest.mock('./AuthNavigator', () => ({
+  AuthNavigator: ({ onAuthenticated }: { onAuthenticated: (complete: boolean) => void }) => {
+    signedIn = onAuthenticated;
+    return null;
+  },
+}));
+
+// Adim yigini bir navigasyon kabi istiyor; burada sinanan sey o degil.
+jest.mock('./OnboardingNavigator', () => ({ OnboardingNavigator: () => null }));
+
+const { bootstrap, adoptServerProfile } = jest.requireMock('@/state/bootstrap');
 
 /**
  * Hata tam olarak burada yasadi: giris yolu sunucudaki profili hic
@@ -13,8 +39,20 @@ const { adoptServerProfile } = jest.requireMock('@/state/bootstrap');
  * Benimseme fonksiyonunun kendi testleri o cagriyi tutmuyor.
  */
 beforeEach(() => {
+  signedIn = null;
   adoptServerProfile.mockReset();
   adoptServerProfile.mockResolvedValue('in-progress');
+
+  bootstrap.mockReset();
+  bootstrap.mockResolvedValue({
+    destination: 'welcome',
+    resumeStepId: null,
+    optionsAvailable: true,
+  });
+});
+
+afterEach(async () => {
+  await cleanup();
 });
 
 describe('resolveSignIn', () => {
@@ -64,5 +102,47 @@ describe('resolveSignIn', () => {
     await resolveSignIn(false, setPhase);
 
     expect(setPhase).toHaveBeenLastCalledWith('welcome');
+  });
+});
+
+describe('RootNavigator', () => {
+  it('giris tamamlandiginda sunucudaki profili okuyor', async () => {
+    // Karar fonksiyonunun kendi testleri cagriyi tutmuyor: bu test, kok
+    // navigatorun onu gercekten cagirdigini tutuyor. Bag koparildiginda
+    // hicbir sey dusmuyordu.
+    await renderWithTheme(<RootNavigator />);
+    await waitFor(() => expect(signedIn).not.toBeNull());
+
+    await act(async () => {
+      signedIn?.(false);
+    });
+
+    expect(adoptServerProfile).toHaveBeenCalled();
+  });
+
+  it('oturum akisin ortasinda biterse karsilamaya donuyor', async () => {
+    // Yenileme tukendiginde token'lar siliniyor ama faz kendiliginden
+    // degismiyordu: kullanici token'siz halde adimlarda kaliyor ve her
+    // istekte "oturumun sona erdi" bandini goruyordu.
+    bootstrap.mockResolvedValue({
+      destination: 'onboarding',
+      resumeStepId: 'identity',
+      optionsAvailable: true,
+    });
+
+    const view = await renderWithTheme(<RootNavigator />);
+    await waitFor(() => expect(bootstrap).toHaveBeenCalled());
+
+    await act(async () => {
+      useAuthStore.setState({ status: 'authenticated' });
+    });
+    await act(async () => {
+      useAuthStore.setState({ status: 'anonymous' });
+    });
+
+    // Karsilama yigini taklit edildigi icin varligi `onAuthenticated`
+    // kancasinin yeniden kurulmasindan okunuyor.
+    await waitFor(() => expect(signedIn).not.toBeNull());
+    expect(view).toBeTruthy();
   });
 });

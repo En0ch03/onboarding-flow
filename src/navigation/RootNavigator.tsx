@@ -44,6 +44,25 @@ export function RootNavigator() {
     void start();
   }, [start]);
 
+  /**
+   * Oturum akisin ortasinda biterse uygulama orada birakmiyor.
+   *
+   * Yenileme tukendiginde token'lar siliniyor ama faz kendiliginden
+   * degismiyordu: kullanici token'siz halde adimlarda kaliyor, her istekte
+   * "oturumun sona erdi" bandini goruyor ve o bandin gosterdigi cikis yolu
+   * hicbir yere goturmuyordu. Taslak diskte kaliyor; kullanici giris
+   * yapinca kaldigi adimdan devam ediyor.
+   */
+  useEffect(
+    () =>
+      useAuthStore.subscribe((state, previous) => {
+        if (state.status === 'anonymous' && previous.status === 'authenticated') {
+          setPhase('welcome');
+        }
+      }),
+    [],
+  );
+
   const retryOptions = useCallback(async () => {
     try {
       setOptions(await fetchOptionGroups());
