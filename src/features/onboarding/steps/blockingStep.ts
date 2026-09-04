@@ -18,7 +18,7 @@ const fieldsByStep: Record<string, string[]> = {
   photos: ['photos'],
 };
 
-/** Verilen alanlardan herhangi birine sahip ilk adim; hicbiri tanimliysa `null`. */
+/** Verilen alanlardan herhangi birine sahip ilk adim; hicbiri eslesmezse `null`. */
 export function stepForFields(steps: StepDefinition[], fields: string[]): string | null {
   const wanted = new Set(fields);
 

@@ -21,6 +21,16 @@
  * sorusunu acmiyorlar.
  */
 
+/**
+ * Duz nesnede "bu anahtar var mi" sorusu. `optionGroups[key] !== undefined`
+ * yetmiyor: `'__proto__'`, `'constructor'`, `'toString'` gibi degerler
+ * kalitilan ozelliklere denk geliyor ve var gorunuyor. Bu, varyant
+ * baglantisinin dogrulanmasinda kapiyi acik yonde bozuyordu.
+ */
+function owns(object, key) {
+  return Object.prototype.hasOwnProperty.call(object, key);
+}
+
 const MINIMUM_AGE = 18;
 
 /** Istemcideki tabanla ayni sayi; ikisi de kendi tarafinin kapisi. */
@@ -129,7 +139,7 @@ function variantBase(key, optionGroups) {
   if (typeof base !== 'string') return null;
 
   // Kendini gosteren veya olmayan bir listeyi gosteren baglanti gecersiz.
-  if (base === key || optionGroups[base] === undefined) return null;
+  if (base === key || !owns(optionGroups, base)) return null;
 
   // Tabanin kendisi varyantsa zincir var demektir; varyantlar tek duzeyli
   // ve karsilikli isaret eden iki liste boylece ikisi de denetleniyor.
@@ -169,7 +179,8 @@ function inspectAnswer(key, group, preferences, optionGroups, unlocked) {
   const acceptable = new Set((group.options ?? []).map((option) => option.id));
   for (const unlockedKey of unlocked) {
     if (variantBase(unlockedKey, optionGroups) !== key) continue;
-    for (const option of optionGroups[unlockedKey]?.options ?? []) acceptable.add(option.id);
+    if (!owns(optionGroups, unlockedKey)) continue;
+    for (const option of optionGroups[unlockedKey].options ?? []) acceptable.add(option.id);
   }
 
   // Sunucudan kaldirilmis bir secenegin kimligi cevabi ayakta tutmuyor:

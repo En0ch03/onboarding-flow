@@ -1,6 +1,7 @@
 'use strict';
 
 const { completionProblems } = require('./completion');
+const { optionGroups: realOptionGroups } = require('./options');
 
 /**
  * Kapinin karar fonksiyonu burada sinaniyor: hangi profilin tamamlanabilir
@@ -246,6 +247,29 @@ describe('completionProblems', () => {
     const bare = { ...complete, gender: undefined };
 
     expect(completionProblems(user(bare), broken, today).gender).toBe('required');
+  });
+
+  it('kalitilan bir anahtari gosteren varyant baglantisi yok sayiliyor', () => {
+    // `optionGroups['__proto__']` tanimli gorunuyor ama bir liste degil;
+    // dogrudan indeksleme kapiyi acik yonde bozuyordu.
+    for (const inherited of ['__proto__', 'constructor', 'toString', 'valueOf']) {
+      const broken = { ...groups, gender: { ...groups.gender, variantOf: inherited } };
+      const bare = { ...complete, gender: undefined };
+
+      expect(completionProblems(user(bare), broken, today).gender).toBe('required');
+    }
+  });
+
+  it('varyantin tabani gercekten var olan bir liste', () => {
+    // Sunucu ile istemci varyanti iki ayri mekanizmayla biliyor: burada
+    // `variantOf`, orada `unlocks` ve adimin kendi grubu. Ikisi ayrisirsa
+    // kullanici acilklanamayan bir 422 aliyor.
+    for (const [key, group] of Object.entries(realOptionGroups)) {
+      if (group.variantOf === undefined) continue;
+
+      expect(Object.prototype.hasOwnProperty.call(realOptionGroups, group.variantOf)).toBe(true);
+      expect(group.variantOf).not.toBe(key);
+    }
   });
 
   it('karsilikli varyant baglantisi iki soruyu birden dusurmuyor', () => {

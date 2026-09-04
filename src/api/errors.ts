@@ -23,8 +23,13 @@ export type ApiError =
   | { kind: 'network' }
   /**
    * Sunucu sozlesmeye uymayan bir sey dondurdu. Ayri bir tur olarak
-   * modellenmesi iki ise yariyor: kullanici cokme yerine anlamli bir hata
-   * goruyor, ve elimizde backend muhatabiyla konusulacak somut bir bulgu oluyor.
+   * modellenmesi kullanicinin cokme yerine anlamli bir hata gormesini
+   * sagliyor.
+   *
+   * `detail` bugun hicbir yere ulasmiyor: uygulamada gunluk yok ve
+   * kullaniciya teknik metin gosterilmiyor. Yine de tasiniyor, cunku
+   * hatanin nerede uretildigini kaynakta okumak icin tek isaret bu -- ve
+   * bir gunluk katmani geldiginde tasinacak veri hazir olsun diye.
    */
   | { kind: 'unexpected_response'; detail: string };
 

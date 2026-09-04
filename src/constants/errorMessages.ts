@@ -92,11 +92,25 @@ const specificMessages: Record<string, string> = {
   'email:invalid': 'Bu e-posta adresi geçerli görünmüyor. Yazımını kontrol eder misin?',
 };
 
-export function fieldErrorMessage(field: string, code: string): string {
-  const specific = specificMessages[`${field}:${code}`];
-  if (specific) return specific;
+/**
+ * Alan adi ve sebep kodu sunucudan geliyor, yani kullanicinin yazdigi bir
+ * sey degil ama bizim de yazmadigimiz bir sey.
+ *
+ * Duz nesnede dogrudan indekslemek yetmiyor: `'constructor'` gibi bir alan
+ * adi kalitilan bir ozellige denk geliyor ve ekrana `function Object() {
+ * [native code] }` yaziyordu. Sebep tarafinda daha kotusu oluyordu -- kod
+ * `'toString'` ise geriye bir metin degil bir fonksiyon donuyor ve React
+ * cocugu olarak gecersiz bir deger uretiyordu.
+ */
+function own<T>(table: Record<string, T>, key: string): T | undefined {
+  return Object.prototype.hasOwnProperty.call(table, key) ? table[key] : undefined;
+}
 
-  const label = fieldLabels[field] ?? 'Bu alan';
-  const reason = fieldReasons[code];
+export function fieldErrorMessage(field: string, code: string): string {
+  const specific = own(specificMessages, `${field}:${code}`);
+  if (specific !== undefined) return specific;
+
+  const label = own(fieldLabels, field) ?? 'Bu alan';
+  const reason = own(fieldReasons, code);
   return reason ? reason(label) : `${label} kabul edilmedi. Gözden geçirir misin?`;
 }

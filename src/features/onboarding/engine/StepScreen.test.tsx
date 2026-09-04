@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, waitFor } from '@testing-library/react-native';
+import { act, cleanup, fireEvent, waitFor } from '@testing-library/react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { strings } from '@/constants/strings';
@@ -101,5 +101,43 @@ describe('StepScreen', () => {
     fireEvent.press(view.getByText(strings.common.continue));
 
     await waitFor(() => expect(useOnboardingStore.getState().activeStepId).toBe('audience'));
+  });
+
+  it('ayni adimin gec donen eski gonderimi yenisini ezmiyor', async () => {
+    // Kullanici geri gidip ayni adimi tekrar ilerletirse iki istek ucusta
+    // olabiliyor. Once baslayanin gec donen basarisi, sonrakinin
+    // basarisizligini "yazildi" diye ezmemeli.
+    const resolvers: ((value?: unknown) => void)[] = [];
+    const rejecters: ((reason?: unknown) => void)[] = [];
+
+    asMock(saveStep).mockImplementation(
+      () =>
+        new Promise((resolve, reject) => {
+          resolvers.push(resolve);
+          rejecters.push(reject);
+        }),
+    );
+
+    const view = await renderWithTheme(
+      <StepScreen steps={flow} options={options} onFinish={() => {}} onExit={() => {}} />,
+    );
+
+    fireEvent.press(view.getByText(strings.common.continue));
+    await waitFor(() => expect(resolvers).toHaveLength(1));
+
+    // Geri don ve ayni adimi tekrar ilerlet.
+    await act(async () => {
+      useOnboardingStore.setState({ activeStepId: 'identity' });
+    });
+    fireEvent.press(await view.findByText(strings.common.continue));
+    await waitFor(() => expect(resolvers).toHaveLength(2));
+
+    // Ikinci gonderim basarisiz, birincisi sonradan basarili donuyor.
+    rejecters[1]?.(new Error('network'));
+    resolvers[0]?.();
+
+    await waitFor(() =>
+      expect(useOnboardingStore.getState().unsyncedStepIds).toContain('identity'),
+    );
   });
 });
