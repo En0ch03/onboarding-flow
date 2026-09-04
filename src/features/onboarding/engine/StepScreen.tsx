@@ -49,8 +49,13 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
     (skipped: boolean) => {
       if (!step) return;
 
-      // Kayit ilerlemeyi bloke etmiyor: cevap zaten cihazda duruyor ve
-      // basarisiz kalan adim tamamlanmadan once tekrar deneniyor.
+      // Adim gonderilmeden once yazilmamis sayiliyor, gonderim bittiginde
+      // yaziImis. Yalnizca hatada isaretlemek son adimda bir yaris
+      // biraktiyordu: istek daha yoldayken tamamlanma ekrani aciliyor ve
+      // sunucu, henuz ulasmamis bir cevaba gore karar veriyordu. Bekleyen
+      // kayitlari tamamlanmadan once tekrar deneyen mekanizma zaten var;
+      // adimin ona dahil olmasi yetiyor.
+      markStepUnsynced(step.id);
       void saveStep(step.id, engine.answers)
         .then(() => markStepSynced(step.id))
         .catch(() => markStepUnsynced(step.id));
