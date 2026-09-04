@@ -1,7 +1,4 @@
-import { View } from 'react-native';
-
-import { Chip } from '@/components/Chip';
-import { useTheme } from '@/theme';
+import { ChipGrid } from '@/components/ChipGrid';
 
 import type { StepProps } from '../engine/types';
 import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection';
@@ -18,8 +15,6 @@ export function groupKeyForIntent(intent: string[] | undefined): string {
 }
 
 export function InterestsStep({ values, onChange, options }: StepProps) {
-  const { spacing } = useTheme();
-
   // Istenen grup yoksa genel listeye dusuluyor: sunucu bir grubu
   // kaldirdiginda adim bos kalmamali.
   const group = options[groupKeyForIntent(values.intent)] ?? options.interests;
@@ -28,16 +23,11 @@ export function InterestsStep({ values, onChange, options }: StepProps) {
   if (!group) return null;
 
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}>
-      {sortedOptions(group).map((option) => (
-        <Chip
-          key={option.id}
-          option={option}
-          selected={selected.includes(option.id)}
-          disabled={isBlockedByLimit(group, selected, option.id)}
-          onPress={() => onChange({ interests: toggleSelection(group, selected, option.id).next })}
-        />
-      ))}
-    </View>
+    <ChipGrid
+      options={sortedOptions(group)}
+      isSelected={(id) => selected.includes(id)}
+      isDisabled={(id) => isBlockedByLimit(group, selected, id)}
+      onPress={(id) => onChange({ interests: toggleSelection(group, selected, id).next })}
+    />
   );
 }

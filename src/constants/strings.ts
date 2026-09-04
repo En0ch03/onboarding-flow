@@ -65,7 +65,9 @@ export const strings = {
     audienceSubtitle:
       'Bu iki cevap eşleşme havuzunu belirliyor. İstediğin zaman değiştirebilirsin.',
     genderLabel: 'Ben',
+    genderHelp: 'Profilinde görünür. Bir tane seç.',
     audienceLabel: 'Beni görsün',
+    audienceHelp: 'Birden fazla seçebilirsin.',
     audienceHint:
       'İki soruyu da yanıtlaman gerekiyor: kendini nasıl tanımladığın ve kimlere görünmek istediğin.',
 
