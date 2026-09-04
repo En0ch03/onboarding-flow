@@ -43,7 +43,7 @@ export function ageOn(birth: Date, today: Date): number {
 }
 
 export const birthDateMessages: Record<Exclude<BirthDateProblem, null>, string> = {
-  incomplete: 'Doğum tarihinin üç alanını da doldurman gerekiyor.',
+  incomplete: 'Doğum tarihini seçmen gerekiyor.',
   invalid: 'Böyle bir tarih yok. Gün, ay ve yılı kontrol eder misin?',
   too_young: `Onboarding ${MINIMUM_AGE} yaşından küçüklere açık değil. Seni burada göremeyeceğiz.`,
 };
