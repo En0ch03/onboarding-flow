@@ -115,6 +115,17 @@ export const OptionSchema = z.object({
   label: z.string(),
   /** Karti aciklayan ikinci satir. */
   hint: z.string().optional(),
+  /**
+   * Bu secenegin kapsadigi diger secenekler. "Herkes", "Kadinlar" ve
+   * "Erkekler"i kapsiyor; ikisi birden isaretlenirse secim ona toplaniyor.
+   *
+   * Iliski burada, secenegin kendi verisinde duruyor. Istemcide `women` veya
+   * `everyone` gibi bir kimlik gecmiyor: listeler sunucudan geliyorsa
+   * listenin anlami da sunucudan gelmeli, yoksa isin yarisi yapilmis olur.
+   *
+   * Alan istege bagli: sunucu gondermezse davranis bugunkuyle ayni kaliyor.
+   */
+  covers: z.array(z.string()).optional(),
   order: z.number().optional(),
 });
 
