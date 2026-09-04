@@ -8,6 +8,7 @@ import { selectionLimit } from '@/constants/strings';
 import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
+import { interestsForIntent } from './interestsGroup';
 import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection';
 
 /**
@@ -40,7 +41,15 @@ export function IntentStep({ values, onChange, options }: StepProps) {
             setRefused(result.refused);
             if (result.refused) return;
             haptics.select();
-            onChange({ intent: result.next });
+
+            // Ilgi alanlari niyete bagli: cevabin ait oldugu liste
+            // degistiginde cevap da dusuyor, yoksa gorunmeyen bir secim
+            // taslakta yasamaya devam ediyor.
+            const interests = interestsForIntent(values.interests, result.next, options);
+            onChange({
+              intent: result.next,
+              ...(interests === undefined ? {} : { interests }),
+            });
           }}
         />
       ))}

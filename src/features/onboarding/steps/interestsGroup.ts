@@ -31,3 +31,26 @@ export function groupKeyForIntent(intent: string[] | undefined, options: OptionG
   if (unlocked === undefined || options[unlocked] === undefined) return DEFAULT_INTERESTS_GROUP;
   return unlocked;
 }
+
+/**
+ * Niyet degistiginde ilgi alanlarini yeni listeye gore suzer.
+ *
+ * Arkadaslik secip bir etiket isaretleyen, sonra niyetini degistiren
+ * kullanicinin cevabi artik gosterilmeyen bir listeye aitti: ekranda hicbir
+ * cip secili gorunmuyor ama cevap taslakta duruyor, ozete ham kimlik olarak
+ * dusuyor ve sunucuya oyle yaziliyordu. Cevabin ait oldugu liste degistiginde
+ * cevap da dusuyor.
+ */
+export function interestsForIntent(
+  interests: string[] | undefined,
+  intent: string[] | undefined,
+  options: OptionGroups,
+): string[] | undefined {
+  if (interests === undefined) return undefined;
+
+  const group = options[groupKeyForIntent(intent, options)];
+  if (group === undefined) return interests;
+
+  const served = new Set(group.options.map((option) => option.id));
+  return interests.filter((id) => served.has(id));
+}

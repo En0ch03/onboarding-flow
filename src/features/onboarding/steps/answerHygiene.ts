@@ -1,7 +1,7 @@
 import type { OptionGroups } from '@/api/schemas';
 import type { DraftAnswers } from '@/state/onboardingStore';
 
-import { groupKeyForIntent } from './interestsGroup';
+import { interestsForIntent } from './interestsGroup';
 
 function served(options: OptionGroups, key: string): Set<string> | null {
   const group = options[key];
@@ -55,11 +55,7 @@ export function pruneAnswers(answers: DraftAnswers, options: OptionGroups): Draf
   assign(next, 'intent', keep(next.intent, served(options, 'intent')));
   // Ilgi alanlari grubu niyete gore degisiyor; temizlik once niyet
   // temizlendikten sonra dogru grubu soruyor.
-  assign(
-    next,
-    'interests',
-    keep(next.interests, served(options, groupKeyForIntent(next.intent, options))),
-  );
+  assign(next, 'interests', interestsForIntent(next.interests, next.intent, options));
 
   // Hicbir sey dusmediyse ayni nesne donuyor: cagiran, temizligin gercekten
   // bir sey degistirip degistirmedigini referans karsilastirmasiyla anlasin.

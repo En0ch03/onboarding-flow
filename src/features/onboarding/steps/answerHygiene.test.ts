@@ -1,6 +1,7 @@
 import type { OptionGroups } from '@/api/schemas';
 
 import { pruneAnswers } from './answerHygiene';
+import { interestsForIntent } from './interestsGroup';
 
 const options: OptionGroups = {
   gender: {
@@ -105,5 +106,23 @@ describe('pruneAnswers', () => {
 
   it('verilmemis alanlari uydurmuyor', () => {
     expect(pruneAnswers({ name: 'Deniz' }, options)).toEqual({ name: 'Deniz' });
+  });
+});
+
+describe('interestsForIntent', () => {
+  it('niyet degisince baska listeye ait cevabi dusuruyor', () => {
+    expect(interestsForIntent(['board_games', 'books'], ['long_term'], options)).toEqual(['books']);
+  });
+
+  it('acilan listeye ait cevabi koruyor', () => {
+    expect(interestsForIntent(['board_games'], ['friendship'], options)).toEqual(['board_games']);
+  });
+
+  it('cevap verilmemisse uydurmuyor', () => {
+    expect(interestsForIntent(undefined, ['friendship'], options)).toBeUndefined();
+  });
+
+  it('liste hic gelmediyse cevaba dokunmuyor', () => {
+    expect(interestsForIntent(['board_games'], ['friendship'], {})).toEqual(['board_games']);
   });
 });

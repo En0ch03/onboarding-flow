@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Image, View } from 'react-native';
 
 import { completeOnboarding } from '@/api/endpoints';
 import type { OptionGroups } from '@/api/schemas';
@@ -8,13 +8,15 @@ import { Button } from '@/components/Button';
 import { ErrorBanner } from '@/components/ErrorBanner';
 import { Screen } from '@/components/Screen';
 import { presentError } from '@/constants/errorMessages';
-import { completionTitle, strings } from '@/constants/strings';
+import { completionTitle, nameWithAge, photoSummary, strings } from '@/constants/strings';
 import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthStore } from '@/state/authStore';
 import { useOnboardingStore } from '@/state/onboardingStore';
 import { useTheme } from '@/theme';
 
 import { saveStep } from './saveStep';
+import { ageOn, inspectBirthDate } from './steps/birthDate';
+import { groupKeyForIntent } from './steps/interestsGroup';
 
 type CompletionScreenProps = {
   options: OptionGroups;
@@ -58,17 +60,29 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
   }, []);
 
   const labelsFor = (groupKey: string, ids: string[] | undefined) => {
-    const group = options[groupKey];
     if (!ids?.length) return strings.completion.recapEmpty;
-    // Grup gelmediginde kullaniciyi suclamiyoruz: cevabi vermis olabilir,
-    // eksik olan sunucunun etiket katalogu. Ham deger etiketsiz gosterilir.
-    if (!group) return ids.join(', ');
-    return ids
-      .map((id) => group.options.find((option) => option.id === id)?.label ?? id)
-      .join(', ');
+
+    const group = options[groupKey];
+    // Grup hic gelmediginde kullaniciyi suclamiyoruz: cevabi vermis olabilir,
+    // eksik olan sunucunun etiket katalogu.
+    if (!group) return strings.completion.recapEmpty;
+
+    // Cozulemeyen bir kimlik gosterilmiyor. Ham kimlikler Ingilizce ve
+    // kullanicinin hicbir yerde gormedigi seyler; ekrana dusmeleri, ozeti
+    // "board_games" yazan bir satira cevirir.
+    const labels = ids
+      .map((id) => group.options.find((option) => option.id === id)?.label)
+      .filter((label): label is string => label !== undefined);
+
+    return labels.length > 0 ? labels.join(', ') : strings.completion.recapEmpty;
   };
 
   const failure = finish.state.status === 'error' ? finish.state.error : null;
+
+  const age = readAge(answers.birthDate);
+  // Ilgi alanlari grubu niyete gore degisiyor; ozet, kullanicinin gordugu
+  // listeye karsi etiket cozmeli.
+  const interestsGroupKey = groupKeyForIntent(answers.intent, options);
 
   return (
     <Screen
@@ -96,24 +110,10 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
         </View>
       }
     >
-      <View
-        style={{
-          width: 72,
-          height: 72,
-          borderRadius: radius.full,
-          backgroundColor: colors.clay,
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: spacing.xl,
-        }}
-      >
-        <AppText variant="title" tone="onClay" style={{ lineHeight: 36 }}>
-          ✦
-        </AppText>
-      </View>
+      <ProfileMark name={answers.name ?? ''} cover={answers.photos?.[0]?.url} />
 
       {/* Isim yalin birakiliyor: ek getirmek bir isimde dogru, digerinde bozuk. */}
-      <AppText variant="title" accessibilityRole="header">
+      <AppText variant="title" accessibilityRole="header" style={{ marginTop: spacing.xl }}>
         {completionTitle(answers.name ?? '')}
       </AppText>
       <AppText variant="subhead" tone="inkSoft" style={{ marginTop: spacing.md }}>
@@ -129,34 +129,128 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
         </View>
       ) : null}
 
+      {/* Ozet bir kart: cevaplar ekranin geri kalanina karismiyor, kendi
+          yuzeyinde duruyor ve okunacak bir sey oldugu belli oluyor. */}
       <View
         style={{
           marginTop: spacing.xl,
-          borderTopWidth: 1,
-          borderTopColor: colors.hairline,
-          paddingTop: spacing.lg,
+          backgroundColor: colors.surface,
+          borderRadius: radius.md,
+          borderCurve: 'continuous',
+          padding: spacing.lg,
           gap: spacing.md,
         }}
       >
+        <AppText variant="heading">{nameWithAge(answers.name ?? '', age)}</AppText>
+
+        {/* Sayilar degil cevaplar geri okunuyor: "Ilgi alanlari 3" kullaniciya
+            ne sectigini hatirlatmiyor. */}
+        <RecapRow
+          label={strings.completion.recapAudience}
+          value={labelsFor('audience', answers.audience)}
+        />
         <RecapRow
           label={strings.completion.recapIntent}
           value={labelsFor('intent', answers.intent)}
         />
-        <RecapRow label={strings.completion.recapPhotos} value={`${answers.photos?.length ?? 0}`} />
         <RecapRow
           label={strings.completion.recapInterests}
-          value={`${answers.interests?.length ?? 0}`}
+          value={labelsFor(interestsGroupKey, answers.interests)}
+        />
+        <RecapRow
+          label={strings.completion.recapPhotos}
+          value={photoSummary(answers.photos?.length ?? 0)}
         />
       </View>
     </Screen>
   );
 }
 
+/**
+ * Kapak fotografi, yoksa adin ilk harfi.
+ *
+ * Once burada soyut bir amblem vardi ve kullanicinin kendisiyle hicbir
+ * ilgisi yoktu. Kapanis ekraninin isi kullaniciya ne kurdugunu gostermek;
+ * gosterilecek en dogru sey profilinin yuzu.
+ *
+ * Ekran okuyucudan gizli: tasidigi bilginin tamami (ad) iki satir asagida
+ * zaten okunuyor ve ciplak bir "D" harfi orada yalnizca gurultu olurdu.
+ */
+function ProfileMark({ name, cover }: { name: string; cover?: string | undefined }) {
+  const { colors, radius } = useTheme();
+  // Medya sunucuda yasiyor ve taslak diskte; sunucu yeniden baslatildiginda
+  // kayitli bir adres 404 doner. Hata yakalanmazsa geriye ne fotograf ne
+  // harf kalir, yalnizca bos bir daire.
+  const [broken, setBroken] = useState(false);
+  const size = 88;
+
+  const shape = {
+    width: size,
+    height: size,
+    borderRadius: radius.full,
+    overflow: 'hidden' as const,
+    backgroundColor: colors.clay,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+  };
+
+  if (cover && !broken) {
+    return (
+      <View
+        style={shape}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      >
+        <Image
+          source={{ uri: cover }}
+          onError={() => setBroken(true)}
+          style={{ width: '100%', height: '100%' }}
+        />
+      </View>
+    );
+  }
+
+  // `slice` cok kodlu bir harfte yarim karakter uretir; `Array.from` tam
+  // harfi veriyor.
+  const first = Array.from(name.trim())[0] ?? '';
+
+  return (
+    <View style={shape} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      <AppText variant="title" tone="onClay" style={{ lineHeight: 40 }}>
+        {first === 'i' ? 'İ' : first.toLocaleUpperCase('tr-TR')}
+      </AppText>
+    </View>
+  );
+}
+
+/**
+ * Yas yalnizca dogrulamadan gecen bir tarihten okunuyor: yarim, takvimde
+ * olmayan veya yas sinirinin altinda bir taslak yas uretmiyor. Son sart
+ * savunma amacli - kapiyi gecmeden bu ekrana gelinemiyor.
+ */
+function readAge(
+  birthDate: { day: string; month: string; year: string } | undefined,
+): number | null {
+  if (birthDate === undefined || inspectBirthDate(birthDate) !== null) return null;
+  const birth = new Date(
+    Number(birthDate.year),
+    Number(birthDate.month) - 1,
+    Number(birthDate.day),
+  );
+  return ageOn(birth, new Date());
+}
+
 function RecapRow({ label, value }: { label: string; value: string }) {
   const { spacing } = useTheme();
 
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: spacing.lg }}>
+    // Etiket ve deger tek bir odak: ayri ayri okundugunda ekran okuyucu
+    // kullanicisi "Kimler gorecek" ile "Herkes" arasindaki bagi kaybediyor.
+    <View
+      accessible
+      accessibilityLabel={`${label}: ${value}`}
+      style={{ flexDirection: 'row', justifyContent: 'space-between', gap: spacing.lg }}
+    >
       <AppText variant="label" tone="inkSoft">
         {label}
       </AppText>
