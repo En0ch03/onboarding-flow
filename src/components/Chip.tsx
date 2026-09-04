@@ -8,9 +8,21 @@ import { AppText } from './AppText';
 /**
  * Isaret yuvasi. Bos da olsa yer tutuyor; secim cipin boyunu degistirmiyor.
  * Dar tutuldu: uc sutunlu izgarada her nokta metinden calindigi icin, on iki
- * punto genisligindeki bir yuva isareti tasimaya yetiyor.
+ * punto genisligindeki bir yuva isareti tasimaya yetiyor -- sistem yazi
+ * olcegi bir buçuk katina kadar buyudugunde de yetiyor, cunku isaretin
+ * olcegi orada duruyor (asagida).
  */
 const MARK_SIZE = 12;
+
+/**
+ * Isaretin buyumesine konan tavan.
+ *
+ * Etiket sistem yazisiyla serbestce buyuyor; isaret buyumuyor. Ikisi ayni
+ * degil: etiket icerik, isaret ise bir durum gostergesi ve ayni durumu
+ * ekran okuyucuya `accessibilityState` zaten soyluyor. Tavan olmadan glif
+ * sabit genislikteki yuvayi asip etiketin uzerine biniyordu.
+ */
+const MARK_MAX_SCALE = 1.5;
 
 type ChipProps = {
   option: Option;
@@ -64,7 +76,12 @@ export function Chip({ option, selected, onPress, disabled = false, style }: Chi
     >
       <View style={{ width: MARK_SIZE, alignItems: 'center' }}>
         {selected ? (
-          <AppText variant="caption" tone="clay" style={{ lineHeight: 14 }}>
+          <AppText
+            variant="caption"
+            tone="clay"
+            maxFontSizeMultiplier={MARK_MAX_SCALE}
+            style={{ lineHeight: 14 * MARK_MAX_SCALE }}
+          >
             ✓
           </AppText>
         ) : null}
@@ -72,7 +89,12 @@ export function Chip({ option, selected, onPress, disabled = false, style }: Chi
 
       {/* Kirpma yok: hucre dar kaldiginda etiket satir sayisini artiriyor.
           Kesilmis bir etiket kullaniciya ne sectigini soylemiyor ve sunucu
-          etiket uzunlugu icin bir sinir vermiyor. */}
+          etiket uzunlugu icin bir sinir vermiyor.
+
+          `flexShrink` bunu mumkun kilan sey ve gereksiz gorunuyor: hucrenin
+          genisligi zaten sabit. Degil -- bu ortamda varsayilan sifir, yani
+          bu satir olmadan metin dogal genisliginde israr edip cipten
+          tasiyor. Testi var. */}
       <AppText variant="label" style={{ flexShrink: 1 }}>
         {option.label}
       </AppText>

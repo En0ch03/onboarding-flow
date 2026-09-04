@@ -102,4 +102,26 @@ describe('ChipGrid', () => {
     const { view } = await mount([]);
     expect(view.getByText('Uzun yürüyüş').props.numberOfLines).toBeUndefined();
   });
+
+  it('etiket sabit genislikteki hucrede sarabiliyor', async () => {
+    // Sarmayi mumkun kilan tek sey bu: bu ortamda varsayilan sifir, yani
+    // stil silinirse etiket kirpilmaz ama cipten tasar ve kapanan hata
+    // sessizce geri gelir.
+    const { view } = await mount([]);
+    const label = StyleSheet.flatten(view.getByText('Uzun yürüyüş').props.style) as Record<
+      string,
+      unknown
+    >;
+
+    expect(label.flexShrink).toBe(1);
+  });
+
+  it('secim isareti sistem yazisiyla sinirsiz buyumuyor', async () => {
+    // Yuva sabit genislikte; tavansiz bir glif onu asip etiketin uzerine
+    // biniyordu. Isaretin tasidigi bilgi ekran okuyucuya ayrica veriliyor.
+    const { view } = await mount(['books']);
+    const mark = view.getByText('✓');
+
+    expect(mark.props.maxFontSizeMultiplier).toBe(1.5);
+  });
 });

@@ -17,10 +17,10 @@ type ChipGridProps = {
  * Esit genislikte sutunlara dizilen cip izgarasi.
  *
  * Iki yerlesim de denendi. Dogal genislikte her cip kendi etiketi kadardi
- * ve satirlar buyume payiyla doluyordu, yani ikisi arasindaki fark satir
- * sonundaki bosluk degil sutun kenarinin hizali olup olmamasiydi. Tercih
- * hizali sutunlardan yana ve ekranda verildi: telefonda daha derli toplu
- * duruyor.
+ * ve satirlar buyume payiyla doluyordu; asil fark sutun kenarinin hizali
+ * olup olmamasiydi. Tercih hizali sutunlardan yana ve ekranda verildi:
+ * telefonda daha derli toplu duruyor. Bedeli, son satir tam dolmadiginda
+ * bosluk kalmasi -- buyume payi onu kapatiyordu, esit sutun kapatmiyor.
  *
  * Yerlesimin yan faydasi da var: hucre genisligi icerikten bagimsiz oldugu
  * icin hicbir secim yerlesimi yeniden akitamiyor. Asil koruma yine de
@@ -31,10 +31,8 @@ type ChipGridProps = {
  * cevap veriyor.
  *
  * Hucre dar kaldiginda -- dar bir ekranda, ya da sistem yazisi buyudugunde
- * -- etiket kirpilmiyor, satir sayisini artiriyor ve satirin yuksekligi
- * buyuyor. Sabit bir satir siniri, en buyuk yazi tipinde uzun etiketleri
- * yarida kesiyordu; kesilmis bir etiket kullaniciya ne sectigini
- * soylemiyor ve sunucu etiket uzunluguna bir sinir koymuyor.
+ * -- etiket kirpilmiyor, satir sayisini artiriyor. Ayrintisi `Chip` icinde,
+ * kararin uygulandigi yerde.
  */
 function columnsFor(width: number): number {
   if (width >= 520) return 4;
