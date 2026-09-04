@@ -28,6 +28,10 @@ type BottomSheetProps = {
 /**
  * Alttan acilan sayfa.
  *
+ * Dosya iki yuz satir sinirinin biraz uzerinde ve bilerek bolunmedi: perde,
+ * yuzey, surukleme ve yasam dongusu tek bir hareketin parcalari. Ayri
+ * dosyalara bolmek dort dosyayi ayni anda okumayi gerektirirdi.
+ *
  * `Modal`'in kendi `animationType="slide"` degeri perdeyi de sayfayla birlikte
  * kaydiriyor; o zaman arka plan bir anda kararmiyor, asagidan yukari doğru
  * boyaniyor. Perde ve sayfa burada ayri hareket ediyor: perde soluyor, sayfa

@@ -126,7 +126,7 @@ The cost of that choice is the keyboard. The library that handles keyboard motio
 
 Inside that shell the action button stays at the foot of the page rather than riding above the keyboard. A button that moves every time the keyboard opens puts the target somewhere new under a thumb that was already going somewhere. The requirement the brief actually states is that the keyboard must not cover an input field, and that is what the shell guarantees: the scrollable area shortens by the height of the keyboard, so the focused field stays in view and the button is a scroll away.
 
-**Nothing that can change is hardcoded.** Option lists, numeric thresholds and step requirements all come from the server. Gender, intent and interest taxonomies shift over time and by region, and a change to one of them should not require a new app release.
+**Nothing that can change is hardcoded.** Option lists, their rules and step requirements all come from the server. Gender, intent and interest taxonomies shift over time and by region, and a change to one of them should not require a new app release. The numeric limits that are not taxonomy stay in the app: the photo minimum, the age gate and the password length each sit next to the rule they serve, with the reason written beside them.
 
 That holds in both directions. No option id appears anywhere in the app: an option carries which options it covers, which conditional list it unlocks, and whether its group must be answered, so adding one, renaming one or removing one is a change to the data alone. When an answer the user gave is no longer offered, the app drops it and asks that step again rather than carrying a value nothing on screen can show.
 

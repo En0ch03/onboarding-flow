@@ -1,6 +1,13 @@
 import { strings } from '@/constants/strings';
 import type { DraftAnswers } from '@/state/onboardingStore';
 
+/**
+ * Yasal kapi ve bu yuzden istemcide.
+ *
+ * Sunucudan gelen bir sayiya baglamak, liste gelmediginde kapinin ne olacagi
+ * sorusunu aciyor: acik birakmak kabul edilemez, kapatmak uygulamayi
+ * kullanilmaz yapiyor. Sabit bir sinir her iki durumda da ayni davraniyor.
+ */
 export const MINIMUM_AGE = 18;
 
 export type BirthDateProblem = 'incomplete' | 'invalid' | 'too_young' | null;
@@ -41,6 +48,20 @@ export function ageOn(birth: Date, today: Date): number {
   const monthDelta = today.getMonth() - birth.getMonth();
   if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < birth.getDate())) age -= 1;
   return age;
+}
+
+/**
+ * Taslaktan okunan yas; tarih dogrulamadan gecmiyorsa `null`.
+ *
+ * Yarim, takvimde olmayan veya yas sinirinin altinda bir taslak yas
+ * uretmiyor. Son sart savunma amacli: kapiyi gecmeden yasin gosterildigi
+ * ekrana gelinemiyor.
+ */
+export function ageFromDraft(value: DraftAnswers['birthDate']): number | null {
+  if (value === undefined || inspectBirthDate(value) !== null) return null;
+
+  const birth = new Date(Number(value.year), Number(value.month) - 1, Number(value.day));
+  return ageOn(birth, new Date());
 }
 
 export const birthDateMessages: Record<Exclude<BirthDateProblem, null>, string> = {
