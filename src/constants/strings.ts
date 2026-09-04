@@ -153,6 +153,11 @@ export function stepCounter(current: number, total: number): string {
   return `${current} / ${total}`;
 }
 
+/** Ayni sayacin ekran okuyucuya soylenen hali; bolu isareti okunmuyor. */
+export function stepCounterLabel(current: number, total: number): string {
+  return `${total} adımdan ${current}.`;
+}
+
 /** Secim siniri ve o an secili sayi tek satirda. */
 export function selectionLimit(max: number, selected: number): string {
   return `En fazla ${max} seçebilirsin · ${selected} seçili`;

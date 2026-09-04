@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
+import { haptics } from '@/feedback/haptics';
 import { ChoiceCard } from '@/components/ChoiceCard';
 import { selectionLimit } from '@/constants/strings';
 import { useTheme } from '@/theme';
@@ -39,6 +40,7 @@ export function IntentStep({ values, onChange, options }: StepProps) {
             const result = toggleSelection(group, selected, option.id);
             setRefused(result.refused);
             if (result.refused) return;
+            haptics.select();
 
             // Ilgi alanlari niyete bagli: cevabin ait oldugu liste
             // degistiginde cevap da dusuyor, yoksa gorunmeyen bir secim

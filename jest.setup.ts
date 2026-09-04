@@ -20,3 +20,13 @@ jest.mock('expo-secure-store', () => {
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
+
+// Titresim cihaz donanimina gidiyor; testte cagrilarin yapildigi yeter.
+// Sabitler gercek modulden geliyor: elle yazilmis bir alt kume, yeni bir his
+// eklendiginde testi yesil birakip cihazda yanlis hissi gecirirdi.
+jest.mock('expo-haptics', () => ({
+  ...jest.requireActual('expo-haptics'),
+  selectionAsync: jest.fn(async () => {}),
+  impactAsync: jest.fn(async () => {}),
+  notificationAsync: jest.fn(async () => {}),
+}));
