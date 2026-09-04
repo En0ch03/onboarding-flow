@@ -70,7 +70,10 @@ export function Chip({ option, selected, onPress, disabled = false, style }: Chi
         ) : null}
       </View>
 
-      <AppText variant="label" numberOfLines={2} style={{ flexShrink: 1 }}>
+      {/* Kirpma yok: hucre dar kaldiginda etiket satir sayisini artiriyor.
+          Kesilmis bir etiket kullaniciya ne sectigini soylemiyor ve sunucu
+          etiket uzunlugu icin bir sinir vermiyor. */}
+      <AppText variant="label" style={{ flexShrink: 1 }}>
         {option.label}
       </AppText>
     </Pressable>

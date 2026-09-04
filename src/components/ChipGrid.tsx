@@ -16,21 +16,25 @@ type ChipGridProps = {
 /**
  * Esit genislikte sutunlara dizilen cip izgarasi.
  *
- * Cipler dogal genisliklerinde sarildiginda satirlar duzensiz doluyor ve
- * satir sonlarinda tirtikli bosluklar kaliyor. Esit sutun bunu cozerken bir
- * yan fayda daha veriyor: hucre genisligi icerikten bagimsiz oldugu icin
- * hicbir secim yerlesimi yeniden akitamiyor.
+ * Iki yerlesim de denendi. Dogal genislikte her cip kendi etiketi kadardi
+ * ve satirlar buyume payiyla doluyordu, yani ikisi arasindaki fark satir
+ * sonundaki bosluk degil sutun kenarinin hizali olup olmamasiydi. Tercih
+ * hizali sutunlardan yana ve ekranda verildi: telefonda daha derli toplu
+ * duruyor.
  *
- * Arada dogal genislige donuldu ve cihazda geri alindi. Itiraz, hucreleri
- * esitlemenin listeyi tablo gibi okutmasiydi; telefonda bakildiginda
- * hizalanmis sutunlar daha derli toplu duruyor ve tirtikli satir sonlari
- * gozu rahatsiz ediyor. Bu bir olcum degil bir tercih, ve tercihi ekranda
- * verdik.
+ * Yerlesimin yan faydasi da var: hucre genisligi icerikten bagimsiz oldugu
+ * icin hicbir secim yerlesimi yeniden akitamiyor. Asil koruma yine de
+ * cipin icindeki sabit isaret yuvasi; o, iki yerlesimde de duruyor.
  *
- * Sutun sayisi olculen genislikten geliyor, cihaz turunden degil. Uc sutun
- * telefonda dogru duruyor; dar ekranda ikiye, tablette dorde gidiyor. Esik
- * asagi cekilip cok dar cihazlarda da uc sutun zorlanmadi: o genislikte
- * hucreye kalan metin alani etiketleri okunmaz hale getiriyor.
+ * Sutun sayisi olculen genislikten geliyor, cihaz turunden degil: "telefon
+ * mu tablet mi" sorusu bolunmus ekranda ve katlanabilir cihazda yanlis
+ * cevap veriyor.
+ *
+ * Hucre dar kaldiginda -- dar bir ekranda, ya da sistem yazisi buyudugunde
+ * -- etiket kirpilmiyor, satir sayisini artiriyor ve satirin yuksekligi
+ * buyuyor. Sabit bir satir siniri, en buyuk yazi tipinde uzun etiketleri
+ * yarida kesiyordu; kesilmis bir etiket kullaniciya ne sectigini
+ * soylemiyor ve sunucu etiket uzunluguna bir sinir koymuyor.
  */
 function columnsFor(width: number): number {
   if (width >= 520) return 4;

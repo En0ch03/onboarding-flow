@@ -96,4 +96,10 @@ describe('ChipGrid', () => {
     });
     expect(onPress).toHaveBeenCalledWith('coffee');
   });
+
+  it('etiket kirpilmiyor', async () => {
+    // Kesilmis bir etiket kullaniciya ne sectigini soylemiyor.
+    const { view } = await mount([]);
+    expect(view.getByText('Uzun yürüyüş').props.numberOfLines).toBeUndefined();
+  });
 });
