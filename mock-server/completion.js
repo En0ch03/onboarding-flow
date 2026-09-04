@@ -64,16 +64,26 @@ function readAge(value, today) {
   return ageOn(birth, today);
 }
 
+/**
+ * Sayilan sey fotograf kaydinin varligi degil, ayri ayri fotograflar.
+ *
+ * Bos metin de metindir ve ayni kimlik iki kez gonderilebiliyordu; kapi
+ * sayiyi sayiyor ama neyi saydigini sormuyordu. Iki bos kayitla fotograf
+ * tabani gecilebiliyordu.
+ */
 function countPhotos(value) {
   if (!Array.isArray(value)) return 0;
 
-  return value.filter(
-    (photo) =>
-      typeof photo === 'object' &&
-      photo !== null &&
-      typeof photo.id === 'string' &&
-      typeof photo.url === 'string',
-  ).length;
+  const ids = new Set();
+
+  for (const photo of value) {
+    if (typeof photo !== 'object' || photo === null) continue;
+    if (typeof photo.id !== 'string' || photo.id.trim() === '') continue;
+    if (typeof photo.url !== 'string' || photo.url.trim() === '') continue;
+    ids.add(photo.id);
+  }
+
+  return ids.size;
 }
 
 /**
@@ -85,7 +95,7 @@ function unlockedKeys(preferences, optionGroups) {
 
   for (const [key, group] of Object.entries(optionGroups)) {
     const chosen = new Set(chosenIds(preferences[key]));
-    for (const option of group.options) {
+    for (const option of group.options ?? []) {
       if (option.unlocks && chosen.has(option.id)) keys.add(option.unlocks);
     }
   }
@@ -94,24 +104,22 @@ function unlockedKeys(preferences, optionGroups) {
 }
 
 /**
- * Bir liste, baska bir listenin varyanti mi.
+ * Bir liste, baska bir listenin varyanti mi -- ve hangisinin.
  *
  * Varyant, ayri bir soru degil: ayni sorunun baska bir etiket seti ve
  * cevabi taban listenin anahtari altinda duruyor. O yuzden kendi basina
  * zorunlu sayilmiyor; zorunluluk tabanda.
  *
- * "Kendisi hicbir sey acmiyor" sarti kasitli. Onsuz, birbirini acan iki
- * liste ikisi de varyant sayilip denetimden tamamen dusuyordu: yanlis
- * yazilmis bir yapilandirma butun zorunluluk kurallarini sessizce
- * kapatabilirdi. Varyantlar tek duzeyli.
+ * Iliski veriden okunuyor, `unlocks` kenarlarindan cikarilmiyor. Cikarim
+ * iki sekilde yanlis sonuc veriyordu: birbirini acan iki liste ikisi de
+ * varyant sayilip butun zorunluluk denetimi sessizce kapaniyordu, ve
+ * varyantin hangi tabana ait oldugu bilinmedigi icin oradan secilen bir
+ * etiket her liste icin gecerli sayiliyordu -- "Kutu oyunlari" gecerli bir
+ * cinsiyet cevabi oluyordu.
  */
-function isVariant(key, optionGroups) {
-  const opensSomething = (optionGroups[key]?.options ?? []).some((option) => option.unlocks);
-  if (opensSomething) return false;
-
-  return Object.values(optionGroups).some((group) =>
-    group.options.some((option) => option.unlocks === key),
-  );
+function variantBase(key, optionGroups) {
+  const base = optionGroups[key]?.variantOf;
+  return typeof base === 'string' ? base : null;
 }
 
 /** Bir listeye verilmis cevabi, tekli ve coklu ayrimini gormeden diziye cevirir. */
@@ -124,16 +132,14 @@ function chosenIds(answer) {
  * Bir listeye verilen cevabin bicimi ve buyuklugu.
  *
  * Bir varyant liste acikken cevaplar yine taban listenin anahtari altinda
- * saklaniyor; o yuzden acilmis listelerin secenekleri de gecerli sayiliyor.
- * Aksi halde "arkadaslik" cevabini verip o listeden bir etiket secen
- * kullanici, taban listede olmayan bir kimlik tasidigi icin reddedilirdi.
+ * saklaniyor; o yuzden **o tabanin** acilmis varyantlarinin secenekleri de
+ * gecerli sayiliyor. Aksi halde "arkadaslik" cevabini verip o listeden bir
+ * etiket secen kullanici, taban listede olmayan bir kimlik tasidigi icin
+ * reddedilirdi.
  *
- * Bu genisletme bilerek gevsek: veri, bir varyantin hangi tabana ait
- * oldugunu tasimiyor - iliskiyi kuran sey istemcideki adim tanimi. Yani bir
- * varyantin kimligi baska bir listeye verilmis cevabi da gecerli kilabilir.
- * Dar tutmanin yolu, varyantin tabanini veriye yazmak; sozlesme netlesene
- * kadar bu gevseklik reddetmekten iyi, cunku ters yon kullaniciyi kendi
- * verdigi gecerli cevapla disarida birakiyor.
+ * Genisletme yalnizca o tabana ait varyantlarla sinirli. Once her acilmis
+ * varyant her liste icin gecerli sayiliyordu ve bu, zorunlu bir listeyi
+ * alakasiz bir kimlikle gecmenin yolunu aciyordu.
  */
 function inspectAnswer(key, group, preferences, optionGroups, unlocked) {
   const answer = preferences[key];
@@ -144,8 +150,9 @@ function inspectAnswer(key, group, preferences, optionGroups, unlocked) {
     return 'invalid';
   }
 
-  const acceptable = new Set(group.options.map((option) => option.id));
+  const acceptable = new Set((group.options ?? []).map((option) => option.id));
   for (const unlockedKey of unlocked) {
+    if (variantBase(unlockedKey, optionGroups) !== key) continue;
     for (const option of optionGroups[unlockedKey]?.options ?? []) acceptable.add(option.id);
   }
 
@@ -155,7 +162,9 @@ function inspectAnswer(key, group, preferences, optionGroups, unlocked) {
   // kimlik tek basina bir engel degil - dusuyor, reddetmiyor.
   const known = chosenIds(answer).filter((id) => acceptable.has(id));
 
-  if (group.maxSelection !== null && known.length > group.maxSelection) return 'invalid';
+  if (typeof group.maxSelection === 'number' && known.length > group.maxSelection) {
+    return 'invalid';
+  }
   if (group.required && known.length === 0) return 'required';
 
   return null;
@@ -183,7 +192,7 @@ function completionProblems(user, optionGroups, today = new Date()) {
   for (const [key, group] of Object.entries(optionGroups)) {
     // Varyant listeler kendi anahtarlariyla saklanmiyor; cevaplari tabanin
     // altinda duruyor ve orada denetleniyor.
-    if (isVariant(key, optionGroups)) continue;
+    if (variantBase(key, optionGroups) !== null) continue;
 
     const problem = inspectAnswer(key, group, preferences, optionGroups, unlocked);
     if (problem !== null) fields[key] = problem;

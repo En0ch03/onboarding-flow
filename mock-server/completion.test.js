@@ -39,6 +39,7 @@ const groups = {
   },
   interests_friendship: {
     key: 'interests_friendship',
+    variantOf: 'interests',
     multiSelect: true,
     maxSelection: 8,
     required: false,
@@ -163,8 +164,9 @@ describe('completionProblems', () => {
   });
 
   it('birbirini acan iki liste denetimden kacamiyor', () => {
-    // Varyantlar tek duzeyli. Onsuz, birbirini acan iki liste ikisi de
-    // varyant sayilip butun zorunluluk kurallari sessizce kapaniyordu.
+    // Varyant olmak veriden okunuyor, `unlocks` kenarlarindan cikarilmiyor.
+    // Cikarimla, birbirini acan iki liste ikisi de varyant sayilip butun
+    // zorunluluk kurallari sessizce kapaniyordu.
     const cyclic = {
       a: {
         key: 'a',
@@ -187,6 +189,44 @@ describe('completionProblems', () => {
       a: 'required',
       b: 'required',
     });
+  });
+
+  it('varyantin etiketi baska bir listenin cevabi sayilmiyor', () => {
+    // Bir varyant acildiginda oradan gelen kimlikler her liste icin gecerli
+    // sayiliyordu: "Kutu oyunlari" gecerli bir cinsiyet cevabi oluyor ve
+    // zorunlu kapilar boyle geciliyordu.
+    const crossed = {
+      ...complete,
+      gender: 'board_games',
+      intent: ['friendship'],
+    };
+
+    expect(completionProblems(user(crossed), groups, today).gender).toBe('required');
+  });
+
+  it('bos kimlikli veya adressiz fotograf sayilmiyor', () => {
+    const blank = {
+      ...complete,
+      photos: [
+        { id: '', url: '' },
+        { id: ' ', url: ' ' },
+      ],
+    };
+    expect(completionProblems(user(blank), groups, today).photos).toBe('required');
+  });
+
+  it('ayni fotograf iki kez gonderilse de bir taniyor', () => {
+    const twice = { ...complete, photos: [photos[0], photos[0]] };
+    expect(completionProblems(user(twice), groups, today).photos).toBe('required');
+  });
+
+  it('sinir alani hic gelmezse secim sinirsiz sayilmiyor', () => {
+    // `undefined !== null` dogru ama `n > undefined` yanlis; alan eksikken
+    // sinir sessizce kalkiyordu.
+    const { maxSelection: _omitted, ...loose } = groups.audience;
+    const missing = { ...groups, audience: loose };
+
+    expect(completionProblems(user(complete), missing, today)).toEqual({});
   });
 
   it('acilmamis bir liste zorunlu sayilmiyor', () => {
