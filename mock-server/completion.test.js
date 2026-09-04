@@ -162,6 +162,33 @@ describe('completionProblems', () => {
     expect(completionProblems(user(unlocked), required, today)).toEqual({});
   });
 
+  it('birbirini acan iki liste denetimden kacamiyor', () => {
+    // Varyantlar tek duzeyli. Onsuz, birbirini acan iki liste ikisi de
+    // varyant sayilip butun zorunluluk kurallari sessizce kapaniyordu.
+    const cyclic = {
+      a: {
+        key: 'a',
+        multiSelect: true,
+        maxSelection: 1,
+        required: true,
+        options: [{ id: 'a1', unlocks: 'b' }],
+      },
+      b: {
+        key: 'b',
+        multiSelect: true,
+        maxSelection: 1,
+        required: true,
+        options: [{ id: 'b1', unlocks: 'a' }],
+      },
+    };
+
+    const bare = { birth_date: complete.birth_date, photos };
+    expect(completionProblems(user(bare), cyclic, today)).toEqual({
+      a: 'required',
+      b: 'required',
+    });
+  });
+
   it('acilmamis bir liste zorunlu sayilmiyor', () => {
     const required = {
       ...groups,

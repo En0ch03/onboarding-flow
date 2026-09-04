@@ -93,7 +93,22 @@ function unlockedKeys(preferences, optionGroups) {
   return keys;
 }
 
-function isUnlockTarget(key, optionGroups) {
+/**
+ * Bir liste, baska bir listenin varyanti mi.
+ *
+ * Varyant, ayri bir soru degil: ayni sorunun baska bir etiket seti ve
+ * cevabi taban listenin anahtari altinda duruyor. O yuzden kendi basina
+ * zorunlu sayilmiyor; zorunluluk tabanda.
+ *
+ * "Kendisi hicbir sey acmiyor" sarti kasitli. Onsuz, birbirini acan iki
+ * liste ikisi de varyant sayilip denetimden tamamen dusuyordu: yanlis
+ * yazilmis bir yapilandirma butun zorunluluk kurallarini sessizce
+ * kapatabilirdi. Varyantlar tek duzeyli.
+ */
+function isVariant(key, optionGroups) {
+  const opensSomething = (optionGroups[key]?.options ?? []).some((option) => option.unlocks);
+  if (opensSomething) return false;
+
   return Object.values(optionGroups).some((group) =>
     group.options.some((option) => option.unlocks === key),
   );
@@ -108,10 +123,17 @@ function chosenIds(answer) {
 /**
  * Bir listeye verilen cevabin bicimi ve buyuklugu.
  *
- * Kosullu bir liste acikken cevaplar yine taban listenin anahtari altinda
+ * Bir varyant liste acikken cevaplar yine taban listenin anahtari altinda
  * saklaniyor; o yuzden acilmis listelerin secenekleri de gecerli sayiliyor.
  * Aksi halde "arkadaslik" cevabini verip o listeden bir etiket secen
  * kullanici, taban listede olmayan bir kimlik tasidigi icin reddedilirdi.
+ *
+ * Bu genisletme bilerek gevsek: veri, bir varyantin hangi tabana ait
+ * oldugunu tasimiyor - iliskiyi kuran sey istemcideki adim tanimi. Yani bir
+ * varyantin kimligi baska bir listeye verilmis cevabi da gecerli kilabilir.
+ * Dar tutmanin yolu, varyantin tabanini veriye yazmak; sozlesme netlesene
+ * kadar bu gevseklik reddetmekten iyi, cunku ters yon kullaniciyi kendi
+ * verdigi gecerli cevapla disarida birakiyor.
  */
 function inspectAnswer(key, group, preferences, optionGroups, unlocked) {
   const answer = preferences[key];
@@ -159,9 +181,9 @@ function completionProblems(user, optionGroups, today = new Date()) {
   const unlocked = unlockedKeys(preferences, optionGroups);
 
   for (const [key, group] of Object.entries(optionGroups)) {
-    // Kosullu listeler kendi anahtarlariyla saklanmiyor; cevaplari tabanin
-    // altinda duruyor ve orada zaten denetleniyor.
-    if (isUnlockTarget(key, optionGroups)) continue;
+    // Varyant listeler kendi anahtarlariyla saklanmiyor; cevaplari tabanin
+    // altinda duruyor ve orada denetleniyor.
+    if (isVariant(key, optionGroups)) continue;
 
     const problem = inspectAnswer(key, group, preferences, optionGroups, unlocked);
     if (problem !== null) fields[key] = problem;
