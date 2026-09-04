@@ -66,8 +66,14 @@ describe('LoginScreen', () => {
     const view = await renderWithTheme(<LoginScreen {...handlers} />);
     await signIn(view, 'deniz@example.test', 'yanlisparola');
 
-    expect(presentError({ kind: 'invalid_credentials' }).action).toBeNull();
-    expect(view.queryByText('Şifremi sıfırla')).toBeNull();
+    // Ekran seviyesinde bakiliyor: sozluge bakan bir iddia, bandin ne
+    // gosterdigini degil sozlugun ne yazdigini sinar ve ekran o alani zaten
+    // okumuyor. Bant bir cikis yolu gosterseydi onu bir dugme olarak
+    // cizerdi.
+    expect(view.queryByText(strings.common.retry)).toBeNull();
+    expect(
+      view.queryAllByRole('button').map((node) => node.props.accessibilityLabel),
+    ).not.toContain(strings.common.retry);
   });
 
   it('ag hatasinda tekrar deneme yolu sunuyor', async () => {

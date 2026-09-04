@@ -101,8 +101,8 @@
 <text x="1650.6666666666665" y="487" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9.5" font-weight="400" fill="#A69C91" text-anchor="middle">Yıl</text>
 <rect x="1438" y="688" width="252" height="50" rx="25" fill="#C08668"/>
 <text x="1564" y="719" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="1416" y="800" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Üç ayrı alan: tarih seçici yerine</text>
-<text x="1416" y="815" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">yazmak, uzak bir yılı bulmayı hızlandırıyor.</text>
+<text x="1416" y="800" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Üç ayrı alan, her biri kendi sayfasını</text>
+<text x="1416" y="815" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">açıyor: tarih için klavye hiç açılmıyor.</text>
 <text x="56" y="860" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Adım 2 — Kimlik ve kitle</text>
 <text x="56" y="877" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">eşleşme havuzunu belirler</text>
 <rect x="56" y="886" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
@@ -166,7 +166,7 @@
 <rect x="418" y="1235" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
 <text x="434" y="1263" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Henüz emin değilim</text>
 <rect x="634" y="1250" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
-<text x="418" y="1299" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#C08668">2 / 2 seçildi</text>
+<text x="418" y="1299" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#C08668">En fazla 2 seçebilirsin · 2 seçili</text>
 <rect x="418" y="1406" width="252" height="50" rx="25" fill="#C08668"/>
 <text x="544" y="1437" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
 <text x="396" y="1518" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Sınıra ulaşınca kalan kartlar sönükleşir,</text>
@@ -281,6 +281,9 @@
 <text x="78" y="1751" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Ad</text>
 <rect x="78" y="1759" width="252" height="44" rx="14" fill="#1E1A17" stroke="#C08668"/>
 <text x="92" y="1786" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Deniz|</text>
+<rect x="57" y="1985" width="294" height="66" rx="0" fill="#14110F"/>
+<rect x="78" y="1991" width="252" height="50" rx="25" fill="#C08668"/>
+<text x="204" y="2022" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
 <rect x="57" y="2004" width="294" height="209" rx="0" fill="#262019"/>
 <rect x="57" y="2004" width="294" height="30" rx="0" fill="#1E1A17"/>
 <text x="328" y="2024" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#C08668" text-anchor="end">Bitti</text>
@@ -311,11 +314,8 @@
 <rect x="271" y="2126" width="34" height="32" rx="5" fill="#1E1A17"/>
 <rect x="309" y="2126" width="34" height="32" rx="5" fill="#1E1A17"/>
 <rect x="116" y="2166" width="176" height="32" rx="5" fill="#1E1A17"/>
-<rect x="57" y="1938" width="294" height="66" rx="0" fill="#14110F"/>
-<rect x="78" y="1944" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="204" y="1975" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="56" y="2236" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Klavye açılınca eylem butonu klavyenin</text>
-<text x="56" y="2251" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">üstüne çıkar; odaklanan alan görünür kalır.</text>
+<text x="56" y="2236" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Buton sayfanın dibinde kalıyor; klavye onu örtüyor.</text>
+<text x="56" y="2251" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Kaydırma alanı kısalıyor, odaklanan alan görünür kalıyor.</text>
 <text x="56" y="2266" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Tek ekran kabuğunda çözülüyor — bir kez</text>
 <text x="56" y="2281" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">doğrulanır, her ekranda geçerlidir.</text>
 <text x="396" y="1578" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Durum — sunucu hatası</text>
@@ -329,8 +329,8 @@
 <rect x="418" y="1684" width="151.2" height="3" rx="2" fill="#C08668"/>
 <text x="418" y="1712" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Ne arıyorsun?</text>
 <rect x="418" y="1749" width="252" height="74" rx="14" fill="rgba(216,154,146,0.12)" stroke="#D89A92"/>
-<text x="432" y="1771" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#D89A92">Şu an sunucuya ulaşamıyoruz. Cevabın</text>
-<text x="432" y="1785" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#D89A92">kayboldu sayılmaz — burada duruyor.</text>
+<text x="432" y="1771" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#D89A92">Sunucuya ulaşamadık. Bağlantını kontrol edip</text>
+<text x="432" y="1785" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#D89A92">tekrar dene. Yazdıkların duruyor.</text>
 <text x="432" y="1807" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="600" fill="#D89A92">Tekrar dene</text>
 <rect x="418" y="1835" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
 <text x="434" y="1863" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Uzun soluklu bir ilişki</text>
@@ -367,7 +367,6 @@
 <rect x="844.6666666666666" y="1776" width="78.66666666666667" height="74" rx="14" fill="#1E1A17" stroke="#C08668"/>
 <circle cx="884" cy="1809" r="10" fill="none" stroke="#2E2823" stroke-width="2.5"/>
 <path d="M 884 1799 A 10 10 0 0 1 894 1809" fill="none" stroke="#C08668" stroke-width="2.5" stroke-linecap="round"/>
-<text x="884" y="1838" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="8.5" font-weight="400" fill="#C08668" text-anchor="middle">yükleniyor</text>
 <rect x="931.3333333333334" y="1776" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
 <text x="970.6666666666667" y="1818" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
 <rect x="758" y="1858" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
@@ -376,7 +375,6 @@
 <text x="884" y="1900" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
 <rect x="931.3333333333334" y="1858" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
 <text x="970.6666666666667" y="1900" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<text x="758" y="1954" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#C08668">Yükleniyor — bu sırada devam edebilirsin</text>
 <rect x="758" y="2124" width="252" height="50" rx="25" fill="none" stroke="#2E2823"/>
 <text x="884" y="2155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#A69C91" text-anchor="middle">Devam</text>
 <text x="736" y="2236" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Yükleme sırasında slot kendi durumunu</text>

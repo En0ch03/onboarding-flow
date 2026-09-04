@@ -8,9 +8,8 @@ import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { strings } from '@/constants/strings';
 import { HomeScreen } from '@/features/app/HomeScreen';
-import { reconcileDraftWithOptions } from '@/features/onboarding/steps/reconcileDraft';
 import { useAuthStore } from '@/state/authStore';
-import { bootstrap } from '@/state/bootstrap';
+import { adoptServerProfile, bootstrap } from '@/state/bootstrap';
 import { useTheme } from '@/theme';
 
 import { AuthNavigator } from './AuthNavigator';
@@ -59,12 +58,16 @@ export function RootNavigator() {
     return (
       <AuthNavigator
         onAuthenticated={(onboardingComplete) => {
-          // Giris, acilis sekansini yeniden kosturmuyor; uzlastirma burada da
-          // gerekiyor. Kullanici cikip tekrar girdiginde aradan gecen surede
-          // sunucudan bir secenek kaldirilmis olabilir.
-          const groups = readCachedOptionGroups();
-          if (groups !== null) reconcileDraftWithOptions(groups);
-          setPhase(onboardingComplete ? 'app' : 'onboarding');
+          // Giris, acilis sekansinin tamamini yeniden kosturmuyor ama
+          // sunucudaki profili okumasi gerekiyor: cevaplar baska bir cihazda
+          // verilmis olabilir ve yerel taslakta bulunmaz. Uzlastirma da ayni
+          // cagrinin icinde, cunku aradan gecen surede sunucudan bir secenek
+          // kaldirilmis olabilir.
+          setPhase('loading');
+
+          void adoptServerProfile().then((adoption) => {
+            setPhase(onboardingComplete || adoption === 'complete' ? 'app' : 'onboarding');
+          });
         }}
       />
     );

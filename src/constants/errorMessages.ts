@@ -1,5 +1,7 @@
 import type { ApiError, ApiErrorKind } from '@/api/errors';
 
+import { strings } from './strings';
+
 /**
  * Her hata turunun insan dilindeki karsiligi ve varsa cikis yolu.
  *
@@ -97,7 +99,7 @@ const fieldReasons: Record<string, (label: string) => string> = {
  */
 const specificMessages: Record<string, string> = {
   'password:too_short': 'Şifren çok kısa. En az 8 karakter olmalı.',
-  'email:invalid': 'Bu e-posta adresi geçerli görünmüyor. Yazımını kontrol eder misin?',
+  'email:invalid': strings.auth.emailInvalid,
 };
 
 /**

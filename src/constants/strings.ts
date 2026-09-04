@@ -30,6 +30,9 @@ export const strings = {
   },
 
   auth: {
+    // Ayni cumle hem alan dogrulamasinda hem sunucu 422'sinde gerekiyor.
+    // Iki yere yazilirsa biri degisip digeri kalir.
+    emailInvalid: 'Bu e-posta adresi geçerli görünmüyor. Yazımını kontrol eder misin?',
     registerTitle: 'Hesabını oluşturalım',
     registerSubtitle: 'E-postanı yalnızca giriş için kullanıyoruz. Profilinde görünmez.',
     registerSubmit: 'Hesap oluştur',
@@ -44,6 +47,14 @@ export const strings = {
     hidePassword: 'Şifreyi gizle',
 
     legal: 'Devam ederek Kullanım Şartları’nı ve Gizlilik Politikası’nı kabul etmiş olursun.',
+  },
+
+  photoSlot: {
+    cover: 'Kapak fotoğrafı',
+    filled: 'Fotoğraf',
+    failed: 'Yüklenemeyen fotoğraf, tekrar dene',
+    empty: 'Fotoğraf ekle',
+    remove: 'Fotoğrafı kaldır',
   },
 
   steps: {

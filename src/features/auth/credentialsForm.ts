@@ -1,3 +1,4 @@
+import { strings } from '@/constants/strings';
 import { z } from 'zod';
 
 /**
@@ -20,7 +21,7 @@ export const credentialsFormSchema = z.object({
     // reddetmek yerine temizleniyor.
     .trim()
     .min(1, 'E-posta adresini yazman gerekiyor.')
-    .email('Bu e-posta adresi geçerli görünmüyor. Yazımını kontrol eder misin?'),
+    .email(strings.auth.emailInvalid),
   password: z
     .string()
     .min(MIN_PASSWORD_LENGTH, `Şifren çok kısa. En az ${MIN_PASSWORD_LENGTH} karakter olmalı.`),

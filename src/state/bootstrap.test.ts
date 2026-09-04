@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 import { storageKeys } from '@/storage/keys';
 
 import { useAuthStore } from './authStore';
-import { bootstrap } from './bootstrap';
+import { adoptServerProfile, bootstrap } from './bootstrap';
 import { useOnboardingStore } from './onboardingStore';
 
 jest.mock('@/api/endpoints', () => ({ fetchProfile: jest.fn() }));
@@ -228,5 +228,47 @@ describe('sunucudan dusen secenekler', () => {
     await bootstrap();
 
     expect(useOnboardingStore.getState().answers.intent).toEqual(['long_term', 'bilinmeyen']);
+  });
+});
+
+describe('adoptServerProfile', () => {
+  it('brings answers given on another device into the draft', async () => {
+    // The sign-in path used to skip this, so someone signing in on a new
+    // phone started at step one and answered everything again.
+    await signIn();
+    fetchProfile.mockResolvedValue(incompleteProfile);
+
+    const adoption = await adoptServerProfile();
+
+    expect(adoption).toBe('in-progress');
+    expect(useOnboardingStore.getState().answers.intent).toEqual(['long_term']);
+    expect(useOnboardingStore.getState().answers.name).toBe('Deniz');
+  });
+
+  it('reports a finished profile and drops the local draft', async () => {
+    await signIn();
+    useOnboardingStore.getState().setAnswers({ name: 'Eski' });
+    fetchProfile.mockResolvedValue({ ...incompleteProfile, onboarding_complete: true });
+
+    expect(await adoptServerProfile()).toBe('complete');
+    expect(useOnboardingStore.getState().answers).toEqual({});
+    expect(useAuthStore.getState().onboardingComplete).toBe(true);
+  });
+
+  it('reports a lost session rather than swallowing it', async () => {
+    await signIn();
+    fetchProfile.mockRejectedValue(unauthorised());
+
+    expect(await adoptServerProfile()).toBe('session-lost');
+  });
+
+  it('keeps the local draft when the profile cannot be read', async () => {
+    // Losing the network should not cost someone the answers on the device.
+    await signIn();
+    useOnboardingStore.getState().setAnswers({ name: 'Deniz' });
+    fetchProfile.mockRejectedValue(new AxiosError('offline'));
+
+    expect(await adoptServerProfile()).toBe('in-progress');
+    expect(useOnboardingStore.getState().answers.name).toBe('Deniz');
   });
 });

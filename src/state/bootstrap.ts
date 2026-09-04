@@ -43,6 +43,40 @@ export async function bootstrap(): Promise<BootstrapResult> {
     return { destination: 'welcome', resumeStepId: null, optionsAvailable: options };
   }
 
+  const adoption = await adoptServerProfile();
+
+  if (adoption === 'session-lost') {
+    return { destination: 'welcome', resumeStepId: null, optionsAvailable: options };
+  }
+
+  if (adoption === 'complete') {
+    return { destination: 'app', resumeStepId: null, optionsAvailable: options };
+  }
+
+  return {
+    destination: 'onboarding',
+    resumeStepId: useOnboardingStore.getState().activeStepId,
+    optionsAvailable: options,
+  };
+}
+
+/** Sunucudaki profilin yerel taslak karsisindaki sonucu. */
+export type ProfileAdoption = 'complete' | 'in-progress' | 'session-lost';
+
+/**
+ * Sunucudaki profili yerel taslaga benimsetir.
+ *
+ * Iki yol da buradan geciyor: acilis sekansi ve giris. Giris yolunda bu
+ * cagri bir sure hic yoktu ve sonucu su oluyordu: baska bir cihazda -- ya da
+ * uygulamayi silip yeniden kuran ayni cihazda -- verilmis cevaplar yerel
+ * taslakta bulunmadigi icin kullanici birinci adimdan basliyor ve verdigi
+ * cevaplari yeniden veriyordu. Ayni akis soguk acilista dogru calisiyordu,
+ * yani davranis yola gore ayrisiyordu.
+ *
+ * Cakismada sunucu kazanir: cihazda kalmis eski bir cevap, baska bir
+ * cihazdan verilmis yeni cevabin uzerine yazmamali.
+ */
+export async function adoptServerProfile(): Promise<ProfileAdoption> {
   try {
     const profile = await fetchProfile();
 
@@ -50,20 +84,14 @@ export async function bootstrap(): Promise<BootstrapResult> {
       // Sunucu tek gercek kaynak; yerel durum bir onbellek.
       useAuthStore.getState().markOnboardingComplete();
       useOnboardingStore.getState().clearDraft();
-      return { destination: 'app', resumeStepId: null, optionsAvailable: options };
+      return 'complete';
     }
 
-    // Cakismada sunucu kazanir: cihazda kalmis eski bir cevap, baska bir
-    // cihazdan verilmis yeni cevabin uzerine yazmamali.
     useOnboardingStore.getState().setAnswers(draftFromProfile(profile));
   } catch (thrown) {
-    const error = normalizeApiError(thrown);
-
     // Yenileme de basarisiz olduysa oturum bitti; taslak yerinde duruyor ve
     // kullanici giris yapinca kaldigi adimdan devam edecek.
-    if (error.kind === 'refresh_expired') {
-      return { destination: 'welcome', resumeStepId: null, optionsAvailable: options };
-    }
+    if (normalizeApiError(thrown).kind === 'refresh_expired') return 'session-lost';
     // Diger hatalar akisi durdurmuyor: elimizdeki taslakla devam ediliyor.
   }
 
@@ -73,11 +101,7 @@ export async function bootstrap(): Promise<BootstrapResult> {
   const groups = readCachedOptionGroups();
   if (groups !== null) reconcileDraftWithOptions(groups);
 
-  return {
-    destination: 'onboarding',
-    resumeStepId: useOnboardingStore.getState().activeStepId,
-    optionsAvailable: options,
-  };
+  return 'in-progress';
 }
 
 async function loadOptionGroups(): Promise<boolean> {
