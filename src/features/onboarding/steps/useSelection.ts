@@ -9,7 +9,7 @@ import type { OptionGroup } from '@/api/schemas';
  *
  * Seceneklerin birbirini kapsamasi kaldirildi. "Kadinlar" ve "Erkekler"
  * isaretlenince secimin kendiliginden "Herkes"e toplanmasi cihazda tersine
- * cevrildi: dokunulan seceneğin disinda bir seyin isaretini degistirmek,
+ * cevrildi: dokunulan secenegin disinda bir seyin isaretini degistirmek,
  * kullanicinin vermedigi bir cevabi ona gosteriyor ve geri almak icin hangi
  * cipe basmak gerektigi belli olmuyordu. Bir dokunus artik yalnizca
  * dokunulan secenegi degistiriyor.
