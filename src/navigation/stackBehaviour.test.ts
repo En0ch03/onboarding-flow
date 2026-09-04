@@ -1,13 +1,16 @@
 import { CommonActions, StackRouter } from '@react-navigation/routers';
 
 /**
- * Bu test bir kutuphane davranisini civiliyor.
+ * Bu test yalnizca bir kutuphane davranisini civiliyor.
  *
  * Kapanis ekrani, adimlarin altinda asili kaliyordu ve kullanici herhangi
  * bir adimda geri kaydirinca oraya dusuyordu. Sebep, bu surumde `navigate`
- * yiginda geriye donmemesi: ayni ada ikinci bir ekran itiyor. Sonraki bir
- * surumde davranis degisirse veya birisi `popTo`yu `navigate`e cevirirse,
- * kirilan sey burada gorunsun.
+ * yiginda geriye donmemesi: ayni ada ikinci bir ekran itiyor. Bir surum
+ * yukseltmesi bu davranisi degistirirse buradan gorunur.
+ *
+ * Kapsamadigi sey: navigatorun hangisini cagirdigi. Bu dosya uygulama
+ * kodundan hicbir sey ice aktarmiyor, yani `popTo` tekrar `navigate`e
+ * cevrilse bu test dusmez. O bagi tutan sey `OnboardingNavigator.test.tsx`.
  */
 
 const options = {
@@ -33,10 +36,11 @@ function names(state: State) {
 }
 
 /**
- * `StackActions.popTo` eylemi elle kuruluyor: yardimcinin tipi `params`
- * alanini "verilmis ama undefined" olarak birakiyor ve bu ayar altinda
- * yonlendiricinin eylem tipine uymuyor. Uretilen eylem `navigation.popTo`
- * cagrisinin urettiginin aynisi.
+ * `StackActions.popTo` yardimcisi `params` ve `merge` alanlarini
+ * "verilmis ama undefined" olarak birakiyor ve bu ayar altinda
+ * yonlendiricinin eylem tipine uymuyor. Elle kurulan eylem birebir ayni
+ * degil, ama bu yigin icin esdeger: indirgeyici `POP_TO` dalinda yalnizca
+ * `name`e bakiyor.
  */
 function popTo(name: string): Action {
   return { type: 'POP_TO', payload: { name } };

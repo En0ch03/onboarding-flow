@@ -1,6 +1,7 @@
 import type { StepDefinition } from '../engine/types';
 
 import { stepForFields } from './blockingStep';
+import { steps } from './steps';
 
 const placeholder = () => null;
 
@@ -47,5 +48,14 @@ describe('stepForFields', () => {
   it('tanimadigi alan icin null donuyor', () => {
     expect(stepForFields(flow, ['avatar_url'])).toBeNull();
     expect(stepForFields(flow, [])).toBeNull();
+  });
+
+  it('gercek akista da her sunucu alani bir adima cozuluyor', () => {
+    // Sahte akisla sinamak yetmiyor: `steps.ts` icindeki bir adim kimligi
+    // degisirse bu esleme sessizce bozulur ve kullanici, sunucunun
+    // reddettigi alani duzeltemeden son adimda ayni reddi almaya devam eder.
+    for (const field of ['display_name', 'birth_date', 'photos', 'gender', 'audience', 'intent']) {
+      expect(stepForFields(steps, [field])).not.toBeNull();
+    }
   });
 });

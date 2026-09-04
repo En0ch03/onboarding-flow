@@ -55,7 +55,12 @@ export function CompletionScreen({
       markStepSynced(stepId);
     }
 
-    await completeOnboarding();
+    const { onboarding_complete } = await completeOnboarding();
+
+    // Durum kodu degil govde belirleyici: karari sunucu veriyorsa cevabini
+    // da okumak gerekiyor.
+    if (!onboarding_complete) return false;
+
     markOnboardingComplete();
     return true;
   });
@@ -71,7 +76,7 @@ export function CompletionScreen({
   // Uygulamaya giris sunucunun onayina bagli. Ekrana bakiyor olmak profilin
   // tamamlandigi anlamina gelmiyor: kullanici buraya bir navigasyon
   // hatasiyla da gelebilir ve o durumda eksik bir profille iceri girerdi.
-  const confirmed = finish.state.status === 'success';
+  const confirmed = finish.state.status === 'success' && finish.state.data;
 
   // Eksik profil bir sunucu arizasi degil; bandin cikis yolu "tekrar dene"
   // degil "cevaplara don" olmali, cunku tekrar denemek ayni cevabi verecek.
@@ -116,6 +121,11 @@ export function CompletionScreen({
             title={strings.completion.secondary}
             onPress={onEditProfile}
             variant="ghost"
+            // Onay uçuştayken de bekliyor. Ekran bu sirada sökülürse istek
+            // devam ediyor ve profil "tamamlandi" damgasini aliyor; kullanici
+            // ise adimlarda duzeltme yaptigini saniyor ve uygulamayi kapatip
+            // actiginda akista degil ana ekranda buluyor kendini.
+            disabled={finish.state.status === 'loading'}
             style={{ marginTop: spacing.sm }}
           />
         </View>

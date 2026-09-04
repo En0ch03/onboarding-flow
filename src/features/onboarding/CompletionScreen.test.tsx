@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, waitFor } from '@testing-library/react-native';
 
 import type { OptionGroups } from '@/api/schemas';
+import { presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
 import { useOnboardingStore, type DraftAnswers } from '@/state/onboardingStore';
 import { renderWithTheme } from '@/test/renderWithTheme';
@@ -8,6 +9,7 @@ import { renderWithTheme } from '@/test/renderWithTheme';
 import { completeOnboarding } from '@/api/endpoints';
 
 import { CompletionScreen } from './CompletionScreen';
+import { saveStep } from './saveStep';
 
 /** Sahte modulun tipi cagri tarafindan okunmuyor; testte yeniden baglaniyor. */
 function asMock<T extends (...args: never[]) => unknown>(fn: T) {
@@ -65,7 +67,13 @@ afterEach(cleanup);
 // Sahte modul testler arasinda basarili haline donuyor: bir testin kurdugu
 // hata, sirasi degistiginde baska bir testi dusurmemeli.
 beforeEach(() => {
+  // Yalnizca cagri gecmisi siliniyor. `clearAllMocks` uygulamayi da
+  // siliyor ve sahte modul cagirilamaz hale geliyor.
+  asMock(completeOnboarding).mockClear();
+  asMock(saveStep).mockClear();
+
   asMock(completeOnboarding).mockImplementation(async () => ({ onboarding_complete: true }));
+  asMock(saveStep).mockImplementation(async () => {});
 });
 
 type Handlers = {
@@ -74,8 +82,8 @@ type Handlers = {
   onFixProfile?: () => void;
 };
 
-async function mount(draft: DraftAnswers, handlers: Handlers = {}) {
-  useOnboardingStore.setState({ answers: draft, unsyncedStepIds: [] });
+async function mount(draft: DraftAnswers, handlers: Handlers = {}, unsynced: string[] = []) {
+  useOnboardingStore.setState({ answers: draft, unsyncedStepIds: unsynced });
 
   return renderWithTheme(
     <CompletionScreen
@@ -212,5 +220,50 @@ describe('CompletionScreen', () => {
     const view = await mount(answers);
 
     expect(await view.findByText(strings.completion.incomplete)).toBeTruthy();
+  });
+
+  it('yazilamamis adimi tamamlamadan once gonderiyor', async () => {
+    // Sunucu, henuz ulasmamis bir cevaba gore karar veremesin.
+    const order: string[] = [];
+    asMock(saveStep).mockImplementation(async () => {
+      order.push('saveStep');
+    });
+    asMock(completeOnboarding).mockImplementation(async () => {
+      order.push('complete');
+      return { onboarding_complete: true };
+    });
+
+    await mount(answers, {}, ['interests']);
+
+    await waitFor(() => expect(order).toEqual(['saveStep', 'complete']));
+  });
+
+  it('bekleyen adim gonderilemezse tamamlamayi hic denemiyor', async () => {
+    asMock(saveStep).mockImplementation(async () => {
+      throw { kind: 'network' };
+    });
+
+    const onEnterApp = jest.fn();
+    const view = await mount(answers, { onEnterApp }, ['interests']);
+
+    await view.findByText(presentError({ kind: 'network' }).message);
+
+    expect(asMock(completeOnboarding)).not.toHaveBeenCalled();
+
+    fireEvent.press(view.getByText(strings.completion.primary));
+    expect(onEnterApp).not.toHaveBeenCalled();
+  });
+
+  it('sunucu 200 donup tamamlanmadi derse iceri almiyor', async () => {
+    // Karari sunucu veriyorsa cevabinin govdesi de okunmali.
+    asMock(completeOnboarding).mockImplementation(async () => ({ onboarding_complete: false }));
+
+    const onEnterApp = jest.fn();
+    const view = await mount(answers, { onEnterApp });
+
+    fireEvent.press(await view.findByText(strings.completion.primary));
+
+    await waitFor(() => expect(asMock(completeOnboarding).mock.calls.length).toBeGreaterThan(0));
+    expect(onEnterApp).not.toHaveBeenCalled();
   });
 });

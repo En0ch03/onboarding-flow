@@ -50,7 +50,7 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
       if (!step) return;
 
       // Adim gonderilmeden once yazilmamis sayiliyor, gonderim bittiginde
-      // yaziImis. Yalnizca hatada isaretlemek son adimda bir yaris
+      // yazilmis. Yalnizca hatada isaretlemek son adimda bir yaris
       // biraktiyordu: istek daha yoldayken tamamlanma ekrani aciliyor ve
       // sunucu, henuz ulasmamis bir cevaba gore karar veriyordu. Bekleyen
       // kayitlari tamamlanmadan once tekrar deneyen mekanizma zaten var;
