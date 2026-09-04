@@ -5,8 +5,12 @@ import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
 
-/** Isaret yuvasi. Bos da olsa yer tutuyor; secim cipin boyunu degistirmiyor. */
-const MARK_SIZE = 14;
+/**
+ * Isaret yuvasi. Bos da olsa yer tutuyor; secim cipin boyunu degistirmiyor.
+ * Dar tutuldu: uc sutunlu izgarada her nokta metinden calindigi icin, on iki
+ * punto genisligindeki bir yuva isareti tasimaya yetiyor.
+ */
+const MARK_SIZE = 12;
 
 type ChipProps = {
   option: Option;
@@ -52,7 +56,7 @@ export function Chip({ option, selected, onPress, disabled = false, style }: Chi
           borderColor: selected || pressed ? colors.clay : colors.hairline,
           borderRadius: radius.full,
           paddingVertical: spacing.md,
-          paddingHorizontal: spacing.md,
+          paddingHorizontal: spacing.sm,
           opacity: disabled ? 0.45 : 1,
         },
         style,
@@ -66,8 +70,9 @@ export function Chip({ option, selected, onPress, disabled = false, style }: Chi
         ) : null}
       </View>
 
-      {/* Etiket kirpilmiyor: cip etiketi kadar genis, tersi degil. */}
-      <AppText variant="label">{option.label}</AppText>
+      <AppText variant="label" numberOfLines={2} style={{ flexShrink: 1 }}>
+        {option.label}
+      </AppText>
     </Pressable>
   );
 }

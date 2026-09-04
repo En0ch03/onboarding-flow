@@ -33,31 +33,20 @@ function chipStyle(view: Awaited<ReturnType<typeof renderWithTheme>>, label: str
   return StyleSheet.flatten(view.getByLabelText(label).props.style) as Record<string, unknown>;
 }
 
+async function layout(view: Awaited<ReturnType<typeof renderWithTheme>>, width: number) {
+  await act(async () => {
+    fireEvent(view.getByLabelText('Kitap').parent!, 'layout', {
+      nativeEvent: { layout: { width, height: 0, x: 0, y: 0 } },
+    });
+  });
+}
+
 describe('ChipGrid', () => {
   it('etikete secim isareti karistirmiyor', async () => {
     const { view } = await mount(['books']);
     // Eski surumde secili cipin metni "✓  Kitap" oluyordu ve cip genisliyordu.
     expect(view.getByText('Kitap')).toBeTruthy();
     expect(view.queryByText('✓  Kitap')).toBeNull();
-  });
-
-  it('cipe genislik dayatmiyor: her cip kendi etiketi kadar', async () => {
-    const { view } = await mount([]);
-    for (const option of options) {
-      expect(chipStyle(view, option.label).width).toBeUndefined();
-    }
-  });
-
-  it('cipler satirdaki artan bosluğu paylasiyor', async () => {
-    const { view } = await mount([]);
-    for (const option of options) {
-      expect(chipStyle(view, option.label).flexGrow).toBe(1);
-    }
-  });
-
-  it('etiket kirpilmiyor', async () => {
-    const { view } = await mount([]);
-    expect(view.getByText('Uzun yürüyüş').props.numberOfLines).toBeUndefined();
   });
 
   it('secili ve secili olmayan cip ayni olculerde', async () => {
@@ -70,8 +59,34 @@ describe('ChipGrid', () => {
     for (const key of ['paddingVertical', 'paddingHorizontal', 'borderWidth', 'width'] as const) {
       expect(b[key]).toBe(a[key]);
     }
-    // Isaret yuvasi secili olmayan cipte de var: metin yer degistirmiyor.
-    expect(on.view.getByText('Kitap')).toBeTruthy();
+  });
+
+  it('olculen genisligi esit sutunlara boluyor', async () => {
+    const { view } = await mount([]);
+    await layout(view, 342);
+
+    const widths = options.map((option) => chipStyle(view, option.label).width);
+    // 342 genislik, uc sutun, aralarinda 8 birim bosluk.
+    expect(widths).toEqual([108, 108, 108, 108]);
+  });
+
+  it('dar ekranda iki sutuna, tablette dorde gidiyor', async () => {
+    const narrow = await mount([]);
+    await layout(narrow.view, 260);
+    expect(chipStyle(narrow.view, 'Kitap').width).toBe(126);
+
+    const wide = await mount([]);
+    await layout(wide.view, 700);
+    expect(chipStyle(wide.view, 'Kitap').width).toBe(169);
+  });
+
+  it('secim degisince genislik degismiyor', async () => {
+    const off = await mount([]);
+    await layout(off.view, 342);
+    const on = await mount(['books']);
+    await layout(on.view, 342);
+
+    expect(chipStyle(on.view, 'Kitap').width).toBe(chipStyle(off.view, 'Kitap').width);
   });
 
   it('dokunulan secenegin kimligini bildiriyor', async () => {
