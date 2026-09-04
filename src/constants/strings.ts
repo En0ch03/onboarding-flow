@@ -13,6 +13,8 @@ export const strings = {
     skipForNow: 'Şimdilik geç',
     retry: 'Tekrar dene',
     finish: 'Bitir',
+    done: 'Tamam',
+    cancel: 'Vazgeç',
   },
 
   welcome: {
@@ -50,12 +52,14 @@ export const strings = {
     identitySubtitle: 'Adın profilinde görünür. Doğum tarihin görünmez, yalnızca yaşın görünür.',
     nameLabel: 'Ad',
     birthDateLabel: 'Doğum tarihi',
+    birthDatePlaceholder: 'Gün, ay ve yıl seç',
+    birthDateSheetTitle: 'Doğum tarihin',
     dayLabel: 'Gün',
     monthLabel: 'Ay',
     yearLabel: 'Yıl',
-    identityHint: 'Devam etmek için adını ve doğum tarihini yazman gerekiyor.',
+    identityHint: 'Devam etmek için adını yazman ve doğum tarihini seçmen gerekiyor.',
     identityNameHint: 'Devam etmek için adını yazman gerekiyor.',
-    identityDateHint: 'Devam etmek için doğum tarihini yazman gerekiyor.',
+    identityDateHint: 'Devam etmek için doğum tarihini seçmen gerekiyor.',
 
     audienceTitle: 'Kimlere görünmek istersin?',
     audienceSubtitle:
@@ -82,6 +86,12 @@ export const strings = {
     interestsTitle: 'Neye vakit ayırırsın?',
     interestsSubtitle: 'Birkaç tane seç. Sohbet başlatmayı kolaylaştırıyor.',
     interestsSkipCost: 'Ortak ilgi alanı, ilk mesajı yazmayı kolaylaştırıyor.',
+  },
+
+  birthDate: {
+    incomplete: 'Doğum tarihini seçmen gerekiyor.',
+    invalid: 'Böyle bir tarih yok. Gün, ay ve yılı kontrol eder misin?',
+    tooYoung: 'Bu uygulama {age} yaşından küçüklere açık değil. Seni burada göremeyeceğiz.',
   },
 
   errors: {
@@ -119,6 +129,27 @@ export const strings = {
     secondary: 'Profilimi düzenle',
   },
 } as const;
+
+/** Ay adlari. Cark ayi numarayla gostermiyor: "3" ile "Mart" ayni sey degil. */
+export const monthNames = [
+  'Ocak',
+  'Şubat',
+  'Mart',
+  'Nisan',
+  'Mayıs',
+  'Haziran',
+  'Temmuz',
+  'Ağustos',
+  'Eylül',
+  'Ekim',
+  'Kasım',
+  'Aralık',
+] as const;
+
+/** Secili dogum tarihi alanda boyle okunuyor. */
+export function birthDateSummary(day: number, month: number, year: number): string {
+  return `${day} ${monthNames[month - 1]} ${year}`;
+}
 
 /** Adim sayaci. Yuzde degil sayac: akisla birebir ve dogruyu soyluyor. */
 export function stepCounter(current: number, total: number): string {

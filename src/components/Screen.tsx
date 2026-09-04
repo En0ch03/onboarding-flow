@@ -3,26 +3,7 @@ import type { ReactNode } from 'react';
 import { Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useTheme } from '@/theme';
-
-/**
- * Bir rengin saydam halini uretir.
- *
- * `transparent` anahtar kelimesi kullanilmiyor cunku o `rgba(0,0,0,0)` demek
- * ve Android'de gradyanin saydam ucu griye caliyor. Solmanin gorunmez olmasi
- * icin iki uc da ayni renk olmali, yalnizca alfasi degismeli.
- */
-function withAlpha(color: string, alpha: number): string {
-  // Altili hex disinda bir bicim gelirse cevirmeye calismak `rgba(NaN, ...)`
-  // uretiyor ve Android bunu gecersiz renk diye reddediyor. Solmadan vazgecip
-  // duz rengi dondurmek, cokmekten iyi.
-  if (!/^#[0-9a-f]{6}$/i.test(color)) return color;
-  const hex = color.replace('#', '');
-  const r = parseInt(hex.slice(0, 2), 16);
-  const g = parseInt(hex.slice(2, 4), 16);
-  const b = parseInt(hex.slice(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
+import { useTheme, withAlpha } from '@/theme';
 
 type ScreenProps = {
   /** Ust serit: geri, adim sayaci, atlama. Kaydirilmaz, yerinde durur. */

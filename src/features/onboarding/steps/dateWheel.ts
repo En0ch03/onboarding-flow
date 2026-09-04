@@ -46,18 +46,28 @@ export function openingParts(today: Date): DateParts {
 }
 
 /**
- * Taslakta gecerli bir tarih varsa cark oradan aciliyor. "Gecerli" burada
- * takvimde var olmak demek; yas kapisi ayri bir kontrol ve carkin acilis
- * yerini belirlemesi gerekmiyor - kucuk yasli bir tarih girmis kullanici
- * carki actiginda kendi yazdigini gormeli.
+ * Kullanicinin gercekten sectigi tarih; secmediyse veya taslaktaki tarih
+ * takvimde yoksa `null`.
+ *
+ * Takvimde olmayan bir taslak (eski bir surumde elle yazilmis "31 Subat"
+ * gibi) secilmis sayilmiyor. Sayilsaydi alan bir tarih gosterirken
+ * dogrulama baska bir tarihi reddederdi.
+ *
+ * Yas kapisi burada bir olcut degil: kucuk yasli bir tarih girmis kullanici
+ * alani actiginda kendi yazdigini gormeli, kapinin mesajiyla birlikte.
  */
-export function partsFromDraft(draft: DraftAnswers['birthDate'], today: Date): DateParts {
-  if (!draft) return openingParts(today);
+export function chosenParts(draft: DraftAnswers['birthDate']): DateParts | null {
+  if (!hasChosenDate(draft) || !draft) return null;
 
   const problem = inspectBirthDate(draft);
-  if (problem === 'incomplete' || problem === 'invalid') return openingParts(today);
+  if (problem === 'incomplete' || problem === 'invalid') return null;
 
   return { day: Number(draft.day), month: Number(draft.month), year: Number(draft.year) };
+}
+
+/** Carkin acilacagi satir. Secilmis bir tarih varsa oradan, yoksa varsayilandan. */
+export function partsFromDraft(draft: DraftAnswers['birthDate'], today: Date): DateParts {
+  return chosenParts(draft) ?? openingParts(today);
 }
 
 /** Taslak bicimi degismiyor: sunucu esleme katmani ve dogrulama bunu bekliyor. */
