@@ -24,7 +24,9 @@ Scan the QR code with Expo Go, or press `i` / `a` to open a simulator. No native
 
 ## How this is built
 
-**Expo, on Expo Go.** The app deliberately stays inside what Expo Go ships, so anyone can run it in under five minutes without a native build. Everything it needs — secure storage, the image picker, the keyboard controller — is already there.
+**Expo, on Expo Go.** The app deliberately stays inside what Expo Go ships, so anyone can run it in under five minutes without a native build. Everything it needs — secure storage, the image picker, image processing, fonts — is already there.
+
+The cost of that choice is the keyboard. The library that handles keyboard motion best needs a native build, which would undo the reason for choosing Expo Go in the first place, so keyboard behaviour is solved with core APIs in a single screen shell that every screen is built inside. That makes it one thing to get right and one thing to test, on both platforms, by hand.
 
 **Nothing that can change is hardcoded.** Option lists, numeric thresholds and step requirements all come from the server. Gender, intent and interest taxonomies shift over time and by region, and a change to one of them should not require a new app release.
 
