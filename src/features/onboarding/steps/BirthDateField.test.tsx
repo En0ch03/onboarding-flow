@@ -1,80 +1,110 @@
-import { act, cleanup, fireEvent } from '@testing-library/react-native';
+import { act, cleanup, fireEvent, type RenderResult } from '@testing-library/react-native';
 
 import { strings } from '@/constants/strings';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { BirthDateField } from './BirthDateField';
-import { openingParts, type DateParts } from './dateWheel';
+import type { PartialDate } from './dateParts';
 
 const today = new Date(2026, 8, 4);
-const opening = openingParts(today);
+const empty: PartialDate = { day: null, month: null, year: null };
 
 afterEach(cleanup);
 
-async function mount(value: DateParts | null) {
+async function mount(value: PartialDate) {
   const onChange = jest.fn();
-  // RNTL 14'te render bir Promise donduruyor; beklenmezse agac bos kaliyor.
   const view = await renderWithTheme(
-    <BirthDateField value={value} opening={opening} onChange={onChange} today={today} />,
+    <BirthDateField value={value} onChange={onChange} today={today} />,
   );
   return { view, onChange };
 }
 
-async function press(element: Parameters<typeof fireEvent.press>[0]) {
+async function press(view: RenderResult, element: Parameters<typeof fireEvent.press>[0]) {
   await act(async () => {
     fireEvent.press(element);
   });
 }
 
+/** Sayfa acikken listenin satirlari; alanin kendi etiketi disarida kaliyor. */
+function rows(view: RenderResult, label: string) {
+  return view.queryAllByLabelText(label);
+}
+
 describe('BirthDateField', () => {
-  it('secim yapilmadiginda ipucu metnini gosteriyor', async () => {
-    const { view } = await mount(null);
-    expect(view.getByText(strings.steps.birthDatePlaceholder)).toBeTruthy();
+  it('uc ayri alan sunuyor', async () => {
+    const { view } = await mount(empty);
+    expect(view.getByLabelText(strings.steps.dayLabel)).toBeTruthy();
+    expect(view.getByLabelText(strings.steps.monthLabel)).toBeTruthy();
+    expect(view.getByLabelText(strings.steps.yearLabel)).toBeTruthy();
   });
 
-  it('secili tarihi okunur bicimde gosteriyor', async () => {
+  it('secilmemis alan kendi adini gosteriyor', async () => {
+    const { view } = await mount(empty);
+    expect(view.getByText(strings.steps.dayLabel)).toBeTruthy();
+  });
+
+  it('secili degerleri gosteriyor, ay adiyla', async () => {
     const { view } = await mount({ day: 14, month: 3, year: 1996 });
-    expect(view.getByText('14 Mart 1996')).toBeTruthy();
+    expect(view.getByText('14')).toBeTruthy();
+    expect(view.getByText('Mart')).toBeTruthy();
+    expect(view.getByText('1996')).toBeTruthy();
   });
 
-  it('alan bir girdi kutusu degil: yazilabilir bir alan sunmuyor', async () => {
-    const { view } = await mount(null);
-    // Klavye acacak tek sey bir TextInput olurdu; agacta hic yok.
-    expect(view.queryByLabelText(strings.steps.birthDateLabel)?.props.editable).toBeUndefined();
+  it('hicbir alan yazilabilir degil: klavye acacak bir sey yok', async () => {
+    const { view } = await mount(empty);
+    expect(view.queryAllByLabelText(strings.steps.dayLabel)[0]?.props.editable).toBeUndefined();
   });
 
-  it('sayfa acilip vazgecilince deger degismiyor', async () => {
-    const { view, onChange } = await mount(null);
-    await press(view.getByLabelText(strings.steps.birthDateLabel));
-    expect(view.getByText(strings.steps.birthDateSheetTitle)).toBeTruthy();
+  it('gune dokununca yalnizca gun sayfasi aciliyor', async () => {
+    const { view } = await mount(empty);
+    await press(view, view.getByLabelText(strings.steps.dayLabel));
 
-    await press(view.getByText(strings.common.cancel));
-    expect(onChange).not.toHaveBeenCalled();
+    // Gun satirlari geldi; ay ya da yil listesi acilmadi.
+    expect(rows(view, '1').length).toBeGreaterThan(0);
+    expect(view.queryByText('Ocak')).toBeNull();
+    expect(view.queryByText('2026')).toBeNull();
   });
 
-  it('Tamam denince carkin durdugu tarih isleniyor', async () => {
-    const { view, onChange } = await mount(null);
-    await press(view.getByLabelText(strings.steps.birthDateLabel));
-    await press(view.getByText(strings.common.done));
+  it('aya dokununca yalnizca ay sayfasi aciliyor', async () => {
+    const { view } = await mount(empty);
+    await press(view, view.getByLabelText(strings.steps.monthLabel));
 
-    expect(onChange).toHaveBeenCalledWith(opening);
+    // Ay adlari geldi; gun ya da yil listesi acilmadi. Liste sanallastirildigi
+    // icin yalnizca gorunen satirlar agacta.
+    expect(rows(view, 'Ocak').length).toBeGreaterThan(0);
+    expect(view.queryByText('2026')).toBeNull();
   });
 
-  it('cark, secili tarihin ayina ait gunleri sunuyor', async () => {
-    // Subat 2023: yirmi sekiz gun. Yirmi dokuzuncu satir carkta yok, yani
-    // "29 Subat 2023" arayuzden gecemiyor.
-    const { view } = await mount({ day: 28, month: 2, year: 2023 });
-    await press(view.getByLabelText(strings.steps.birthDateLabel));
+  it('bir satira dokunmak o alani isliyor', async () => {
+    const { view, onChange } = await mount(empty);
+    await press(view, view.getByLabelText(strings.steps.monthLabel));
+    await press(view, rows(view, 'Mart')[0]!);
 
-    expect(view.getByText('28')).toBeTruthy();
-    expect(view.queryByText('29')).toBeNull();
+    expect(onChange).toHaveBeenCalledWith({ day: null, month: 3, year: null });
   });
 
-  it('yil carki gelecege acilmiyor', async () => {
-    const { view } = await mount(null);
-    await press(view.getByLabelText(strings.steps.birthDateLabel));
+  it('yil listesi bu yildan basliyor, gelecege acilmiyor', async () => {
+    const { view } = await mount(empty);
+    await press(view, view.getByLabelText(strings.steps.yearLabel));
 
-    expect(view.getByText(String(today.getFullYear()))).toBeTruthy();
+    expect(rows(view, String(today.getFullYear())).length).toBeGreaterThan(0);
     expect(view.queryByText(String(today.getFullYear() + 1))).toBeNull();
+  });
+
+  it('ay degisip secili gun o aya sigmiyorsa gun dusuyor', async () => {
+    const { view, onChange } = await mount({ day: 31, month: 1, year: 2023 });
+    await press(view, view.getByLabelText(strings.steps.monthLabel));
+    await press(view, rows(view, 'Şubat')[0]!);
+
+    // Sessizce 28'e cekmek, kullanicinin vermedigi bir cevabi vermek olurdu.
+    expect(onChange).toHaveBeenCalledWith({ day: null, month: 2, year: 2023 });
+  });
+
+  it('siğan gun ay degisince yerinde kaliyor', async () => {
+    const { view, onChange } = await mount({ day: 14, month: 1, year: 2023 });
+    await press(view, view.getByLabelText(strings.steps.monthLabel));
+    await press(view, rows(view, 'Şubat')[0]!);
+
+    expect(onChange).toHaveBeenCalledWith({ day: 14, month: 2, year: 2023 });
   });
 });
