@@ -79,7 +79,6 @@ export function LoginScreen({ onBack, onSignedIn, initialEmail = '' }: LoginScre
       ) : null}
 
       <CredentialsFields control={form.control} mode="login" onSubmit={() => void submit()} />
-
     </Screen>
   );
 }

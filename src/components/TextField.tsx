@@ -8,8 +8,14 @@ import { useTheme } from '@/theme';
 import { AppText } from './AppText';
 import { EyeIcon } from './EyeIcon';
 
-/** Gorunurluk anahtarinin dokunma hedefi. Platformlarin asgarisi. */
-const TOGGLE_SIZE = 44;
+/**
+ * Gorunurluk anahtarinin dokunma hedefi. iOS'un asgarisi 44, Android'in 48;
+ * ustteki degeri alip alanin kendi yuksekligiyle birlikte buyuyecek sekilde
+ * kurmak yerine sabit tutuldu, cunku hedef alandan buyurse Android tasan
+ * dokunuslari iletmiyor ve anahtar sessizce oluyor. Alanin yuksekligi bugun
+ * yaklasik 55; `paddingVertical` kucultulurse bu bag yeniden olculmeli.
+ */
+const TOGGLE_SIZE = 48;
 
 type TextFieldProps = Omit<TextInputProps, 'style'> & {
   label: string;
@@ -44,12 +50,22 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
       <View style={{ justifyContent: 'center' }}>
         <TextInput
           ref={ref}
-          accessibilityLabel={label}
           placeholderTextColor={colors.inkSoft}
-          secureTextEntry={secure && !revealed}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
           {...inputProps}
+          accessibilityLabel={label}
+          // Yayilimdan sonra geliyorlar. Once yazildiklarinda cagiranin kendi
+          // `onBlur`'u (form kutuphanesi her alana bir tane veriyor) bunlari
+          // eziyordu: odak halkasi bir kez yandiktan sonra hic sonmuyor ve
+          // alanlar arasi gecisten sonra iki alan da odakli gorunuyordu.
+          secureTextEntry={secure && !revealed}
+          onFocus={(event) => {
+            setFocused(true);
+            inputProps.onFocus?.(event);
+          }}
+          onBlur={(event) => {
+            setFocused(false);
+            inputProps.onBlur?.(event);
+          }}
           style={{
             ...type.control,
             color: colors.ink,
@@ -86,7 +102,10 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
 
             <Pressable
               accessibilityRole="button"
-              accessibilityState={{ selected: revealed }}
+              // Durum bilgisi etiketin kendisinde: "Sifreyi goster" ve
+              // "Sifreyi gizle". Ustune bir `selected` eklemek, ekran
+              // okuyucunun "secildi" demesine ve kullanicinin neyin secildigini
+              // sormasina yol aciyor.
               accessibilityLabel={revealed ? strings.auth.hidePassword : strings.auth.showPassword}
               onPress={() => setRevealed((current) => !current)}
               style={({ pressed }) => ({

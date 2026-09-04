@@ -4,8 +4,8 @@ import { View } from 'react-native';
  * Acik ve kapali goz.
  *
  * Elde ciziliyor: bir ikon kutuphanesi bu tek isaret icin uygulamaya yeni bir
- * bagimlilik ve yuzlerce kullanilmayan cizim getirirdi. Halka ve bebek iki
- * kutudan ibaret; kapali hal ustune bir cizgi ekliyor.
+ * bagimlilik ve yuzlerce kullanilmayan cizim getirirdi. Halka ve goz bebegi
+ * iki kutudan ibaret; kapali hal ustune bir cizgi ekliyor.
  *
  * Cizgi, halkanin uzerinden gecerken arkasina zeminin rengini aliyor. Aksi
  * halde iki cizgi kesistigi yerde birbirine karisiyor ve isaret bulaniyor.
@@ -50,25 +50,19 @@ export function EyeIcon({
         />
       ) : (
         <>
-          <Slash length={size + 4} thickness={stroke * 3} color={background} offset={-stroke} />
-          <Slash length={size + 4} thickness={stroke} color={color} offset={0} />
+          {/* Ikisi ust uste: kalin olan zemin renginde, cizginin halkayi
+              kestigi yeri aciyor; ince olan cizginin kendisi. Ikisi de ayni
+              yerde duruyor, yoksa hale bir yanda kaliniyor. Uzunluk kutunun
+              kosegeninden kisa: dondukten sonra kutuyu tasmiyor. */}
+          <Slash length={size + 6} thickness={stroke * 3} color={background} />
+          <Slash length={size + 6} thickness={stroke} color={color} />
         </>
       )}
     </View>
   );
 }
 
-function Slash({
-  length,
-  thickness,
-  color,
-  offset,
-}: {
-  length: number;
-  thickness: number;
-  color: string;
-  offset: number;
-}) {
+function Slash({ length, thickness, color }: { length: number; thickness: number; color: string }) {
   return (
     <View
       style={{
@@ -77,7 +71,7 @@ function Slash({
         height: thickness,
         borderRadius: thickness / 2,
         backgroundColor: color,
-        transform: [{ translateY: offset }, { rotate: '-45deg' }],
+        transform: [{ rotate: '-45deg' }],
       }}
     />
   );

@@ -110,7 +110,6 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
       ) : null}
 
       <CredentialsFields control={form.control} mode="register" onSubmit={() => void submit()} />
-
     </Screen>
   );
 }
