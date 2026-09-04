@@ -1,11 +1,18 @@
-import { cleanup } from '@testing-library/react-native';
+import { cleanup, fireEvent, waitFor } from '@testing-library/react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { strings } from '@/constants/strings';
 import { useOnboardingStore, type DraftAnswers } from '@/state/onboardingStore';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
+import { completeOnboarding } from '@/api/endpoints';
+
 import { CompletionScreen } from './CompletionScreen';
+
+/** Sahte modulun tipi cagri tarafindan okunmuyor; testte yeniden baglaniyor. */
+function asMock<T extends (...args: never[]) => unknown>(fn: T) {
+  return fn as unknown as jest.Mock;
+}
 
 jest.mock('@/api/endpoints', () => ({ completeOnboarding: jest.fn(async () => {}) }));
 jest.mock('./saveStep', () => ({ saveStep: jest.fn(async () => {}) }));
@@ -55,10 +62,28 @@ const answers: DraftAnswers = {
 
 afterEach(cleanup);
 
-async function mount(draft: DraftAnswers) {
+// Sahte modul testler arasinda basarili haline donuyor: bir testin kurdugu
+// hata, sirasi degistiginde baska bir testi dusurmemeli.
+beforeEach(() => {
+  asMock(completeOnboarding).mockImplementation(async () => ({ onboarding_complete: true }));
+});
+
+type Handlers = {
+  onEnterApp?: () => void;
+  onEditProfile?: () => void;
+  onFixProfile?: () => void;
+};
+
+async function mount(draft: DraftAnswers, handlers: Handlers = {}) {
   useOnboardingStore.setState({ answers: draft, unsyncedStepIds: [] });
+
   return renderWithTheme(
-    <CompletionScreen options={options} onEnterApp={() => {}} onEditProfile={() => {}} />,
+    <CompletionScreen
+      options={options}
+      onEnterApp={handlers.onEnterApp ?? (() => {})}
+      onEditProfile={handlers.onEditProfile ?? (() => {})}
+      onFixProfile={handlers.onFixProfile ?? (() => {})}
+    />,
   );
 }
 
@@ -124,5 +149,46 @@ describe('CompletionScreen', () => {
   it('etiket ve degeri ekran okuyucuya tek parca veriyor', async () => {
     const view = await mount(answers);
     expect(view.getByLabelText(`${strings.completion.recapAudience}: Herkes`)).toBeTruthy();
+  });
+
+  it('sunucu onaylayinca uygulamaya giriyor', async () => {
+    asMock(completeOnboarding).mockImplementation(async () => ({ onboarding_complete: true }));
+    const onEnterApp = jest.fn();
+    const view = await mount(answers, { onEnterApp });
+
+    fireEvent.press(await view.findByText(strings.completion.primary));
+
+    await waitFor(() => expect(onEnterApp).toHaveBeenCalled());
+  });
+
+  it('sunucu profili eksik bulduysa uygulamaya sokmuyor', async () => {
+    // Kullanici buraya bir navigasyon hatasiyla da gelebiliyordu; ekrani
+    // gormek profilin tamamlandigi anlamina gelmemeli.
+    asMock(completeOnboarding).mockImplementation(async () => {
+      throw { kind: 'validation_failed', fields: { gender: 'required' } };
+    });
+    const onEnterApp = jest.fn();
+    const view = await mount(answers, { onEnterApp });
+
+    // Bant belirdiyse sunucu cevabi islenmis demektir.
+    await view.findByText(strings.completion.incomplete);
+    fireEvent.press(view.getByText(strings.completion.primary));
+    await view.findByText(strings.completion.incomplete);
+
+    expect(onEnterApp).not.toHaveBeenCalled();
+  });
+
+  it('eksik profilde cikis yolu tekrar denemek degil cevaplara donmek', async () => {
+    asMock(completeOnboarding).mockImplementation(async () => {
+      throw { kind: 'validation_failed', fields: { gender: 'required' } };
+    });
+    const onFixProfile = jest.fn();
+    const view = await mount(answers, { onFixProfile });
+
+    expect(await view.findByText(strings.completion.incomplete)).toBeTruthy();
+
+    fireEvent.press(view.getByText(strings.completion.incompleteAction));
+
+    await waitFor(() => expect(onFixProfile).toHaveBeenCalled());
   });
 });

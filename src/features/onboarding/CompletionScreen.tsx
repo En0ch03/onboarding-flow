@@ -23,6 +23,8 @@ type CompletionScreenProps = {
   /** Ana uygulamaya geri donulemez gecis. */
   onEnterApp: () => void;
   onEditProfile: () => void;
+  /** Sunucu profili eksik buldu: engelleyen ilk adima donus. */
+  onFixProfile: () => void;
 };
 
 /**
@@ -31,7 +33,12 @@ type CompletionScreenProps = {
  * Konfeti yerine cevaplar geri okunuyor: kullaniciya ne paylastigini
  * hatirlatiyor ve bir sonraki adimi dogal kiliyor.
  */
-export function CompletionScreen({ options, onEnterApp, onEditProfile }: CompletionScreenProps) {
+export function CompletionScreen({
+  options,
+  onEnterApp,
+  onEditProfile,
+  onFixProfile,
+}: CompletionScreenProps) {
   const { spacing } = useTheme();
 
   const answers = useOnboardingStore((state) => state.answers);
@@ -61,6 +68,15 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
 
   const failure = finish.state.status === 'error' ? finish.state.error : null;
 
+  // Uygulamaya giris sunucunun onayina bagli. Ekrana bakiyor olmak profilin
+  // tamamlandigi anlamina gelmiyor: kullanici buraya bir navigasyon
+  // hatasiyla da gelebilir ve o durumda eksik bir profille iceri girerdi.
+  const confirmed = finish.state.status === 'success';
+
+  // Eksik profil bir sunucu arizasi degil; bandin cikis yolu "tekrar dene"
+  // degil "cevaplara don" olmali, cunku tekrar denemek ayni cevabi verecek.
+  const incomplete = failure?.kind === 'validation_failed';
+
   return (
     <Screen
       align="center"
@@ -73,6 +89,13 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
             // siliyordu, ve "profilimi duzenle" yolu adimlari bos aciyordu.
             // Burasi akisin geri donulemez tek noktasi.
             onPress={() => {
+              // Buton gri degil: onay gelmemisse basmak onayi yeniden
+              // istiyor ve sonucu bant anlatiyor. Devre disi bir buton
+              // neyin eksik oldugunu soylemiyor.
+              if (!confirmed) {
+                void finish.run();
+                return;
+              }
               clearDraft();
               onEnterApp();
             }}
@@ -101,8 +124,12 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
           ikinci bir ust bosluk eklemek, bandi basliktan kopariyor. */}
       {failure ? (
         <ErrorBanner
-          message={presentError(failure).message}
-          action={{ label: strings.common.retry, onPress: () => void finish.run() }}
+          message={incomplete ? strings.completion.incomplete : presentError(failure).message}
+          action={
+            incomplete
+              ? { label: strings.completion.incompleteAction, onPress: onFixProfile }
+              : { label: strings.common.retry, onPress: () => void finish.run() }
+          }
         />
       ) : null}
 

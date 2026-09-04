@@ -89,3 +89,19 @@ export function stackUpTo(
 export function canLeaveStep(step: StepDefinition, answers: DraftAnswers): boolean {
   return step.skippable || step.isComplete(answers);
 }
+
+/**
+ * Ileri gitmeye engel olan ilk adim; yoksa `null`.
+ *
+ * Sunucu profili eksik bulup tamamlamayi reddettiginde kullanicinin
+ * donecegi yer burasi. Son adima birakmak dongu kurardi: son adim zaten
+ * doluysa "Bitir" ayni reddi bir daha alirdi.
+ */
+export function firstIncompleteStepId(
+  steps: StepDefinition[],
+  answers: DraftAnswers,
+): string | null {
+  const blocking = computeVisibleSteps(steps, answers).find((step) => !canLeaveStep(step, answers));
+
+  return blocking?.id ?? null;
+}
