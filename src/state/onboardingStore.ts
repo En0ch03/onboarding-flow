@@ -16,9 +16,6 @@ export type DraftAnswers = {
   birthDate?: { day: string; month: string; year: string };
   gender?: string;
   audience?: string[];
-  orientation?: string[];
-  /** Isaretlenmediyse yonelim alani istege hic eklenmez. */
-  orientationConsent?: boolean;
   intent?: string[];
   photos?: { id: string; url: string }[];
   interests?: string[];

@@ -14,7 +14,6 @@ const keys = {
   birthDate: 'birth_date',
   gender: 'gender',
   audience: 'audience',
-  orientation: 'orientation',
   intent: 'intent',
   interests: 'interests',
   photos: 'photos',
@@ -70,13 +69,6 @@ export function draftFromProfile(profile: Profile): DraftAnswers {
   const audience = readStringArray(preferences[keys.audience]);
   if (audience) answers.audience = audience;
 
-  const orientation = readStringArray(preferences[keys.orientation]);
-  if (orientation) {
-    answers.orientation = orientation;
-    // Sunucuda yonelim varsa riza bir kez verilmis demektir.
-    answers.orientationConsent = true;
-  }
-
   const intent = readStringArray(preferences[keys.intent]);
   if (intent) answers.intent = intent;
 
@@ -110,10 +102,6 @@ export function patchFromAnswers(answers: DraftAnswers, stepId: string): Profile
       const preferences: Preferences = {};
       if (answers.gender !== undefined) preferences[keys.gender] = answers.gender;
       if (answers.audience !== undefined) preferences[keys.audience] = answers.audience;
-      // Riza isaretlenmemisse alan govdeye hic eklenmez - bos gonderilmez.
-      if (answers.orientationConsent === true && answers.orientation !== undefined) {
-        preferences[keys.orientation] = answers.orientation;
-      }
       return { preferences };
     }
 
