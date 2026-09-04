@@ -13,6 +13,7 @@ export const strings = {
     skipForNow: 'Şimdilik geç',
     retry: 'Tekrar dene',
     finish: 'Bitir',
+    close: 'Kapat',
   },
 
   welcome: {

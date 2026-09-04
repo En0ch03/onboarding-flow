@@ -44,10 +44,16 @@ describe('yearRange', () => {
 });
 
 describe('dayCount', () => {
-  it('ay ve yil secilmeden takvimin en uzun ayini sunuyor', () => {
+  it('ay secilmeden takvimin en uzun ayini sunuyor', () => {
     expect(dayCount(null, null)).toBe(31);
-    expect(dayCount(2, null)).toBe(31);
     expect(dayCount(null, 2024)).toBe(31);
+  });
+
+  it('yil verilmemisken ayin en uzun halini sunuyor', () => {
+    // Yili beklemek "31 Subat" ara durumunu mumkun kiliyor ve gun, kullanici
+    // yili sectigi anda aciklamasiz kayboluyordu.
+    expect(dayCount(2, null)).toBe(29);
+    expect(dayCount(4, null)).toBe(30);
   });
 
   it('ay ve yil seciliyken o ayin uzunlugunu veriyor', () => {

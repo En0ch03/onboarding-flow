@@ -52,7 +52,14 @@ describe('BirthDateField', () => {
 
   it('hicbir alan yazilabilir degil: klavye acacak bir sey yok', async () => {
     const { view } = await mount(empty);
-    expect(view.queryAllByLabelText(strings.steps.dayLabel)[0]?.props.editable).toBeUndefined();
+    // Klavye acacak tek sey bir TextInput olurdu; uc alanin ucu de dugme.
+    for (const label of [
+      strings.steps.dayLabel,
+      strings.steps.monthLabel,
+      strings.steps.yearLabel,
+    ]) {
+      expect(view.getByLabelText(label).props.accessibilityRole).toBe('button');
+    }
   });
 
   it('gune dokununca yalnizca gun sayfasi aciliyor', async () => {
@@ -98,6 +105,30 @@ describe('BirthDateField', () => {
 
     // Sessizce 28'e cekmek, kullanicinin vermedigi bir cevabi vermek olurdu.
     expect(onChange).toHaveBeenCalledWith({ day: null, month: 2, year: 2023 });
+  });
+
+  it('gun 31 iken Subat secilmek istenirse 31 zaten listede yok', async () => {
+    // Yili beklemeden liste kisaliyor: "31 Subat" ara durumu hic olusmuyor ve
+    // gun, kullanici yili sectigi anda aciklamasiz kaybolmuyor.
+    const { view } = await mount({ day: null, month: 2, year: null });
+    await press(view, view.getByLabelText(strings.steps.dayLabel));
+    expect(view.queryByText('30')).toBeNull();
+  });
+
+  it('yil degisip secili gun o aya sigmiyorsa gun dusuyor', async () => {
+    const { view, onChange } = await mount({ day: 29, month: 2, year: null });
+    await press(view, view.getByLabelText(strings.steps.yearLabel));
+    await press(view, rows(view, '2023')[0]!);
+
+    expect(onChange).toHaveBeenCalledWith({ day: null, month: 2, year: 2023 });
+  });
+
+  it('artik yil secilirse 29 Subat yerinde kaliyor', async () => {
+    const { view, onChange } = await mount({ day: 29, month: 2, year: null });
+    await press(view, view.getByLabelText(strings.steps.yearLabel));
+    await press(view, rows(view, '2024')[0]!);
+
+    expect(onChange).toHaveBeenCalledWith({ day: 29, month: 2, year: 2024 });
   });
 
   it('siğan gun ay degisince yerinde kaliyor', async () => {

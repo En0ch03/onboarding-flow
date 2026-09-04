@@ -33,14 +33,22 @@ export function yearRange(today: Date): number[] {
 /**
  * Gun listesinin uzunlugu.
  *
- * Ay ve yil henuz secilmediyse takvimin en uzun ayi sunuluyor: kullaniciyi
- * "once ayi sec" diye sıraya sokmak, uc bagimsiz alanin anlamini bozardi.
- * Ay secildiginde liste kisaliyor ve sigmayan gun dusuyor.
+ * Ay secilmediyse takvimin en uzun ayi sunuluyor: kullaniciyi "once ayi sec"
+ * diye siraya sokmak, uc bagimsiz alanin anlamini bozardi.
+ *
+ * Ay seciliyken yil henuz verilmemisse artik yil varsayiliyor. Yili beklemek
+ * "31 Subat" ara durumunu mumkun kiliyordu ve gun, kullanici yili sectigi
+ * anda aciklamasiz kayboluyordu. Artik yil varsaymak yalnizca 29 Subat'i
+ * acik birakiyor; onu pesinen elemek, o gun dogmus birine kendi gununu
+ * gostermemek olurdu.
  */
 export function dayCount(month: number | null, year: number | null): number {
-  if (month === null || year === null) return 31;
-  return daysInMonth(year, month);
+  if (month === null) return 31;
+  return daysInMonth(year ?? LEAP_YEAR, month);
 }
+
+/** Yil bilinmiyorken ayin en uzun halini veren bir yil. */
+const LEAP_YEAR = 2000;
 
 function readPart(text: string | undefined): number | null {
   if (!text || text.trim() === '') return null;

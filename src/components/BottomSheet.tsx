@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { strings } from '@/constants/strings';
 import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
@@ -58,6 +59,10 @@ export function BottomSheet({ visible, title, onClose, children }: BottomSheetPr
   const [drag] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
+    // Yarida kesilmis bir kapanistan kalan kayma yeni acilisa tasinmiyor:
+    // tasinsaydi sayfa dinlenme yerinin altinda acilir ve orada kalirdi.
+    if (visible) drag.setValue(0);
+
     const animation = Animated.timing(progress, {
       toValue: visible ? 1 : 0,
       duration: visible ? motion.base : motion.fast,
@@ -80,9 +85,22 @@ export function BottomSheet({ visible, title, onClose, children }: BottomSheetPr
       PanResponder.create({
         // Yalnizca asagi dogru ve belirgin bir hareket sayfayi tutuyor; kucuk
         // dokunuslar listeye gitmeye devam ediyor.
-        onMoveShouldSetPanResponder: (_event, gesture) => gesture.dy > 8,
+        // Asagi dogru ve dikeye yakin bir hareket sayfayi tutuyor. Yatay
+        // sapan bir kaydirmayi da yakalamak, sayfayi yanlislikla kapatiyor.
+        onMoveShouldSetPanResponder: (_event, gesture) =>
+          gesture.dy > 8 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
         onPanResponderMove: (_event, gesture) => {
           if (gesture.dy > 0) drag.setValue(gesture.dy);
+        },
+        // Hareket disaridan sonlandirilirsa (sistem jesti, sayfanin
+        // kapanmasi) `Release` hic gelmiyor ve kayma oldugu yerde donuyor.
+        onPanResponderTerminate: () => {
+          Animated.timing(drag, {
+            toValue: 0,
+            duration: motion.fast,
+            easing: Easing.out(Easing.cubic),
+            useNativeDriver: true,
+          }).start();
         },
         onPanResponderRelease: (_event, gesture) => {
           // Uzun bir surukleme de, kisa ama hizli bir savurma da kapatiyor;
@@ -117,10 +135,15 @@ export function BottomSheet({ visible, title, onClose, children }: BottomSheetPr
             backgroundColor: '#000000',
             opacity: progress.interpolate({ inputRange: [0, 1], outputRange: [0, 0.45] }),
           }}
+          // Kapanis suresince perde gorunmez ama hala dokunuslari yutuyordu;
+          // arkadaki ekrana yapilan dokunus ikinci bir kapanis cagiriyordu.
+          pointerEvents={visible ? 'auto' : 'none'}
         >
+          {/* Perdenin etiketi sayfanin basligi degil yaptigi is: dokununca
+              sayfa kapaniyor ve ekran okuyucu bunu duymali. */}
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={title}
+            accessibilityLabel={strings.common.close}
             onPress={onClose}
             style={{ flex: 1 }}
           />
