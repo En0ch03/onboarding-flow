@@ -136,7 +136,7 @@ That holds in both directions. No option id appears anywhere in the app: an opti
 
 **Every response is validated at the boundary.** Bodies are parsed against a schema before they reach application code, so a `null` where an object was expected surfaces as a handled error instead of a crash three screens later.
 
-**Every asynchronous action models four states.** Idle, loading, error, success, none of them skipped. Errors are written for someone who does not know what a status code is, and every one of them offers a way forward.
+**Every asynchronous action models four states.** Idle, loading, error, success, none of them skipped. Errors are written for someone who does not know what a status code is, and none of them is a dead end: most carry an action beside the message, and where correcting what was typed is the way forward, the input is left exactly where it was.
 
 **A failed save does not stop the flow.** If a step cannot be sent, the user keeps going and the step is remembered as unsent; the app retries before it will let the profile be completed. Losing the connection for a moment should not cost someone their progress or their place.
 

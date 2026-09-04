@@ -154,7 +154,7 @@
 <text x="680" y="1168" text-anchor="middle" font-size="12" fill="#6B6259">Akış DURMAZ — kullanıcı devam eder.</text>
 <text x="680" y="1184" text-anchor="middle" font-size="12" fill="#6B6259">Tamamlanmadan önce zorunlu olarak tekrar denenir</text>
 <text x="56" y="1240" font-size="12" fill="#6B6259">İlerleme yüzdeyle değil sayaçla gösteriliyor. Yüzde, koşullu adımlar yüzünden geri gidebilir ve bu kullanıcıya akışın uzadığını hissettirir.</text>
-<text x="56" y="1256" font-size="12" fill="#6B6259">Adımlar rota değil veri: diziye bir eleman eklemek akışa bir adım eklemeye yetiyor — sayaç, geri davranışı ve yığın kurulumu hepsi aynı yerden okuyor.</text>
+<text x="56" y="1256" font-size="12" fill="#6B6259">Adımlar rota değil veri: diziye bir eleman eklemek akışa bir adım eklemeye yetiyor — sayaç, geri davranışı ve hangi adımların görüneceği hepsi aynı yerden okuyor.</text>
 <text x="56" y="1310" font-size="13" letter-spacing="1.4" fill="#7A4A3A">4 — TAMAMLANMA</text>
 <rect x="56" y="1328" width="240" height="74" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
 <text x="176" y="1356" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Tamamlanma ekranı</text>
@@ -184,7 +184,7 @@
 <rect x="56" y="1590" width="440" height="76" rx="16" fill="#FBF8F3" stroke="#E3DCD1" stroke-width="1"/>
 <text x="276" y="1618" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Uygulama kapatılıp açılır</text>
 <text x="276" y="1638" text-anchor="middle" font-size="12" fill="#6B6259">Aynı adım, aynı değerler. Taslak diskte,</text>
-<text x="276" y="1654" text-anchor="middle" font-size="12" fill="#6B6259">token keystore’da; yığın yeniden kurulur.</text>
+<text x="276" y="1654" text-anchor="middle" font-size="12" fill="#6B6259">token keystore’da; etkin adım geri yüklenir.</text>
 <rect x="526" y="1590" width="440" height="76" rx="16" fill="#FBF8F3" stroke="#E3DCD1" stroke-width="1"/>
 <text x="746" y="1618" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Access token süresi dolar</text>
 <text x="746" y="1638" text-anchor="middle" font-size="12" fill="#6B6259">Kullanıcı görmez. İstemci sessizce yeniler</text>

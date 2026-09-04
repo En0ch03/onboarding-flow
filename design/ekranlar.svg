@@ -200,7 +200,6 @@
 <text x="884" y="1212" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
 <rect x="931.3333333333334" y="1170" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
 <text x="970.6666666666667" y="1212" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<text x="758" y="1266" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">sürükleyerek sıralayabilirsin</text>
 <rect x="758" y="1406" width="252" height="50" rx="25" fill="#C08668"/>
 <text x="884" y="1437" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
 <text x="736" y="1518" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">İlk slot “Kapak” rozetiyle işaretli:</text>
@@ -348,7 +347,7 @@
 <text x="544" y="2155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
 <text x="396" y="2236" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Hata girdiyi silmiyor ve akışı kilitlemiyor.</text>
 <text x="396" y="2251" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Teknik terim yok, durum kodu yok;</text>
-<text x="396" y="2266" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">her hata bir eylem sunuyor.</text>
+<text x="396" y="2266" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">her hata ya bir eylem sunuyor ya da girdiyi yerinde bırakıyor.</text>
 <text x="736" y="1578" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Durum — yükleme sürüyor</text>
 <text x="736" y="1595" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">dört durumun üçüncüsü</text>
 <rect x="736" y="1604" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>

@@ -79,7 +79,6 @@ export const strings = {
       'En az iki tane. İlk fotoğraf kapak olur. Yüzünün göründüğü bir kare iyi çalışıyor.',
     photosCover: 'Kapak',
     photosHint: 'Devam etmek için en az iki fotoğraf gerekiyor.',
-    photosReorderHint: 'sürükleyerek sıralayabilirsin',
     photosSkipCost: 'Fotoğrafsız profiller çok daha az görüntüleniyor.',
 
     interestsTitle: 'Neye vakit ayırırsın?',

@@ -1,11 +1,15 @@
 import type { ApiError, ApiErrorKind } from '@/api/errors';
 
 /**
- * Her hata turunun insan dilindeki karsiligi ve cikis yolu.
+ * Her hata turunun insan dilindeki karsiligi ve varsa cikis yolu.
  *
- * Bir hata bir cikmaz olmamali: mesaj neyin yanlis gittigini soyler ve yaninda
- * kullanicinin atabilecegi bir adim durur. Ham sunucu metni, durum kodu veya
- * teknik terim hicbir zaman ekrana ulasmaz.
+ * Bir hata bir cikmaz olmamali. Cogu turde bunun karsiligi mesajin yanindaki
+ * bir adim; ama hepsinde degil. Kullanicinin yazdigi seyi duzeltmesi yeterli
+ * oldugunda -- yanlis sifre, gozden gecirilecek bir alan -- cikis yolu formun
+ * kendisi ve girdiyi yerinde birakmak. Baska bir yere goturmeyen bir baglanti
+ * ilan etmek, hic ilan etmemekten kotu.
+ *
+ * Ham sunucu metni, durum kodu veya teknik terim hicbir zaman ekrana ulasmaz.
  */
 type ErrorPresentation = {
   /** Kullaniciya gosterilen metin. */
