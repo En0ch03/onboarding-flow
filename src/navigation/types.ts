@@ -5,4 +5,7 @@
 export type AuthStackParamList = {
   WelcomePromise: undefined;
   WelcomeDifference: undefined;
+  Register: undefined;
+  /** Kayittan gelindiyse adres tasinir; kullanici tekrar yazmaz. */
+  Login: { email?: string } | undefined;
 };

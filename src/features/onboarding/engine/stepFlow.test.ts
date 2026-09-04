@@ -16,6 +16,8 @@ const placeholder = () => null;
 function step(id: string, overrides: Partial<StepDefinition> = {}): StepDefinition {
   return {
     id,
+    title: id,
+    subtitle: '',
     component: placeholder,
     isComplete: () => true,
     skippable: false,
