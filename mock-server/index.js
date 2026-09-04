@@ -10,7 +10,7 @@
 const express = require('express');
 const multer = require('multer');
 
-const { chaos } = require('./chaos');
+const { chaos, setArmed, readArmed, MODES } = require('./chaos');
 const { optionGroups } = require('./options');
 const state = require('./state');
 
@@ -31,6 +31,25 @@ app.use((req, _res, next) => {
   if (entry) req.userId = entry.userId;
   next();
 });
+
+/**
+ * Kaos anahtari. Telefonda test yaparken hata yolunu tetiklemenin tek yolu:
+ * uygulama kendi isteklerine `x-chaos` basligi koymuyor, dolayisiyla baslik
+ * yontemi yalnizca curl'den erisilebiliyor.
+ *
+ *   curl -X POST http://localhost:4000/api/v1/__chaos -H 'content-type: application/json' -d '{"mode":"500"}'
+ *   curl -X POST http://localhost:4000/api/v1/__chaos -H 'content-type: application/json' -d '{"mode":"off"}'
+ */
+app.post('/api/v1/__chaos', (req, res) => {
+  const result = setArmed(req.body?.mode ?? 'off', req.body?.once);
+  if (result === null) {
+    return res.status(422).json({ error: 'unknown_mode', allowed: [...MODES, 'off'] });
+  }
+  console.log(`Chaos switch: ${result.mode ?? 'off'}${result.once ? ' (tek atislik)' : ''}`);
+  res.status(200).json(result);
+});
+
+app.get('/api/v1/__chaos', (_req, res) => res.status(200).json(readArmed()));
 
 app.use(chaos(state));
 

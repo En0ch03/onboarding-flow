@@ -81,6 +81,20 @@ curl -H 'x-chaos: 500' http://localhost:4000/api/v1/profile
 | `expire-token` | The request succeeds, then the access token is invalidated — so the *next* request has to be rescued by a silent refresh. |
 | `end-session` | Both tokens are invalidated: the session really is over, and the app has to end it politely with the draft intact. |
 
+The header breaks exactly one request, which is what you want from `curl`. But the app does not send that header — deliberately, since it would mean shipping a dependency on something that will not exist in production — so the header alone cannot reach the app running on a phone.
+
+For that, throw the switch instead. It applies to every request until you turn it off, and you throw it from your machine while the app carries on knowing nothing:
+
+```bash
+curl -X POST http://localhost:4000/api/v1/__chaos \
+  -H 'content-type: application/json' -d '{"mode":"500"}'
+
+curl -X POST http://localhost:4000/api/v1/__chaos \
+  -H 'content-type: application/json' -d '{"mode":"off"}'
+```
+
+It takes the same modes. Add `"once": true` to have it fire on a single request and disarm itself — useful for `expire-token`, where you want exactly one request to be rescued by a silent refresh rather than all of them.
+
 To reach a token expiry through the app rather than with `curl`, shorten the lifetime instead. It defaults to 900 seconds:
 
 ```bash
