@@ -50,26 +50,61 @@ export const strings = {
     identitySubtitle: 'Adın profilinde görünür. Doğum tarihin görünmez, yalnızca yaşın görünür.',
     nameLabel: 'Ad',
     birthDateLabel: 'Doğum tarihi',
+    dayLabel: 'Gün',
+    monthLabel: 'Ay',
+    yearLabel: 'Yıl',
+    identityHint: 'Devam etmek için adını ve geçerli bir doğum tarihi yazman gerekiyor.',
 
     audienceTitle: 'Kimlere görünmek istersin?',
     audienceSubtitle:
       'Bu iki cevap eşleşme havuzunu belirliyor. İstediğin zaman değiştirebilirsin.',
     genderLabel: 'Ben',
     audienceLabel: 'Beni görsün',
+    audienceHint:
+      'İki soruyu da yanıtlaman gerekiyor: kendini nasıl tanımladığın ve kimlere görünmek istediğin.',
+    orientationConsent: 'Yönelimimi paylaşmak istiyorum',
+    orientationConsentHint: 'İstemezsen bu alanı hiç göndermiyoruz. Sonradan da ekleyebilirsin.',
 
     intentTitle: 'Ne arıyorsun?',
     intentSubtitle: 'Bu cevap profilinde görünür ve kimleri göreceğini etkiler.',
+    intentHint: 'En az bir seçenek işaretlemen gerekiyor.',
 
     photosTitle: 'Birkaç fotoğraf ekle',
     photosSubtitle:
       'En az iki tane. İlk fotoğraf kapak olur — yüzünün göründüğü bir kare iyi çalışıyor.',
     photosCover: 'Kapak',
+    photosHint: 'Devam etmek için en az iki fotoğraf gerekiyor.',
     photosReorderHint: 'sürükleyerek sıralayabilirsin',
     photosSkipCost: 'Fotoğrafsız profiller çok daha az görüntüleniyor.',
 
     interestsTitle: 'Neye vakit ayırırsın?',
     interestsSubtitle: 'Birkaç tane seç. Sohbet başlatmayı kolaylaştırıyor.',
     interestsSkipCost: 'Ortak ilgi alanı, ilk mesajı yazmayı kolaylaştırıyor.',
+  },
+
+  errors: {
+    optionsUnavailableTitle: 'Seçenekleri getiremedik',
+    optionsUnavailableBody:
+      'Sunucuya ulaşamadığımız için bu adımın seçeneklerini gösteremiyoruz. Bağlantını kontrol edip tekrar dene.',
+  },
+
+  exitFlow: {
+    title: 'Akıştan çıkılsın mı?',
+    body: 'Cevapların kayıtlı; geri döndüğünde kaldığın yerden devam edersin.',
+    stay: 'Devam edeyim',
+    leave: 'Çık',
+  },
+
+  photoPermission: {
+    title: 'Galeriye erişemiyoruz',
+    body: 'Fotoğraf ekleyebilmek için galeri iznini açman gerekiyor.',
+    cancel: 'Vazgeç',
+    openSettings: 'Ayarları aç',
+  },
+
+  home: {
+    title: 'Onboarding',
+    subtitle: 'İlk önerilerin yarın sabah burada olacak.',
   },
 
   completion: {

@@ -28,12 +28,16 @@ type OnboardingState = {
   answers: DraftAnswers;
   activeStepId: string | null;
   completedStepIds: string[];
+  /** Sunucuya yazilamamis adimlar; tamamlanmadan once tekrar denenir. */
+  unsyncedStepIds: string[];
   /** Diskteki taslak okunana kadar hicbir yonlendirme yapilmaz. */
   hydrated: boolean;
 
   setAnswers: (patch: DraftAnswers) => void;
   setActiveStep: (stepId: string) => void;
   markStepCompleted: (stepId: string) => void;
+  markStepUnsynced: (stepId: string) => void;
+  markStepSynced: (stepId: string) => void;
   /** Sunucu akisi tamamlanmis sayiyorsa yerel taslak bir onbellekten ibarettir. */
   clearDraft: () => void;
 };
@@ -42,6 +46,7 @@ const emptyDraft = {
   answers: {} as DraftAnswers,
   activeStepId: null,
   completedStepIds: [] as string[],
+  unsyncedStepIds: [] as string[],
 };
 
 export const useOnboardingStore = create<OnboardingState>()(
@@ -64,6 +69,16 @@ export const useOnboardingStore = create<OnboardingState>()(
         set({ completedStepIds: [...completed, stepId] });
       },
 
+      markStepUnsynced(stepId) {
+        const pending = get().unsyncedStepIds;
+        if (pending.includes(stepId)) return;
+        set({ unsyncedStepIds: [...pending, stepId] });
+      },
+
+      markStepSynced(stepId) {
+        set({ unsyncedStepIds: get().unsyncedStepIds.filter((item) => item !== stepId) });
+      },
+
       clearDraft() {
         set({ ...emptyDraft });
       },
@@ -77,6 +92,7 @@ export const useOnboardingStore = create<OnboardingState>()(
         answers: state.answers,
         activeStepId: state.activeStepId,
         completedStepIds: state.completedStepIds,
+        unsyncedStepIds: state.unsyncedStepIds,
       }),
       onRehydrateStorage: () => (state) => {
         // Okuma basarisiz olsa bile bayrak kalkar: bozuk bir kayit yuzunden

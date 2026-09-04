@@ -19,11 +19,21 @@ export type StepProps = {
 
 export type StepDefinition = {
   id: string;
+  /** Ekranin basligi ve alt satiri; ikisi de metin sozlugunden gelir. */
+  title: string;
+  subtitle: string;
   component: ComponentType<StepProps>;
   /** Adimin devam edebilmesi icin gereken sart. */
   isComplete: (answers: DraftAnswers) => boolean;
+  /**
+   * Sart saglanmadan ileri basildiginda gosterilen satir. Buton gri
+   * yapilmiyor: devre disi bir buton neyin eksik oldugunu soylemiyor.
+   */
+  incompleteHint?: string;
   /** Atlanabilir adimlarda cikis yolu gizlenmez. */
   skippable: boolean;
+  /** Atlamanin ne kaybettirdigini soyleyen tek satir. Zorlama degil bilgilendirme. */
+  skipCost?: string;
   /**
    * Kosullu adim. Verilmezse adim her zaman gorunur.
    * Gorunmeyen bir adim ilerleme sayacina da girmez.
