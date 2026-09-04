@@ -232,9 +232,42 @@ describe('sunucudan dusen secenekler', () => {
 });
 
 describe('adoptServerProfile', () => {
+  it('cevaplarin isaret ettigi adimdan devam ediyor', async () => {
+    // Cevaplari almak yetmiyor: yer alinmazsa ekran "Adim 1 / 5"te aciliyor
+    // ve kullanici doldurulmus adimlari tek tek geciyor.
+    await signIn();
+    readCachedOptionGroups.mockReturnValue({});
+    fetchProfile.mockResolvedValue({
+      ...incompleteProfile,
+      preferences: {
+        birth_date: { day: '14', month: '3', year: '1996' },
+        gender: 'woman',
+        audience: ['everyone'],
+      },
+    });
+
+    await adoptServerProfile();
+
+    // Ilk iki adim dolu; devam edilecek yer ucuncusu.
+    expect(useOnboardingStore.getState().activeStepId).toBe('intent');
+  });
+
+  it('cihazdaki yeri sunucu cevabiyla geri almiyor', async () => {
+    // Kullanicinin en son durdugu nokta cihazda; sunucudaki cevaplar onu
+    // geri sarmamali.
+    await signIn();
+    readCachedOptionGroups.mockReturnValue({});
+    useOnboardingStore.getState().setActiveStep('photos');
+    fetchProfile.mockResolvedValue(incompleteProfile);
+
+    await adoptServerProfile();
+
+    expect(useOnboardingStore.getState().activeStepId).toBe('photos');
+  });
+
   it('brings answers given on another device into the draft', async () => {
-    // The sign-in path used to skip this, so someone signing in on a new
-    // phone started at step one and answered everything again.
+    // Giris yolu bu cagriyi bir sure hic yapmiyordu: yeni bir telefona
+    // giren kullanici cevaplarini gormuyordu.
     await signIn();
     fetchProfile.mockResolvedValue(incompleteProfile);
 
@@ -263,7 +296,7 @@ describe('adoptServerProfile', () => {
   });
 
   it('keeps the local draft when the profile cannot be read', async () => {
-    // Losing the network should not cost someone the answers on the device.
+    // Baglantiyi kaybetmek, cihazdaki cevaplara mal olmamali.
     await signIn();
     useOnboardingStore.getState().setAnswers({ name: 'Deniz' });
     fetchProfile.mockRejectedValue(new AxiosError('offline'));

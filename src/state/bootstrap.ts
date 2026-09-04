@@ -1,8 +1,12 @@
 import { fetchOptionGroups, readCachedOptionGroups } from '@/api/config';
+import type { OptionGroups } from '@/api/schemas';
 import { fetchProfile } from '@/api/endpoints';
 import { normalizeApiError } from '@/api/errors';
 
+import { firstIncompleteStepId } from '@/features/onboarding/engine/stepFlow';
 import { reconcileDraftWithOptions } from '@/features/onboarding/steps/reconcileDraft';
+import { resolveSteps } from '@/features/onboarding/steps/resolveSteps';
+import { steps } from '@/features/onboarding/steps/steps';
 
 import { connectAuthBridge, useAuthStore } from './authStore';
 import { useOnboardingStore, whenDraftHydrated } from './onboardingStore';
@@ -67,14 +71,20 @@ export type ProfileAdoption = 'complete' | 'in-progress' | 'session-lost';
  * Sunucudaki profili yerel taslaga benimsetir.
  *
  * Iki yol da buradan geciyor: acilis sekansi ve giris. Giris yolunda bu
- * cagri bir sure hic yoktu ve sonucu su oluyordu: baska bir cihazda -- ya da
- * uygulamayi silip yeniden kuran ayni cihazda -- verilmis cevaplar yerel
- * taslakta bulunmadigi icin kullanici birinci adimdan basliyor ve verdigi
- * cevaplari yeniden veriyordu. Ayni akis soguk acilista dogru calisiyordu,
- * yani davranis yola gore ayrisiyordu.
+ * cagri bir sure hic yoktu; baska bir cihazda verilmis cevaplar yerel
+ * taslakta bulunmadigi icin gorunmuyorlardi.
+ *
+ * Cevaplari almak yetmiyor, **yeri** de almak gerekiyor. Yeni bir cihazda
+ * `activeStepId` bos ve motor bos kimligi ilk gorunur adima dusuruyor -- ilk
+ * *eksik* adima degil. Yani cevaplar dolu gelse bile ekran "Adim 1 / 5"te
+ * aciliyor ve kullanici doldurulmus uc adimi tek tek geciyordu. Bu, soguk
+ * acilista da boyleydi: eksik olan sey giris yolu degil, yerin hic
+ * benimsenmemesiydi.
  *
  * Cakismada sunucu kazanir: cihazda kalmis eski bir cevap, baska bir
- * cihazdan verilmis yeni cevabin uzerine yazmamali.
+ * cihazdan verilmis yeni cevabin uzerine yazmamali. Ama yer icin tersi
+ * gecerli: cihazda bir yer varsa ona dokunulmuyor, cunku kullanicinin en son
+ * durdugu yer orasi.
  */
 export async function adoptServerProfile(): Promise<ProfileAdoption> {
   try {
@@ -101,7 +111,30 @@ export async function adoptServerProfile(): Promise<ProfileAdoption> {
   const groups = readCachedOptionGroups();
   if (groups !== null) reconcileDraftWithOptions(groups);
 
+  resumeWhereTheFlowStopped(groups);
+
   return 'in-progress';
+}
+
+/**
+ * Taslakta bir yer yoksa, cevaplarin isaret ettigi yeri kurar.
+ *
+ * Yalnizca bos oldugunda: cihazda bir yer varsa kullanicinin en son durdugu
+ * nokta odur ve sunucudaki cevaplar onu geri almamali.
+ *
+ * Butun adimlar doluysa yer son adim oluyor. Ilk adima birakmak, cevabini
+ * vermis birini bastan gezdirmek olurdu; son adim ise "Bitir"in bir dokunus
+ * uzakta oldugu yer.
+ */
+function resumeWhereTheFlowStopped(groups: OptionGroups | null): void {
+  const store = useOnboardingStore.getState();
+  if (store.activeStepId !== null) return;
+
+  const flow = resolveSteps(steps, groups ?? {});
+  const blocking = firstIncompleteStepId(flow, store.answers);
+
+  const target = blocking ?? flow[flow.length - 1]?.id;
+  if (target !== undefined) store.setActiveStep(target);
 }
 
 async function loadOptionGroups(): Promise<boolean> {

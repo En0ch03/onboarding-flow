@@ -1,5 +1,7 @@
 import type { ApiError, ApiErrorKind } from '@/api/errors';
 
+import { MIN_PASSWORD_LENGTH } from '@/features/auth/credentialsForm';
+
 import { strings } from './strings';
 
 /**
@@ -98,7 +100,8 @@ const fieldReasons: Record<string, (label: string) => string> = {
  * kullaniciya ne yapacagini soylemiyor, sinir soyluyor.
  */
 const specificMessages: Record<string, string> = {
-  'password:too_short': 'Şifren çok kısa. En az 8 karakter olmalı.',
+  // Sinir tek yerde: sozluk cumleyi kuruyor, sayiyi kural veriyor.
+  'password:too_short': strings.auth.passwordTooShort(MIN_PASSWORD_LENGTH),
   'email:invalid': strings.auth.emailInvalid,
 };
 

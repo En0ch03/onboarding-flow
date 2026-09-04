@@ -180,7 +180,12 @@ export function CompletionScreen({
           message={incomplete === null ? presentError(failure).message : incompleteMessage}
           action={
             incomplete === null
-              ? { label: strings.common.retry, onPress: () => void finish.run() }
+              ? {
+                  // Etiket sozlukten: hangi hatanin ne dedigini tek bir yer
+                  // biliyor. Davranis ekranin kaliyor.
+                  label: presentError(failure).action ?? strings.common.retry,
+                  onPress: () => void finish.run(),
+                }
               : {
                   label: strings.completion.incompleteAction,
                   onPress: () => onFixProfile(blocked),

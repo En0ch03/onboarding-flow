@@ -30,9 +30,11 @@ export const strings = {
   },
 
   auth: {
-    // Ayni cumle hem alan dogrulamasinda hem sunucu 422'sinde gerekiyor.
-    // Iki yere yazilirsa biri degisip digeri kalir.
+    // Bu iki cumle hem alan dogrulamasinda hem sunucu 422'sinde gerekiyor.
+    // Iki yere yazilirsa biri degisip digeri kalir; sifre cumlesindeki sayi
+    // da sinirin kendisinden geliyor.
     emailInvalid: 'Bu e-posta adresi geçerli görünmüyor. Yazımını kontrol eder misin?',
+    passwordTooShort: (length: number) => `Şifren çok kısa. En az ${length} karakter olmalı.`,
     registerTitle: 'Hesabını oluşturalım',
     registerSubtitle: 'E-postanı yalnızca giriş için kullanıyoruz. Profilinde görünmez.',
     registerSubmit: 'Hesap oluştur',

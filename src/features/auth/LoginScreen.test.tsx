@@ -67,13 +67,12 @@ describe('LoginScreen', () => {
     await signIn(view, 'deniz@example.test', 'yanlisparola');
 
     // Ekran seviyesinde bakiliyor: sozluge bakan bir iddia, bandin ne
-    // gosterdigini degil sozlugun ne yazdigini sinar ve ekran o alani zaten
-    // okumuyor. Bant bir cikis yolu gosterseydi onu bir dugme olarak
-    // cizerdi.
+    // gosterdigini degil sozlugun ne yazdigini sinar.
     expect(view.queryByText(strings.common.retry)).toBeNull();
-    expect(
-      view.queryAllByRole('button').map((node) => node.props.accessibilityLabel),
-    ).not.toContain(strings.common.retry);
+
+    // Ekranda uc dugme var: geri, sifreyi goster ve "Giris yap". Bant bir
+    // cikis yolu gosterseydi dorduncusunu cizerdi.
+    expect(view.queryAllByRole('button')).toHaveLength(3);
   });
 
   it('ag hatasinda tekrar deneme yolu sunuyor', async () => {

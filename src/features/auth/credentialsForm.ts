@@ -22,9 +22,7 @@ export const credentialsFormSchema = z.object({
     .trim()
     .min(1, 'E-posta adresini yazman gerekiyor.')
     .email(strings.auth.emailInvalid),
-  password: z
-    .string()
-    .min(MIN_PASSWORD_LENGTH, `Şifren çok kısa. En az ${MIN_PASSWORD_LENGTH} karakter olmalı.`),
+  password: z.string().min(MIN_PASSWORD_LENGTH, strings.auth.passwordTooShort(MIN_PASSWORD_LENGTH)),
 });
 
 export type CredentialsForm = z.infer<typeof credentialsFormSchema>;

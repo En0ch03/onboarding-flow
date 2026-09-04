@@ -57,12 +57,21 @@ export function LoginScreen({ onBack, onSignedIn, initialEmail = '' }: LoginScre
       <ScreenIntro title={strings.auth.loginTitle} subtitle={strings.auth.loginSubtitle} />
 
       {/* Hatali giriste alanlar bosaltilmiyor: kullanici genellikle tek bir
-          karakteri duzeltecek, hepsini yeniden yazmayacak. */}
+          karakteri duzeltecek, hepsini yeniden yazmayacak.
+
+          Bandin eylem etiketi sozlukten geliyor: hangi hatanin ne dedigini
+          tek bir yer biliyor. Davranis ekranin kaliyor, cunku "tekrar dene"
+          her ekranda baska bir sey deniyor. */}
       {failure ? (
         <ErrorBanner
           message={presentError(failure).message}
           {...(failure.kind === 'network' || failure.kind === 'server_error'
-            ? { action: { label: strings.common.retry, onPress: () => void submit() } }
+            ? {
+                action: {
+                  label: presentError(failure).action ?? strings.common.retry,
+                  onPress: () => void submit(),
+                },
+              }
             : {})}
         />
       ) : null}

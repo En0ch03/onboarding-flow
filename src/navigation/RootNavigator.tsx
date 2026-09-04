@@ -58,16 +58,7 @@ export function RootNavigator() {
     return (
       <AuthNavigator
         onAuthenticated={(onboardingComplete) => {
-          // Giris, acilis sekansinin tamamini yeniden kosturmuyor ama
-          // sunucudaki profili okumasi gerekiyor: cevaplar baska bir cihazda
-          // verilmis olabilir ve yerel taslakta bulunmaz. Uzlastirma da ayni
-          // cagrinin icinde, cunku aradan gecen surede sunucudan bir secenek
-          // kaldirilmis olabilir.
-          setPhase('loading');
-
-          void adoptServerProfile().then((adoption) => {
-            setPhase(onboardingComplete || adoption === 'complete' ? 'app' : 'onboarding');
-          });
+          void resolveSignIn(onboardingComplete, setPhase);
         }}
       />
     );
@@ -93,6 +84,40 @@ export function RootNavigator() {
   }
 
   return <HomeScreen />;
+}
+
+/**
+ * Giristen sonra nereye gidilecegi.
+ *
+ * Ayri bir fonksiyon cunku hata tam olarak burada yasadi: profili benimseyen
+ * fonksiyon dogru olsa bile **cagrilmadigi** surece kullanici baska bir
+ * cihazda verdigi cevaplari gormuyordu. O fonksiyonun kendi testleri bu
+ * cagriyi tutmuyor; burasi tutuyor.
+ *
+ * Giris, acilis sekansinin tamamini yeniden kosturmuyor ama sunucudaki
+ * profili okumasi gerekiyor. Uzlastirma da ayni cagrinin icinde, cunku
+ * aradan gecen surede sunucudan bir secenek kaldirilmis olabilir.
+ */
+export async function resolveSignIn(
+  onboardingComplete: boolean,
+  setPhase: (phase: Phase) => void,
+): Promise<void> {
+  setPhase('loading');
+
+  try {
+    const adoption = await adoptServerProfile();
+
+    // Oturum bu arada bittiyse kullanici akisin icine birakilmiyor: token'i
+    // olmayan biri her adimda 401 alir ve "oturumun sona erdi" bandini
+    // akisin ortasinda gorurdu.
+    if (adoption === 'session-lost') return setPhase('welcome');
+
+    setPhase(onboardingComplete || adoption === 'complete' ? 'app' : 'onboarding');
+  } catch {
+    // Beklenmeyen bir dusus bekleme ekraninda birakmamali: orada ne geri
+    // tusu var ne yeniden deneme, tek cikis uygulamayi kapatmak olurdu.
+    setPhase('welcome');
+  }
 }
 
 /** Hidrasyon bitene kadar hicbir yonlendirme yapilmiyor. */

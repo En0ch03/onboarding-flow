@@ -8,7 +8,7 @@ Three files, drawn from the flow as it is actually built rather than from an ear
 | `ekranlar.svg` | The nine screens plus the completion screen, and the three states that are easy to miss: keyboard open, a server error, and an upload in progress. |
 | `tokens.svg` | Colour roles in both variants, the type scale, spacing and corner radii. |
 
-The sketches are annotated in Turkish because the product is in Turkish and the copy in them is the real copy, taken from the string dictionary rather than filled with placeholder text. Reading a sketch next to the running app should not require translating between them.
+The sketches are annotated in Turkish because the product is in Turkish, and the copy in them is the product's own copy rather than placeholder text. It is wrapped to fit a drawing, so a sentence may break across lines where the dictionary keeps it whole. Reading a sketch next to the running app should not require translating between them.
 
 Dark is drawn as the primary variant, which is how the app ships. The light variant is fully defined in the token sheet.
 
