@@ -8,6 +8,7 @@ import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { strings } from '@/constants/strings';
 import { HomeScreen } from '@/features/app/HomeScreen';
+import { useAuthStore } from '@/state/authStore';
 import { bootstrap } from '@/state/bootstrap';
 import { useTheme } from '@/theme';
 
@@ -68,7 +69,18 @@ export function RootNavigator() {
     // hata ve yeniden deneme sunulur.
     if (!options) return <OptionsUnavailableScreen onRetry={() => void retryOptions()} />;
 
-    return <OnboardingNavigator options={options} onEnterApp={() => setPhase('app')} />;
+    return (
+      <OnboardingNavigator
+        options={options}
+        onEnterApp={() => setPhase('app')}
+        onLeaveFlow={() => {
+          // Taslak bilerek silinmiyor: kullanici geri geldiginde cevaplari
+          // yerinde bulacak.
+          void useAuthStore.getState().endSession();
+          setPhase('welcome');
+        }}
+      />
+    );
   }
 
   return <HomeScreen />;
