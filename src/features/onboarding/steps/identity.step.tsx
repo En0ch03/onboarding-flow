@@ -6,7 +6,7 @@ import { strings } from '@/constants/strings';
 
 import type { StepProps } from '../engine/types';
 import { BirthDateField } from './BirthDateField';
-import { draftFromParts, hasChosenDate, partsFromDraft } from './dateWheel';
+import { chosenParts, draftFromParts, partsFromDraft } from './dateWheel';
 
 /**
  * Yas kapisi akisin ilk adiminda.
@@ -27,7 +27,7 @@ export function IdentityStep({ values, onChange }: StepProps) {
   // `opening` carkin acilacagi yer, `parts` ise kullanicinin gercekten
   // sectigi deger; ikisi ayni sey degil.
   const opening = useMemo(() => partsFromDraft(values.birthDate, today), [values.birthDate, today]);
-  const parts = hasChosenDate(values.birthDate) ? opening : null;
+  const parts = useMemo(() => chosenParts(values.birthDate), [values.birthDate]);
 
   return (
     <View>

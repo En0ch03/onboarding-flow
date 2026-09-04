@@ -61,9 +61,14 @@ export function WheelPicker({
 }: WheelPickerProps) {
   const { colors, radius, spacing } = useTheme();
   const scroller = useRef<ScrollView>(null);
-  // Kullanici parmagini carkin uzerindeyken disaridan kaydirmak, hareketi
-  // ortasinda kesip zipratiyor. Bu bayrak o cakismayi engelliyor.
-  const dragging = useRef(false);
+  // Kullanici carkla ugrasirken disaridan kaydirmak, hareketi ortasinda kesip
+  // zipratiyor. Bayrak parmak degdiginde kalkiyor ve ancak deger kesinlestiginde
+  // iniyor; suzulme suresi de buna dahil.
+  const active = useRef(false);
+  // Parmak birakildiktan sonra suzulme baslayacak mi, bunu ancak bir sonraki
+  // karede ogreniyoruz.
+  const gliding = useRef(false);
+  const pending = useRef<number | null>(null);
 
   const rowHeight = wheelRowHeight(fontScale);
   const height = rowHeight * WHEEL_ROWS;
@@ -82,18 +87,46 @@ export function WheelPicker({
   );
 
   useEffect(() => {
-    if (!dragging.current) scrollToIndex(index, false);
+    if (!active.current) scrollToIndex(index, false);
   }, [index, scrollToIndex]);
 
-  const settle = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    dragging.current = false;
-    const row = Math.round(event.nativeEvent.contentOffset.y / rowHeight);
+  useEffect(
+    () => () => {
+      if (pending.current !== null) cancelAnimationFrame(pending.current);
+    },
+    [],
+  );
+
+  const commit = (offsetY: number) => {
+    active.current = false;
+    const row = Math.round(offsetY / rowHeight);
     const item = items[Math.min(Math.max(row, 0), items.length - 1)];
     if (item && item.value !== value) onChange(item.value);
   };
 
-  const step = (direction: 1 | -1) => {
-    const item = items[Math.min(Math.max(index + direction, 0), items.length - 1)];
+  /**
+   * Parmak birakildiginda deger hemen islenmiyor. `onScrollEndDrag` hem
+   * kaydirma dururken hem de suzulme baslarken geliyor; hemen islemek,
+   * kullanicinin uzerinden gectigi bir ara satiri secmek demek. Bir kare
+   * beklenip suzulmenin baslayip baslamadigina bakiliyor.
+   */
+  const settleAfterDrag = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    if (pending.current !== null) cancelAnimationFrame(pending.current);
+    pending.current = requestAnimationFrame(() => {
+      pending.current = null;
+      if (!gliding.current) commit(offsetY);
+    });
+  };
+
+  // Yillar buyukten kucuge, gun ve aylar kucukten buyuge diziliyor. Ekran
+  // okuyucudaki "artir" her ikisinde de daha buyuk degeri secmeli; yon bu
+  // yuzden listenin kendisinden okunuyor, sabitlenmiyor.
+  const descending = items.length > 1 && items[1]!.value < items[0]!.value;
+
+  const step = (action: string) => {
+    const forward = action === 'increment' ? !descending : descending;
+    const item = items[Math.min(Math.max(index + (forward ? 1 : -1), 0), items.length - 1)];
     if (item && item.value !== value) onChange(item.value);
   };
 
@@ -123,21 +156,26 @@ export function WheelPicker({
         accessibilityLabel={accessibilityLabel}
         accessibilityValue={{ text: items[index]?.label }}
         accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
-        onAccessibilityAction={(event) =>
-          step(event.nativeEvent.actionName === 'increment' ? -1 : 1)
-        }
+        onAccessibilityAction={(event) => step(event.nativeEvent.actionName)}
         showsVerticalScrollIndicator={false}
         snapToInterval={rowHeight}
         decelerationRate="fast"
         contentContainerStyle={{ paddingVertical: padding }}
         onScrollBeginDrag={() => {
-          dragging.current = true;
+          active.current = true;
+          gliding.current = false;
         }}
-        // Parmak durarak birakildiginda momentum olayi hic gelmiyor; deger o
-        // durumda burada kesinlesiyor.
-        onScrollEndDrag={settle}
-        onMomentumScrollEnd={settle}
-        onLayout={() => scrollToIndex(index, false)}
+        onScrollEndDrag={settleAfterDrag}
+        onMomentumScrollBegin={() => {
+          gliding.current = true;
+        }}
+        onMomentumScrollEnd={(event) => {
+          gliding.current = false;
+          commit(event.nativeEvent.contentOffset.y);
+        }}
+        onLayout={() => {
+          if (!active.current) scrollToIndex(index, false);
+        }}
       >
         {items.map((item, row) => (
           <Pressable

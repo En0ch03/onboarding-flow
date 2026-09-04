@@ -86,6 +86,12 @@ export const strings = {
     interestsSkipCost: 'Ortak ilgi alanı, ilk mesajı yazmayı kolaylaştırıyor.',
   },
 
+  birthDate: {
+    incomplete: 'Doğum tarihini seçmen gerekiyor.',
+    invalid: 'Böyle bir tarih yok. Gün, ay ve yılı kontrol eder misin?',
+    tooYoung: 'Bu uygulama {age} yaşından küçüklere açık değil. Seni burada göremeyeceğiz.',
+  },
+
   errors: {
     optionsUnavailableTitle: 'Seçenekleri getiremedik',
     optionsUnavailableBody:

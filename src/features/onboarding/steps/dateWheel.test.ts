@@ -1,4 +1,5 @@
 import {
+  chosenParts,
   clampParts,
   daysInMonth,
   draftFromParts,
@@ -91,6 +92,35 @@ describe('partsFromDraft', () => {
 
   it('kucuk yasli bir tarihi de oldugu gibi aciyor: kapi ayri bir kontrol', () => {
     expect(partsFromDraft({ day: '1', month: '1', year: '2015' }, today)).toEqual({
+      day: 1,
+      month: 1,
+      year: 2015,
+    });
+  });
+});
+
+describe('chosenParts', () => {
+  it('secim yapilmamisken bos', () => {
+    expect(chosenParts(undefined)).toBeNull();
+    expect(chosenParts({ day: '', month: '', year: '' })).toBeNull();
+  });
+
+  it('takvimde olmayan bir taslak secilmis sayilmiyor', () => {
+    // Alan bir tarih gosterirken dogrulamanin baskasini reddetmesi, kullaniciya
+    // anlatilamayacak bir celiski.
+    expect(chosenParts({ day: '31', month: '2', year: '1996' })).toBeNull();
+  });
+
+  it('gecerli tarihi veriyor', () => {
+    expect(chosenParts({ day: '14', month: '3', year: '1996' })).toEqual({
+      day: 14,
+      month: 3,
+      year: 1996,
+    });
+  });
+
+  it('kucuk yasli tarih secilmis sayiliyor: kapi ayri bir kontrol', () => {
+    expect(chosenParts({ day: '1', month: '1', year: '2015' })).toEqual({
       day: 1,
       month: 1,
       year: 2015,

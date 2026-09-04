@@ -103,6 +103,9 @@ function BirthDateSheet({
   onConfirm: () => void;
 }) {
   const { colors, radius, spacing, screenPadding } = useTheme();
+  // Olculer saglayicidan, yani pencereden geliyor; sayfa yerel bir pencerede
+  // aciliyor ama ayni ekrani kapliyor, dolayisiyla alt bosluk ayni. Cihazda
+  // dogrulanacak: gezinme cubugu olan Android'de sayfanin dibi kontrol edilmeli.
   const insets = useSafeAreaInsets();
   const { fontScale } = useWindowDimensions();
 
