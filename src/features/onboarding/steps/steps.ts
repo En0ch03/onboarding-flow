@@ -2,7 +2,7 @@ import { strings } from '@/constants/strings';
 
 import type { StepDefinition } from '../engine/types';
 import { AudienceStep } from './audience.step';
-import { inspectBirthDate } from './birthDate';
+import { birthDateMessages, inspectBirthDate } from './birthDate';
 import { IdentityStep } from './identity.step';
 import { IntentStep } from './intent.step';
 import { InterestsStep } from './interests.step';
@@ -25,13 +25,12 @@ export const steps: StepDefinition[] = [
       const nameMissing = (answers.name?.trim().length ?? 0) === 0;
       const dateProblem = inspectBirthDate(answers.birthDate);
 
-      // Tarihin nesi yanlissa adimin govdesi bunu alanin hemen altinda
-      // soyluyor. Burada daha genel bir cumle tekrar etmek, kesin olani
-      // bulanik olanla degistiriyor: kullanici butonun yanindakini goruyor,
-      // alanin altindakini kaciriyor.
-      const bodyExplainsTheDate = dateProblem !== null && dateProblem !== 'incomplete';
-
-      if (bodyExplainsTheDate) return nameMissing ? strings.steps.identityNameHint : null;
+      // Yanlis olan sey, eksik olan seyden once soyleniyor: eksik bir alani
+      // kullanici zaten goruyor, yanlis bir tarihin nesi yanlis oldugunu
+      // gormuyor. "Gecerli bir tarih yaz" demek, bildigini tekrar etmek.
+      if (dateProblem === 'invalid' || dateProblem === 'too_young') {
+        return birthDateMessages[dateProblem];
+      }
       if (nameMissing && dateProblem !== null) return strings.steps.identityHint;
       if (nameMissing) return strings.steps.identityNameHint;
       return strings.steps.identityDateHint;

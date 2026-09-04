@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { AppText } from '@/components/AppText';
@@ -85,6 +85,17 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
         <View>
           {/* Buton hicbir zaman gri degil: devre disi bir buton neyin eksik
               oldugunu soylemiyor, basildiginda soylenen bir cumle soyluyor. */}
+          {hintShown && !engine.canContinue && hint ? (
+            <AppText
+              variant="caption"
+              tone="danger"
+              accessibilityLiveRegion="polite"
+              style={{ marginBottom: spacing.md, textAlign: 'center' }}
+            >
+              {hint}
+            </AppText>
+          ) : null}
+
           <Button
             title={
               engine.progress.current === engine.progress.total
@@ -93,6 +104,10 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
             }
             onPress={() => {
               if (!engine.canContinue) {
+                // Klavye kapaniyor: uyari butonun hemen ustunde ve acik
+                // klavyeyle orasi gorunmuyor. Hatayi gostermek, gosterilecek
+                // yeri acmayi da kapsiyor.
+                Keyboard.dismiss();
                 setHintShown(true);
                 return;
               }
@@ -101,16 +116,6 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
             }}
           />
 
-          {hintShown && !engine.canContinue && hint ? (
-            <AppText
-              variant="caption"
-              tone="danger"
-              accessibilityLiveRegion="polite"
-              style={{ marginTop: spacing.md, textAlign: 'center' }}
-            >
-              {hint}
-            </AppText>
-          ) : null}
           {step.skippable && step.skipCost ? (
             <AppText
               variant="caption"

@@ -1,6 +1,7 @@
 import { strings } from '@/constants/strings';
 import type { DraftAnswers } from '@/state/onboardingStore';
 
+import { birthDateMessages } from './birthDate';
 import { steps } from './steps';
 
 const identity = steps.find((step) => step.id === 'identity');
@@ -26,25 +27,25 @@ describe('identity step hint', () => {
     expect(hintFor({ name: 'Deniz' })).toBe(strings.steps.identityDateHint);
   });
 
-  it('stays silent when the field itself already explains the date', () => {
-    // 31 Şubat diye bir gün yok. Alanın altında "böyle bir tarih yok" yazıyor;
-    // butonun yanında daha genel bir cümle tekrar etmek, kullanıcının gördüğü
-    // mesajı kesin olandan bulanık olana çeviriyor.
+  it('says what is wrong with an impossible date rather than calling it invalid', () => {
+    // 31 Subat diye bir gun yok. "Gecerli bir tarih yaz" demek, kullanicinin
+    // zaten bildigi seyi tekrar etmek.
     expect(hintFor({ name: 'Deniz', birthDate: { day: '31', month: '2', year: '1996' } })).toBe(
-      null,
+      birthDateMessages.invalid,
     );
   });
 
-  it('stays silent for the age gate too, which the field also explains', () => {
+  it('speaks plainly at the age gate instead of hiding behind validation', () => {
     expect(hintFor({ name: 'Deniz', birthDate: { day: '1', month: '1', year: '2015' } })).toBe(
-      null,
+      birthDateMessages.too_young,
     );
   });
 
-  it('still asks for the name when the date is invalid and the name is missing', () => {
-    // Govde tarihi anlatiyor ama adin eksikligini kimse soylemiyor.
+  it('names the wrong thing before the missing thing', () => {
+    // Eksik bir alani kullanici zaten goruyor; yanlis bir tarihin nesi yanlis
+    // oldugunu gormuyor.
     expect(hintFor({ birthDate: { day: '31', month: '2', year: '1996' } })).toBe(
-      strings.steps.identityNameHint,
+      birthDateMessages.invalid,
     );
   });
 
