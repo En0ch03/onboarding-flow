@@ -8,6 +8,7 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { ErrorBanner } from '@/components/ErrorBanner';
 import { Screen } from '@/components/Screen';
+import { ScreenIntro } from '@/components/ScreenIntro';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { fieldErrorMessage, presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
@@ -84,16 +85,7 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
         </View>
       }
     >
-      <AppText variant="title" accessibilityRole="header">
-        {strings.auth.registerTitle}
-      </AppText>
-      <AppText
-        variant="subhead"
-        tone="inkSoft"
-        style={{ marginTop: spacing.sm, marginBottom: spacing.xl }}
-      >
-        {strings.auth.registerSubtitle}
-      </AppText>
+      <ScreenIntro title={strings.auth.registerTitle} subtitle={strings.auth.registerSubtitle} />
 
       {showBanner ? (
         <ErrorBanner

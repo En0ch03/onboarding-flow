@@ -7,6 +7,7 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { ErrorBanner } from '@/components/ErrorBanner';
 import { Screen } from '@/components/Screen';
+import { ScreenIntro } from '@/components/ScreenIntro';
 import { presentError } from '@/constants/errorMessages';
 import { completionTitle, nameWithAge, photoSummary, strings } from '@/constants/strings';
 import { useAsyncAction } from '@/hooks/useAsyncAction';
@@ -113,12 +114,12 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
       <ProfileMark name={answers.name ?? ''} cover={answers.photos?.[0]?.url} />
 
       {/* Isim yalin birakiliyor: ek getirmek bir isimde dogru, digerinde bozuk. */}
-      <AppText variant="title" accessibilityRole="header" style={{ marginTop: spacing.xl }}>
-        {completionTitle(answers.name ?? '')}
-      </AppText>
-      <AppText variant="subhead" tone="inkSoft" style={{ marginTop: spacing.md }}>
-        {strings.completion.subtitle}
-      </AppText>
+      <View style={{ marginTop: spacing.xl }}>
+        <ScreenIntro
+          title={completionTitle(answers.name ?? '')}
+          subtitle={strings.completion.subtitle}
+        />
+      </View>
 
       {failure ? (
         <View style={{ marginTop: spacing.xl }}>
@@ -133,7 +134,6 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
           yuzeyinde duruyor ve okunacak bir sey oldugu belli oluyor. */}
       <View
         style={{
-          marginTop: spacing.xl,
           backgroundColor: colors.surface,
           borderRadius: radius.md,
           borderCurve: 'continuous',
