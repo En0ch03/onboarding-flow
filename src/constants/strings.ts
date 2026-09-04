@@ -23,7 +23,8 @@ export const strings = {
     promisePrimary: 'Başlayalım',
     promiseSecondary: 'Zaten hesabım var',
 
-    differenceTitle: 'Belki de birbirinizi aramıyordunuz. Sadece henüz karşılaşmamıştınız.',
+    differenceTitleFirst: 'Belki de birbirinizi aramıyordunuz.',
+    differenceTitleSecond: 'Sadece henüz karşılaşmamıştınız.',
     differenceSubtitle:
       'Onboarding’da günde birkaç kişi görürsün. Herkes ne aradığını yazmıştır. Gerisi size kalmış.',
     differencePrimary: 'Anladım, devam',
