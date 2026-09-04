@@ -2,7 +2,7 @@ import { strings } from '@/constants/strings';
 
 import type { StepDefinition } from '../engine/types';
 import { AudienceStep } from './audience.step';
-import { inspectBirthDate } from './birthDate';
+import { birthDateMessages, inspectBirthDate } from './birthDate';
 import { IdentityStep } from './identity.step';
 import { IntentStep } from './intent.step';
 import { InterestsStep } from './interests.step';
@@ -21,7 +21,28 @@ export const steps: StepDefinition[] = [
     subtitle: strings.steps.identitySubtitle,
     component: IdentityStep,
     skippable: false,
-    incompleteHint: strings.steps.identityHint,
+    incompleteHint: (answers) => {
+      const nameMissing = (answers.name?.trim().length ?? 0) === 0;
+      const dateProblem = inspectBirthDate(answers.birthDate);
+
+      // Yanlis olan sey, eksik olan seyden once soyleniyor: eksik bir alani
+      // kullanici zaten goruyor, yanlis bir tarihin nesi yanlis oldugunu
+      // gormuyor. "Gecerli bir tarih yaz" demek, bildigini tekrar etmek.
+      if (dateProblem === 'invalid' || dateProblem === 'too_young') {
+        return birthDateMessages[dateProblem];
+      }
+
+      // Tarihe baslanmis ama bitmemisse "doğum tarihini yaz" demek gordugu
+      // seyle celisiyor - alanlarin biri zaten dolu. Eksigin ne oldugunu soyle.
+      const dateStarted = Object.values(answers.birthDate ?? {}).some((part) => part !== '');
+      if (dateProblem === 'incomplete' && dateStarted && !nameMissing) {
+        return birthDateMessages.incomplete;
+      }
+
+      if (nameMissing && dateProblem !== null) return strings.steps.identityHint;
+      if (nameMissing) return strings.steps.identityNameHint;
+      return strings.steps.identityDateHint;
+    },
     isComplete: (answers) =>
       (answers.name?.trim().length ?? 0) > 0 && inspectBirthDate(answers.birthDate) === null,
   },

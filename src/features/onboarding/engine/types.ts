@@ -28,8 +28,13 @@ export type StepDefinition = {
   /**
    * Sart saglanmadan ileri basildiginda gosterilen satir. Buton gri
    * yapilmiyor: devre disi bir buton neyin eksik oldugunu soylemiyor.
+   *
+   * Fonksiyon verilirse cevaplara gore konusabilir ve `null` donerek
+   * susabilir. Susmasi gereken durum su: adimin govdesi zaten alanin
+   * altinda daha kesin bir sey soyluyorsa, burada daha bulanik bir cumle
+   * tekrar etmek kesin olani bastirir.
    */
-  incompleteHint?: string;
+  incompleteHint?: string | ((answers: DraftAnswers) => string | null);
   /** Atlanabilir adimlarda cikis yolu gizlenmez. */
   skippable: boolean;
   /** Atlamanin ne kaybettirdigini soyleyen tek satir. Zorlama degil bilgilendirme. */

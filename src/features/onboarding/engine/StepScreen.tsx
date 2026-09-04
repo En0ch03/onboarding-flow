@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { AppText } from '@/components/AppText';
@@ -36,6 +36,11 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
   const markStepSynced = useOnboardingStore((state) => state.markStepSynced);
   const [hintShown, setHintShown] = useState(false);
 
+  // Uyari adima bagli: geri donuldugunde veya bir adim atlandiginda acik
+  // kaliyordu ve kullanici hic dokunmadigi bir adimi kirmizi uyariyla
+  // aciyordu. Adim kimligi degisince uyari kapaniyor.
+  const [hintStepId, setHintStepId] = useState<string | null>(null);
+
   const step = engine.currentStep;
 
   const advance = useCallback(
@@ -54,9 +59,21 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
     [engine, markStepSynced, markStepUnsynced, step],
   );
 
+  if (step && step.id !== hintStepId) {
+    setHintStepId(step.id);
+    if (hintShown) setHintShown(false);
+  }
+
   if (!step) return null;
 
   const StepBody = step.component;
+
+  // Ipucu bir cumle de olabilir, cevaplara bakan bir fonksiyon da. Fonksiyon
+  // `null` donerse hicbir sey gosterilmiyor - adimin govdesi zaten konusuyor.
+  const hint =
+    typeof step.incompleteHint === 'function'
+      ? step.incompleteHint(engine.answers)
+      : step.incompleteHint;
 
   return (
     <Screen
@@ -78,6 +95,17 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
         <View>
           {/* Buton hicbir zaman gri degil: devre disi bir buton neyin eksik
               oldugunu soylemiyor, basildiginda soylenen bir cumle soyluyor. */}
+          {hintShown && !engine.canContinue && hint ? (
+            <AppText
+              variant="caption"
+              tone="danger"
+              accessibilityLiveRegion="polite"
+              style={{ marginBottom: spacing.md, textAlign: 'center' }}
+            >
+              {hint}
+            </AppText>
+          ) : null}
+
           <Button
             title={
               engine.progress.current === engine.progress.total
@@ -86,6 +114,10 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
             }
             onPress={() => {
               if (!engine.canContinue) {
+                // Klavye kapaniyor: uyari butonun hemen ustunde ve acik
+                // klavyeyle orasi gorunmuyor. Hatayi gostermek, gosterilecek
+                // yeri acmayi da kapsiyor.
+                Keyboard.dismiss();
                 setHintShown(true);
                 return;
               }
@@ -94,16 +126,6 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
             }}
           />
 
-          {hintShown && !engine.canContinue && step.incompleteHint ? (
-            <AppText
-              variant="caption"
-              tone="danger"
-              accessibilityLiveRegion="polite"
-              style={{ marginTop: spacing.md, textAlign: 'center' }}
-            >
-              {step.incompleteHint}
-            </AppText>
-          ) : null}
           {step.skippable && step.skipCost ? (
             <AppText
               variant="caption"

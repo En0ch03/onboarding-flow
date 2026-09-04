@@ -48,7 +48,6 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
 
     await completeOnboarding();
     markOnboardingComplete();
-    clearDraft();
     return true;
   });
 
@@ -75,7 +74,14 @@ export function CompletionScreen({ options, onEnterApp, onEditProfile }: Complet
         <View>
           <Button
             title={strings.completion.primary}
-            onPress={onEnterApp}
+            // Taslak burada siliniyor, tamamlanma aninda degil. Tamamlanmada
+            // silmek iki seyi bozuyordu: ekran gosterecegi ozeti kendi
+            // siliyordu, ve "profilimi duzenle" yolu adimlari bos aciyordu.
+            // Burasi akisin geri donulemez tek noktasi.
+            onPress={() => {
+              clearDraft();
+              onEnterApp();
+            }}
             loading={finish.state.status === 'loading'}
           />
           <Button

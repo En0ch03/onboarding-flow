@@ -6,7 +6,7 @@ import { strings } from '@/constants/strings';
 import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
-import { birthDateMessages, inspectBirthDate } from './birthDate';
+
 
 /**
  * Yas kapisi akisin ilk adiminda.
@@ -21,8 +21,6 @@ import { birthDateMessages, inspectBirthDate } from './birthDate';
 export function IdentityStep({ values, onChange }: StepProps) {
   const { spacing } = useTheme();
   const birthDate = values.birthDate ?? { day: '', month: '', year: '' };
-  const problem = inspectBirthDate(values.birthDate);
-  const touched = Object.values(birthDate).some((part) => part !== '');
 
   const setPart = (part: 'day' | 'month' | 'year') => (text: string) =>
     onChange({ birthDate: { ...birthDate, [part]: text.replace(/[^0-9]/g, '') } });
@@ -72,12 +70,6 @@ export function IdentityStep({ values, onChange }: StepProps) {
           />
         </View>
       </View>
-
-      {touched && problem !== null && problem !== 'incomplete' ? (
-        <AppText variant="caption" tone="danger" accessibilityLiveRegion="polite">
-          {birthDateMessages[problem]}
-        </AppText>
-      ) : null}
     </View>
   );
 }

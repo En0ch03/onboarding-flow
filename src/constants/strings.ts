@@ -53,7 +53,9 @@ export const strings = {
     dayLabel: 'Gün',
     monthLabel: 'Ay',
     yearLabel: 'Yıl',
-    identityHint: 'Devam etmek için adını ve geçerli bir doğum tarihi yazman gerekiyor.',
+    identityHint: 'Devam etmek için adını ve doğum tarihini yazman gerekiyor.',
+    identityNameHint: 'Devam etmek için adını yazman gerekiyor.',
+    identityDateHint: 'Devam etmek için doğum tarihini yazman gerekiyor.',
 
     audienceTitle: 'Kimlere görünmek istersin?',
     audienceSubtitle:

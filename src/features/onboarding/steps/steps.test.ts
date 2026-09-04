@@ -1,0 +1,68 @@
+import { strings } from '@/constants/strings';
+import type { DraftAnswers } from '@/state/onboardingStore';
+
+import { birthDateMessages } from './birthDate';
+import { steps } from './steps';
+
+const identity = steps.find((step) => step.id === 'identity');
+
+/** Adimin, ileri basildiginda soyleyecegi cumle. */
+function hintFor(answers: DraftAnswers): string | null | undefined {
+  const hint = identity?.incompleteHint;
+  return typeof hint === 'function' ? hint(answers) : hint;
+}
+
+const validDate = { day: '11', month: '4', year: '1996' };
+
+describe('identity step hint', () => {
+  it('names both when nothing has been filled in', () => {
+    expect(hintFor({})).toBe(strings.steps.identityHint);
+  });
+
+  it('names only the name when the date is already valid', () => {
+    expect(hintFor({ birthDate: validDate })).toBe(strings.steps.identityNameHint);
+  });
+
+  it('names only the date when the name is already there', () => {
+    expect(hintFor({ name: 'Deniz' })).toBe(strings.steps.identityDateHint);
+  });
+
+  it('says what is wrong with an impossible date rather than calling it invalid', () => {
+    // 31 Subat diye bir gun yok. "Gecerli bir tarih yaz" demek, kullanicinin
+    // zaten bildigi seyi tekrar etmek.
+    expect(hintFor({ name: 'Deniz', birthDate: { day: '31', month: '2', year: '1996' } })).toBe(
+      birthDateMessages.invalid,
+    );
+  });
+
+  it('speaks plainly at the age gate instead of hiding behind validation', () => {
+    expect(hintFor({ name: 'Deniz', birthDate: { day: '1', month: '1', year: '2015' } })).toBe(
+      birthDateMessages.too_young,
+    );
+  });
+
+  it('names the wrong thing before the missing thing', () => {
+    // Eksik bir alani kullanici zaten goruyor; yanlis bir tarihin nesi yanlis
+    // oldugunu gormuyor.
+    expect(hintFor({ birthDate: { day: '31', month: '2', year: '1996' } })).toBe(
+      birthDateMessages.invalid,
+    );
+  });
+
+  it('treats a name of only spaces as missing', () => {
+    expect(hintFor({ name: '   ', birthDate: validDate })).toBe(strings.steps.identityNameHint);
+  });
+});
+
+describe('step flow shape', () => {
+  it('has exactly one skippable step and it is the last one', () => {
+    const skippable = steps.filter((step) => step.skippable);
+
+    expect(skippable).toHaveLength(1);
+    expect(steps[steps.length - 1]?.skippable).toBe(true);
+  });
+
+  it('gives every skippable step a line saying what skipping costs', () => {
+    steps.filter((step) => step.skippable).forEach((step) => expect(step.skipCost).toBeTruthy());
+  });
+});

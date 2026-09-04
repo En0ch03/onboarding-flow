@@ -74,7 +74,11 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   },
 
   async endSession() {
-    await clearTokens();
+    // Once bellekteki oturum kapatiliyor, sonra disk temizleniyor. Ters sirada
+    // keystore silme hatasi `set`'e hic ulasmiyordu: kullanici "cik" demisken
+    // token'lar hem bellekte hem diskte kaliyor ve uygulama bir sonraki
+    // acilista ayni oturumu geri yukluyordu. Ayrica bekleme suresince acilan
+    // pencerede yeni bir oturum baslarsa, gec gelen `set` onu siliyordu.
     set({
       status: 'anonymous',
       userId: null,
@@ -82,6 +86,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       refreshToken: null,
       onboardingComplete: false,
     });
+    await clearTokens();
   },
 
   markOnboardingComplete() {

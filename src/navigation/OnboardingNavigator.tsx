@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Alert, BackHandler } from 'react-native';
+import { Alert } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { CompletionScreen } from '@/features/onboarding/CompletionScreen';
@@ -18,6 +18,8 @@ const Stack = createNativeStackNavigator<OnboardingStackParamList>();
 type OnboardingNavigatorProps = {
   options: OptionGroups;
   onEnterApp: () => void;
+  /** Ilk adimda geri: akistan cikis. Taslak korunur. */
+  onLeaveFlow: () => void;
 };
 
 /**
@@ -27,7 +29,11 @@ type OnboardingNavigatorProps = {
  * dokunmayi gerektirirdi ve "adim eklemek bir dosya ve bir dizi elemani"
  * iddiasi dogru olmazdi.
  */
-export function OnboardingNavigator({ options, onEnterApp }: OnboardingNavigatorProps) {
+export function OnboardingNavigator({
+  options,
+  onEnterApp,
+  onLeaveFlow,
+}: OnboardingNavigatorProps) {
   const setActiveStep = useOnboardingStore((state) => state.setActiveStep);
 
   return (
@@ -38,7 +44,7 @@ export function OnboardingNavigator({ options, onEnterApp }: OnboardingNavigator
             steps={steps}
             options={options}
             onFinish={() => navigation.navigate('Completion')}
-            onExit={confirmExit}
+            onExit={() => confirmExit(onLeaveFlow)}
           />
         )}
       </Stack.Screen>
@@ -64,10 +70,16 @@ export function OnboardingNavigator({ options, onEnterApp }: OnboardingNavigator
 /**
  * Ilk adimda geri: cikis onaya baglaniyor. Kazara cikip cevaplarini
  * kaybettigini sanan bir kullanici geri gelmiyor.
+ *
+ * Cikis, uygulamayi kapatmak degil karsilamaya donmek. Uygulamayi kendi
+ * kendine kapatmak iOS'ta zaten mumkun degil ve orada dugme sessizce hicbir
+ * sey yapiyordu. Donus noktasi olarak karsilama dogru yer: taslak diskte
+ * kaliyor, oturum kapaniyor ve kullanici geri giris yaptiginda acilis
+ * sekansi onu kaldigi adima birakiyor - diyalogda yazan sey tam olarak bu.
  */
-function confirmExit() {
+function confirmExit(onLeaveFlow: () => void) {
   Alert.alert(strings.exitFlow.title, strings.exitFlow.body, [
     { text: strings.exitFlow.stay, style: 'cancel' },
-    { text: strings.exitFlow.leave, style: 'destructive', onPress: () => BackHandler.exitApp() },
+    { text: strings.exitFlow.leave, style: 'destructive', onPress: onLeaveFlow },
   ]);
 }
