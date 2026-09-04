@@ -25,6 +25,12 @@ function find(group: OptionGroup, id: string): Option | undefined {
  *    dar bir cevap veriyor, genis olani yaninda birakmak celiski olurdu.
  * 3. Bir kapsayanin kapsadiklarinin hepsi isaretli hale gelirse secim ona
  *    toplanir: "kadinlar ve erkekler" zaten "herkes" demek.
+ *
+ * Kapsama **tek duzeyli**: bir kapsayanin kapsadiklari kendileri kapsayan
+ * olamaz. Ic ice kapsama destegi bugun karsiligi olmayan bir genellik olurdu
+ * ve toplamanin hangi secenege gidecegi belirsizlesirdi. Tarama sunucunun
+ * verdigi siraya gore yapiliyor; dizinin geldigi sira degil, ilan edilen
+ * sira belirleyici olsun.
  */
 function reconcile(group: OptionGroup, selected: string[], added: string): string[] {
   const addedCovers = covered(find(group, added));
@@ -35,7 +41,7 @@ function reconcile(group: OptionGroup, selected: string[], added: string): strin
     return !covered(find(group, id)).includes(added);
   });
 
-  for (const option of group.options) {
+  for (const option of sortedOptions(group)) {
     const covers = covered(option);
     if (covers.length === 0 || next.includes(option.id)) continue;
     if (covers.every((id) => next.includes(id))) {

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
@@ -43,7 +44,13 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
       ) : null}
 
       {audience ? (
-        <Section title={strings.steps.audienceLabel} help={strings.steps.audienceHelp} divided>
+        <Section
+          title={strings.steps.audienceLabel}
+          help={strings.steps.audienceHelp}
+          // Ayrac yalnizca ayiracak bir sey varsa cizilir: sunucu cinsiyet
+          // grubunu kaldirirsa tepede sahipsiz bir cizgi kalmasin.
+          divided={Boolean(gender)}
+        >
           <ChipGrid
             options={sortedOptions(audience)}
             isSelected={(id) => selectedAudience.includes(id)}
@@ -68,7 +75,7 @@ function Section({
   title: string;
   help: string;
   divided?: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const { colors, spacing } = useTheme();
 
@@ -85,7 +92,9 @@ function Section({
           : undefined
       }
     >
-      <AppText variant="heading">{title}</AppText>
+      <AppText variant="heading" accessibilityRole="header">
+        {title}
+      </AppText>
       <AppText variant="caption" tone="inkSoft" style={{ marginTop: spacing.xs }}>
         {help}
       </AppText>

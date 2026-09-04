@@ -91,6 +91,41 @@ describe('istemci hicbir secenek kimligi bilmiyor', () => {
     expect(toggleSelection(other, ['a', 'b'], 'c').next).toEqual(['abc']);
     expect(toggleSelection(other, ['a'], 'b').next).toEqual(['a', 'b']);
   });
+
+  it('kapsayan isaretliyken dar bir cevap secilirse geriye yalnizca o kaliyor', () => {
+    // Ucten fazla kapsanan oldugunda iki okuma ayrisiyor: "kullanici daha dar
+    // bir cevap veriyor" (secim yalnizca dokunulan) ve "kumeden birini
+    // cikariyor" (geriye ikisi kalir). Birincisi seciliyor: dokunus bir
+    // cevabi isaretlemek, bir cevabi elemek degil.
+    const other: OptionGroup = {
+      key: 'diet',
+      multiSelect: true,
+      maxSelection: null,
+      required: false,
+      options: [
+        { id: 'a', label: 'A', order: 1 },
+        { id: 'b', label: 'B', order: 2 },
+        { id: 'c', label: 'C', order: 3 },
+        { id: 'abc', label: 'Hepsi', covers: ['a', 'b', 'c'], order: 4 },
+      ],
+    };
+    expect(toggleSelection(other, ['abc'], 'a').next).toEqual(['a']);
+  });
+
+  it('toplama, seceneklerin dizideki sirasindan bagimsiz', () => {
+    const options = [
+      { id: 'a', label: 'A', order: 1 },
+      { id: 'b', label: 'B', order: 2 },
+      { id: 'ab', label: 'Ikisi', covers: ['a', 'b'], order: 3 },
+    ];
+    const base = { key: 'k', multiSelect: true, maxSelection: null, required: false } as const;
+
+    const forward: OptionGroup = { ...base, options };
+    const backward: OptionGroup = { ...base, options: [...options].reverse() };
+
+    expect(toggleSelection(forward, ['a'], 'b').next).toEqual(['ab']);
+    expect(toggleSelection(backward, ['a'], 'b').next).toEqual(['ab']);
+  });
 });
 
 describe('sinir', () => {

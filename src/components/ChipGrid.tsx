@@ -22,7 +22,9 @@ type ChipGridProps = {
  * hicbir secim yerlesimi yeniden akitamiyor.
  *
  * Sutun sayisi olculen genislikten geliyor, cihaz turunden degil. Uc sutun
- * telefonda dogru duruyor; dar ekranda ikiye, tablette dorde gidiyor.
+ * telefonda dogru duruyor; dar ekranda ikiye, tablette dorde gidiyor. Esik
+ * asagi cekilip cok dar cihazlarda da uc sutun zorlanmadi: o genislikte
+ * hucreye kalan metin alani etiketleri okunmaz hale getiriyor.
  */
 function columnsFor(width: number): number {
   if (width >= 520) return 4;
@@ -47,7 +49,20 @@ export function ChipGrid({ options, isSelected, isDisabled, onPress }: ChipGridP
   };
 
   return (
-    <View onLayout={measure} style={{ flexDirection: 'row', flexWrap: 'wrap', gap }}>
+    <View
+      onLayout={measure}
+      style={{
+        // Genislik ebeveynden geliyor, icerikten degil: aksi halde hucre
+        // genisligi kabin genisligini besler ve olcum salinmaya baslar.
+        width: '100%',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap,
+        // Olculmeden onceki tek kare gorunmuyor; cipler dogal genisliklerinden
+        // izgaraya otururken siçrama olarak okunmasin.
+        opacity: width === 0 ? 0 : 1,
+      }}
+    >
       {options.map((option) => (
         <Chip
           key={option.id}
