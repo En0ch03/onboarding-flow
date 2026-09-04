@@ -195,6 +195,42 @@ describe('StepScreen', () => {
       expect(useOnboardingStore.getState().activeStepId).toBe('identity');
     });
 
+    it('adim ilerledikten sonra da guncel adimdan geriliyor', async () => {
+      // Abonelik yalnizca odak degisiminde yenileniyor. Isleyici guncel
+      // adimi bir referanstan okumasaydi ilk cizimin adiminda donar ve
+      // ucuncu adimda geri tusu, bir adim geri gitmek yerine akistan cikis
+      // onayini acardi.
+      const handlers = watchBackHandler();
+      const onExit = jest.fn();
+
+      const view = await renderWithTheme(
+        <StepScreen steps={flow} options={options} onFinish={() => {}} onExit={onExit} />,
+      );
+
+      fireEvent.press(view.getByText(strings.common.continue));
+      await waitFor(() => expect(useOnboardingStore.getState().activeStepId).toBe('audience'));
+
+      await act(async () => {
+        handlers[0]?.();
+      });
+
+      expect(useOnboardingStore.getState().activeStepId).toBe('identity');
+      expect(onExit).not.toHaveBeenCalled();
+    });
+
+    it('ustteki geri dugmesi de ilk adimda cikisi cagiriyor', async () => {
+      // Iki yol tek tanimi paylasiyor; bu test o tanimin dugme ucunu tutuyor.
+      const onExit = jest.fn();
+
+      const view = await renderWithTheme(
+        <StepScreen steps={flow} options={options} onFinish={() => {}} onExit={onExit} />,
+      );
+
+      fireEvent.press(view.getByLabelText(strings.common.back));
+
+      expect(onExit).toHaveBeenCalled();
+    });
+
     it('ekran onde degilken dinlemiyor', async () => {
       // Kapanis ekrani ustune geldiginde adimlar yiginda mount halinde
       // kaliyor; dinlemeye devam etselerdi oradaki bir geri basisi alttaki

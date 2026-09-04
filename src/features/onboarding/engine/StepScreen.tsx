@@ -61,15 +61,18 @@ export function StepScreen({ steps, options, onFinish, onExit, focused = true }:
   const step = engine.currentStep;
 
   /**
-   * Donanimsal geri tusu, ustteki geri dugmesiyle ayni sey.
+   * Geriye gitmenin tek tanimi.
    *
-   * Adimlar tek bir rotada yasadigi icin navigasyonun kendi geri davranisi
-   * burada adim adim gerilemiyor; yiginin ilk rotasindayiz ve tus dogrudan
-   * uygulamadan cikariyordu. Iki yolun ayni davranmasi gerekiyor: bir adim
-   * geri, ilk adimda ise cikis onayi.
+   * Iki yol var -- ustteki geri dugmesi ve Android'in donanimsal tusu -- ve
+   * ikisi de burayi cagiriyor. Ayni cumleyi iki yerde yazmak, ikisinin
+   * sessizce ayrismasina acik kapi birakiyordu; ayni fonksiyonu cagirmak
+   * kapatiyor.
    *
-   * Alttan acilan sayfalar bu isleyiciye hic ulasmiyor; onlar `Modal`
-   * icinde ve `Modal` geri tusunu kendi kapanislarina baglıyor.
+   * Referans, isleyicinin her zaman guncel adimi gormesi icin. Abonelik
+   * yalnizca odak degistiginde yenileniyor, oysa `goBack` her cevap
+   * degisiminde yeni bir fonksiyon: referans olmasaydi isleyici ilk cizimin
+   * adiminda donar ve kullanici ucuncu adimda geri tusuna bastiginda bir
+   * adim geri gitmek yerine akistan cikis onayi acilirdi.
    */
   const latest = useRef({ goBack: engine.goBack, onExit });
 
@@ -77,16 +80,35 @@ export function StepScreen({ steps, options, onFinish, onExit, focused = true }:
     latest.current = { goBack: engine.goBack, onExit };
   });
 
+  const goBackOrExit = useCallback(() => {
+    if (!latest.current.goBack()) latest.current.onExit();
+  }, []);
+
+  /**
+   * Donanimsal geri tusu.
+   *
+   * Adimlar tek bir rotada yasadigi icin navigasyonun kendi geri davranisi
+   * burada adim adim gerilemiyor; yiginin ilk rotasindayiz ve tus dogrudan
+   * uygulamadan cikariyordu.
+   *
+   * `true` donmek olayi tuketiyor; donmezse navigasyon kendi geri
+   * davranisini da uygular ve iki geri birden olur.
+   *
+   * Alttan acilan sayfalar buraya hic ulasmiyor; onlar `Modal` icinde ve
+   * `Modal` geri tusunu kendi kapanisina bagliyor. Kapanis ekrani onde
+   * oldugunda da bu isleyici kayitli degil -- ama o ekranin kendi
+   * dinleyicisi var ve kayit ucustayken tusu yutuyor.
+   */
   useEffect(() => {
     if (!focused) return;
 
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (!latest.current.goBack()) latest.current.onExit();
+      goBackOrExit();
       return true;
     });
 
     return () => subscription.remove();
-  }, [focused]);
+  }, [focused, goBackOrExit]);
 
   const advance = useCallback(
     (skipped: boolean) => {
@@ -137,9 +159,7 @@ export function StepScreen({ steps, options, onFinish, onExit, focused = true }:
       header={
         <View>
           <ScreenHeader
-            onBack={() => {
-              if (!engine.goBack()) onExit();
-            }}
+            onBack={goBackOrExit}
             step={engine.progress}
             {...(step.skippable
               ? {
