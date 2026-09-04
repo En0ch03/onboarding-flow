@@ -15,7 +15,7 @@ export function HomeScreen() {
   const { spacing } = useTheme();
 
   return (
-    <Screen centered>
+    <Screen align="center">
       <View>
         <AppText variant="display">{strings.home.title}</AppText>
         <AppText variant="subhead" tone="inkSoft" style={{ marginTop: spacing.md }}>

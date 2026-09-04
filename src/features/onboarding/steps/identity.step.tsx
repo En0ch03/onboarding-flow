@@ -1,12 +1,12 @@
+import { useMemo } from 'react';
 import { View } from 'react-native';
 
-import { AppText } from '@/components/AppText';
 import { TextField } from '@/components/TextField';
 import { strings } from '@/constants/strings';
-import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
-
+import { BirthDateField } from './BirthDateField';
+import { chosenParts, draftFromParts, partsFromDraft } from './dateWheel';
 
 /**
  * Yas kapisi akisin ilk adiminda.
@@ -14,16 +14,20 @@ import type { StepProps } from '../engine/types';
  * Kullanicidan fotograf ve tercihlerini isteyip sonra "burayi kullanamazsin"
  * demek yanlis sira; sorunun cevabi akisin en basinda belli oluyor.
  *
- * Tarih uc ayri alan. Yerel tarih secici mobilde daha cok hata uretiyor ve
- * ekran okuyucuyla kullanimi zor. Otomatik alan atlama da yok: kullanici
- * kendi ritminde yaziyor, imlec elinden alinmiyor.
+ * Ad yazilarak, tarih secilerek aliniyor. Ikisi ayni turden bir soru degil:
+ * ad serbest metin, tarih ise takvimden bir nokta. Tarihi yazdirmak, ekranin
+ * yarisini klavyeye verip ustune "31 Subat" yazma imkani birakiyordu.
  */
 export function IdentityStep({ values, onChange }: StepProps) {
-  const { spacing } = useTheme();
-  const birthDate = values.birthDate ?? { day: '', month: '', year: '' };
+  // Bugun her isteyisde yeniden hesaplanirsa yil listesi ve acilis satiri
+  // referans olarak degisip carki gereksiz yere yeniden kuruyor.
+  const today = useMemo(() => new Date(), []);
 
-  const setPart = (part: 'day' | 'month' | 'year') => (text: string) =>
-    onChange({ birthDate: { ...birthDate, [part]: text.replace(/[^0-9]/g, '') } });
+  // Cark her zaman bir satir gostermek zorunda, ama alan bos kalabilmeli.
+  // `opening` carkin acilacagi yer, `parts` ise kullanicinin gercekten
+  // sectigi deger; ikisi ayni sey degil.
+  const opening = useMemo(() => partsFromDraft(values.birthDate, today), [values.birthDate, today]);
+  const parts = useMemo(() => chosenParts(values.birthDate), [values.birthDate]);
 
   return (
     <View>
@@ -34,42 +38,15 @@ export function IdentityStep({ values, onChange }: StepProps) {
         autoComplete="given-name"
         textContentType="givenName"
         maxLength={50}
-        returnKeyType="next"
+        returnKeyType="done"
       />
 
-      <AppText variant="label" tone="inkSoft" style={{ marginBottom: spacing.sm }}>
-        {strings.steps.birthDateLabel}
-      </AppText>
-
-      <View style={{ flexDirection: 'row', gap: spacing.md }}>
-        <View style={{ flex: 1 }}>
-          <TextField
-            label={strings.steps.dayLabel}
-            value={birthDate.day}
-            onChangeText={setPart('day')}
-            keyboardType="number-pad"
-            maxLength={2}
-          />
-        </View>
-        <View style={{ flex: 1 }}>
-          <TextField
-            label={strings.steps.monthLabel}
-            value={birthDate.month}
-            onChangeText={setPart('month')}
-            keyboardType="number-pad"
-            maxLength={2}
-          />
-        </View>
-        <View style={{ flex: 1.3 }}>
-          <TextField
-            label={strings.steps.yearLabel}
-            value={birthDate.year}
-            onChangeText={setPart('year')}
-            keyboardType="number-pad"
-            maxLength={4}
-          />
-        </View>
-      </View>
+      <BirthDateField
+        value={parts}
+        opening={opening}
+        onChange={(next) => onChange({ birthDate: draftFromParts(next) })}
+        today={today}
+      />
     </View>
   );
 }
