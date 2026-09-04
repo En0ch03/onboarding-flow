@@ -58,6 +58,13 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
 
   const StepBody = step.component;
 
+  // Ipucu bir cumle de olabilir, cevaplara bakan bir fonksiyon da. Fonksiyon
+  // `null` donerse hicbir sey gosterilmiyor - adimin govdesi zaten konusuyor.
+  const hint =
+    typeof step.incompleteHint === 'function'
+      ? step.incompleteHint(engine.answers)
+      : step.incompleteHint;
+
   return (
     <Screen
       header={
@@ -94,14 +101,14 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
             }}
           />
 
-          {hintShown && !engine.canContinue && step.incompleteHint ? (
+          {hintShown && !engine.canContinue && hint ? (
             <AppText
               variant="caption"
               tone="danger"
               accessibilityLiveRegion="polite"
               style={{ marginTop: spacing.md, textAlign: 'center' }}
             >
-              {step.incompleteHint}
+              {hint}
             </AppText>
           ) : null}
           {step.skippable && step.skipCost ? (

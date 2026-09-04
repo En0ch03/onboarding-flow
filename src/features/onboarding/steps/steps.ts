@@ -21,7 +21,21 @@ export const steps: StepDefinition[] = [
     subtitle: strings.steps.identitySubtitle,
     component: IdentityStep,
     skippable: false,
-    incompleteHint: strings.steps.identityHint,
+    incompleteHint: (answers) => {
+      const nameMissing = (answers.name?.trim().length ?? 0) === 0;
+      const dateProblem = inspectBirthDate(answers.birthDate);
+
+      // Tarihin nesi yanlissa adimin govdesi bunu alanin hemen altinda
+      // soyluyor. Burada daha genel bir cumle tekrar etmek, kesin olani
+      // bulanik olanla degistiriyor: kullanici butonun yanindakini goruyor,
+      // alanin altindakini kaciriyor.
+      const bodyExplainsTheDate = dateProblem !== null && dateProblem !== 'incomplete';
+
+      if (bodyExplainsTheDate) return nameMissing ? strings.steps.identityNameHint : null;
+      if (nameMissing && dateProblem !== null) return strings.steps.identityHint;
+      if (nameMissing) return strings.steps.identityNameHint;
+      return strings.steps.identityDateHint;
+    },
     isComplete: (answers) =>
       (answers.name?.trim().length ?? 0) > 0 && inspectBirthDate(answers.birthDate) === null,
   },
