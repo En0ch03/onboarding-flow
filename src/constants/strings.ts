@@ -42,7 +42,6 @@ export const strings = {
     passwordLabel: 'Şifre',
     showPassword: 'Şifreyi göster',
     hidePassword: 'Şifreyi gizle',
-    forgotPassword: 'Şifremi sıfırla',
 
     legal: 'Devam ederek Kullanım Şartları’nı ve Gizlilik Politikası’nı kabul etmiş olursun.',
   },

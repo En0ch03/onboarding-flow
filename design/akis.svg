@@ -90,7 +90,7 @@
 <text x="1252" y="473" text-anchor="middle" font-size="12" fill="#6B6259">hayır</text>
 <rect x="1100" y="500" width="240" height="62" rx="16" fill="#F4EFE7" stroke="#E3DCD1" stroke-width="1"/>
 <text x="1220" y="528" text-anchor="middle" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Kaldığı adıma dönülür</text>
-<text x="1220" y="548" text-anchor="middle" font-size="12" fill="#6B6259">Yığın yeniden kurulur:</text>
+<text x="1220" y="548" text-anchor="middle" font-size="12" fill="#6B6259">Etkin adım geri yüklenir:</text>
 <text x="1220" y="564" text-anchor="middle" font-size="12" fill="#6B6259">geri tuşu önceki adıma gider</text>
 <path d="M 1100 531 L 1040 531 L 1040 660 L 300 660 L 300 686" fill="none" stroke="#6B6259" stroke-width="1.6" marker-end="url(#arrow)"/>
 <text x="56" y="716" font-size="13" letter-spacing="1.4" fill="#7A4A3A">3 — PROFİL ADIMLARI · 5 adım, sayaçla gösterilir (yüzde değil)</text>

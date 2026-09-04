@@ -24,8 +24,12 @@ const presentations: Record<ApiErrorKind, ErrorPresentation> = {
     action: null,
   },
   invalid_credentials: {
+    // Cikis yolu formun kendisi: alanlar bosaltilmiyor ve kullanici
+    // genellikle tek bir karakteri duzeltiyor. Bir sifirlama baglantisi
+    // ilan edilmiyor cunku sozlesmede sifirlama ucu yok; goturecegi yer
+    // olmayan bir cikis, cikis olmamasindan kotu.
     message: 'E-posta veya şifre eşleşmedi. Bir daha dener misin?',
-    action: 'Şifremi sıfırla',
+    action: null,
   },
   refresh_expired: {
     message:
