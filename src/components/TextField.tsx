@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { forwardRef, useState } from 'react';
 import { Pressable, TextInput, View, type TextInputProps } from 'react-native';
 
@@ -5,6 +6,16 @@ import { strings } from '@/constants/strings';
 import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
+import { EyeIcon } from './EyeIcon';
+
+/**
+ * Gorunurluk anahtarinin dokunma hedefi. iOS'un asgarisi 44, Android'in 48;
+ * ustteki degeri alip alanin kendi yuksekligiyle birlikte buyuyecek sekilde
+ * kurmak yerine sabit tutuldu, cunku hedef alandan buyurse Android tasan
+ * dokunuslari iletmiyor ve anahtar sessizce oluyor. Alanin yuksekligi bugun
+ * yaklasik 55; `paddingVertical` kucultulurse bu bag yeniden olculmeli.
+ */
+const TOGGLE_SIZE = 48;
 
 type TextFieldProps = Omit<TextInputProps, 'style'> & {
   label: string;
@@ -39,12 +50,22 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
       <View style={{ justifyContent: 'center' }}>
         <TextInput
           ref={ref}
-          accessibilityLabel={label}
           placeholderTextColor={colors.inkSoft}
-          secureTextEntry={secure && !revealed}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
           {...inputProps}
+          accessibilityLabel={label}
+          // Yayilimdan sonra geliyorlar. Once yazildiklarinda cagiranin kendi
+          // `onBlur`'u (form kutuphanesi her alana bir tane veriyor) bunlari
+          // eziyordu: odak halkasi bir kez yandiktan sonra hic sonmuyor ve
+          // alanlar arasi gecisten sonra iki alan da odakli gorunuyordu.
+          secureTextEntry={secure && !revealed}
+          onFocus={(event) => {
+            setFocused(true);
+            inputProps.onFocus?.(event);
+          }}
+          onBlur={(event) => {
+            setFocused(false);
+            inputProps.onBlur?.(event);
+          }}
           style={{
             ...type.control,
             color: colors.ink,
@@ -55,28 +76,55 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
             borderCurve: 'continuous',
             paddingVertical: spacing.lg,
             paddingLeft: spacing.lg,
-            paddingRight: secure ? spacing.xxl + spacing.lg : spacing.lg,
+            // Sifre alaninda metin, anahtarin ve ayirici cizginin altina
+            // girmiyor: imlec goz ikonunun arkasinda kaybolmamali.
+            paddingRight: secure ? TOGGLE_SIZE + spacing.lg : spacing.lg,
           }}
         />
 
         {secure ? (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={revealed ? strings.auth.hidePassword : strings.auth.showPassword}
-            onPress={() => setRevealed((current) => !current)}
-            hitSlop={8}
+          <View
             style={{
               position: 'absolute',
-              right: spacing.sm,
-              padding: spacing.sm,
+              right: 0,
+              flexDirection: 'row',
+              alignItems: 'center',
             }}
           >
-            {/* Sifre tekrari alani yerine gorunurluk anahtari: yaziyi iki kez
-                yazdirmadan ayni yazim hatasini yakaliyor. */}
-            <AppText variant="label" tone="inkSoft">
-              {revealed ? 'Gizle' : 'Göster'}
-            </AppText>
-          </Pressable>
+            {/* Ayirici cizgi uclarinda soluyor: sert biten bir cizgi, alanin
+                icine cizilmis ikinci bir kenarlik gibi duruyor. Uclar
+                `transparent` degil alanin kendi zemini: saydam uc Android'de
+                griye caliyor. */}
+            <LinearGradient
+              colors={[colors.surface, colors.hairline, colors.surface]}
+              style={{ width: 1, height: spacing.xl }}
+            />
+
+            <Pressable
+              accessibilityRole="button"
+              // Durum bilgisi etiketin kendisinde: "Sifreyi goster" ve
+              // "Sifreyi gizle". Ustune bir `selected` eklemek, ekran
+              // okuyucunun "secildi" demesine ve kullanicinin neyin secildigini
+              // sormasina yol aciyor.
+              accessibilityLabel={revealed ? strings.auth.hidePassword : strings.auth.showPassword}
+              onPress={() => setRevealed((current) => !current)}
+              style={({ pressed }) => ({
+                width: TOGGLE_SIZE,
+                height: TOGGLE_SIZE,
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: pressed ? 0.6 : 1,
+              })}
+            >
+              {/* Sifre tekrari alani yerine gorunurluk anahtari: yaziyi iki kez
+                  yazdirmadan ayni yazim hatasini yakaliyor. */}
+              <EyeIcon
+                open={revealed}
+                color={revealed ? colors.clay : colors.inkSoft}
+                background={colors.surface}
+              />
+            </Pressable>
+          </View>
         ) : null}
       </View>
 
