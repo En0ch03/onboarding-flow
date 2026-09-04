@@ -1,5 +1,5 @@
-import { useCallback, useRef, useState } from 'react';
-import { Keyboard, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { BackHandler, Keyboard, View } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { AppText } from '@/components/AppText';
@@ -23,6 +23,13 @@ type StepScreenProps = {
   onFinish: () => void;
   /** Ilk adimdan geri: akisin disina cikis cagirana birakiliyor. */
   onExit: () => void;
+  /**
+   * Ekran onde mi. Donanimsal geri tusu yalnizca onde olan ekrandan
+   * dinleniyor: adimlar, kapanis ekrani ustlerine gelse de yiginda mount
+   * halinde kaliyor ve dinlemeye devam etselerdi kapanis ekranindaki bir
+   * geri basisi, altta duran adimi degistirirdi.
+   */
+  focused?: boolean;
 };
 
 /**
@@ -31,7 +38,7 @@ type StepScreenProps = {
  * Ekran, adim bilesenine yalnizca cevaplari ve bir degistirici veriyor;
  * adimlar navigasyonu, ilerlemeyi veya kaydetmeyi bilmiyor.
  */
-export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps) {
+export function StepScreen({ steps, options, onFinish, onExit, focused = true }: StepScreenProps) {
   const { spacing } = useTheme();
   const engine = useStepEngine(steps, { onFinish });
   const markStepUnsynced = useOnboardingStore((state) => state.markStepUnsynced);
@@ -52,6 +59,58 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
   const [hintStepId, setHintStepId] = useState<string | null>(null);
 
   const step = engine.currentStep;
+
+  /**
+   * Geriye gitmenin tek tanimi.
+   *
+   * Iki yol var -- ustteki geri dugmesi ve Android'in donanimsal tusu -- ve
+   * ikisi de burayi cagiriyor. Ayni cumleyi iki yerde yazmak, ikisinin
+   * sessizce ayrismasina acik kapi birakiyordu; ayni fonksiyonu cagirmak
+   * kapatiyor.
+   *
+   * Referans, isleyicinin her zaman guncel adimi gormesi icin. Abonelik
+   * yalnizca odak degistiginde yenileniyor, oysa `goBack` her cevap
+   * degisiminde yeni bir fonksiyon: referans olmasaydi isleyici ilk cizimin
+   * adiminda donar ve kullanici ucuncu adimda geri tusuna bastiginda bir
+   * adim geri gitmek yerine akistan cikis onayi acilirdi.
+   */
+  const latest = useRef({ goBack: engine.goBack, onExit });
+
+  useEffect(() => {
+    latest.current = { goBack: engine.goBack, onExit };
+  });
+
+  const goBackOrExit = useCallback(() => {
+    if (!latest.current.goBack()) latest.current.onExit();
+  }, []);
+
+  /**
+   * Donanimsal geri tusu.
+   *
+   * Adimlar tek bir rotada yasadigi icin navigasyonun kendi geri davranisi
+   * burada adim adim gerilemiyor; yiginin ilk rotasindayiz ve tus dogrudan
+   * uygulamadan cikariyordu.
+   *
+   * `true` donmek olayi tuketiyor. Donmezse olayi sahiplenen kimse kalmaz
+   * ve sistem uygulamayi kapatir -- bu isleyicinin duzeltmek icin var
+   * oldugu davranisin ta kendisi. Navigasyonun kendi geri davranisi burada
+   * zaten devreye girmiyor: yiginin ilk rotasindayiz.
+   *
+   * Alttan acilan sayfalar buraya hic ulasmiyor; onlar `Modal` icinde ve
+   * `Modal` geri tusunu kendi kapanisina bagliyor. Kapanis ekrani onde
+   * oldugunda da bu isleyici kayitli degil -- ama o ekranin kendi
+   * dinleyicisi var ve kayit ucustayken tusu yutuyor.
+   */
+  useEffect(() => {
+    if (!focused) return;
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      goBackOrExit();
+      return true;
+    });
+
+    return () => subscription.remove();
+  }, [focused, goBackOrExit]);
 
   const advance = useCallback(
     (skipped: boolean) => {
@@ -102,9 +161,7 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
       header={
         <View>
           <ScreenHeader
-            onBack={() => {
-              if (!engine.goBack()) onExit();
-            }}
+            onBack={goBackOrExit}
             step={engine.progress}
             {...(step.skippable
               ? {

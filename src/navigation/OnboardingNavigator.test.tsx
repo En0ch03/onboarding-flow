@@ -1,5 +1,6 @@
 import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { cleanup, fireEvent, waitFor } from '@testing-library/react-native';
+import { BackHandler } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { strings } from '@/constants/strings';
@@ -68,6 +69,7 @@ const answers = {
 };
 
 afterEach(cleanup);
+afterEach(() => jest.restoreAllMocks());
 
 async function mountAtLastStep() {
   useOnboardingStore.setState({
@@ -109,5 +111,34 @@ describe('OnboardingNavigator', () => {
     fireEvent.press(await view.findByText(strings.completion.secondary));
 
     await waitFor(() => expect(routes()).toEqual(['Steps']));
+  });
+
+  it('kapanis ekranindayken geri tusu alttaki adimi degistirmiyor', async () => {
+    // Adimlar kapanis ekraninin altinda mount halinde kaliyor. Donanimsal
+    // geri tusunu dinlemeye devam etselerdi, buradaki bir geri basisi
+    // gorunmeyen bir adimi degistirirdi.
+    const handlers: (() => boolean)[] = [];
+    jest.spyOn(BackHandler, 'addEventListener').mockImplementation(((
+      _event: string,
+      handler: () => boolean,
+    ) => {
+      handlers.push(handler);
+      return {
+        remove: () => {
+          const index = handlers.indexOf(handler);
+          if (index >= 0) handlers.splice(index, 1);
+        },
+      };
+    }) as unknown as typeof BackHandler.addEventListener);
+
+    const { view, routes } = await mountAtLastStep();
+
+    fireEvent.press(view.getByText(strings.common.finish));
+    await waitFor(() => expect(routes()).toEqual(['Steps', 'Completion']));
+    await view.findByText(strings.completion.primary);
+
+    for (const handler of [...handlers]) handler();
+
+    expect(useOnboardingStore.getState().activeStepId).toBe('interests');
   });
 });
