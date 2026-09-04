@@ -12,13 +12,14 @@ type ScreenIntroProps = {
 /**
  * Ekranin basligi ve altindaki tek satirlik aciklamasi.
  *
- * Bu ikili dokuz ekranda tekrar ediyordu ve her birinde araliklar elle
- * yazilmisti: baslikla aciklama arasi bir ekranda sekiz, digerinde yirmi
- * dort, ucuncusunde on iki birimdi. Tek tek bakildiginda hicbiri yanlis
- * gorunmuyor; arka arkaya gezildiginde ekranlar akraba hissetmiyor.
+ * Bu ikili dort form ekraninda tekrar ediyordu (adim, kayit, giris,
+ * tamamlanma) ve her birinde araliklar elle yazilmisti: baslikla aciklama
+ * arasi bir ekranda sekiz, digerinde on iki birimdi. Tek tek bakildiginda
+ * hicbiri yanlis gorunmuyor; arka arkaya gezildiginde ekranlar akraba
+ * hissetmiyor.
  *
- * Ritim artik tek yerde. Bir ekranin farkli durmasi gerekiyorsa bu bileseni
- * kullanmiyor - fark bir unutkanlik degil bir tercih oluyor.
+ * Karsilama ve varis ekranlari bu bileseni kullanmiyor: onlar `display`
+ * olcegiyle kendi ailesini kuruyor. Fark bir unutkanlik degil bir tercih.
  */
 export function ScreenIntro({ title, subtitle }: ScreenIntroProps) {
   const { spacing } = useTheme();

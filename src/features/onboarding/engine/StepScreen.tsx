@@ -6,8 +6,8 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { ProgressBar } from '@/components/ProgressBar';
 import { Screen } from '@/components/Screen';
-import { ScreenIntro } from '@/components/ScreenIntro';
 import { ScreenHeader } from '@/components/ScreenHeader';
+import { ScreenIntro } from '@/components/ScreenIntro';
 import { strings } from '@/constants/strings';
 import { useOnboardingStore } from '@/state/onboardingStore';
 import { haptics } from '@/feedback/haptics';
@@ -104,7 +104,10 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
       footer={
         <View>
           {/* Buton hicbir zaman gri degil: devre disi bir buton neyin eksik
-              oldugunu soylemiyor, basildiginda soylenen bir cumle soyluyor. */}
+              oldugunu soylemiyor, basildiginda soylenen bir cumle soyluyor.
+              Ipucu, hata bandi gibi zeminli bir kutu degil ciplak bir satir:
+              bandin isi olan bir seyin bozuldugunu soylemek, ipucununki ise
+              henuz yapilmamis bir seyi hatirlatmak. Ikisi ayni gorunmemeli. */}
           {hintShown && !engine.canContinue && hint ? (
             <AppText
               variant="caption"

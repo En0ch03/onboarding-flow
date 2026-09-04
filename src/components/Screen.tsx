@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useTheme, withAlpha } from '@/theme';
+import { spacing as scale, useTheme, withAlpha } from '@/theme';
 
 type ScreenProps = {
   /** Ust serit: geri, adim sayaci, atlama. Kaydirilmaz, yerinde durur. */
@@ -31,6 +31,17 @@ export type ScreenAlign = 'top' | 'upper' | 'center';
  * asagi itip butonun uzerine bindiriyor, buyuk ekranda ise kayboluyor.
  */
 const UPPER_INSET_RATIO = 0.12;
+
+/**
+ * Ust solmanin yuksekligi, ve ayni zamanda icerigin ust boslugu.
+ *
+ * Ikisi ayni degerden okunuyor cunku aralari acilirsa baslik solmanin altinda
+ * kaliyor: perde `paper`'dan saydama giderken hala yariya yakin opak oldugu
+ * bolgede metnin tepesi baslarsa, duran bir ekranda basligin ustu soluk
+ * gorunuyor. Icerik tam olarak perdenin bittigi yerde basliyor; kaydirildiginda
+ * ise perdenin altina girip soluyor, ki isi zaten bu.
+ */
+const TOP_FADE = scale.xl;
 
 /**
  * Akistaki her ekranin kabugu.
@@ -66,7 +77,7 @@ export function Screen({ header, children, footer, align = 'top' }: ScreenProps)
           contentContainerStyle={{
             flexGrow: 1,
             paddingHorizontal: screenPadding,
-            paddingTop: spacing.md,
+            paddingTop: TOP_FADE,
             paddingBottom: spacing.xl,
           }}
           // Odaklanan alan klavyenin altinda kalmasin diye kaydirma alani
@@ -104,7 +115,7 @@ export function Screen({ header, children, footer, align = 'top' }: ScreenProps)
             "yukarida devami var" demenin sessiz yolu. */}
         <LinearGradient
           colors={[colors.paper, withAlpha(colors.paper, 0)]}
-          style={{ position: 'absolute', top: 0, left: 0, right: 0, height: spacing.xl }}
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, height: TOP_FADE }}
           pointerEvents="none"
         />
       </View>

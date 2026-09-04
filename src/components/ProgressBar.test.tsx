@@ -1,38 +1,20 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, type ViewStyle } from 'react-native';
 
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { ProgressBar } from './ProgressBar';
 
-type Node = { props?: Record<string, unknown>; children?: unknown } | string | null;
+type View = Awaited<ReturnType<typeof renderWithTheme>>;
 
-/** Kaptaki dolgunun duzlestirilmis bicimi. */
-function fillStyle(node: Node | Node[]): Record<string, unknown> | null {
-  if (node === null || typeof node === 'string') return null;
-  if (Array.isArray(node)) {
-    for (const child of node) {
-      const found = fillStyle(child);
-      if (found !== null) return found;
-    }
-    return null;
-  }
+/** Cubuk ekran okuyucudan gizli oldugu icin sorgular gizli ogeleri de kapsiyor. */
+const hidden = { includeHiddenElements: true } as const;
 
-  const style = StyleSheet.flatten(node.props?.style as never) as
-    Record<string, unknown> | undefined;
-  if (style?.transform !== undefined) return style;
-
-  return fillStyle((node.children ?? []) as Node[]);
-}
-
-/** Agacta gizlenmis bir dugum var mi. */
-function hidden(node: Node | Node[]): boolean {
-  if (node === null || typeof node === 'string') return false;
-  if (Array.isArray(node)) return node.some(hidden);
-
-  const props = node.props as { accessibilityElementsHidden?: boolean } | undefined;
-  if (props?.accessibilityElementsHidden === true) return true;
-
-  return hidden((node.children ?? []) as Node[]);
+/**
+ * Dolgunun duzlestirilmis bicimi. Yapiya gore degil adiyla bulunuyor: kaba
+ * ileride bir donusum eklenirse yapisal arama sessizce yanlis dugumu olcerdi.
+ */
+function fill(view: View): ViewStyle {
+  return StyleSheet.flatten(view.getByTestId('progress-fill', hidden).props.style) as ViewStyle;
 }
 
 describe('ProgressBar', () => {
@@ -40,17 +22,28 @@ describe('ProgressBar', () => {
     const view = await renderWithTheme(<ProgressBar current={2} total={5} />);
     // Ayni bilgiyi ust seritteki sayac kelimelerle soyluyor; iki kez
     // duyurmak ayni cumleyi tekrar okutmak olurdu.
-    expect(hidden(view.toJSON())).toBe(true);
+    expect(view.getByTestId('progress-track', hidden).props.accessibilityElementsHidden).toBe(true);
+  });
+
+  it('orani kendisi hesapliyor: cagiran yuzde gondermiyor', async () => {
+    const view = await renderWithTheme(<ProgressBar current={2} total={5} />);
+    expect(fill(view).transform).toEqual([{ scaleX: 0.4 }]);
   });
 
   it('dolgu soldan buyuyor', async () => {
     const view = await renderWithTheme(<ProgressBar current={2} total={5} />);
     // Varsayilan merkez olsaydi dolgu iki uctan birden acilirdi.
-    expect(fillStyle(view.toJSON())?.transformOrigin).toBe('left');
+    expect(fill(view).transformOrigin).toBe('left');
   });
 
   it('toplam sifirken bolme yapmiyor', async () => {
     const view = await renderWithTheme(<ProgressBar current={0} total={0} />);
-    expect(fillStyle(view.toJSON())).not.toBeNull();
+    // Korunan sey `scaleX`in `NaN` olmamasi.
+    expect(fill(view).transform).toEqual([{ scaleX: 0 }]);
+  });
+
+  it('oran bire kirpiliyor', async () => {
+    const view = await renderWithTheme(<ProgressBar current={9} total={5} />);
+    expect(fill(view).transform).toEqual([{ scaleX: 1 }]);
   });
 });

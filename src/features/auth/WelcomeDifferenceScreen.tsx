@@ -48,6 +48,10 @@ export function WelcomeDifferenceScreen({
             {strings.welcome.differenceTitleSecond}
           </AppText>
         </View>
+        {/* Aralik form ekranlarindakinden genis ve bilerek: baslik burada iki
+            satir. Sekiz birimlik dar aralik, aciklamayi basligin ucuncu
+            satiri gibi gosteriyor ve tam da ayirmaya calistigimiz seyi geri
+            birlestiriyor. */}
         <AppText variant="subhead" tone="inkSoft" style={{ marginTop: spacing.xl }}>
           {strings.welcome.differenceSubtitle}
         </AppText>
