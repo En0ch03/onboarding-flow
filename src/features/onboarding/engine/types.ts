@@ -35,8 +35,17 @@ export type StepDefinition = {
    * tekrar etmek kesin olani bastirir.
    */
   incompleteHint?: string | ((answers: DraftAnswers) => string | null);
-  /** Atlanabilir adimlarda cikis yolu gizlenmez. */
+  /**
+   * Atlanabilir adimlarda cikis yolu gizlenmez.
+   *
+   * Buradaki deger sunucu bir sey soylemediginde gecerli olan. `requiredGroup`
+   * verilmisse ve sunucu o grubu gonderiyorsa, zorunluluk kararini sunucu
+   * veriyor: bir sorunun zorunlu olup olmadigi bir urun karari ve istemci
+   * surumune gomulmemeli.
+   */
   skippable: boolean;
+  /** Bu adimin zorunlulugunu belirleyen sunucu grubu. */
+  requiredGroup?: string;
   /** Atlamanin ne kaybettirdigini soyleyen tek satir. Zorlama degil bilgilendirme. */
   skipCost?: string;
   /**

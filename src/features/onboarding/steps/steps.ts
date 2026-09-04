@@ -51,6 +51,7 @@ export const steps: StepDefinition[] = [
     title: strings.steps.audienceTitle,
     subtitle: strings.steps.audienceSubtitle,
     component: AudienceStep,
+    requiredGroup: 'audience',
     skippable: false,
     incompleteHint: strings.steps.audienceHint,
     isComplete: (answers) =>
@@ -61,6 +62,7 @@ export const steps: StepDefinition[] = [
     title: strings.steps.intentTitle,
     subtitle: strings.steps.intentSubtitle,
     component: IntentStep,
+    requiredGroup: 'intent',
     skippable: false,
     incompleteHint: strings.steps.intentHint,
     isComplete: (answers) => (answers.intent?.length ?? 0) > 0,
@@ -79,7 +81,9 @@ export const steps: StepDefinition[] = [
     title: strings.steps.interestsTitle,
     subtitle: strings.steps.interestsSubtitle,
     component: InterestsStep,
-    // Akisin tek atlanabilir adimi ve bilerek en sonda.
+    // Akisin tek atlanabilir adimi ve bilerek en sonda. Sunucu bu grubu
+    // zorunlu isaretlerse adim zorunlu hale geliyor.
+    requiredGroup: 'interests',
     skippable: true,
     skipCost: strings.steps.interestsSkipCost,
     isComplete: () => true,

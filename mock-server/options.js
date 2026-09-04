@@ -84,7 +84,15 @@ const optionGroups = {
         hint: 'Şimdilik ciddi bir bağ aramıyorum',
         order: 3,
       },
-      { id: 'friendship', label: 'Arkadaşlık', hint: 'Önce tanışalım', order: 4 },
+      {
+        id: 'friendship',
+        label: 'Arkadaşlık',
+        hint: 'Önce tanışalım',
+        // Bu cevap ilgi alanlarinin baska bir setini aciyor. Iliski burada
+        // duruyor; istemci hangi cevabin hangi listeyi actigini bilmiyor.
+        unlocks: 'interests_friendship',
+        order: 4,
+      },
       {
         id: 'unsure',
         label: 'Henüz emin değilim',

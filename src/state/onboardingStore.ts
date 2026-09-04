@@ -31,6 +31,12 @@ type OnboardingState = {
   hydrated: boolean;
 
   setAnswers: (patch: DraftAnswers) => void;
+  /**
+   * Cevaplarin tamamini degistirir. `setAnswers` birlestirdigi icin bir alani
+   * kaldiramiyor; kaldirmanin gerektigi tek yer sunucudan dusen seceneklerin
+   * temizligi ve orasi tam bir kume yaziyor.
+   */
+  replaceAnswers: (answers: DraftAnswers) => void;
   setActiveStep: (stepId: string) => void;
   markStepCompleted: (stepId: string) => void;
   markStepUnsynced: (stepId: string) => void;
@@ -54,6 +60,10 @@ export const useOnboardingStore = create<OnboardingState>()(
 
       setAnswers(patch) {
         set({ answers: { ...get().answers, ...patch } });
+      },
+
+      replaceAnswers(answers) {
+        set({ answers });
       },
 
       setActiveStep(stepId) {

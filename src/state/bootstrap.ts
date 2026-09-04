@@ -2,6 +2,8 @@ import { fetchOptionGroups, readCachedOptionGroups } from '@/api/config';
 import { fetchProfile } from '@/api/endpoints';
 import { normalizeApiError } from '@/api/errors';
 
+import { pruneAnswers } from '@/features/onboarding/steps/answerHygiene';
+
 import { connectAuthBridge, useAuthStore } from './authStore';
 import { useOnboardingStore, whenDraftHydrated } from './onboardingStore';
 import { draftFromProfile } from './profileMapping';
@@ -63,6 +65,15 @@ export async function bootstrap(): Promise<BootstrapResult> {
       return { destination: 'welcome', resumeStepId: null, optionsAvailable: options };
     }
     // Diger hatalar akisi durdurmuyor: elimizdeki taslakla devam ediliyor.
+  }
+
+  // Sunucunun artik sunmadigi cevaplar burada dusuyor. Tek yer ve tek an:
+  // bundan sonra ekran, tamamlanma kontrolu ve sunucuya yazma ayni gercegi
+  // goruyor.
+  const groups = readCachedOptionGroups();
+  if (groups !== null) {
+    const store = useOnboardingStore.getState();
+    store.replaceAnswers(pruneAnswers(store.answers, groups));
   }
 
   return {

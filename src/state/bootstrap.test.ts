@@ -15,7 +15,7 @@ jest.mock('@/api/config', () => ({
 }));
 
 const { fetchProfile } = jest.requireMock('@/api/endpoints');
-const { fetchOptionGroups } = jest.requireMock('@/api/config');
+const { fetchOptionGroups, readCachedOptionGroups } = jest.requireMock('@/api/config');
 
 const incompleteProfile = {
   user_id: 'usr_1',
@@ -149,5 +149,47 @@ describe('bootstrap', () => {
     const result = await bootstrap();
 
     expect(result.optionsAvailable).toBe(false);
+  });
+});
+
+describe('sunucudan dusen secenekler', () => {
+  const groups = {
+    intent: {
+      key: 'intent',
+      multiSelect: true,
+      maxSelection: 2,
+      required: true,
+      options: [{ id: 'long_term', label: 'Uzun soluklu' }],
+    },
+  };
+
+  it('artik sunulmayan bir cevap acilista taslaktan dusuyor', async () => {
+    await signIn();
+    fetchOptionGroups.mockResolvedValue(groups);
+    readCachedOptionGroups.mockReturnValue(groups);
+    fetchProfile.mockResolvedValue({
+      ...incompleteProfile,
+      preferences: { intent: ['long_term', 'kaldirilmis'] },
+    });
+
+    await bootstrap();
+
+    // Kalan hayalet kimlik, ekranda hicbir sey secili gorunmezken adimi
+    // tamamlanmis gosteriyor ve sunucuya geri yaziliyordu.
+    expect(useOnboardingStore.getState().answers.intent).toEqual(['long_term']);
+  });
+
+  it('liste hic gelmediyse cevaba dokunulmuyor', async () => {
+    await signIn();
+    fetchOptionGroups.mockRejectedValue(new Error('offline'));
+    readCachedOptionGroups.mockReturnValue(null);
+    fetchProfile.mockResolvedValue({
+      ...incompleteProfile,
+      preferences: { intent: ['long_term', 'bilinmeyen'] },
+    });
+
+    await bootstrap();
+
+    expect(useOnboardingStore.getState().answers.intent).toEqual(['long_term', 'bilinmeyen']);
   });
 });
