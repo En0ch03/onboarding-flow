@@ -13,6 +13,10 @@ import { useTheme } from '@/theme';
  * icin iki uc da ayni renk olmali, yalnizca alfasi degismeli.
  */
 function withAlpha(color: string, alpha: number): string {
+  // Altili hex disinda bir bicim gelirse cevirmeye calismak `rgba(NaN, ...)`
+  // uretiyor ve Android bunu gecersiz renk diye reddediyor. Solmadan vazgecip
+  // duz rengi dondurmek, cokmekten iyi.
+  if (!/^#[0-9a-f]{6}$/i.test(color)) return color;
   const hex = color.replace('#', '');
   const r = parseInt(hex.slice(0, 2), 16);
   const g = parseInt(hex.slice(2, 4), 16);
@@ -73,7 +77,13 @@ export function Screen({ header, children, footer, centered = false }: ScreenPro
           keyboardDismissMode="interactive"
           showsVerticalScrollIndicator={false}
         >
-          <View style={{ flex: 1, ...(centered ? { justifyContent: 'center' } : null) }}>
+          {/* `flex: 1` degil `flexGrow: 1`. Ilki `flexBasis: 0` demek ve icerik
+              kutusunu "gorunur alan eksi footer" boyutuna sabitliyor; o zaman
+              icerik kabi hicbir zaman gorunur alandan buyuk olmuyor ve
+              ScrollView kaydirmiyor - tasan icerik kirpiliyor. `flexGrow` ile
+              kutu kisa icerikte bosluğu dolduruyor, uzun icerikte kendi
+              yuksekligini aliyor. */}
+          <View style={{ flexGrow: 1, ...(centered ? { justifyContent: 'center' } : null) }}>
             {children}
           </View>
 
