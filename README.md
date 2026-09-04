@@ -4,45 +4,132 @@ A dating app for people who would rather meet the right person than meet a lot o
 
 The interface language is Turkish — Turkey is the first market.
 
-## Status
+## What you need
 
-Early. The project skeleton is in place; screens land branch by branch.
+- **Node.js 20 or newer.** Developed on 24.18.0.
+- **A way to see the app:** the Expo Go app on a phone, or an iOS Simulator, or an Android Emulator.
 
-## Requirements
-
-- Node.js 20 or newer
-- The Expo Go app on a physical phone, or an iOS Simulator / Android Emulator
+That is the whole list. No Xcode project, no Android Studio, no CocoaPods, no native build, no account, no API key, no `.env` file.
 
 ## Running it
 
+Two terminals. In the first:
+
 ```bash
 npm install
+npm run mock
+```
+
+In the second:
+
+```bash
 npx expo start
 ```
 
-Scan the QR code with Expo Go, or press `i` / `a` to open a simulator. No native toolchain is needed — no Xcode, no Android Studio, no CocoaPods.
+Then press `i` for the iOS Simulator, `a` for the Android Emulator, or scan the QR code with Expo Go on a phone.
+
+That is all. The app finds the mock server by itself — see the next section for why that matters. On a clean checkout `npm install` takes about a minute, and the first bundle another twenty seconds or so.
+
+### The address, and why you do not have to configure it
+
+This is where local setups usually break, so it is worth a paragraph.
+
+The mock server runs on your development machine, on port 4000. The app runs somewhere else: in a simulator, in an emulator, or on a phone. `localhost` means a different machine in each of those three cases — on a phone it means the phone, and in an Android emulator it means the emulator — so any address you write down by hand is wrong in at least two of the three.
+
+So the app does not ask. Expo is already serving the JavaScript bundle from your machine, and the app knows the address it is being served from. It reuses that host and swaps in port 4000. The result is correct in all three cases without configuration:
+
+| Where the app runs | What it resolves to |
+|---|---|
+| iOS Simulator | `http://127.0.0.1:4000/api/v1` |
+| Android Emulator | the host Expo reports, not the emulator's own loopback |
+| Physical phone, same Wi-Fi | `http://<your machine's LAN IP>:4000/api/v1` |
+
+If you want to point the app somewhere else — a staging host, a real backend — set `EXPO_PUBLIC_API_URL` and it wins over everything above. `.env.example` shows the shape. Nothing in the app branches on environment; there is one address and one code path.
+
+One requirement remains for the phone case, and it is the only one: the phone and the computer must be on the same network, and the network must allow them to talk to each other. Guest Wi-Fi and client isolation break this. If the app loads but every request fails, that is almost always the cause.
+
+## The mock server
+
+`npm run mock` starts a standalone Express server on port 4000. It implements the six contract endpoints, keeps everything in memory, and forgets it all when you restart it — which is exactly what you want before a demo.
+
+```
+POST /api/v1/auth/register        201, or 409 if taken, or 422 with per-field reasons
+POST /api/v1/auth/login           200, or 401
+POST /api/v1/auth/refresh         200 with a fresh access token, or 401
+GET  /api/v1/profile              200
+PATCH /api/v1/profile             200; preferences are merged, not replaced
+POST /api/v1/onboarding/complete  200
+```
+
+Two more endpoints exist that the contract does not define. `GET /api/v1/config/options` serves the option lists, and `POST /api/v1/upload` accepts an image. Both are placeholders for mechanisms that have not been specified yet, and on the app side each one sits behind a single function so that there is exactly one file to change when they are.
+
+There is no mock code inside the app. The app knows a base address and nothing else.
+
+### Injecting faults
+
+Every endpoint can fail, and the interesting parts of an onboarding flow are the parts where it does. Rather than making you restart the server or edit the app, the mock server takes a header, so you can break one request and leave the next one alone:
+
+```bash
+curl -H 'x-chaos: 500' http://localhost:4000/api/v1/profile
+```
+
+| `x-chaos` | What happens |
+|---|---|
+| `500` | Server error. |
+| `slow` | The response is never sent, so the client's own timeout has to catch it. Sending a late response would not test a timeout. |
+| `malformed` | A body that does not match the contract, so you can see boundary validation actually fire. |
+| `expire-token` | The request succeeds, then the access token is invalidated — so the *next* request has to be rescued by a silent refresh. |
+| `end-session` | Both tokens are invalidated: the session really is over, and the app has to end it politely with the draft intact. |
+
+To reach a token expiry through the app rather than with `curl`, shorten the lifetime instead. It defaults to 900 seconds:
+
+```bash
+MOCK_TOKEN_TTL_SECONDS=20 npm run mock
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:MOCK_TOKEN_TTL_SECONDS = "20"; npm run mock
+```
+
+## Checking it
+
+```bash
+npm run typecheck   # tsc --noEmit
+npm run lint        # eslint
+npm test            # jest
+```
 
 ## How this is built
 
-**Expo, on Expo Go.** The app deliberately stays inside what Expo Go ships, so anyone can run it in under five minutes without a native build. Everything it needs — secure storage, the image picker, image processing, fonts — is already there.
+**Expo, on Expo Go.** The app deliberately stays inside what Expo Go ships, so anyone can run it in a few minutes without a native build. Everything it needs — secure storage, the image picker, image processing, fonts — is already there.
 
-The cost of that choice is the keyboard. The library that handles keyboard motion best needs a native build, which would undo the reason for choosing Expo Go in the first place, so keyboard behaviour is solved with core APIs in a single screen shell that every screen is built inside. That makes it one thing to get right and one thing to test, on both platforms, by hand.
+The cost of that choice is the keyboard. The library that handles keyboard motion best needs a native build, which would undo the reason for choosing Expo Go in the first place. So keyboard behaviour is solved with core APIs inside a single screen shell that every screen is built within. That makes it one thing to get right and one thing to test by hand, on both platforms, instead of a problem spread across nine screens.
 
 **Nothing that can change is hardcoded.** Option lists, numeric thresholds and step requirements all come from the server. Gender, intent and interest taxonomies shift over time and by region, and a change to one of them should not require a new app release.
 
-**Every answer is validated at the boundary.** Responses are parsed before they reach application code, so a `null` where an object was expected surfaces as a handled error rather than a crash.
+**Steps are data, not routes.** The flow is a list the app walks, so inserting a step, reordering two, or making one conditional is an edit to that list rather than a change to the navigator.
 
-**Every asynchronous action models four states.** Idle, loading, error, success — none of them skipped, and every error carries a way out written in plain language.
+**Every response is validated at the boundary.** Bodies are parsed against a schema before they reach application code, so a `null` where an object was expected surfaces as a handled error instead of a crash three screens later.
 
-**Progress survives a restart.** Close the app halfway through onboarding and it reopens where it left off, with the answers intact.
+**Every asynchronous action models four states.** Idle, loading, error, success — none of them skipped. Errors are written for someone who does not know what a status code is, and every one of them offers a way forward.
+
+**A failed save does not stop the flow.** If a step cannot be sent, the user keeps going and the step is remembered as unsent; the app retries before it will let the profile be completed. Losing the connection for a moment should not cost someone their progress or their place.
+
+**Progress survives a restart.** Close the app halfway through and it reopens on the same step, with the answers still in the fields. Tokens live in the device keystore, never in plain storage. Passwords are never stored at all.
 
 ## Structure
 
 ```
-src/        application code
-assets/     fonts, icons, images
-design/     sketches and flow diagrams
-mock-server/ a standalone fake API for local development
+src/api/          the client, endpoints, schemas, the error taxonomy
+src/state/        auth and onboarding stores, the boot sequence
+src/theme/        design tokens: colour, spacing, type, radius, motion
+src/components/   the hand-written UI primitives
+src/navigation/   three macro phases: auth, onboarding, app
+src/features/     the screens, and the step engine that drives them
+mock-server/      a standalone fake API, run separately
+assets/           icons and images
 ```
 
-The app itself knows only a `BASE_URL`. There is no mock branch inside the application.
+No UI kit and no onboarding template: the components are written by hand against the design tokens.
