@@ -220,13 +220,59 @@ describe('completionProblems', () => {
     expect(completionProblems(user(twice), groups, today).photos).toBe('required');
   });
 
-  it('sinir alani hic gelmezse secim sinirsiz sayilmiyor', () => {
-    // `undefined !== null` dogru ama `n > undefined` yanlis; alan eksikken
-    // sinir sessizce kalkiyordu.
+  it('sinir alani gelmezse sinir uydurulmuyor', () => {
+    // Sozlesme `maxSelection`i zorunlu ve nullable tanimliyor, yani alanin
+    // hic gelmemesi sozlesme disi bir bicim. Kapi o durumda bir sinir
+    // uydurmuyor: uydurulacak dogru sayi yok. Sinirin gercekten
+    // uygulandigi durum bir ustteki testte.
     const { maxSelection: _omitted, ...loose } = groups.audience;
     const missing = { ...groups, audience: loose };
+    const many = { ...complete, audience: ['women', 'men'] };
 
-    expect(completionProblems(user(complete), missing, today)).toEqual({});
+    expect(completionProblems(user(many), missing, today)).toEqual({});
+  });
+
+  it('kendini gosteren bir varyant baglantisi soruyu zorunsuz yapmiyor', () => {
+    // Varyant olmak denetimden dusmek demek, yani yanlis yazilmis bir
+    // baglanti kapiyi acik yonde bozardi.
+    const broken = { ...groups, gender: { ...groups.gender, variantOf: 'gender' } };
+    const bare = { ...complete, gender: undefined };
+
+    expect(completionProblems(user(bare), broken, today).gender).toBe('required');
+  });
+
+  it('olmayan bir listeyi gosteren varyant baglantisi yok sayiliyor', () => {
+    const broken = { ...groups, gender: { ...groups.gender, variantOf: 'nope' } };
+    const bare = { ...complete, gender: undefined };
+
+    expect(completionProblems(user(bare), broken, today).gender).toBe('required');
+  });
+
+  it('karsilikli varyant baglantisi iki soruyu birden dusurmuyor', () => {
+    const mutual = {
+      x: {
+        key: 'x',
+        variantOf: 'y',
+        multiSelect: true,
+        maxSelection: 1,
+        required: true,
+        options: [{ id: 'x1' }],
+      },
+      y: {
+        key: 'y',
+        variantOf: 'x',
+        multiSelect: true,
+        maxSelection: 1,
+        required: true,
+        options: [{ id: 'y1' }],
+      },
+    };
+
+    const bare = { birth_date: complete.birth_date, photos };
+    expect(completionProblems(user(bare), mutual, today)).toEqual({
+      x: 'required',
+      y: 'required',
+    });
   });
 
   it('acilmamis bir liste zorunlu sayilmiyor', () => {

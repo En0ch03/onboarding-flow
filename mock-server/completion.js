@@ -116,10 +116,26 @@ function unlockedKeys(preferences, optionGroups) {
  * varyantin hangi tabana ait oldugu bilinmedigi icin oradan secilen bir
  * etiket her liste icin gecerli sayiliyordu -- "Kutu oyunlari" gecerli bir
  * cinsiyet cevabi oluyordu.
+ *
+ * Iliskinin kendisi de dogrulaniyor. Varyant olmak denetimden dusmek
+ * demek, yani yanlis yazilmis bir `variantOf` kapiyi **acik** yonde
+ * bozardi: kendini gosteren, olmayan bir listeyi gosteren veya karsilikli
+ * isaret eden iki liste, zorunlu sorulari sessizce zorunsuz yapardi. Boyle
+ * bir baglantı yok sayiliyor ve liste sıradan, zorunlu bir soru gibi
+ * denetleniyor -- yapilandirma hatasinda kapi sıkı tarafa bozuluyor.
  */
 function variantBase(key, optionGroups) {
   const base = optionGroups[key]?.variantOf;
-  return typeof base === 'string' ? base : null;
+  if (typeof base !== 'string') return null;
+
+  // Kendini gosteren veya olmayan bir listeyi gosteren baglanti gecersiz.
+  if (base === key || optionGroups[base] === undefined) return null;
+
+  // Tabanin kendisi varyantsa zincir var demektir; varyantlar tek duzeyli
+  // ve karsilikli isaret eden iki liste boylece ikisi de denetleniyor.
+  if (typeof optionGroups[base].variantOf === 'string') return null;
+
+  return base;
 }
 
 /** Bir listeye verilmis cevabi, tekli ve coklu ayrimini gormeden diziye cevirir. */

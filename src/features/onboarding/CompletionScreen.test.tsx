@@ -1,4 +1,5 @@
 import { cleanup, fireEvent, waitFor } from '@testing-library/react-native';
+import { BackHandler } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { presentError } from '@/constants/errorMessages';
@@ -63,6 +64,7 @@ const answers: DraftAnswers = {
 };
 
 afterEach(cleanup);
+afterEach(() => jest.restoreAllMocks());
 
 // Sahte modul testler arasinda basarili haline donuyor: bir testin kurdugu
 // hata, sirasi degistiginde baska bir testi dusurmemeli.
@@ -254,16 +256,54 @@ describe('CompletionScreen', () => {
     expect(onEnterApp).not.toHaveBeenCalled();
   });
 
-  it('sunucu 200 donup tamamlanmadi derse iceri almiyor', async () => {
-    // Karari sunucu veriyorsa cevabinin govdesi de okunmali.
+  it('sunucu 200 donup tamamlanmadi derse iceri almiyor ve sebebini soyluyor', async () => {
+    // Karari sunucu veriyorsa cevabinin govdesi de okunmali. Sessizce
+    // reddetmek kullaniciyi aciklamasiz, olu bir butonla birakiyordu.
     asMock(completeOnboarding).mockImplementation(async () => ({ onboarding_complete: false }));
 
     const onEnterApp = jest.fn();
     const view = await mount(answers, { onEnterApp });
 
-    fireEvent.press(await view.findByText(strings.completion.primary));
+    await view.findByText(presentError({ kind: 'unexpected_response', detail: '' }).message);
 
-    await waitFor(() => expect(asMock(completeOnboarding).mock.calls.length).toBeGreaterThan(0));
+    fireEvent.press(view.getByText(strings.completion.primary));
     expect(onEnterApp).not.toHaveBeenCalled();
+  });
+
+  it('istek ucustayken donanimsal geri tusu ekrandan cikarmiyor', async () => {
+    // Cikis engellenmezse istek devam ediyor ve profil sunucuda
+    // "tamamlandi" damgasini aliyor; kullanici ise duzeltme yaptigini
+    // saniyor.
+    const handlers: (() => boolean)[] = [];
+    jest.spyOn(BackHandler, 'addEventListener').mockImplementation(((
+      _event: string,
+      handler: () => boolean,
+    ) => {
+      handlers.push(handler);
+      return {
+        remove: () => {
+          const index = handlers.indexOf(handler);
+          if (index >= 0) handlers.splice(index, 1);
+        },
+      };
+    }) as unknown as typeof BackHandler.addEventListener);
+
+    let release = (): void => {};
+    asMock(completeOnboarding).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          release = () => resolve({ onboarding_complete: true });
+        }),
+    );
+
+    const view = await mount(answers);
+    await view.findByText(strings.completion.primary);
+
+    // Kayitli isleyici `true` donuyorsa geri tusu yutuluyor demektir.
+    expect(handlers).toHaveLength(1);
+    expect(handlers[0]?.()).toBe(true);
+
+    release();
+    await waitFor(() => expect(handlers).toHaveLength(0));
   });
 });

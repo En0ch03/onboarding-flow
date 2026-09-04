@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { View } from 'react-native';
+import { BackHandler, View } from 'react-native';
 
 import { completeOnboarding } from '@/api/endpoints';
 import type { OptionGroups } from '@/api/schemas';
@@ -58,8 +58,13 @@ export function CompletionScreen({
     const { onboarding_complete } = await completeOnboarding();
 
     // Durum kodu degil govde belirleyici: karari sunucu veriyorsa cevabini
-    // da okumak gerekiyor.
-    if (!onboarding_complete) return false;
+    // da okumak gerekiyor. Kendisiyle celisen bir yanit - 200 ama
+    // "tamamlanmadi" - bir sozlesme sapmasi ve hata gibi ele aliniyor;
+    // sessizce reddetmek kullaniciyi aciklamasiz, olu bir butonla
+    // birakiyordu.
+    if (!onboarding_complete) {
+      throw { kind: 'unexpected_response', detail: 'onboarding_complete false' };
+    }
 
     markOnboardingComplete();
     return true;
@@ -71,12 +76,33 @@ export function CompletionScreen({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const pending = finish.state.status === 'loading';
+
+  /**
+   * Istek ucustayken bu ekrandan cikilmiyor.
+   *
+   * Cikis engellenmezse istek devam ediyor ve profil sunucuda "tamamlandi"
+   * damgasini aliyor; kullanici ise adimlara donup duzeltme yaptigini
+   * saniyor. Uygulamayi kapatip actiginda akista degil ana ekranda
+   * buluyor kendini.
+   *
+   * iOS'ta kaydirma jesti bu rotada zaten kapali; acik kalan yol Android'in
+   * donanimsal geri tusuydu ve o buradan kapaniyor. Bekleme kisa ve
+   * gorunur: birincil buton yukleniyor halinde.
+   */
+  useEffect(() => {
+    if (!pending) return;
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => true);
+    return () => subscription.remove();
+  }, [pending]);
+
   const failure = finish.state.status === 'error' ? finish.state.error : null;
 
   // Uygulamaya giris sunucunun onayina bagli. Ekrana bakiyor olmak profilin
   // tamamlandigi anlamina gelmiyor: kullanici buraya bir navigasyon
   // hatasiyla da gelebilir ve o durumda eksik bir profille iceri girerdi.
-  const confirmed = finish.state.status === 'success' && finish.state.data;
+  const confirmed = finish.state.status === 'success';
 
   // Eksik profil bir sunucu arizasi degil; bandin cikis yolu "tekrar dene"
   // degil "cevaplara don" olmali, cunku tekrar denemek ayni cevabi verecek.
@@ -115,7 +141,7 @@ export function CompletionScreen({
               clearDraft();
               onEnterApp();
             }}
-            loading={finish.state.status === 'loading'}
+            loading={pending}
           />
           <Button
             title={strings.completion.secondary}
@@ -125,7 +151,7 @@ export function CompletionScreen({
             // devam ediyor ve profil "tamamlandi" damgasini aliyor; kullanici
             // ise adimlarda duzeltme yaptigini saniyor ve uygulamayi kapatip
             // actiginda akista degil ana ekranda buluyor kendini.
-            disabled={finish.state.status === 'loading'}
+            disabled={pending}
             style={{ marginTop: spacing.sm }}
           />
         </View>
