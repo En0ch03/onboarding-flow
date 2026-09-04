@@ -88,7 +88,9 @@ export function Screen({ header, children, footer, align = 'top' }: ScreenProps)
             style={{
               flexGrow: 1,
               ...(align === 'center' ? { justifyContent: 'center' } : null),
-              ...(align === 'upper' ? { paddingTop: Math.round(height * UPPER_INSET_RATIO) } : null),
+              ...(align === 'upper'
+                ? { paddingTop: Math.round(height * UPPER_INSET_RATIO) }
+                : null),
             }}
           >
             {children}
