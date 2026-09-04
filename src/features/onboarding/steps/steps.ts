@@ -31,6 +31,14 @@ export const steps: StepDefinition[] = [
       if (dateProblem === 'invalid' || dateProblem === 'too_young') {
         return birthDateMessages[dateProblem];
       }
+
+      // Tarihe baslanmis ama bitmemisse "doğum tarihini yaz" demek gordugu
+      // seyle celisiyor - alanlarin biri zaten dolu. Eksigin ne oldugunu soyle.
+      const dateStarted = Object.values(answers.birthDate ?? {}).some((part) => part !== '');
+      if (dateProblem === 'incomplete' && dateStarted && !nameMissing) {
+        return birthDateMessages.incomplete;
+      }
+
       if (nameMissing && dateProblem !== null) return strings.steps.identityHint;
       if (nameMissing) return strings.steps.identityNameHint;
       return strings.steps.identityDateHint;

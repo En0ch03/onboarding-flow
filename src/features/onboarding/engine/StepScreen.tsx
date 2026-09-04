@@ -36,6 +36,11 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
   const markStepSynced = useOnboardingStore((state) => state.markStepSynced);
   const [hintShown, setHintShown] = useState(false);
 
+  // Uyari adima bagli: geri donuldugunde veya bir adim atlandiginda acik
+  // kaliyordu ve kullanici hic dokunmadigi bir adimi kirmizi uyariyla
+  // aciyordu. Adim kimligi degisince uyari kapaniyor.
+  const [hintStepId, setHintStepId] = useState<string | null>(null);
+
   const step = engine.currentStep;
 
   const advance = useCallback(
@@ -53,6 +58,11 @@ export function StepScreen({ steps, options, onFinish, onExit }: StepScreenProps
     },
     [engine, markStepSynced, markStepUnsynced, step],
   );
+
+  if (step && step.id !== hintStepId) {
+    setHintStepId(step.id);
+    if (hintShown) setHintShown(false);
+  }
 
   if (!step) return null;
 
