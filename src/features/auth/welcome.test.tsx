@@ -1,4 +1,3 @@
-import { cleanup } from '@testing-library/react-native';
 import { StyleSheet } from 'react-native';
 
 import { strings } from '@/constants/strings';
@@ -25,8 +24,6 @@ function hasCentredContent(node: Node | Node[]): boolean {
 
   return hasCentredContent((node.children ?? []) as Node[]);
 }
-
-afterEach(cleanup);
 
 describe('karsilama ekranlari', () => {
   it('ikinci ekranin cumlesi iki ayri satir', async () => {
@@ -58,6 +55,11 @@ describe('karsilama ekranlari', () => {
     const difference = await renderWithTheme(
       <WelcomeDifferenceScreen onContinue={noop} onBack={noop} onSkip={noop} />,
     );
+
+    // Yokluk iddiasi once varligi kanitliyor: bos render eden bir ekran da
+    // "ortalanmiyor" derdi ve test sessizce gecerdi.
+    expect(promise.getByText(strings.welcome.promiseTitle)).toBeTruthy();
+    expect(difference.getByText(strings.welcome.differenceTitleFirst)).toBeTruthy();
 
     expect(hasCentredContent(promise.toJSON())).toBe(false);
     expect(hasCentredContent(difference.toJSON())).toBe(false);

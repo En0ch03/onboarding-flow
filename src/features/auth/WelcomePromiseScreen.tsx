@@ -20,7 +20,7 @@ type WelcomePromiseScreenProps = {
  *
  * Cumle dikeyde ortalanmiyor. Ortalanmis bir baslik afis gibi duruyor ve
  * okuma dogal olarak ust sol kosede basliyor; metin oraya dogru cekildi ama
- * kosaye yaslanmadi, iceriden bir bosluk birakildi.
+ * koseye yaslanmadi, iceriden bir bosluk birakildi.
  */
 export function WelcomePromiseScreen({ onStart, onSignIn }: WelcomePromiseScreenProps) {
   const { spacing } = useTheme();

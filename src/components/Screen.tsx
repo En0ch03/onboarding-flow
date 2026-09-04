@@ -36,6 +36,9 @@ type ScreenProps = {
    * `top` icerigi ust seridin hemen altina koyar. `upper` onu asagi dogru
    * biraz iter ama ortalamaz: metin ust sol bolgede, kosede degil, iceriden
    * bir bosluk birakarak duruyor. `center` dikeyde ortalar.
+   *
+   * `upper` boslugu ust seridin uzerine biniyor, yerine gecmiyor: seritli bir
+   * ekranda ikisi toplanir ve icerik beklenenden asagi duser.
    */
   align?: ScreenAlign;
 };
@@ -43,8 +46,8 @@ type ScreenProps = {
 export type ScreenAlign = 'top' | 'upper' | 'center';
 
 /**
- * `upper` bosluğu sabit degil oranli: sabit bir deger kucuk ekranda icerigi
- * asagi itip butonun uzerine bindiriyor, buyuk ekranda ise kaybolu yor.
+ * `upper` boslugu sabit degil oranli: sabit bir deger kucuk ekranda icerigi
+ * asagi itip butonun uzerine bindiriyor, buyuk ekranda ise kayboluyor.
  */
 const UPPER_INSET_RATIO = 0.12;
 
@@ -98,7 +101,7 @@ export function Screen({ header, children, footer, align = 'top' }: ScreenProps)
               kutusunu "gorunur alan eksi footer" boyutuna sabitliyor; o zaman
               icerik kabi hicbir zaman gorunur alandan buyuk olmuyor ve
               ScrollView kaydirmiyor - tasan icerik kirpiliyor. `flexGrow` ile
-              kutu kisa icerikte bosluğu dolduruyor, uzun icerikte kendi
+              kutu kisa icerikte boslugu dolduruyor, uzun icerikte kendi
               yuksekligini aliyor. */}
           <View
             style={{
