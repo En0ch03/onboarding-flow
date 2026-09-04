@@ -10,6 +10,15 @@ import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
 
+/**
+ * Bu iki sayi bilerek istemcide.
+ *
+ * Seceneklerin kendisi sunucudan geliyor cunku taksonomiler bolgeye ve
+ * zamana gore degisiyor; bir esik oyle bir sey degil. Alti slot gorunmesi ve
+ * ikisinin yeterli sayilmasi tek bir urun karari ve degistirmek yerlesimi de
+ * degistiriyor. Sunucudan gelseydi istemci, gelmeyen bir sayi icin yine bir
+ * varsayilan tasimak zorunda kalirdi.
+ */
 export const PHOTO_SLOTS = 6;
 export const MINIMUM_PHOTOS = 2;
 
