@@ -308,6 +308,32 @@ describe('adoptServerProfile', () => {
     expect(useOnboardingStore.getState().activeStepId).toBeNull();
   });
 
+  it('drops a draft owned by another account on a cold launch', async () => {
+    // Soguk acilista oturum token'lardan geri geliyor ve bir kullanici
+    // kimligi tasimiyor; sahibi ogrenebilecegimiz tek yer profilin kendisi.
+    useOnboardingStore.setState({ ownerId: 'usr_2' });
+    useOnboardingStore.getState().setAnswers({ name: 'Baskasinin adi' });
+    useAuthStore.setState({ status: 'authenticated' });
+    fetchProfile.mockResolvedValue(incompleteProfile);
+
+    await adoptServerProfile();
+
+    expect(useOnboardingStore.getState().answers.name).toBe('Deniz');
+    expect(useOnboardingStore.getState().ownerId).toBe('usr_1');
+  });
+
+  it('keeps a draft the launching account already owns', async () => {
+    useOnboardingStore.setState({ ownerId: 'usr_1' });
+    useOnboardingStore.getState().setAnswers({ interests: ['music'] });
+    useAuthStore.setState({ status: 'authenticated' });
+    fetchProfile.mockResolvedValue(incompleteProfile);
+
+    await adoptServerProfile();
+
+    // Sunucuda karsiligi olmayan yerel cevap, sahibi ayni oldugu icin duruyor.
+    expect(useOnboardingStore.getState().answers.interests).toEqual(['music']);
+  });
+
   it('keeps the local draft when the profile cannot be read', async () => {
     // Baglantiyi kaybetmek, cihazdaki cevaplara mal olmamali.
     await signIn();

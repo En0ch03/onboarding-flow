@@ -35,6 +35,14 @@ export type AnswersUpdate = DraftAnswers | ((current: DraftAnswers) => DraftAnsw
 
 type OnboardingState = {
   answers: DraftAnswers;
+  /**
+   * Taslagin sahibi olan kullanici.
+   *
+   * Taslak diskte yasiyor ve cihaz bir kisiye ait degil: birinin yarim
+   * biraktigi cevaplar, ayni telefonda hesap acan bir baskasinin ekraninda
+   * belirmemeli.
+   */
+  ownerId: string | null;
   activeStepId: string | null;
   completedStepIds: string[];
   /** Sunucuya yazilamamis adimlar; tamamlanmadan once tekrar denenir. */
@@ -60,10 +68,20 @@ type OnboardingState = {
   markStepSynced: (stepId: string) => void;
   /** Sunucu akisi tamamlanmis sayiyorsa yerel taslak bir onbellekten ibarettir. */
   clearDraft: () => void;
+  /**
+   * Taslagi bir kullaniciya baglar; baskasinin taslagiysa once siler.
+   *
+   * Kapatma noktasi cikis degil giris: cikista silmek, yenilemesi tukenmis
+   * bir oturumun da taslagi goturmesi demekti ve bir ag arizasi veri kaybina
+   * donusuyordu. Girise koyunca kayip yalnizca gercekten baska biri
+   * girdiginde oluyor.
+   */
+  claimDraft: (userId: string) => void;
 };
 
 const emptyDraft = {
   answers: {} as DraftAnswers,
+  ownerId: null as string | null,
   activeStepId: null,
   completedStepIds: [] as string[],
   unsyncedStepIds: [] as string[],
@@ -115,6 +133,21 @@ export const useOnboardingStore = create<OnboardingState>()(
         set({ unsyncedStepIds: get().unsyncedStepIds.filter((item) => item !== stepId) });
       },
 
+      claimDraft(userId) {
+        if (get().ownerId === userId) return;
+
+        // Sahip degisiyorsa oncekinden hicbir kalinti birakilmaz. Nesi kaldigini
+        // tek tek olcmek denendi ve yanlisti: cevabi bos bir taslak bile bir
+        // yer, tamamlanmis adimlar ve gonderilmemis adimlar tasiyabiliyor, ve
+        // gonderilmemis adimlar kapanista sunucuya yaziliyor -- yani yabancinin
+        // isaretleri yeni hesabin profiline gidiyordu. Sahibi hic yazilmamis bir
+        // taslak da buraya dusuyor: sahiplik alanindan onceki surumden kalmis
+        // olabilir ve kimin oldugu bilinmiyorsa yanlis kisiye acmaktansa
+        // kaybedilir.
+        get().clearDraft();
+        set({ ownerId: userId });
+      },
+
       clearDraft() {
         set({ ...emptyDraft });
         // Yarim kalmis bir yuklemenin isareti taslakla birlikte gider: bir
@@ -129,6 +162,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       // saklanirsa uygulama bir sonraki acilista kendini hidre olmus sanir.
       partialize: (state) => ({
         answers: state.answers,
+        ownerId: state.ownerId,
         activeStepId: state.activeStepId,
         completedStepIds: state.completedStepIds,
         unsyncedStepIds: state.unsyncedStepIds,

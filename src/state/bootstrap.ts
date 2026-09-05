@@ -99,6 +99,10 @@ export async function adoptServerProfile(): Promise<ProfileAdoption> {
       return 'complete';
     }
 
+    // Soguk acilista oturum diskteki token'lardan geri geliyor ve `restore`
+    // bir kullanici kimligi okumuyor; sahibi ogrenebilecegimiz tek yer
+    // profilin kendisi. Cevaplar yazilmadan once sorulmali.
+    useOnboardingStore.getState().claimDraft(profile.user_id);
     useOnboardingStore.getState().setAnswers(draftFromProfile(profile));
     adopted = true;
   } catch (thrown) {

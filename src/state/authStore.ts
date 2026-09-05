@@ -4,6 +4,8 @@ import { setAuthBridge, type AuthBridge } from '@/api/client';
 import type { AuthSession } from '@/api/schemas';
 import { clearTokens, readTokens, saveAccessToken, saveTokens } from '@/storage/secure';
 
+import { useOnboardingStore } from './onboardingStore';
+
 /**
  * Oturum durumu.
  *
@@ -54,6 +56,11 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   },
 
   async startSession(session) {
+    // Taslak, oturum kurulmadan once sahiplendiriliyor: ekran yeni oturumu
+    // gorup cevaplari cizmeden once, o cevaplarin bu kullaniciya ait olup
+    // olmadigi belli olmali.
+    useOnboardingStore.getState().claimDraft(session.user_id);
+
     await saveTokens({
       accessToken: session.access_token,
       refreshToken: session.refresh_token,
