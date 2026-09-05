@@ -61,6 +61,10 @@ export const strings = {
     remove: 'Fotoğrafı kaldır',
   },
 
+  selection: {
+    blockedHint: 'Sınır dolu. Önce seçtiklerinden birini bırak.',
+  },
+
   photoSource: {
     title: 'Fotoğrafı nereden alalım?',
     camera: 'Kamerayla çek',
@@ -186,6 +190,11 @@ export function stepCounterLabel(current: number, total: number): string {
 /** Secim siniri ve o an secili sayi tek satirda. */
 export function selectionLimit(max: number, selected: number): string {
   return `En fazla ${max} seçebilirsin · ${selected} seçili`;
+}
+
+/** Sinira carpan dokunusun cevabi: ne oldu ve ne yapilir. */
+export function selectionLimitReached(max: number): string {
+  return `En fazla ${max} seçebilirsin. Yeni bir tane için önce birini bırak.`;
 }
 
 /** Fotograf sayaci. */

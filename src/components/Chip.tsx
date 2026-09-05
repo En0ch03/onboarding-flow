@@ -28,7 +28,14 @@ type ChipProps = {
   option: Option;
   selected: boolean;
   onPress: () => void;
-  disabled?: boolean;
+  /**
+   * Sinir dolu ve bu cip secili degil. Sonuk gorunur ama dokunulabilir:
+   * dokunus reddi soyler. Devre disi ilan edilmez -- ekran okuyucuya
+   * sebepsiz bir "kullanilamaz" demek, sebebi soylemekten kotu.
+   */
+  blocked?: boolean;
+  /** Sonuk cipe ekran okuyucunun verecegi cikis yolu. */
+  blockedHint?: string | undefined;
   /** Yerlesim genisligi disaridan gelir; cip kendi genisligini secmez. */
   style?: StyleProp<ViewStyle>;
 };
@@ -46,16 +53,23 @@ type ChipProps = {
  * Secili hal yalnizca renkle anlatilmiyor: rengi ayirt edemeyen bir kullanici
  * icin renk tek basina bilgi degil.
  */
-export function Chip({ option, selected, onPress, disabled = false, style }: ChipProps) {
+export function Chip({
+  option,
+  selected,
+  onPress,
+  blocked = false,
+  blockedHint,
+  style,
+}: ChipProps) {
   const { colors, radius, spacing } = useTheme();
+  const hint = blocked ? blockedHint : option.hint;
 
   return (
     <Pressable
       accessibilityRole="checkbox"
-      accessibilityState={{ checked: selected, disabled }}
+      accessibilityState={{ checked: selected }}
       accessibilityLabel={option.label}
-      {...(option.hint ? { accessibilityHint: option.hint } : {})}
-      disabled={disabled}
+      {...(hint ? { accessibilityHint: hint } : {})}
       onPress={onPress}
       style={({ pressed }) => [
         {
@@ -69,7 +83,7 @@ export function Chip({ option, selected, onPress, disabled = false, style }: Chi
           borderRadius: radius.full,
           paddingVertical: spacing.md,
           paddingHorizontal: spacing.sm,
-          opacity: disabled ? 0.45 : 1,
+          opacity: blocked ? 0.45 : 1,
         },
         style,
       ]}

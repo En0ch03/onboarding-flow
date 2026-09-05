@@ -21,7 +21,8 @@ async function mount(selected: string[]) {
     <ChipGrid
       options={options}
       isSelected={(id) => selected.includes(id)}
-      isDisabled={() => false}
+      isBlocked={() => false}
+      blockedHint={() => undefined}
       onPress={onPress}
     />,
   );

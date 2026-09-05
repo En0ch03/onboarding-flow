@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
+import type { OptionGroup } from '@/api/schemas';
 import { AppText } from '@/components/AppText';
 import { ChipGrid } from '@/components/ChipGrid';
 import { ChoiceCard } from '@/components/ChoiceCard';
@@ -9,7 +10,9 @@ import { haptics } from '@/feedback/haptics';
 import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
-import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection';
+import { SelectionLimitNote } from './SelectionLimitNote';
+import { sortedOptions } from './useSelection';
+import { useSelectionLimit } from './useSelectionLimit';
 
 /**
  * Eslesme havuzunu belirleyen iki cevap: kendini nasil tanimladigin ve
@@ -26,8 +29,6 @@ import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection
 export function AudienceStep({ values, onChange, options }: StepProps) {
   const gender = options.gender;
   const audience = options.audience;
-
-  const selectedAudience = values.audience ?? [];
 
   return (
     <View>
@@ -58,22 +59,44 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
           // grubunu kaldirirsa tepede sahipsiz bir cizgi kalmasin.
           divided={Boolean(gender)}
         >
-          <ChipGrid
-            options={sortedOptions(audience)}
-            isSelected={(id) => selectedAudience.includes(id)}
-            isDisabled={(id) => isBlockedByLimit(audience, selectedAudience, id)}
-            onPress={(id) => {
-              const { next } = toggleSelection(audience, selectedAudience, id);
-              // Reddedilen bir dokunusta `next` ayni dizi donuyor; degismeyen
-              // secim his uretmiyor.
-              if (next === selectedAudience) return;
-              haptics.select();
-              onChange({ audience: next });
-            }}
+          <AudienceChoices
+            group={audience}
+            selected={values.audience ?? []}
+            onSelect={(next) => onChange({ audience: next })}
           />
         </Section>
       ) : null}
     </View>
+  );
+}
+
+/** Kancalar grup varken kuruluyor; grup yokken bolum zaten cizilmiyor. */
+function AudienceChoices({
+  group,
+  selected,
+  onSelect,
+}: {
+  group: OptionGroup;
+  selected: string[];
+  onSelect: (next: string[]) => void;
+}) {
+  const limit = useSelectionLimit(group, selected);
+
+  return (
+    <>
+      <ChipGrid
+        options={sortedOptions(group)}
+        isSelected={(id) => selected.includes(id)}
+        isBlocked={limit.isBlocked}
+        blockedHint={limit.blockedHint}
+        onPress={(id) => {
+          const next = limit.attempt(id);
+          if (next !== null) onSelect(next);
+        }}
+      />
+
+      <SelectionLimitNote group={group} selected={selected} refused={limit.refused} />
+    </>
   );
 }
 

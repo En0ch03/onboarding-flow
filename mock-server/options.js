@@ -45,7 +45,9 @@ const optionGroups = {
   audience: {
     key: 'audience',
     multiSelect: true,
-    maxSelection: 3,
+    // Uc secenegin ucu de secilebiliyor; bir sinir yazmak, hicbir sey
+    // yapmayan bir kural ilan etmek olurdu.
+    maxSelection: null,
     required: true,
     options: [
       { id: 'women', label: 'Kadınlar', order: 1 },
