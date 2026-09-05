@@ -53,6 +53,16 @@ beforeEach(() => {
 
 afterEach(async () => {
   await cleanup();
+
+  // Oturum durumu kuresel: bir testin biraktigi `anonymous`, sonraki testin
+  // `unknown`dan basladigini varsayan iddiasini sessizce dogru gosterirdi.
+  useAuthStore.setState({
+    status: 'unknown',
+    userId: null,
+    accessToken: null,
+    refreshToken: null,
+    onboardingComplete: false,
+  });
 });
 
 describe('resolveSignIn', () => {
