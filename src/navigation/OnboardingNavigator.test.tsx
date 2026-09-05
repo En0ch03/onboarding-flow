@@ -4,6 +4,7 @@ import { BackHandler } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { strings } from '@/constants/strings';
+import { usePhotoTransfers } from '@/features/onboarding/steps/photoTransfers';
 import { useOnboardingStore } from '@/state/onboardingStore';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
@@ -140,5 +141,19 @@ describe('OnboardingNavigator', () => {
     for (const handler of [...handlers]) handler();
 
     expect(useOnboardingStore.getState().activeStepId).toBe('interests');
+  });
+});
+
+describe('OnboardingNavigator — akisin omru', () => {
+  it('yigin sokulunce devam eden yukleme isaretleri gidiyor', async () => {
+    // Cikis, oturumun bitmesi ya da uygulamaya giris: ucu de bu yigini
+    // sokuyor. Isaretler kalsaydi bir sonraki kullanici onceki kullanicinin
+    // dusen yuklemesini kendi izgarasinda gorurdu.
+    usePhotoTransfers.getState().mark(0, 'failed');
+    const { view } = await mountAtLastStep();
+
+    await view.unmount();
+
+    expect(usePhotoTransfers.getState().transfers.size).toBe(0);
   });
 });

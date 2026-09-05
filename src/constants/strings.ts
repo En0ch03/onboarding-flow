@@ -56,7 +56,15 @@ export const strings = {
     filled: 'Fotoğraf',
     failed: 'Yüklenemeyen fotoğraf, tekrar dene',
     empty: 'Fotoğraf ekle',
+    uploading: 'Fotoğraf yükleniyor',
+    locked: 'Sırası gelmemiş fotoğraf kutusu',
     remove: 'Fotoğrafı kaldır',
+  },
+
+  photoSource: {
+    title: 'Fotoğrafı nereden alalım?',
+    camera: 'Kamerayla çek',
+    library: 'Galeriden seç',
   },
 
   steps: {
@@ -122,6 +130,8 @@ export const strings = {
   photoPermission: {
     title: 'Galeriye erişemiyoruz',
     body: 'Fotoğraf ekleyebilmek için galeri iznini açman gerekiyor.',
+    cameraTitle: 'Kameraya erişemiyoruz',
+    cameraBody: 'Fotoğraf çekebilmek için kamera iznini açman gerekiyor.',
     cancel: 'Vazgeç',
     openSettings: 'Ayarları aç',
   },

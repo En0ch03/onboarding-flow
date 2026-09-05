@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import { usePhotoTransfers } from '@/features/onboarding/steps/photoTransfers';
 import { storageKeys } from '@/storage/keys';
 
 /**
@@ -21,6 +22,17 @@ export type DraftAnswers = {
   interests?: string[];
 };
 
+/**
+ * Bir yama ya da guncel cevaplardan yama ureten bir fonksiyon.
+ *
+ * Fonksiyon bicimi, cevabi bir bekleme sonrasinda yazan yerler icin: iki
+ * fotograf yuklemesi ayni anda bitince ikisi de ekranin son gordugu listeyi
+ * okuyup ustune yaziyordu ve biri kayboluyordu. Yazma aninda guncel olani
+ * okumak yalnizca deponun icinde mumkun; ekran o an henuz yenilenmemis
+ * olabiliyor.
+ */
+export type AnswersUpdate = DraftAnswers | ((current: DraftAnswers) => DraftAnswers);
+
 type OnboardingState = {
   answers: DraftAnswers;
   activeStepId: string | null;
@@ -30,7 +42,7 @@ type OnboardingState = {
   /** Diskteki taslak okunana kadar hicbir yonlendirme yapilmaz. */
   hydrated: boolean;
 
-  setAnswers: (patch: DraftAnswers) => void;
+  setAnswers: (update: AnswersUpdate) => void;
   /**
    * Cevaplarin tamamini degistirir. `setAnswers` birlestirdigi icin bir alani
    * kaldiramiyor; kaldirmanin gerektigi tek yer sunucudan dusen seceneklerin
@@ -63,8 +75,13 @@ export const useOnboardingStore = create<OnboardingState>()(
       ...emptyDraft,
       hydrated: false,
 
-      setAnswers(patch) {
-        set({ answers: { ...get().answers, ...patch } });
+      setAnswers(update) {
+        set((state) => ({
+          answers: {
+            ...state.answers,
+            ...(typeof update === 'function' ? update(state.answers) : update),
+          },
+        }));
       },
 
       replaceAnswers(answers) {
@@ -100,6 +117,9 @@ export const useOnboardingStore = create<OnboardingState>()(
 
       clearDraft() {
         set({ ...emptyDraft });
+        // Yarim kalmis bir yuklemenin isareti taslakla birlikte gider: bir
+        // sonraki akis, bir oncekinin "yuklenemedi" kutusunu miras almamali.
+        usePhotoTransfers.getState().reset();
       },
     }),
     {

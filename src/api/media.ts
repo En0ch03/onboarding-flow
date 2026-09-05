@@ -17,10 +17,29 @@ const UploadResponseSchema = z.object({ url: z.string() });
 const MAX_EDGE = 1440;
 const QUALITY = 0.8;
 const UPLOAD_TIMEOUT_MS = 45000;
+/**
+ * Hazirlama ile gondermenin toplami icin ust sinir. Gondermenin kendi zaman
+ * asimi var; hazirlamanin yok ve iptal de edilemiyor. Sonuclanmayan bir
+ * hazirlama, kutuyu sonsuza kadar "yukleniyor"da birakiyordu: dokunulamiyor,
+ * yeniden denenemiyor. Bekleyen her isin bir cikisi olmali.
+ */
+const UPLOAD_DEADLINE_MS = 60000;
 
 export type UploadedPhoto = { id: string; url: string };
 
-export async function uploadPhoto(uri: string): Promise<UploadedPhoto> {
+export function uploadPhoto(uri: string): Promise<UploadedPhoto> {
+  return withDeadline(prepareAndSend(uri), UPLOAD_DEADLINE_MS);
+}
+
+function withDeadline<T>(work: Promise<T>, ms: number): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const deadline = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error('upload deadline passed')), ms);
+  });
+  return Promise.race([work, deadline]).finally(() => clearTimeout(timer));
+}
+
+async function prepareAndSend(uri: string): Promise<UploadedPhoto> {
   const prepared = await manipulateAsync(uri, [{ resize: { width: MAX_EDGE } }], {
     compress: QUALITY,
     format: SaveFormat.JPEG,

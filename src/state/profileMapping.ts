@@ -1,5 +1,7 @@
 import type { Preferences, Profile, ProfilePatch } from '@/api/schemas';
 
+import { PHOTO_SLOTS } from '@/features/onboarding/steps/photoSlots';
+
 import type { DraftAnswers } from './onboardingStore';
 
 /**
@@ -44,7 +46,12 @@ function readPhotos(value: unknown): DraftAnswers['photos'] | null {
     return [{ id: record.id, url: record.url }];
   });
 
-  return photos.length === value.length ? photos : null;
+  if (photos.length !== value.length) return null;
+
+  // Izgaranin gosterebileceginden fazlasi sessizce gorunmez oluyordu:
+  // kullanici silemedigi fotograflarla kaliyor ve sayac "8 / 6" yaziyordu.
+  // Fazlasi burada dusuyor; ekran yalnizca gosterebildigini tasir.
+  return photos.slice(0, PHOTO_SLOTS);
 }
 
 /**

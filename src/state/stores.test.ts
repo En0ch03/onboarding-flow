@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
+import { usePhotoTransfers } from '@/features/onboarding/steps/photoTransfers';
 import { storageKeys } from '@/storage/keys';
 
 import { authBridge, useAuthStore } from './authStore';
@@ -134,5 +135,16 @@ describe('draft store', () => {
 
     expect(useOnboardingStore.getState().answers).toEqual({});
     expect(useOnboardingStore.getState().activeStepId).toBeNull();
+  });
+});
+
+describe('photo transfers', () => {
+  it('clearing the draft also drops a half-finished upload marker', () => {
+    usePhotoTransfers.getState().mark(1, 'failed');
+
+    useOnboardingStore.getState().clearDraft();
+
+    // Bir sonraki akis, bir oncekinin "yuklenemedi" kutusunu miras almamali.
+    expect(usePhotoTransfers.getState().transfers.size).toBe(0);
   });
 });

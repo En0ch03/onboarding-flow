@@ -9,13 +9,16 @@ export type PhotoSlotState =
   | { status: 'empty' }
   | { status: 'uploading' }
   | { status: 'filled'; url: string }
-  | { status: 'failed' };
+  | { status: 'failed' }
+  /** Sirasi gelmemis bos kutu: gorunuyor ama dokunulmuyor. */
+  | { status: 'locked' };
 
 type PhotoSlotProps = {
   state: PhotoSlotState;
   /** Ilk slot kapak; rozetle isaretleniyor. */
   cover?: boolean;
-  onPress: () => void;
+  /** Verilmediyse kutu dokunulmuyor: dolu bir kutunun cikisi kaldirma dugmesi. */
+  onPress?: () => void;
   onRemove?: () => void;
 };
 
@@ -39,21 +42,30 @@ export function PhotoSlot({ state, cover = false, onPress, onRemove }: PhotoSlot
             : strings.photoSlot.filled
           : state.status === 'failed'
             ? strings.photoSlot.failed
-            : strings.photoSlot.empty
+            : state.status === 'uploading'
+              ? strings.photoSlot.uploading
+              : state.status === 'locked'
+                ? strings.photoSlot.locked
+                : strings.photoSlot.empty
       }
-      accessibilityState={{ busy: state.status === 'uploading' }}
+      accessibilityState={{
+        busy: state.status === 'uploading',
+        disabled: state.status === 'locked' || onPress === undefined,
+      }}
       onPress={onPress}
-      disabled={state.status === 'uploading'}
+      disabled={onPress === undefined || state.status === 'uploading' || state.status === 'locked'}
       style={({ pressed }) => ({
         flex: 1,
         aspectRatio: 4 / 5,
         borderRadius: radius.sm,
         borderCurve: 'continuous',
         borderWidth: 1,
-        borderStyle: state.status === 'empty' ? 'dashed' : 'solid',
+        borderStyle: state.status === 'empty' || state.status === 'locked' ? 'dashed' : 'solid',
         borderColor:
           state.status === 'failed' ? colors.danger : pressed ? colors.clay : colors.hairline,
         backgroundColor: colors.surface,
+        // Solgunluk tek isaret: kilitli kutu duruyor ama siraya isaret ediyor.
+        opacity: state.status === 'locked' ? 0.4 : 1,
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',

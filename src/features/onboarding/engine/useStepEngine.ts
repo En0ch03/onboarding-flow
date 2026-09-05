@@ -1,6 +1,10 @@
 import { useCallback, useMemo } from 'react';
 
-import { useOnboardingStore, type DraftAnswers } from '@/state/onboardingStore';
+import {
+  useOnboardingStore,
+  type AnswersUpdate,
+  type DraftAnswers,
+} from '@/state/onboardingStore';
 
 import {
   canLeaveStep,
@@ -20,7 +24,7 @@ export type StepEngine = {
   answers: DraftAnswers;
   /** Zorunlu bir adim tamamlanmadan ileri gidilmez. */
   canContinue: boolean;
-  setAnswers: (patch: DraftAnswers) => void;
+  setAnswers: (update: AnswersUpdate) => void;
   goNext: () => void;
   /** Ilk adimdan geri gidilirse akisin disina cikilir; cagiran karar verir. */
   goBack: () => boolean;
