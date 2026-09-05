@@ -1,6 +1,7 @@
 import { act, cleanup, fireEvent, type RenderResult } from '@testing-library/react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 
 import { uploadPhoto, type UploadedPhoto } from '@/api/media';
 import { strings } from '@/constants/strings';
@@ -387,6 +388,53 @@ describe('PhotosStep — adim terk edilip donuldugunde', () => {
 });
 
 describe('PhotosStep — akis terk edildikten sonra biten yukleme', () => {
+  beforeEach(() => {
+    useOnboardingStore.getState().replaceAnswers({});
+  });
+
+  it('izin diyalogu acikken akis bitmisse secici acilmiyor', async () => {
+    // Izin diyalogu B'nin ekranindayken cevaplanirsa, B'nin onunde
+    // istemedigi bir galeri acilirdi.
+    let answer!: (value: typeof granted) => void;
+    picker.requestMediaLibraryPermissionsAsync.mockReturnValueOnce(
+      new Promise((resolve) => {
+        answer = resolve;
+      }),
+    );
+
+    const view = await renderWithTheme(<StoreBound />);
+    await addPhoto(view);
+    await view.unmount();
+    usePhotoTransfers.getState().reset();
+
+    await act(async () => answer(granted));
+
+    expect(picker.launchImageLibraryAsync).not.toHaveBeenCalled();
+    expect(usePhotoTransfers.getState().transfers.size).toBe(0);
+  });
+
+  it('izin diyalogu acikken akis bitmisse red uyarisi da gosterilmiyor', async () => {
+    // Uyari, sahibi olmayan bir hata mesaji olurdu: B hic dokunmadigi bir
+    // kutu icin "Galeriye erisemiyoruz" gorurdu.
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    let answer!: (value: typeof granted) => void;
+    picker.requestMediaLibraryPermissionsAsync.mockReturnValueOnce(
+      new Promise((resolve) => {
+        answer = resolve;
+      }),
+    );
+
+    const view = await renderWithTheme(<StoreBound />);
+    await addPhoto(view);
+    await view.unmount();
+    usePhotoTransfers.getState().reset();
+
+    await act(async () => answer({ granted: false } as typeof granted));
+
+    expect(alert).not.toHaveBeenCalled();
+    alert.mockRestore();
+  });
+
   it('secici acikken akis bitmisse ne isaret koyuyor ne cevap yaziyor', async () => {
     // Galeri dakikalarca acik kalabiliyor; o sirada oturum bitip baska biri
     // girerse, secilen fotograf onun taslagina ve kapak kutusuna giriyordu.
@@ -407,10 +455,6 @@ describe('PhotosStep — akis terk edildikten sonra biten yukleme', () => {
     expect(usePhotoTransfers.getState().transfers.size).toBe(0);
     expect(upload).not.toHaveBeenCalled();
     expect(storeIds()).toEqual([]);
-  });
-
-  beforeEach(() => {
-    useOnboardingStore.getState().replaceAnswers({});
   });
 
   it('basarili bitse de cevap yazmiyor', async () => {

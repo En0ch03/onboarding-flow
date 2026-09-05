@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
+import { usePhotoTransfers } from '@/features/onboarding/steps/photoTransfers';
 import { storageKeys } from '@/storage/keys';
 
 import { authBridge, useAuthStore } from './authStore';
 import { useOnboardingStore, whenDraftHydrated } from './onboardingStore';
-import { usePhotoTransfers } from '@/features/onboarding/steps/photoTransfers';
 
 const session = {
   user_id: 'usr_1',

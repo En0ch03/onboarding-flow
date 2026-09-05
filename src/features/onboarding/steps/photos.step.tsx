@@ -38,12 +38,15 @@ export function PhotosStep({ values, onChange }: StepProps) {
   const markTransfer = usePhotoTransfers((state) => state.mark);
   const [asked, setAsked] = useState<number | null>(null);
 
-  async function permitted(source: PhotoSource): Promise<boolean> {
+  async function permitted(source: PhotoSource, stale: () => boolean): Promise<boolean> {
     const permission =
       source === 'camera'
         ? await ImagePicker.requestCameraPermissionsAsync()
         : await ImagePicker.requestMediaLibraryPermissionsAsync();
 
+    // Diyalog kapandiginda akis bitmis olabilir. O zaman ne secici acilir ne
+    // uyari gosterilir: ikisi de bir sonraki kullanicinin ekranina duserdi.
+    if (stale()) return false;
     if (permission.granted) return true;
 
     // Reddedilen izin bir cikmaz olmamali: ne oldugu soyleniyor ve ayarlara
@@ -64,15 +67,15 @@ export function PhotosStep({ values, onChange }: StepProps) {
   }
 
   async function pick(index: number, from: PhotoSource) {
-    // Nesil dokunma aninda aliniyor ve her beklemeden sonra bakiliyor. Izin
-    // diyalogu ve secici dakikalarca acik kalabiliyor; o pencerede akis
-    // sokulurse (oturum bitti, taslak silindi) bundan sonra yazilacak her
-    // sey baska bir akisa -- baska bir kullaniciya -- ait olurdu.
+    // Nesil kaynak secildigi anda aliniyor ve her beklemeden sonra
+    // bakiliyor. Izin diyalogu ve secici dakikalarca acik kalabiliyor; o
+    // pencerede akis sokulurse (oturum bitti, taslak silindi) bundan sonra
+    // yapilacak her sey baska bir akisa -- baska bir kullaniciya -- ait
+    // olurdu.
     const generation = usePhotoTransfers.getState().generation;
     const stale = () => usePhotoTransfers.getState().generation !== generation;
 
-    if (!(await permitted(from))) return;
-    if (stale()) return;
+    if (!(await permitted(from, stale))) return;
 
     const picked =
       from === 'camera'
