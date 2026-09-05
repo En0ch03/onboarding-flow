@@ -83,8 +83,10 @@ describe('session store', () => {
   });
 
   it('leaves the draft alone when the session ends', async () => {
-    useOnboardingStore.getState().setAnswers({ name: 'Deniz' });
+    // Taslak oturumun icinde yaziliyor, oncesinde degil: kayit adimlardan
+    // once geliyor, yani sahipsiz bir taslak gercek akista olusmuyor.
     await useAuthStore.getState().startSession(session);
+    useOnboardingStore.getState().setAnswers({ name: 'Deniz' });
     await useAuthStore.getState().endSession();
 
     expect(useOnboardingStore.getState().answers.name).toBe('Deniz');
@@ -146,5 +148,61 @@ describe('photo transfers', () => {
 
     // Bir sonraki akis, bir oncekinin "yuklenemedi" kutusunu miras almamali.
     expect(usePhotoTransfers.getState().transfers.size).toBe(0);
+  });
+});
+
+describe('draft ownership', () => {
+  const otherSession = { ...session, user_id: 'usr_2', access_token: 'access_2' };
+
+  it('drops a draft left behind by another account', async () => {
+    useOnboardingStore.getState().setAnswers({ name: 'Deniz' });
+    useOnboardingStore.getState().setActiveStep('intent');
+    await useAuthStore.getState().startSession(session);
+    await useAuthStore.getState().endSession();
+
+    await useAuthStore.getState().startSession(otherSession);
+
+    expect(useOnboardingStore.getState().answers).toEqual({});
+    expect(useOnboardingStore.getState().activeStepId).toBeNull();
+  });
+
+  it('keeps the draft when the same account signs in again', async () => {
+    await useAuthStore.getState().startSession(session);
+    useOnboardingStore.getState().setAnswers({ name: 'Deniz' });
+    useOnboardingStore.getState().setActiveStep('intent');
+    await useAuthStore.getState().endSession();
+
+    await useAuthStore.getState().startSession(session);
+
+    expect(useOnboardingStore.getState().answers.name).toBe('Deniz');
+    expect(useOnboardingStore.getState().activeStepId).toBe('intent');
+  });
+
+  it('drops a draft that names no owner, because it predates ownership', async () => {
+    // Surum yukseltmesinde diskte kalmis bir taslak: sahibi bilinmiyor ve
+    // bilinmeyen bir sahip, yanlis kisiye acilmaktansa kaybedilir.
+    useOnboardingStore.getState().setAnswers({ name: 'Deniz' });
+    useOnboardingStore.setState({ ownerId: null });
+
+    await useAuthStore.getState().startSession(session);
+
+    expect(useOnboardingStore.getState().answers).toEqual({});
+  });
+
+  it('leaves an empty draft alone, whoever signs in', async () => {
+    await useAuthStore.getState().startSession(session);
+
+    expect(useOnboardingStore.getState().ownerId).toBe('usr_1');
+    expect(useOnboardingStore.getState().answers).toEqual({});
+  });
+
+  it('remembers the owner across a relaunch', async () => {
+    await useAuthStore.getState().startSession(session);
+    useOnboardingStore.getState().setAnswers({ name: 'Deniz' });
+
+    await whenDraftHydrated();
+    const stored = JSON.parse((await AsyncStorage.getItem(storageKeys.onboardingDraft)) ?? '{}');
+
+    expect(stored.state.ownerId).toBe('usr_1');
   });
 });
