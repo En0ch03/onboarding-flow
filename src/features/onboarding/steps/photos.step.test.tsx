@@ -196,6 +196,28 @@ describe('PhotosStep — kaynak secimi', () => {
     expect(picker.launchCameraAsync).not.toHaveBeenCalled();
   });
 
+  it('kamera izni reddedilirse ne oldugu soyleniyor ve ayarlara yol gosteriliyor', async () => {
+    // Reddedilen izin bir cikmaz olmamali: uyari sebebi soyler ve bir cikis
+    // yolu sunar. Uyarinin hic gosterilmedigi hal de ayrica test ediliyor;
+    // gosterildigi hal testsiz kalsaydi uyari sessizce silinebilirdi.
+    const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+    picker.requestCameraPermissionsAsync.mockResolvedValue({
+      granted: false,
+    } as Awaited<ReturnType<typeof ImagePicker.requestCameraPermissionsAsync>>);
+
+    const { view } = await renderStep();
+    await addPhoto(view, 'camera');
+
+    expect(alert).toHaveBeenCalledWith(
+      strings.photoPermission.cameraTitle,
+      strings.photoPermission.cameraBody,
+      expect.arrayContaining([
+        expect.objectContaining({ text: strings.photoPermission.openSettings }),
+      ]),
+    );
+    alert.mockRestore();
+  });
+
   it('kamera izni istenirken galeri izni istenmiyor', async () => {
     const { view } = await renderStep();
     await addPhoto(view, 'camera');

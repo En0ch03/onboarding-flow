@@ -58,7 +58,12 @@ export function PhotosStep({ values, onChange }: StepProps) {
         { text: strings.photoPermission.cancel, style: 'cancel' },
         {
           text: strings.photoPermission.openSettings,
-          onPress: () => void Linking.openSettings(),
+          onPress: () => {
+            // Uyari ekranda dururken akis bitmis olabilir; dugme artik
+            // kimseyi ayarlara goturmemeli.
+            if (stale()) return;
+            void Linking.openSettings();
+          },
         },
       ],
     );
