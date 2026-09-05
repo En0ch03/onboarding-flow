@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import { usePhotoTransfers } from '@/features/onboarding/steps/photoTransfers';
 import { storageKeys } from '@/storage/keys';
 
 /**
@@ -116,6 +117,9 @@ export const useOnboardingStore = create<OnboardingState>()(
 
       clearDraft() {
         set({ ...emptyDraft });
+        // Yarim kalmis bir yuklemenin isareti taslakla birlikte gider: bir
+        // sonraki akis, bir oncekinin "yuklenemedi" kutusunu miras almamali.
+        usePhotoTransfers.getState().reset();
       },
     }),
     {

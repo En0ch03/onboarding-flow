@@ -4,10 +4,15 @@ import { useEffect, useState } from 'react';
 
 import { uploadPhoto, type UploadedPhoto } from '@/api/media';
 import { strings } from '@/constants/strings';
-import type { AnswersUpdate, DraftAnswers } from '@/state/onboardingStore';
+import {
+  useOnboardingStore,
+  type AnswersUpdate,
+  type DraftAnswers,
+} from '@/state/onboardingStore';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
-import { PhotosStep } from './photos.step';
+import { PHOTO_SLOTS, PhotosStep } from './photos.step';
+import { usePhotoTransfers } from './photoTransfers';
 
 jest.mock('expo-image-picker', () => ({
   requestMediaLibraryPermissionsAsync: jest.fn(),
@@ -36,6 +41,9 @@ beforeEach(() => {
   // Yalnizca cagri gecmisi siliniyor; davranislar hemen asagida yeniden
   // kuruluyor. `resetAllMocks` bunlari da silip her testi bos birakirdi.
   jest.clearAllMocks();
+  // Isaretler ekranin disinda yasiyor; bir testin yarim biraktigi yukleme
+  // sonrakinin izgarasinda gorunmemeli.
+  usePhotoTransfers.getState().reset();
 
   picker.requestMediaLibraryPermissionsAsync.mockResolvedValue(granted);
   picker.requestCameraPermissionsAsync.mockResolvedValue(granted);
@@ -310,5 +318,70 @@ describe('PhotosStep — fotograf nereye yerlesiyor', () => {
     });
 
     expect(ids(seen)).toEqual(['x', 'r', 'z']);
+  });
+});
+
+/**
+ * Gercek depoyla: adim terk edilip donuldugunde bilesen sokulup yeniden
+ * kuruluyor, ama yukleme ve depo yerinde duruyor. Sarmalayici burada ise
+ * yaramaz -- onun durumu da bilesenle birlikte gider.
+ */
+function StoreBound() {
+  const answers = useOnboardingStore((state) => state.answers);
+  const setAnswers = useOnboardingStore((state) => state.setAnswers);
+  return <PhotosStep values={answers} onChange={setAnswers} options={{}} />;
+}
+
+const storeIds = () => (useOnboardingStore.getState().answers.photos ?? []).map((item) => item.id);
+
+describe('PhotosStep — adim terk edilip donuldugunde', () => {
+  beforeEach(() => {
+    useOnboardingStore.getState().replaceAnswers({});
+  });
+
+  it('suren yukleme kutusunda gorunmeye devam ediyor ve sira bozulmuyor', async () => {
+    useOnboardingStore.getState().setAnswers({ photos: [photo('a')] });
+    const pending = deferred();
+    upload.mockReturnValueOnce(pending.promise);
+
+    const first = await renderWithTheme(<StoreBound />);
+    await addPhoto(first);
+    await first.unmount();
+
+    const second = await renderWithTheme(<StoreBound />);
+
+    // Kutu bos gorunseydi kullanici ayni kutuyu yeniden doldururdu.
+    expect(second.getByLabelText(strings.photoSlot.uploading)).toBeTruthy();
+    expect(second.getAllByLabelText(strings.photoSlot.empty)).toHaveLength(1);
+    expect(second.getAllByLabelText(strings.photoSlot.locked)).toHaveLength(3);
+
+    await act(async () => pending.resolve(photo('b')));
+    expect(storeIds()).toEqual(['a', 'b']);
+  });
+
+  it('izgara doluyken gelen fotograf yazilmiyor', async () => {
+    // Isaretlerin kaybolmasi artik olmamali; ama olursa bile yedinci fotograf
+    // depoya girmemeli. Kayip burada elle taklit ediliyor.
+    const five = Array.from({ length: PHOTO_SLOTS - 1 }, (_, at) => photo(`p${at}`));
+    useOnboardingStore.getState().setAnswers({ photos: five });
+
+    const first = deferred();
+    const second = deferred();
+    upload.mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise);
+
+    const before = await renderWithTheme(<StoreBound />);
+    await addPhoto(before);
+    await before.unmount();
+    usePhotoTransfers.getState().reset();
+
+    const after = await renderWithTheme(<StoreBound />);
+    await addPhoto(after);
+
+    await act(async () => {
+      first.resolve(photo('x'));
+      second.resolve(photo('y'));
+    });
+
+    expect(storeIds()).toHaveLength(PHOTO_SLOTS);
   });
 });

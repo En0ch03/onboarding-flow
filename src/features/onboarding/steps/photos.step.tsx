@@ -1,5 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 
 import { uploadPhoto } from '@/api/media';
@@ -11,14 +11,8 @@ import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
 
-import {
-  MINIMUM_PHOTOS,
-  PHOTO_SLOTS,
-  insertPosition,
-  layoutSlots,
-  type Slot,
-  type Transfer,
-} from './photoSlots';
+import { MINIMUM_PHOTOS, PHOTO_SLOTS, insertPosition, layoutSlots, type Slot } from './photoSlots';
+import { usePhotoTransfers } from './photoTransfers';
 
 export { MINIMUM_PHOTOS, PHOTO_SLOTS } from './photoSlots';
 
@@ -37,24 +31,11 @@ export function PhotosStep({ values, onChange }: StepProps) {
 
   // Devam eden isler izgaradaki yerlerine gore tutuluyor. Dizideki siraya
   // gore tutmak, bir yukleme surerken gelen ikinci fotografin isareti baska
-  // bir kutuya kaydiriyordu.
-  //
-  // Ayni harita bir ref'te de duruyor ve ikisi ayni anda yaziliyor: yukleme
-  // bittiginde yer, o andaki isaretlere gore hesaplanmali. Dokunma anindaki
-  // goruntu yetmiyor -- ondeki bir kutu o sirada yuklenmis ve fotografa
-  // donusmus olabilir; React'in yenilemesini beklemek de yetmiyor, cunku iki
-  // yukleme ayni anda bitebiliyor.
-  const [transfers, setTransfers] = useState<ReadonlyMap<number, Transfer>>(new Map());
-  const transfersNow = useRef(transfers);
+  // bir kutuya kaydiriyordu. Isaretler bu ekranin disinda yasiyor: adim terk
+  // edilip donuldugunde yukleme hala surer ve kutu yine "yukleniyor" der.
+  const transfers = usePhotoTransfers((state) => state.transfers);
+  const markTransfer = usePhotoTransfers((state) => state.mark);
   const [asked, setAsked] = useState<number | null>(null);
-
-  function updateTransfer(index: number, value: Transfer | null) {
-    const next = new Map(transfersNow.current);
-    if (value === null) next.delete(index);
-    else next.set(index, value);
-    transfersNow.current = next;
-    setTransfers(next);
-  }
 
   async function permitted(source: PhotoSource): Promise<boolean> {
     const permission =
@@ -92,23 +73,35 @@ export function PhotosStep({ values, onChange }: StepProps) {
     const asset = picked.assets?.[0];
     if (picked.canceled || !asset) return;
 
-    updateTransfer(index, 'pending');
+    markTransfer(index, 'pending');
 
     try {
       const uploaded = await uploadPhoto(asset.uri);
-      updateTransfer(index, null);
+      markTransfer(index, null);
 
-      // Liste, yazma aninda depodan okunuyor; ekranin son gordugu liste
-      // degil. Iki yukleme ayni anda bitince ikincisi ilkini ezmemeli.
+      // Liste de isaretler de yazma aninda depodan okunuyor; ekranin son
+      // gordugu goruntu degil. Dokunma anindaki goruntu, ondeki bir kutunun
+      // arada fotografa donustugunu gormuyordu; ekranin son gordugu liste ise
+      // ayni anda biten iki yuklemenin birbirini ezmesine yol aciyordu.
       onChange((current) => {
         const list = current.photos ?? [];
-        const position = insertPosition(transfersNow.current, index, list.length);
+        // Izgara dolduysa yazilmiyor. Buraya normalde gelinmez -- dolu
+        // izgarada acik kutu yok -- ama bir yol acilirsa yedinci fotografin
+        // gorunmez, silinemez ve sonraki acilista kirpilir hale gelmesindense
+        // hic girmemesi iyidir. Kapi sıkı tarafa bozulur.
+        if (list.length >= PHOTO_SLOTS) return {};
+
+        const position = insertPosition(
+          usePhotoTransfers.getState().transfers,
+          index,
+          list.length,
+        );
         const next = [...list];
         next.splice(position, 0, uploaded);
         return { photos: next };
       });
     } catch {
-      updateTransfer(index, 'failed');
+      markTransfer(index, 'failed');
     }
   }
 

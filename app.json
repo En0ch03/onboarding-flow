@@ -30,7 +30,8 @@
         "expo-image-picker",
         {
           "photosPermission": "Profiline fotoğraf ekleyebilmen için galerine erişmemiz gerekiyor.",
-          "cameraPermission": "Şimdi bir fotoğraf çekebilmen için kameraya erişmemiz gerekiyor."
+          "cameraPermission": "Şimdi bir fotoğraf çekebilmen için kameraya erişmemiz gerekiyor.",
+          "microphonePermission": false
         }
       ]
     ]

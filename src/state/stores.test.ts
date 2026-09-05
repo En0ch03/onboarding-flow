@@ -5,6 +5,7 @@ import { storageKeys } from '@/storage/keys';
 
 import { authBridge, useAuthStore } from './authStore';
 import { useOnboardingStore, whenDraftHydrated } from './onboardingStore';
+import { usePhotoTransfers } from '@/features/onboarding/steps/photoTransfers';
 
 const session = {
   user_id: 'usr_1',
@@ -134,5 +135,16 @@ describe('draft store', () => {
 
     expect(useOnboardingStore.getState().answers).toEqual({});
     expect(useOnboardingStore.getState().activeStepId).toBeNull();
+  });
+});
+
+describe('photo transfers', () => {
+  it('clearing the draft also drops a half-finished upload marker', () => {
+    usePhotoTransfers.getState().mark(1, 'failed');
+
+    useOnboardingStore.getState().clearDraft();
+
+    // Bir sonraki akis, bir oncekinin "yuklenemedi" kutusunu miras almamali.
+    expect(usePhotoTransfers.getState().transfers.size).toBe(0);
   });
 });
