@@ -1,6 +1,6 @@
 import { act, cleanup, fireEvent } from '@testing-library/react-native';
 import * as Haptics from 'expo-haptics';
-import { AccessibilityInfo, StyleSheet } from 'react-native';
+import { AccessibilityInfo, Platform, StyleSheet } from 'react-native';
 
 import type { OptionGroup, OptionGroups } from '@/api/schemas';
 import { selectionLimit, selectionLimitReached, strings } from '@/constants/strings';
@@ -46,6 +46,15 @@ const audience: OptionGroup = {
     { id: 'everyone', label: 'Herkes', order: 3 },
   ],
 };
+
+/** Platformu gecici olarak degistirir; test bitince eski tanimi geri koyar. */
+function onPlatform(os: 'ios' | 'android') {
+  const original = Object.getOwnPropertyDescriptor(Platform, 'OS');
+  Object.defineProperty(Platform, 'OS', { get: () => os, configurable: true });
+  return () => {
+    if (original) Object.defineProperty(Platform, 'OS', original);
+  };
+}
 
 const refuse = jest.mocked(Haptics.notificationAsync);
 const select = jest.mocked(Haptics.selectionAsync);
@@ -144,7 +153,8 @@ describe('sinir dolu cip', () => {
     expect(select).not.toHaveBeenCalled();
   });
 
-  it('basilinca sebep ekran okuyucuya da duyuruluyor', async () => {
+  it("iOS'ta sebep ekran okuyucuya elle duyuruluyor", async () => {
+    const restore = onPlatform('ios');
     const { view } = await renderInterests(2, ['books', 'coffee']);
 
     await act(async () => {
@@ -152,6 +162,21 @@ describe('sinir dolu cip', () => {
     });
 
     expect(announce).toHaveBeenCalledWith(selectionLimitReached(2));
+    restore();
+  });
+
+  it("Android'de canli bolge duyuruyor; elle ikinci bir duyuru yapilmiyor", async () => {
+    const restore = onPlatform('android');
+    const { view } = await renderInterests(2, ['books', 'coffee']);
+
+    await act(async () => {
+      fireEvent.press(view.getByLabelText('Sinema'));
+    });
+
+    const note = view.getByText(selectionLimitReached(2));
+    expect(note.props.accessibilityLiveRegion).toBe('polite');
+    expect(announce).not.toHaveBeenCalled();
+    restore();
   });
 
   it('birini birakinca uyari sonuyor', async () => {
@@ -206,5 +231,104 @@ describe('kimlerin gorecegi listesi', () => {
     });
 
     expect(onChange).toHaveBeenCalledWith({ audience: ['women', 'men', 'everyone'] });
+  });
+});
+
+describe('tekli liste', () => {
+  const single: OptionGroup = {
+    key: 'interests',
+    multiSelect: false,
+    maxSelection: null,
+    required: false,
+    options: [
+      { id: 'books', label: 'Kitap', order: 1 },
+      { id: 'coffee', label: 'Kahve', order: 2 },
+    ],
+  };
+
+  it('zaten secili olana tekrar dokunmak olay degil: ne his ne cevap', async () => {
+    const onChange = jest.fn();
+    const view = await renderWithTheme(
+      <InterestsStep values={{ interests: ['books'] }} onChange={onChange} options={{ interests: single }} />,
+    );
+
+    await act(async () => {
+      fireEvent.press(view.getByLabelText('Kitap'));
+    });
+
+    expect(select).not.toHaveBeenCalled();
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('cinsiyet listesi de ayni kancadan geciyor', async () => {
+    const gender: OptionGroup = {
+      key: 'gender',
+      multiSelect: false,
+      maxSelection: null,
+      required: true,
+      options: [
+        { id: 'woman', label: 'Kadın', order: 1 },
+        { id: 'man', label: 'Erkek', order: 2 },
+      ],
+    };
+    const onChange = jest.fn();
+    const view = await renderWithTheme(
+      <AudienceStep values={{ gender: 'woman' }} onChange={onChange} options={{ gender }} />,
+    );
+
+    await act(async () => {
+      fireEvent.press(view.getByLabelText('Kadın'));
+    });
+    expect(select).not.toHaveBeenCalled();
+    expect(onChange).not.toHaveBeenCalled();
+
+    await act(async () => {
+      fireEvent.press(view.getByLabelText('Erkek'));
+    });
+    expect(select).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ gender: 'man' });
+  });
+});
+
+describe('niyet degisince ilgi alanlari', () => {
+  it('artik gosterilmeyen listeye ait cevap dusuyor', async () => {
+    // Arkadaslik secip bir etiket isaretleyen, sonra arkadasligi birakan
+    // kullanicinin etiketi taslakta hayalet olarak kalmamali.
+    const options: OptionGroups = {
+      intent: {
+        key: 'intent',
+        multiSelect: true,
+        maxSelection: 2,
+        required: true,
+        options: [
+          { id: 'long_term', label: 'Uzun süreli', order: 1 },
+          { id: 'friends', label: 'Arkadaşlık', order: 2, unlocks: 'interests_friendship' },
+        ],
+      },
+      interests: {
+        key: 'interests',
+        multiSelect: true,
+        maxSelection: null,
+        required: false,
+        options: [{ id: 'books', label: 'Kitap', order: 1 }],
+      },
+      interests_friendship: {
+        key: 'interests_friendship',
+        multiSelect: true,
+        maxSelection: null,
+        required: false,
+        options: [{ id: 'games', label: 'Oyun', order: 1 }],
+      },
+    };
+    const onChange = jest.fn();
+    const view = await renderWithTheme(
+      <IntentStep values={{ intent: ['friends'], interests: ['games'] }} onChange={onChange} options={options} />,
+    );
+
+    await act(async () => {
+      fireEvent.press(view.getByLabelText('Arkadaşlık'));
+    });
+
+    expect(onChange).toHaveBeenCalledWith({ intent: [], interests: [] });
   });
 });

@@ -6,7 +6,6 @@ import { AppText } from '@/components/AppText';
 import { ChipGrid } from '@/components/ChipGrid';
 import { ChoiceCard } from '@/components/ChoiceCard';
 import { strings } from '@/constants/strings';
-import { haptics } from '@/feedback/haptics';
 import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
@@ -34,20 +33,11 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
     <View>
       {gender ? (
         <Section title={strings.steps.genderLabel} help={strings.steps.genderHelp}>
-          {sortedOptions(gender).map((option) => (
-            <ChoiceCard
-              key={option.id}
-              option={option}
-              selected={values.gender === option.id}
-              onPress={() => {
-                // Zaten secili olana tekrar dokunmak bir olay degil: his
-                // gorunen bir degisikligi onayliyor, dokunusun kendisini degil.
-                if (values.gender === option.id) return;
-                haptics.select();
-                onChange({ gender: option.id });
-              }}
-            />
-          ))}
+          <GenderChoices
+            group={gender}
+            selected={values.gender}
+            onSelect={(id) => onChange({ gender: id })}
+          />
         </Section>
       ) : null}
 
@@ -67,6 +57,38 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
         </Section>
       ) : null}
     </View>
+  );
+}
+
+/**
+ * Tekli liste de ayni kancadan geciyor: sinir yok ama "ayni secime tekrar
+ * dokunmak olay degil" kurali ve secim hissi tek yerde yasamali.
+ */
+function GenderChoices({
+  group,
+  selected,
+  onSelect,
+}: {
+  group: OptionGroup;
+  selected: string | undefined;
+  onSelect: (id: string) => void;
+}) {
+  const limit = useSelectionLimit(group, selected === undefined ? [] : [selected]);
+
+  return (
+    <>
+      {sortedOptions(group).map((option) => (
+        <ChoiceCard
+          key={option.id}
+          option={option}
+          selected={selected === option.id}
+          onPress={() => {
+            const next = limit.attempt(option.id);
+            if (next?.[0] !== undefined) onSelect(next[0]);
+          }}
+        />
+      ))}
+    </>
   );
 }
 

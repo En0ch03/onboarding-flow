@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AccessibilityInfo } from 'react-native';
+import { AccessibilityInfo, Platform } from 'react-native';
 
 import type { OptionGroup } from '@/api/schemas';
 import { selectionLimitReached, strings } from '@/constants/strings';
@@ -16,7 +16,7 @@ import { isAtLimit, toggleSelection } from './useSelection';
  * bir yer yoktu. Simdi dokunus geliyor, reddediliyor ve reddi soyleniyor:
  * his, metin ve ekran okuyucu ayni anda.
  *
- * Kartlar "devre disi" ilan edilmiyor. Devre disi bir denetim, ekran
+ * Kartlar "devre disi" ilan edilmiyor. Devre disi bir kontrol, ekran
  * okuyucuya sebepsiz bir "kullanilamaz" der; sonuk ama dokunulabilir bir
  * kart ise dokununca sebebi verir ve ipucuyla cikis yolunu gosterir.
  *
@@ -33,9 +33,10 @@ export function useSelectionLimit(group: OptionGroup, selected: string[]) {
     if (result.refused) {
       setRefused(true);
       void haptics.refuse();
-      // `accessibilityLiveRegion` yalnizca Android'de duyuruluyor; iOS'ta
-      // da duyulmasi icin duyuru elle yapiliyor.
-      if (group.maxSelection !== null) {
+      // Satirin canli bolgesi yalnizca Android'de duyuruluyor; iOS'ta da
+      // duyulmasi icin duyuru elle yapiliyor. Yalnizca iOS'ta: Android'de
+      // ikisi birden ayni cumleyi iki kez okuturdu.
+      if (group.maxSelection !== null && Platform.OS === 'ios') {
         AccessibilityInfo.announceForAccessibility(selectionLimitReached(group.maxSelection));
       }
       return null;
