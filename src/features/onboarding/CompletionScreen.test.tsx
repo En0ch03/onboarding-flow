@@ -249,6 +249,19 @@ describe('CompletionScreen', () => {
     expect(asMock(saveStep)).toHaveBeenCalledTimes(1);
   });
 
+  it('gonderilemeyen adimi bekleyenlerde birakiyor', async () => {
+    // Isaret gonderimden once dusurulurse, basarisiz bir gonderim "yapildi"
+    // sayilir ve cevap bir daha hic denenmez.
+    asMock(saveStep).mockImplementation(async () => {
+      throw { kind: 'network' };
+    });
+
+    const view = await mount(answers, {}, ['interests']);
+    await view.findByText(presentError({ kind: 'network' }).message);
+
+    expect(useOnboardingStore.getState().unsyncedStepIds).toEqual(['interests']);
+  });
+
   it('bekleyen adim gonderilemezse tamamlamayi hic denemiyor', async () => {
     asMock(saveStep).mockImplementation(async () => {
       throw { kind: 'network' };

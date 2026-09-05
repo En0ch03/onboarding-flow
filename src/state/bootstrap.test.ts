@@ -438,6 +438,55 @@ describe('adoptServerProfile', () => {
     },
   );
 
+  it('protects every waiting step, not only the first one', async () => {
+    // Baglanti gidince arka arkaya iki adim bekleyenlere giriyor. Yalnizca
+    // ilkini korumak, ikinci adimin cevabini eski hataya birakir.
+    await signIn();
+    useOnboardingStore.getState().setAnswers(localAnswers);
+    useOnboardingStore.getState().markStepUnsynced('identity');
+    useOnboardingStore.getState().markStepUnsynced('intent');
+    fetchProfile.mockResolvedValue(fullProfile);
+
+    await adoptServerProfile();
+
+    const after = useOnboardingStore.getState().answers;
+    expect(after.name).toBe('Cihazdaki ad');
+    expect(after.intent).toEqual(['friendship']);
+    // Bekleyen olmayan bir adimda sunucu hala kazaniyor.
+    expect(after.interests).toEqual(['cinema']);
+  });
+
+  it('reads the waiting list only after the draft has changed hands', async () => {
+    // Bekleyen liste sahiplendirmeden once okunursa, yabancinin biraktigi
+    // adimlarin alanlari yeni hesabin profilinden dusuyor ve o alanlar hic
+    // benimsenmiyor.
+    useOnboardingStore.setState({ ownerId: 'usr_2', unsyncedStepIds: ['identity', 'intent'] });
+    useOnboardingStore.getState().setAnswers(localAnswers);
+    useAuthStore.setState({ status: 'authenticated' });
+    fetchProfile.mockResolvedValue(fullProfile);
+
+    await adoptServerProfile();
+
+    const after = useOnboardingStore.getState().answers;
+    expect(after.name).toBe('Sunucudaki ad');
+    expect(after.intent).toEqual(['long_term']);
+  });
+
+  it('leaves the fields of an unknown step to the server', async () => {
+    // Bekleyen liste diskte yasiyor; eski bir surumden kalan bir adim
+    // kimligi gelebilir. Tanimadigimiz bir adim hicbir alani sahiplenmemeli,
+    // yoksa sunucudaki cevap sebepsiz yere benimsenmez.
+    await signIn();
+    useOnboardingStore.getState().setAnswers(localAnswers);
+    useOnboardingStore.getState().markStepUnsynced('eski-adim');
+    fetchProfile.mockResolvedValue(fullProfile);
+
+    await adoptServerProfile();
+
+    expect(useOnboardingStore.getState().answers.name).toBe('Sunucudaki ad');
+    expect(useOnboardingStore.getState().answers.intent).toEqual(['long_term']);
+  });
+
   it.each(Object.entries(fieldsOfStep))(
     'lets the server win on step %s once it has been sent',
     async (stepId, fields) => {

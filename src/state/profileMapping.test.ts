@@ -150,14 +150,19 @@ describe('patchFromAnswers', () => {
     };
 
     for (const step of steps) {
-      for (const field of answerFieldsForStep(step.id)) {
-        const patch = patchFromAnswers({ [field]: sample[field] } as DraftAnswers, step.id);
-        const carries =
-          patch.display_name !== undefined ||
-          patch.avatar_url !== undefined ||
-          Object.keys(patch.preferences ?? {}).length > 0;
+      // Karsilastirma bos govdeye gore: `intent` gibi adimlar cevapsizken
+      // bile bir govde uretiyor, dolayisiyla "govde dolu mu" sorusu hicbir
+      // sey sinamiyordu. Aranan sey, alanin govdeye bir fark katmasi.
+      const empty = JSON.stringify(patchFromAnswers({}, step.id));
 
-        expect(`${step.id}.${field}: ${carries}`).toBe(`${step.id}.${field}: true`);
+      for (const field of answerFieldsForStep(step.id)) {
+        const patch = JSON.stringify(
+          patchFromAnswers({ [field]: sample[field] } as DraftAnswers, step.id),
+        );
+
+        expect(`${step.id}.${field} govdeyi degistiriyor: ${patch !== empty}`).toBe(
+          `${step.id}.${field} govdeyi degistiriyor: true`,
+        );
       }
     }
   });
