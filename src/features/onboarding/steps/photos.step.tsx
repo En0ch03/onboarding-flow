@@ -1,14 +1,17 @@
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 
 import { uploadPhoto } from '@/api/media';
 import { AppText } from '@/components/AppText';
 import { PhotoSlot, type PhotoSlotState } from '@/components/PhotoSlot';
+import { PhotoSourceSheet, type PhotoSource } from '@/components/PhotoSourceSheet';
 import { photoCount, strings } from '@/constants/strings';
 import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
+
+import { insertPosition, layoutSlots, type Slot, type Transfer } from './photoSlots';
 
 /**
  * Bu iki sayi bilerek istemcide.
@@ -22,6 +25,9 @@ import type { StepProps } from '../engine/types';
 export const PHOTO_SLOTS = 6;
 export const MINIMUM_PHOTOS = 2;
 
+/** Izgara iki satir; satir basina uc kutu. */
+const COLUMNS = 3;
+
 /**
  * Alti slot gorunuyor, iki tanesi yeterli.
  *
@@ -31,56 +37,106 @@ export const MINIMUM_PHOTOS = 2;
 export function PhotosStep({ values, onChange }: StepProps) {
   const { spacing } = useTheme();
   const photos = values.photos ?? [];
-  const [pending, setPending] = useState<number[]>([]);
-  const [failed, setFailed] = useState<number[]>([]);
 
-  async function pick(index: number) {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  // Devam eden isler izgaradaki yerlerine gore tutuluyor. Dizideki siraya
+  // gore tutmak, bir yukleme surerken gelen ikinci fotografin isareti baska
+  // bir kutuya kaydiriyordu.
+  const [transfers, setTransfers] = useState<ReadonlyMap<number, Transfer>>(new Map());
+  const [asked, setAsked] = useState<number | null>(null);
 
-    if (!permission.granted) {
-      // Reddedilen izin bir cikmaz olmamali: ne oldugu soyleniyor ve
-      // ayarlara giden yol gosteriliyor.
-      Alert.alert(strings.photoPermission.title, strings.photoPermission.body, [
+  // Yukleme bittiginde yazilacak liste, dokunma anindaki degil o andaki
+  // olmali: iki yukleme ust uste bindiginde ilki, ikincinin ekledigi
+  // fotografi silerdi.
+  const latestPhotos = useRef(photos);
+  useEffect(() => {
+    latestPhotos.current = photos;
+  });
+
+  function updateTransfer(index: number, value: Transfer | null) {
+    setTransfers((current) => {
+      const next = new Map(current);
+      if (value === null) next.delete(index);
+      else next.set(index, value);
+      return next;
+    });
+  }
+
+  async function permitted(source: PhotoSource): Promise<boolean> {
+    const permission =
+      source === 'camera'
+        ? await ImagePicker.requestCameraPermissionsAsync()
+        : await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permission.granted) return true;
+
+    // Reddedilen izin bir cikmaz olmamali: ne oldugu soyleniyor ve ayarlara
+    // giden yol gosteriliyor.
+    Alert.alert(
+      source === 'camera' ? strings.photoPermission.cameraTitle : strings.photoPermission.title,
+      source === 'camera' ? strings.photoPermission.cameraBody : strings.photoPermission.body,
+      [
         { text: strings.photoPermission.cancel, style: 'cancel' },
         {
           text: strings.photoPermission.openSettings,
           onPress: () => void Linking.openSettings(),
         },
-      ]);
-      return;
-    }
+      ],
+    );
 
-    const picked = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      quality: 1,
-    });
+    return false;
+  }
+
+  async function pick(index: number, from: PhotoSource) {
+    if (!(await permitted(from))) return;
+
+    const picked =
+      from === 'camera'
+        ? await ImagePicker.launchCameraAsync({ quality: 1 })
+        : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], quality: 1 });
+
     const asset = picked.assets?.[0];
     if (picked.canceled || !asset) return;
 
-    setFailed((current) => current.filter((item) => item !== index));
-    setPending((current) => [...current, index]);
+    // Yer, yalnizca bu kutunun onundeki kutulara bakilarak bulunuyor ve
+    // onlarin hepsi dokunma aninda zaten doluydu -- aksi halde acik kutu bu
+    // degil onlardan biri olurdu. Bu yuzden o andaki goruntu yeterli.
+    const before = transfers;
+
+    updateTransfer(index, 'pending');
 
     try {
       const uploaded = await uploadPhoto(asset.uri);
-      const next = [...photos];
-      next[index] = uploaded;
-      onChange({ photos: next.filter(Boolean) });
+      const current = latestPhotos.current;
+      const position = insertPosition(before, index, current.length);
+      const next = [...current];
+      next.splice(position, 0, uploaded);
+
+      updateTransfer(index, null);
+      onChange({ photos: next });
     } catch {
-      setFailed((current) => [...current, index]);
-    } finally {
-      setPending((current) => current.filter((item) => item !== index));
+      updateTransfer(index, 'failed');
     }
   }
 
-  function remove(index: number) {
-    onChange({ photos: photos.filter((_, position) => position !== index) });
+  function remove(position: number) {
+    onChange({ photos: photos.filter((_, at) => at !== position) });
   }
 
-  function stateFor(index: number): PhotoSlotState {
-    if (pending.includes(index)) return { status: 'uploading' };
-    if (failed.includes(index)) return { status: 'failed' };
-    const photo = photos[index];
-    return photo ? { status: 'filled', url: photo.url } : { status: 'empty' };
+  const slots = layoutSlots(photos, transfers, PHOTO_SLOTS);
+
+  function stateFor(slot: Slot): PhotoSlotState {
+    switch (slot.kind) {
+      case 'photo':
+        return { status: 'filled', url: slot.photo.url };
+      case 'pending':
+        return { status: 'uploading' };
+      case 'failed':
+        return { status: 'failed' };
+      case 'open':
+        return { status: 'empty' };
+      case 'locked':
+        return { status: 'locked' };
+    }
   }
 
   return (
@@ -89,14 +145,22 @@ export function PhotosStep({ values, onChange }: StepProps) {
         {[0, 1].map((row) => (
           <View key={row} style={{ flexDirection: 'row', gap: spacing.sm }}>
             {[0, 1, 2].map((column) => {
-              const index = row * 3 + column;
+              const index = row * COLUMNS + column;
+              const slot = slots[index];
+              if (slot === undefined) return null;
+
               return (
                 <PhotoSlot
                   key={index}
-                  state={stateFor(index)}
+                  state={stateFor(slot)}
                   cover={index === 0}
-                  onPress={() => void pick(index)}
-                  {...(photos[index] ? { onRemove: () => remove(index) } : {})}
+                  // Dolu bir kutunun cikisi kaldirma dugmesi. Ustune yeni bir
+                  // fotograf almak, yukleme surerken eski fotografi hem
+                  // ekranda hem dizide tutmayi gerektirirdi; kaldirip yeniden
+                  // eklemek ayni sonuca tek bir anlamla variyor.
+                  {...(slot.kind === 'photo'
+                    ? { onRemove: () => remove(slot.position) }
+                    : { onPress: () => setAsked(index) })}
                 />
               );
             })}
@@ -113,6 +177,16 @@ export function PhotosStep({ values, onChange }: StepProps) {
           {strings.steps.photosSkipCost}
         </AppText>
       ) : null}
+
+      <PhotoSourceSheet
+        visible={asked !== null}
+        onClose={() => setAsked(null)}
+        onSelect={(from) => {
+          const index = asked;
+          setAsked(null);
+          if (index !== null) void pick(index, from);
+        }}
+      />
     </View>
   );
 }
