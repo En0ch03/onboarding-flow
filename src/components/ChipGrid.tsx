@@ -9,7 +9,9 @@ import { Chip } from './Chip';
 type ChipGridProps = {
   options: Option[];
   isSelected: (id: string) => boolean;
-  isDisabled: (id: string) => boolean;
+  isBlocked: (id: string) => boolean;
+  /** Sonuk cipe verilecek ipucu; sinir dolu degilse `undefined`. */
+  blockedHint: (id: string) => string | undefined;
   onPress: (id: string) => void;
 };
 
@@ -40,7 +42,7 @@ function columnsFor(width: number): number {
   return 2;
 }
 
-export function ChipGrid({ options, isSelected, isDisabled, onPress }: ChipGridProps) {
+export function ChipGrid({ options, isSelected, isBlocked, blockedHint, onPress }: ChipGridProps) {
   const { spacing } = useTheme();
   const [width, setWidth] = useState(0);
 
@@ -75,7 +77,8 @@ export function ChipGrid({ options, isSelected, isDisabled, onPress }: ChipGridP
           key={option.id}
           option={option}
           selected={isSelected(option.id)}
-          disabled={isDisabled(option.id)}
+          blocked={isBlocked(option.id)}
+          blockedHint={blockedHint(option.id)}
           onPress={() => onPress(option.id)}
           style={chipWidth === undefined ? undefined : { width: chipWidth }}
         />

@@ -1,6 +1,6 @@
 import type { OptionGroup } from '@/api/schemas';
 
-import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection';
+import { isAtLimit, sortedOptions, toggleSelection } from './useSelection';
 
 const audience: OptionGroup = {
   key: 'audience',
@@ -79,17 +79,17 @@ describe('sinir', () => {
   });
 
   it('sinir dolunca secili olmayan secenek engelli gorunuyor', () => {
-    expect(isBlockedByLimit(interests, ['books', 'coffee'], 'cinema')).toBe(true);
-    expect(isBlockedByLimit(interests, ['books'], 'cinema')).toBe(false);
+    expect(isAtLimit(interests, ['books', 'coffee'], 'cinema')).toBe(true);
+    expect(isAtLimit(interests, ['books'], 'cinema')).toBe(false);
   });
 
   it('secili olan hicbir zaman engelli degil', () => {
-    expect(isBlockedByLimit(interests, ['books', 'coffee'], 'books')).toBe(false);
+    expect(isAtLimit(interests, ['books', 'coffee'], 'books')).toBe(false);
   });
 
   it('sinir yoksa hicbir secenek engelli degil', () => {
     const open: OptionGroup = { ...interests, maxSelection: null };
-    expect(isBlockedByLimit(open, ['books', 'coffee'], 'cinema')).toBe(false);
+    expect(isAtLimit(open, ['books', 'coffee'], 'cinema')).toBe(false);
   });
 });
 
@@ -103,7 +103,7 @@ describe('tekli secim', () => {
   });
 
   it('tekli grupta sinir kontrolu yok', () => {
-    expect(isBlockedByLimit(gender, ['woman'], 'man')).toBe(false);
+    expect(isAtLimit(gender, ['woman'], 'man')).toBe(false);
   });
 });
 

@@ -9,8 +9,13 @@ type ChoiceCardProps = {
   option: Option;
   selected: boolean;
   onPress: () => void;
-  /** Sinir dolmusken secilemeyen kartlar sonuk gorunur ama kaybolmaz. */
-  disabled?: boolean;
+  /**
+   * Sinir dolmusken secilemeyen kart sonuk gorunur ama kaybolmaz ve
+   * dokunulabilir kalir: dokunus, neden secilemedigini soyletir.
+   */
+  blocked?: boolean;
+  /** Sonuk karta ekran okuyucunun verecegi cikis yolu. */
+  blockedHint?: string | undefined;
 };
 
 /**
@@ -20,16 +25,22 @@ type ChoiceCardProps = {
  * Secili durum yalnizca renkle degil, isaret ve kenarlikla da anlatiliyor:
  * rengi ayirt edemeyen bir kullanici icin renk tek basina bilgi degil.
  */
-export function ChoiceCard({ option, selected, onPress, disabled = false }: ChoiceCardProps) {
+export function ChoiceCard({
+  option,
+  selected,
+  onPress,
+  blocked = false,
+  blockedHint,
+}: ChoiceCardProps) {
   const { colors, radius, spacing } = useTheme();
+  const hint = blocked ? blockedHint : option.hint;
 
   return (
     <Pressable
       accessibilityRole="checkbox"
-      accessibilityState={{ checked: selected, disabled }}
+      accessibilityState={{ checked: selected }}
       accessibilityLabel={option.label}
-      {...(option.hint ? { accessibilityHint: option.hint } : {})}
-      disabled={disabled}
+      {...(hint ? { accessibilityHint: hint } : {})}
       onPress={onPress}
       style={({ pressed }) => ({
         flexDirection: 'row',
@@ -44,7 +55,7 @@ export function ChoiceCard({ option, selected, onPress, disabled = false }: Choi
         paddingVertical: spacing.lg,
         paddingHorizontal: spacing.lg,
         marginBottom: spacing.md,
-        opacity: disabled ? 0.45 : 1,
+        opacity: blocked ? 0.45 : 1,
       })}
     >
       <View style={{ flex: 1 }}>

@@ -1,15 +1,13 @@
-import { useState } from 'react';
 import { View } from 'react-native';
 
-import { AppText } from '@/components/AppText';
-import { haptics } from '@/feedback/haptics';
+import type { OptionGroup } from '@/api/schemas';
 import { ChoiceCard } from '@/components/ChoiceCard';
-import { selectionLimit } from '@/constants/strings';
-import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
 import { interestsForIntent } from './interestsGroup';
-import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection';
+import { SelectionLimitNote } from './SelectionLimitNote';
+import { sortedOptions } from './useSelection';
+import { useSelectionLimit } from './useSelectionLimit';
 
 /**
  * Akisin tek zorunlu fikri.
@@ -20,13 +18,16 @@ import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection
  * ve alinan cevabi da guvenilmez kiliyor.
  */
 export function IntentStep({ values, onChange, options }: StepProps) {
-  const { spacing } = useTheme();
-  const [refused, setRefused] = useState(false);
-
   const group = options.intent;
-  const selected = values.intent ?? [];
-
   if (!group) return null;
+
+  return <IntentChoices group={group} values={values} onChange={onChange} options={options} />;
+}
+
+/** Kancalar grup varken kuruluyor; grup yokken ekran zaten bos. */
+function IntentChoices({ group, values, onChange, options }: StepProps & { group: OptionGroup }) {
+  const selected = values.intent ?? [];
+  const limit = useSelectionLimit(group, selected);
 
   return (
     <View>
@@ -35,35 +36,25 @@ export function IntentStep({ values, onChange, options }: StepProps) {
           key={option.id}
           option={option}
           selected={selected.includes(option.id)}
-          disabled={isBlockedByLimit(group, selected, option.id)}
+          blocked={limit.isBlocked(option.id)}
+          blockedHint={limit.blockedHint(option.id)}
           onPress={() => {
-            const result = toggleSelection(group, selected, option.id);
-            setRefused(result.refused);
-            if (result.refused) return;
-            haptics.select();
+            const next = limit.attempt(option.id);
+            if (next === null) return;
 
             // Ilgi alanlari niyete bagli: cevabin ait oldugu liste
             // degistiginde cevap da dusuyor, yoksa gorunmeyen bir secim
             // taslakta yasamaya devam ediyor.
-            const interests = interestsForIntent(values.interests, result.next, options);
+            const interests = interestsForIntent(values.interests, next, options);
             onChange({
-              intent: result.next,
+              intent: next,
               ...(interests === undefined ? {} : { interests }),
             });
           }}
         />
       ))}
 
-      {group.maxSelection !== null ? (
-        <AppText
-          variant="caption"
-          tone={refused ? 'danger' : 'inkSoft'}
-          accessibilityLiveRegion="polite"
-          style={{ marginTop: spacing.sm }}
-        >
-          {selectionLimit(group.maxSelection, selected.length)}
-        </AppText>
-      ) : null}
+      <SelectionLimitNote group={group} selected={selected} refused={limit.refused} />
     </View>
   );
 }

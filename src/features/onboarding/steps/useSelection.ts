@@ -37,8 +37,12 @@ export function toggleSelection(
   return { next: [...current, id], refused: false };
 }
 
-/** Sinir dolduysa secili olmayan kartlar devre disi gorunur. */
-export function isBlockedByLimit(group: OptionGroup, current: string[], id: string): boolean {
+/**
+ * Sinir dolu ve bu secenek secili degil: kart sonuk gorunur. Devre disi
+ * degil -- dokunus hala geliyor ve `toggleSelection` onu reddediyor; sebebi
+ * soyleyen taraf o red.
+ */
+export function isAtLimit(group: OptionGroup, current: string[], id: string): boolean {
   if (!group.multiSelect || current.includes(id)) return false;
   if (group.maxSelection === null) return false;
   return current.length >= group.maxSelection;

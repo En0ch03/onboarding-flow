@@ -1,15 +1,17 @@
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
+import type { OptionGroup } from '@/api/schemas';
 import { AppText } from '@/components/AppText';
 import { ChipGrid } from '@/components/ChipGrid';
 import { ChoiceCard } from '@/components/ChoiceCard';
 import { strings } from '@/constants/strings';
-import { haptics } from '@/feedback/haptics';
 import { useTheme } from '@/theme';
 
 import type { StepProps } from '../engine/types';
-import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection';
+import { SelectionLimitNote } from './SelectionLimitNote';
+import { sortedOptions } from './useSelection';
+import { useSelectionLimit } from './useSelectionLimit';
 
 /**
  * Eslesme havuzunu belirleyen iki cevap: kendini nasil tanimladigin ve
@@ -27,26 +29,15 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
   const gender = options.gender;
   const audience = options.audience;
 
-  const selectedAudience = values.audience ?? [];
-
   return (
     <View>
       {gender ? (
         <Section title={strings.steps.genderLabel} help={strings.steps.genderHelp}>
-          {sortedOptions(gender).map((option) => (
-            <ChoiceCard
-              key={option.id}
-              option={option}
-              selected={values.gender === option.id}
-              onPress={() => {
-                // Zaten secili olana tekrar dokunmak bir olay degil: his
-                // gorunen bir degisikligi onayliyor, dokunusun kendisini degil.
-                if (values.gender === option.id) return;
-                haptics.select();
-                onChange({ gender: option.id });
-              }}
-            />
-          ))}
+          <GenderChoices
+            group={gender}
+            selected={values.gender}
+            onSelect={(id) => onChange({ gender: id })}
+          />
         </Section>
       ) : null}
 
@@ -58,22 +49,76 @@ export function AudienceStep({ values, onChange, options }: StepProps) {
           // grubunu kaldirirsa tepede sahipsiz bir cizgi kalmasin.
           divided={Boolean(gender)}
         >
-          <ChipGrid
-            options={sortedOptions(audience)}
-            isSelected={(id) => selectedAudience.includes(id)}
-            isDisabled={(id) => isBlockedByLimit(audience, selectedAudience, id)}
-            onPress={(id) => {
-              const { next } = toggleSelection(audience, selectedAudience, id);
-              // Reddedilen bir dokunusta `next` ayni dizi donuyor; degismeyen
-              // secim his uretmiyor.
-              if (next === selectedAudience) return;
-              haptics.select();
-              onChange({ audience: next });
-            }}
+          <AudienceChoices
+            group={audience}
+            selected={values.audience ?? []}
+            onSelect={(next) => onChange({ audience: next })}
           />
         </Section>
       ) : null}
     </View>
+  );
+}
+
+/**
+ * Tekli liste de ayni kancadan geciyor: sinir yok ama "ayni secime tekrar
+ * dokunmak olay degil" kurali ve secim hissi tek yerde yasamali.
+ */
+function GenderChoices({
+  group,
+  selected,
+  onSelect,
+}: {
+  group: OptionGroup;
+  selected: string | undefined;
+  onSelect: (id: string) => void;
+}) {
+  const limit = useSelectionLimit(group, selected === undefined ? [] : [selected]);
+
+  return (
+    <>
+      {sortedOptions(group).map((option) => (
+        <ChoiceCard
+          key={option.id}
+          option={option}
+          selected={selected === option.id}
+          onPress={() => {
+            const next = limit.attempt(option.id);
+            if (next?.[0] !== undefined) onSelect(next[0]);
+          }}
+        />
+      ))}
+    </>
+  );
+}
+
+/** Kancalar grup varken kuruluyor; grup yokken bolum zaten cizilmiyor. */
+function AudienceChoices({
+  group,
+  selected,
+  onSelect,
+}: {
+  group: OptionGroup;
+  selected: string[];
+  onSelect: (next: string[]) => void;
+}) {
+  const limit = useSelectionLimit(group, selected);
+
+  return (
+    <>
+      <ChipGrid
+        options={sortedOptions(group)}
+        isSelected={(id) => selected.includes(id)}
+        isBlocked={limit.isBlocked}
+        blockedHint={limit.blockedHint}
+        onPress={(id) => {
+          const next = limit.attempt(id);
+          if (next !== null) onSelect(next);
+        }}
+      />
+
+      <SelectionLimitNote group={group} selected={selected} refused={limit.refused} />
+    </>
   );
 }
 

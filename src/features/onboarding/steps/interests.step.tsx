@@ -1,9 +1,13 @@
+import { View } from 'react-native';
+
+import type { OptionGroup } from '@/api/schemas';
 import { ChipGrid } from '@/components/ChipGrid';
-import { haptics } from '@/feedback/haptics';
 
 import type { StepProps } from '../engine/types';
 import { groupKeyForIntent } from './interestsGroup';
-import { isBlockedByLimit, sortedOptions, toggleSelection } from './useSelection';
+import { SelectionLimitNote } from './SelectionLimitNote';
+import { sortedOptions } from './useSelection';
+import { useSelectionLimit } from './useSelectionLimit';
 
 /**
  * Niyet cevabina gore farkli bir etiket seti gosteriliyor.
@@ -16,21 +20,34 @@ export function InterestsStep({ values, onChange, options }: StepProps) {
   // Geri dusus `groupKeyForIntent` icinde: burada ikinci bir tane yazmak,
   // ekranin bir listeye, temizligin baska bir listeye bakmasina yol aciyordu.
   const group = options[groupKeyForIntent(values.intent, options)];
-  const selected = values.interests ?? [];
-
   if (!group) return null;
 
+  return <InterestChoices group={group} values={values} onChange={onChange} />;
+}
+
+/** Kancalar grup varken kuruluyor; grup yokken ekran zaten bos. */
+function InterestChoices({
+  group,
+  values,
+  onChange,
+}: Pick<StepProps, 'values' | 'onChange'> & { group: OptionGroup }) {
+  const selected = values.interests ?? [];
+  const limit = useSelectionLimit(group, selected);
+
   return (
-    <ChipGrid
-      options={sortedOptions(group)}
-      isSelected={(id) => selected.includes(id)}
-      isDisabled={(id) => isBlockedByLimit(group, selected, id)}
-      onPress={(id) => {
-        const { next } = toggleSelection(group, selected, id);
-        if (next === selected) return;
-        haptics.select();
-        onChange({ interests: next });
-      }}
-    />
+    <View>
+      <ChipGrid
+        options={sortedOptions(group)}
+        isSelected={(id) => selected.includes(id)}
+        isBlocked={limit.isBlocked}
+        blockedHint={limit.blockedHint}
+        onPress={(id) => {
+          const next = limit.attempt(id);
+          if (next !== null) onChange({ interests: next });
+        }}
+      />
+
+      <SelectionLimitNote group={group} selected={selected} refused={limit.refused} />
+    </View>
   );
 }
