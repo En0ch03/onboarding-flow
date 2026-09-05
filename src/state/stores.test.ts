@@ -189,6 +189,54 @@ describe('draft ownership', () => {
     expect(useOnboardingStore.getState().answers).toEqual({});
   });
 
+  it('drops an unowned draft whose answers are empty but whose place is not', async () => {
+    // Bir surum onceki kayitta cevap yok ama akista bir yer, tamamlanmis
+    // adimlar ve gonderilmemis adimlar olabilir. Gonderilmemis adimlar
+    // kapanista sunucuya yaziliyor: yabancinin isaretleri yeni hesabin
+    // profiline gidiyordu.
+    useOnboardingStore.setState({
+      ownerId: null,
+      activeStepId: 'photos',
+      completedStepIds: ['name', 'intent'],
+      unsyncedStepIds: ['intent'],
+    });
+
+    await useAuthStore.getState().startSession(session);
+
+    expect(useOnboardingStore.getState().activeStepId).toBeNull();
+    expect(useOnboardingStore.getState().completedStepIds).toEqual([]);
+    expect(useOnboardingStore.getState().unsyncedStepIds).toEqual([]);
+  });
+
+  it('claims the draft before the new session becomes visible', async () => {
+    // Sira onemli: ekran yeni oturumu gordugu anda yabancinin cevaplarini
+    // cizmeye baslayabilir. Sahiplendirme oturum gorunur olmadan bitmeli.
+    useOnboardingStore.setState({ ownerId: 'usr_2' });
+    useOnboardingStore.getState().setAnswers({ name: 'Baskasinin adi' });
+
+    let answersWhenSessionAppeared: unknown;
+    const unsubscribe = useAuthStore.subscribe((state) => {
+      if (state.status === 'authenticated' && answersWhenSessionAppeared === undefined) {
+        answersWhenSessionAppeared = useOnboardingStore.getState().answers;
+      }
+    });
+
+    await useAuthStore.getState().startSession(session);
+    unsubscribe();
+
+    expect(answersWhenSessionAppeared).toEqual({});
+  });
+
+  it('drops a half-finished upload marker left by the previous owner', async () => {
+    useOnboardingStore.setState({ ownerId: 'usr_2' });
+    usePhotoTransfers.getState().mark(1, 'failed');
+
+    await useAuthStore.getState().startSession(session);
+
+    // Yeni hesap, oncekinin "yuklenemedi" kutusunu gormemeli.
+    expect(usePhotoTransfers.getState().transfers.size).toBe(0);
+  });
+
   it('leaves an empty draft alone, whoever signs in', async () => {
     await useAuthStore.getState().startSession(session);
 

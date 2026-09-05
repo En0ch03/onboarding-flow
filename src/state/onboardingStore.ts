@@ -134,15 +134,17 @@ export const useOnboardingStore = create<OnboardingState>()(
       },
 
       claimDraft(userId) {
-        const { ownerId, answers } = get();
-        if (ownerId === userId) return;
+        if (get().ownerId === userId) return;
 
-        // Sahibi yazilmamis ama dolu bir taslak, sahiplik alanindan onceki
-        // surumden kalmis olabilir. Kimin oldugu bilinmiyorsa yanlis kisiye
-        // acmaktansa kaybedilir.
-        const unclaimedAndEmpty = ownerId === null && Object.keys(answers).length === 0;
-        if (!unclaimedAndEmpty) get().clearDraft();
-
+        // Sahip degisiyorsa oncekinden hicbir kalinti birakilmaz. Nesi kaldigini
+        // tek tek olcmek denendi ve yanlisti: cevabi bos bir taslak bile bir
+        // yer, tamamlanmis adimlar ve gonderilmemis adimlar tasiyabiliyor, ve
+        // gonderilmemis adimlar kapanista sunucuya yaziliyor -- yani yabancinin
+        // isaretleri yeni hesabin profiline gidiyordu. Sahibi hic yazilmamis bir
+        // taslak da buraya dusuyor: sahiplik alanindan onceki surumden kalmis
+        // olabilir ve kimin oldugu bilinmiyorsa yanlis kisiye acmaktansa
+        // kaybedilir.
+        get().clearDraft();
         set({ ownerId: userId });
       },
 
