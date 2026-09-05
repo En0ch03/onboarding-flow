@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useMemo, type ComponentProps } from 'react';
+import { useEffect, useMemo, type ComponentProps } from 'react';
 import { Alert } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
@@ -8,6 +8,7 @@ import { CompletionScreen } from '@/features/onboarding/CompletionScreen';
 import { StepScreen } from '@/features/onboarding/engine/StepScreen';
 import { firstIncompleteStepId } from '@/features/onboarding/engine/stepFlow';
 import { stepForFields } from '@/features/onboarding/steps/blockingStep';
+import { usePhotoTransfers } from '@/features/onboarding/steps/photoTransfers';
 import { resolveSteps } from '@/features/onboarding/steps/resolveSteps';
 import { steps } from '@/features/onboarding/steps/steps';
 import { strings } from '@/constants/strings';
@@ -39,6 +40,11 @@ export function OnboardingNavigator({
   onEnterApp,
   onLeaveFlow,
 }: OnboardingNavigatorProps) {
+  // Bu yigin akisin kendisi: sokuldugunde akis terk edilmistir -- cikis,
+  // oturumun bitmesi ya da uygulamaya giris. Devam eden yuklemelerin
+  // isaretleri bununla birlikte gider; taslak ise bilerek kalir.
+  useEffect(() => () => usePhotoTransfers.getState().reset(), []);
+
   const setActiveStep = useOnboardingStore((state) => state.setActiveStep);
 
   // Zorunluluk kurallari sunucudan; tanimdaki degerler yalnizca sunucu

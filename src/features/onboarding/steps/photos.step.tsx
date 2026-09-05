@@ -31,8 +31,9 @@ export function PhotosStep({ values, onChange }: StepProps) {
 
   // Devam eden isler izgaradaki yerlerine gore tutuluyor. Dizideki siraya
   // gore tutmak, bir yukleme surerken gelen ikinci fotografin isareti baska
-  // bir kutuya kaydiriyordu. Isaretler bu ekranin disinda yasiyor: adim terk
-  // edilip donuldugunde yukleme hala surer ve kutu yine "yukleniyor" der.
+  // bir kutuya kaydiriyordu. Isaretler bu ekranin disinda, akisin omrunde
+  // yasiyor: adim terk edilip donuldugunde yukleme hala surer ve kutu yine
+  // "yukleniyor" der; akisin kendisi terk edilince isaretler de gider.
   const transfers = usePhotoTransfers((state) => state.transfers);
   const markTransfer = usePhotoTransfers((state) => state.mark);
   const [asked, setAsked] = useState<number | null>(null);
@@ -74,9 +75,16 @@ export function PhotosStep({ values, onChange }: StepProps) {
     if (picked.canceled || !asset) return;
 
     markTransfer(index, 'pending');
+    // Yuklemeyi baslatan akis bittiginde sonucu uygulanmiyor: akis terk
+    // edilmis ya da taslak silinmis olabilir. Gec biten bir yukleme, aksi
+    // halde temizlenmis bir taslagi yeniden dolduruyor ya da baska bir
+    // kullanicinin izgarasina isaret koyuyordu.
+    const generation = usePhotoTransfers.getState().generation;
+    const stale = () => usePhotoTransfers.getState().generation !== generation;
 
     try {
       const uploaded = await uploadPhoto(asset.uri);
+      if (stale()) return;
       markTransfer(index, null);
 
       // Liste de isaretler de yazma aninda depodan okunuyor; ekranin son
@@ -101,6 +109,7 @@ export function PhotosStep({ values, onChange }: StepProps) {
         return { photos: next };
       });
     } catch {
+      if (stale()) return;
       markTransfer(index, 'failed');
     }
   }

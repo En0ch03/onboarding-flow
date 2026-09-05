@@ -385,3 +385,43 @@ describe('PhotosStep — adim terk edilip donuldugunde', () => {
     expect(storeIds()).toHaveLength(PHOTO_SLOTS);
   });
 });
+
+describe('PhotosStep — akis terk edildikten sonra biten yukleme', () => {
+  beforeEach(() => {
+    useOnboardingStore.getState().replaceAnswers({});
+  });
+
+  it('basarili bitse de cevap yazmiyor', async () => {
+    // Akis bitip taslak silindikten sonra gec gelen bir fotograf, temizlenmis
+    // taslagi yeniden dolduruyordu: sunucuya gitmeyen, kullaniciya gorunmeyen
+    // ama diskte duran bir cevap.
+    const pending = deferred();
+    upload.mockReturnValueOnce(pending.promise);
+
+    const view = await renderWithTheme(<StoreBound />);
+    await addPhoto(view);
+    await view.unmount();
+    useOnboardingStore.getState().clearDraft();
+
+    await act(async () => pending.resolve(photo('late')));
+
+    expect(storeIds()).toEqual([]);
+    expect(usePhotoTransfers.getState().transfers.size).toBe(0);
+  });
+
+  it('dusse de baska bir akisin izgarasina isaret koymuyor', async () => {
+    // Bir kullanicinin cikistan sonra dusen yuklemesi, ayni cihazda giris
+    // yapan bir sonrakinin kapak kutusunda "yuklenemedi" diye beliriyordu.
+    const pending = deferred();
+    upload.mockReturnValueOnce(pending.promise);
+
+    const view = await renderWithTheme(<StoreBound />);
+    await addPhoto(view);
+    await view.unmount();
+    usePhotoTransfers.getState().reset();
+
+    await act(async () => pending.reject(new Error('down')));
+
+    expect(usePhotoTransfers.getState().transfers.size).toBe(0);
+  });
+});
