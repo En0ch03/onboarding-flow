@@ -42,9 +42,11 @@ export function PhotoSlot({ state, cover = false, onPress, onRemove }: PhotoSlot
             : strings.photoSlot.filled
           : state.status === 'failed'
             ? strings.photoSlot.failed
-            : state.status === 'locked'
-              ? strings.photoSlot.locked
-              : strings.photoSlot.empty
+            : state.status === 'uploading'
+              ? strings.photoSlot.uploading
+              : state.status === 'locked'
+                ? strings.photoSlot.locked
+                : strings.photoSlot.empty
       }
       accessibilityState={{
         busy: state.status === 'uploading',

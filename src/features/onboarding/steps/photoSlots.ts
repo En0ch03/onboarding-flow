@@ -1,5 +1,20 @@
 import type { UploadedPhoto } from '@/api/media';
 
+/**
+ * Bu iki sayi bilerek istemcide.
+ *
+ * Seceneklerin kendisi sunucudan geliyor cunku taksonomiler bolgeye ve
+ * zamana gore degisiyor; bir esik oyle bir sey degil. Alti kutu gorunmesi ve
+ * ikisinin yeterli sayilmasi tek bir urun karari ve degistirmek yerlesimi de
+ * degistiriyor. Sunucudan gelseydi istemci, gelmeyen bir sayi icin yine bir
+ * varsayilan tasimak zorunda kalirdi.
+ *
+ * Burada duruyorlar, ekranda degil: sunucudan gelen listeyi sinirda kirpan
+ * durum katmani da ayni sayiyi okuyor ve bir ekran dosyasina bagimli olmamali.
+ */
+export const PHOTO_SLOTS = 6;
+export const MINIMUM_PHOTOS = 2;
+
 /** Bir kutunun devam eden isi: yukleniyor ya da yuklenemedi. */
 export type Transfer = 'pending' | 'failed';
 

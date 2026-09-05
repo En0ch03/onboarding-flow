@@ -33,6 +33,19 @@ describe('draftFromProfile', () => {
     });
   });
 
+  it('keeps only as many photos as the grid can show', () => {
+    const photos = Array.from({ length: 8 }, (_, at) => ({
+      id: `p${at}`,
+      url: `https://example.test/p${at}.jpg`,
+    }));
+
+    const answers = draftFromProfile({ ...profile, preferences: { photos } });
+
+    // Fazlasi ekranda gorunmuyor, silinemiyor ve sayaci "8 / 6" yapiyordu.
+    expect(answers.photos).toHaveLength(6);
+    expect(answers.photos?.map((item) => item.id)).toEqual(['p0', 'p1', 'p2', 'p3', 'p4', 'p5']);
+  });
+
   it('skips a value that arrived in a shape we do not expect', () => {
     const answers = draftFromProfile({
       ...profile,

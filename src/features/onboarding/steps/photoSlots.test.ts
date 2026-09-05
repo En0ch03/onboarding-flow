@@ -98,7 +98,17 @@ describe('insertPosition', () => {
 
   it('onundeki yuklenen kutulari saymiyor: onlarin fotografi henuz yok', () => {
     // 0 yukleniyor, 1'de bir fotograf var. 2'ye giren, o fotografin arkasina.
-    expect(insertPosition(new Map([[0, 'pending' as const]]), 2, 1)).toBe(1);
+    // Fotograf sayisi bilerek buyuk: kirpma devreye girerse yanlis sayim da
+    // ayni sonucu verir ve test hicbir sey sinamaz.
+    expect(insertPosition(new Map([[0, 'pending' as const]]), 2, 3)).toBe(1);
+  });
+
+  it('onundeki birden fazla yuklenen kutuyu da saymiyor', () => {
+    const two = new Map([
+      [0, 'pending' as const],
+      [1, 'failed' as const],
+    ]);
+    expect(insertPosition(two, 3, 4)).toBe(1);
   });
 
   it('eldeki fotograf sayisini asmiyor', () => {

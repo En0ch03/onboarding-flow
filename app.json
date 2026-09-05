@@ -25,7 +25,14 @@
     "scheme": "onboarding",
     "plugins": [
       "expo-secure-store",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Profiline fotoğraf ekleyebilmen için galerine erişmemiz gerekiyor.",
+          "cameraPermission": "Şimdi bir fotoğraf çekebilmen için kameraya erişmemiz gerekiyor."
+        }
+      ]
     ]
   }
 }

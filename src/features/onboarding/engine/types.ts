@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react';
 
 import type { OptionGroups } from '@/api/schemas';
-import type { DraftAnswers } from '@/state/onboardingStore';
+import type { AnswersUpdate, DraftAnswers } from '@/state/onboardingStore';
 
 /**
  * Adimlar rota degil veri.
@@ -12,7 +12,7 @@ import type { DraftAnswers } from '@/state/onboardingStore';
  */
 export type StepProps = {
   values: DraftAnswers;
-  onChange: (patch: DraftAnswers) => void;
+  onChange: (update: AnswersUpdate) => void;
   /** Sunucudan gelen secenek listeleri; adim kendi listesini tasimaz. */
   options: OptionGroups;
 };

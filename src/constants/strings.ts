@@ -56,6 +56,7 @@ export const strings = {
     filled: 'Fotoğraf',
     failed: 'Yüklenemeyen fotoğraf, tekrar dene',
     empty: 'Fotoğraf ekle',
+    uploading: 'Fotoğraf yükleniyor',
     locked: 'Sırası gelmemiş fotoğraf kutusu',
     remove: 'Fotoğrafı kaldır',
   },
