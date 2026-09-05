@@ -95,12 +95,14 @@ export function draftFromProfile(profile: Profile): DraftAnswers {
  * bir alani sunucuya gonderiyorsa digeri de onu o adima saymali. Ikisinin
  * ayrismadigini bir degismez test tutuyor.
  */
+// Donduruluyor cunku disariya paylasilan bir dizi donuyor: bir cagiran
+// listeye ekleme yaparsa bozulma modul seviyesinde kalici olurdu.
 const fieldsByStep: Record<string, readonly (keyof DraftAnswers)[]> = {
-  identity: ['name', 'birthDate'],
-  audience: ['gender', 'audience'],
-  intent: ['intent'],
-  photos: ['photos'],
-  interests: ['interests'],
+  identity: Object.freeze(['name', 'birthDate'] as const),
+  audience: Object.freeze(['gender', 'audience'] as const),
+  intent: Object.freeze(['intent'] as const),
+  photos: Object.freeze(['photos'] as const),
+  interests: Object.freeze(['interests'] as const),
 };
 
 /** Bir adimin dokundugu taslak alanlari; tanimadigimiz adim icin bos. */

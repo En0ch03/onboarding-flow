@@ -367,7 +367,12 @@ describe('adoptServerProfile', () => {
     await signIn();
     useOnboardingStore.getState().setAnswers({ interests: ['music'] });
     useOnboardingStore.getState().markStepUnsynced('interests');
-    fetchProfile.mockResolvedValue(incompleteProfile);
+    // Sunucunun da bir `interests` cevabi olmali, yoksa "korundu" iddiasi
+    // korumadan bagimsiz olarak dogru cikar.
+    fetchProfile.mockResolvedValue({
+      ...incompleteProfile,
+      preferences: { ...incompleteProfile.preferences, interests: ['cinema'] },
+    });
 
     await adoptServerProfile();
 

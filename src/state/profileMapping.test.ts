@@ -135,6 +135,12 @@ describe('patchFromAnswers', () => {
     }
   });
 
+  it('hands out a field list that cannot be modified', () => {
+    // Paylasilan dizi degistirilebilir olsaydi tek bir cagiranin ekledigi
+    // alan butun modul icin kalici olurdu.
+    expect(Object.isFrozen(answerFieldsForStep('intent'))).toBe(true);
+  });
+
   it('claims a field for a step only if that step actually sends it', () => {
     // Eslemenin iki yani ayrisirsa bir alan ya korumasiz kalir ya da hic
     // gelmeyecek bir cevap bekler. Yalnizca o alani doldurup gonderim

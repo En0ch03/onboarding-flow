@@ -249,6 +249,20 @@ describe('CompletionScreen', () => {
     expect(asMock(saveStep)).toHaveBeenCalledTimes(1);
   });
 
+  it('bekleyen adimlarin hepsini gonderiyor, yalnizca ilkini degil', async () => {
+    // Baglanti gidince ardisik adimlar birlikte kuyruga giriyor. Yalnizca
+    // biri gonderilirse sunucu eksik bir profili "tamamlandi" damgalar.
+    const sent: string[] = [];
+    asMock(saveStep).mockImplementation(async (stepId: string) => {
+      sent.push(stepId);
+    });
+
+    await mount(answers, {}, ['intent', 'interests']);
+
+    await waitFor(() => expect(sent).toEqual(['intent', 'interests']));
+    expect(useOnboardingStore.getState().unsyncedStepIds).toEqual([]);
+  });
+
   it('gonderilemeyen adimi bekleyenlerde birakiyor', async () => {
     // Isaret gonderimden once dusurulurse, basarisiz bir gonderim "yapildi"
     // sayilir ve cevap bir daha hic denenmez.
