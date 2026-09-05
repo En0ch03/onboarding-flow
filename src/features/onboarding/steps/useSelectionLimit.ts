@@ -20,8 +20,8 @@ import { isAtLimit, toggleSelection } from './useSelection';
  * okuyucuya sebepsiz bir "kullanilamaz" der; sonuk ama dokunulabilir bir
  * kart ise dokununca sebebi verir ve ipucuyla cikis yolunu gosterir.
  *
- * Uc listenin ucu de buradan geciyor: sinira carpmanin ne hissettirdigi
- * ekrandan ekrana degismemeli.
+ * Sinirli listelerin dordu de buradan geciyor: sinira carpmanin ne
+ * hissettirdigi ekrandan ekrana degismemeli.
  */
 export function useSelectionLimit(group: OptionGroup, selected: string[]) {
   const [refused, setRefused] = useState(false);
