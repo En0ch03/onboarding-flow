@@ -38,7 +38,10 @@ describe('uploadPhoto', () => {
 
     await jest.advanceTimersByTimeAsync(60000);
 
-    expect(await settled).toBe('rejected');
+    // Sinir yoksa soz hic yerlesmez; testi zaman asimina birakmak yerine
+    // yerlesmedigini aninda soylemek gerekiyor.
+    const outcomeNow = await Promise.race([settled, Promise.resolve('still pending')]);
+    expect(outcomeNow).toBe('rejected');
     expect(post).not.toHaveBeenCalled();
   });
 

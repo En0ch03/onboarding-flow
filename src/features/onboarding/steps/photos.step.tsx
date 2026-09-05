@@ -64,7 +64,15 @@ export function PhotosStep({ values, onChange }: StepProps) {
   }
 
   async function pick(index: number, from: PhotoSource) {
+    // Nesil dokunma aninda aliniyor ve her beklemeden sonra bakiliyor. Izin
+    // diyalogu ve secici dakikalarca acik kalabiliyor; o pencerede akis
+    // sokulurse (oturum bitti, taslak silindi) bundan sonra yazilacak her
+    // sey baska bir akisa -- baska bir kullaniciya -- ait olurdu.
+    const generation = usePhotoTransfers.getState().generation;
+    const stale = () => usePhotoTransfers.getState().generation !== generation;
+
     if (!(await permitted(from))) return;
+    if (stale()) return;
 
     const picked =
       from === 'camera'
@@ -73,15 +81,13 @@ export function PhotosStep({ values, onChange }: StepProps) {
 
     const asset = picked.assets?.[0];
     if (picked.canceled || !asset) return;
+    if (stale()) return;
 
     markTransfer(index, 'pending');
-    // Yuklemeyi baslatan akis bittiginde sonucu uygulanmiyor: akis terk
-    // edilmis ya da taslak silinmis olabilir. Gec biten bir yukleme, aksi
-    // halde temizlenmis bir taslagi yeniden dolduruyor ya da baska bir
-    // kullanicinin izgarasina isaret koyuyordu.
-    const generation = usePhotoTransfers.getState().generation;
-    const stale = () => usePhotoTransfers.getState().generation !== generation;
 
+    // Yuklemeyi baslatan akis bittiginde sonucu uygulanmiyor. Gec biten bir
+    // yukleme, aksi halde temizlenmis bir taslagi yeniden dolduruyor ya da
+    // baska bir kullanicinin izgarasina isaret koyuyordu.
     try {
       const uploaded = await uploadPhoto(asset.uri);
       if (stale()) return;

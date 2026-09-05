@@ -387,6 +387,28 @@ describe('PhotosStep — adim terk edilip donuldugunde', () => {
 });
 
 describe('PhotosStep — akis terk edildikten sonra biten yukleme', () => {
+  it('secici acikken akis bitmisse ne isaret koyuyor ne cevap yaziyor', async () => {
+    // Galeri dakikalarca acik kalabiliyor; o sirada oturum bitip baska biri
+    // girerse, secilen fotograf onun taslagina ve kapak kutusuna giriyordu.
+    let choose!: (value: Awaited<ReturnType<typeof ImagePicker.launchImageLibraryAsync>>) => void;
+    picker.launchImageLibraryAsync.mockReturnValueOnce(
+      new Promise((resolve) => {
+        choose = resolve;
+      }),
+    );
+
+    const view = await renderWithTheme(<StoreBound />);
+    await addPhoto(view);
+    await view.unmount();
+    usePhotoTransfers.getState().reset();
+
+    await act(async () => choose(result('file:///late.jpg')));
+
+    expect(usePhotoTransfers.getState().transfers.size).toBe(0);
+    expect(upload).not.toHaveBeenCalled();
+    expect(storeIds()).toEqual([]);
+  });
+
   beforeEach(() => {
     useOnboardingStore.getState().replaceAnswers({});
   });
