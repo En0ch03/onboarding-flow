@@ -240,6 +240,15 @@ describe('CompletionScreen', () => {
     await waitFor(() => expect(order).toEqual(['saveStep', 'complete']));
   });
 
+  it('gonderilen adimi bekleyenler listesinden dusuruyor', async () => {
+    // Isaret dusurulmezse ayni adim bir sonraki denemede yeniden gonderilir:
+    // kapanis basarisiz olup tekrar denendiginde ayni govde iki kez gidiyor.
+    await mount(answers, {}, ['interests']);
+
+    await waitFor(() => expect(useOnboardingStore.getState().unsyncedStepIds).toEqual([]));
+    expect(asMock(saveStep)).toHaveBeenCalledTimes(1);
+  });
+
   it('bekleyen adim gonderilemezse tamamlamayi hic denemiyor', async () => {
     asMock(saveStep).mockImplementation(async () => {
       throw { kind: 'network' };

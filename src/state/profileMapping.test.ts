@@ -1,4 +1,7 @@
-import { draftFromProfile, patchFromAnswers } from './profileMapping';
+import { steps } from '@/features/onboarding/steps/steps';
+
+import type { DraftAnswers } from './onboardingStore';
+import { answerFieldsForStep, draftFromProfile, patchFromAnswers } from './profileMapping';
 
 const profile = {
   user_id: 'usr_1',
@@ -109,5 +112,53 @@ describe('patchFromAnswers', () => {
 
   it('sends an empty list when a skippable step is skipped', () => {
     expect(patchFromAnswers({}, 'interests').preferences).toEqual({ interests: [] });
+  });
+
+  it('names the fields of every step in the flow', () => {
+    // Beklenen liste elle yazili: sinanan eslemeden uretilseydi, eslemeden
+    // bir alan dusuruldugunde bu test de onu aramaktan vazgecerdi.
+    const expected: Record<string, (keyof DraftAnswers)[]> = {
+      identity: ['name', 'birthDate'],
+      audience: ['gender', 'audience'],
+      intent: ['intent'],
+      photos: ['photos'],
+      interests: ['interests'],
+    };
+
+    // Akista bu tabloda olmayan bir adim varsa alanlari korumasiz demektir.
+    expect(steps.map((step) => step.id).sort()).toEqual(Object.keys(expected).sort());
+
+    for (const [stepId, fields] of Object.entries(expected)) {
+      expect(`${stepId}: ${answerFieldsForStep(stepId).join(',')}`).toBe(
+        `${stepId}: ${fields.join(',')}`,
+      );
+    }
+  });
+
+  it('claims a field for a step only if that step actually sends it', () => {
+    // Eslemenin iki yani ayrisirsa bir alan ya korumasiz kalir ya da hic
+    // gelmeyecek bir cevap bekler. Yalnizca o alani doldurup gonderim
+    // govdesinin gercekten dolmasi araniyor.
+    const sample: DraftAnswers = {
+      name: 'Deniz',
+      birthDate: { day: '01', month: '01', year: '1990' },
+      gender: 'woman',
+      audience: ['men'],
+      intent: ['long_term'],
+      interests: ['music'],
+      photos: [{ id: 'p1', url: 'https://example.test/a.jpg' }],
+    };
+
+    for (const step of steps) {
+      for (const field of answerFieldsForStep(step.id)) {
+        const patch = patchFromAnswers({ [field]: sample[field] } as DraftAnswers, step.id);
+        const carries =
+          patch.display_name !== undefined ||
+          patch.avatar_url !== undefined ||
+          Object.keys(patch.preferences ?? {}).length > 0;
+
+        expect(`${step.id}.${field}: ${carries}`).toBe(`${step.id}.${field}: true`);
+      }
+    }
   });
 });

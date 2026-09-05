@@ -10,7 +10,7 @@ import { steps } from '@/features/onboarding/steps/steps';
 
 import { connectAuthBridge, useAuthStore } from './authStore';
 import { useOnboardingStore, whenDraftHydrated } from './onboardingStore';
-import { draftFromProfile } from './profileMapping';
+import { answerFieldsForStep, draftFromProfile } from './profileMapping';
 
 /**
  * Acilista uygulamanin gidecegi yer.
@@ -103,7 +103,20 @@ export async function adoptServerProfile(): Promise<ProfileAdoption> {
     // bir kullanici kimligi okumuyor; sahibi ogrenebilecegimiz tek yer
     // profilin kendisi. Cevaplar yazilmadan once sorulmali.
     useOnboardingStore.getState().claimDraft(profile.user_id);
-    useOnboardingStore.getState().setAnswers(draftFromProfile(profile));
+    // Sunucu kazanir -- ama henuz sunucuya ulasmamis bir cevabin uzerine
+    // degil. Cevrimdisi verilen cevap bekleyenler listesinde duruyor ve
+    // sunucudaki eski degeri onun ustune yazmak, kullanicinin degisikligini
+    // sessizce geri almak olurdu; kapanista da eski deger gonderilirdi.
+    const pendingFields = new Set(
+      useOnboardingStore
+        .getState()
+        .unsyncedStepIds.flatMap((stepId) => answerFieldsForStep(stepId)),
+    );
+
+    const fromServer = draftFromProfile(profile);
+    for (const field of pendingFields) delete fromServer[field];
+
+    useOnboardingStore.getState().setAnswers(fromServer);
     adopted = true;
   } catch (thrown) {
     // Yenileme de basarisiz olduysa oturum bitti; taslak yerinde duruyor ve
