@@ -1,11 +1,19 @@
 import type { ApiError, ApiErrorKind } from '@/api/errors';
 
+import { MIN_PASSWORD_LENGTH } from '@/features/auth/credentialsForm';
+
+import { strings } from './strings';
+
 /**
- * Her hata turunun insan dilindeki karsiligi ve cikis yolu.
+ * Her hata turunun insan dilindeki karsiligi ve varsa cikis yolu.
  *
- * Bir hata bir cikmaz olmamali: mesaj neyin yanlis gittigini soyler ve yaninda
- * kullanicinin atabilecegi bir adim durur. Ham sunucu metni, durum kodu veya
- * teknik terim hicbir zaman ekrana ulasmaz.
+ * Bir hata bir cikmaz olmamali. Cogu turde bunun karsiligi mesajin yanindaki
+ * bir adim; ama hepsinde degil. Kullanicinin yazdigi seyi duzeltmesi yeterli
+ * oldugunda -- yanlis sifre, gozden gecirilecek bir alan -- cikis yolu formun
+ * kendisi ve girdiyi yerinde birakmak. Baska bir yere goturmeyen bir baglanti
+ * ilan etmek, hic ilan etmemekten kotu.
+ *
+ * Ham sunucu metni, durum kodu veya teknik terim hicbir zaman ekrana ulasmaz.
  */
 type ErrorPresentation = {
   /** Kullaniciya gosterilen metin. */
@@ -24,8 +32,12 @@ const presentations: Record<ApiErrorKind, ErrorPresentation> = {
     action: null,
   },
   invalid_credentials: {
+    // Cikis yolu formun kendisi: alanlar bosaltilmiyor ve kullanici
+    // genellikle tek bir karakteri duzeltiyor. Bir sifirlama baglantisi
+    // ilan edilmiyor cunku sozlesmede sifirlama ucu yok; goturecegi yer
+    // olmayan bir cikis, cikis olmamasindan kotu.
     message: 'E-posta veya şifre eşleşmedi. Bir daha dener misin?',
-    action: 'Şifremi sıfırla',
+    action: null,
   },
   refresh_expired: {
     message:
@@ -50,6 +62,23 @@ const presentations: Record<ApiErrorKind, ErrorPresentation> = {
 
 export function presentError(error: ApiError): ErrorPresentation {
   return presentations[error.kind];
+}
+
+/**
+ * Ayni istegi yeniden denemenin cozum oldugu hatalar.
+ *
+ * Bir bandin etiketi sozlukten, davranisi ekrandan geliyor. Ikisi yalnizca
+ * bu turlerde ayni seyi soyluyor: gerisi icin sozlukteki etiket baska bir
+ * yere goturuyor -- `refresh_expired` "Giris yap" diyor -- ve o etiketi
+ * yeniden deneyen bir dugmeye yapistirmak, gidecegi yeri adiyla soyleyip
+ * oraya gitmeyen bir dugme uretiyor.
+ */
+export function isRetryable(error: ApiError): boolean {
+  return (
+    error.kind === 'network' ||
+    error.kind === 'server_error' ||
+    error.kind === 'unexpected_response'
+  );
 }
 
 /** Sunucunun bildigi alan adlari; bilinmeyen alan adi oldugu gibi kullanilmaz. */
@@ -88,8 +117,9 @@ const fieldReasons: Record<string, (label: string) => string> = {
  * kullaniciya ne yapacagini soylemiyor, sinir soyluyor.
  */
 const specificMessages: Record<string, string> = {
-  'password:too_short': 'Şifren çok kısa. En az 8 karakter olmalı.',
-  'email:invalid': 'Bu e-posta adresi geçerli görünmüyor. Yazımını kontrol eder misin?',
+  // Sinir tek yerde: sozluk cumleyi kuruyor, sayiyi kural veriyor.
+  'password:too_short': strings.auth.passwordTooShort(MIN_PASSWORD_LENGTH),
+  'email:invalid': strings.auth.emailInvalid,
 };
 
 /**

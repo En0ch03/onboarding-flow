@@ -8,9 +8,8 @@ import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { strings } from '@/constants/strings';
 import { HomeScreen } from '@/features/app/HomeScreen';
-import { reconcileDraftWithOptions } from '@/features/onboarding/steps/reconcileDraft';
 import { useAuthStore } from '@/state/authStore';
-import { bootstrap } from '@/state/bootstrap';
+import { adoptServerProfile, bootstrap } from '@/state/bootstrap';
 import { useTheme } from '@/theme';
 
 import { AuthNavigator } from './AuthNavigator';
@@ -45,6 +44,25 @@ export function RootNavigator() {
     void start();
   }, [start]);
 
+  /**
+   * Oturum akisin ortasinda biterse uygulama orada birakmiyor.
+   *
+   * Yenileme tukendiginde token'lar siliniyor ama faz kendiliginden
+   * degismiyordu: kullanici token'siz halde adimlarda kaliyor, her istekte
+   * "oturumun sona erdi" bandini goruyor ve o bandin gosterdigi cikis yolu
+   * hicbir yere goturmuyordu. Taslak diskte kaliyor; kullanici giris
+   * yapinca kaldigi adimdan devam ediyor.
+   */
+  useEffect(
+    () =>
+      useAuthStore.subscribe((state, previous) => {
+        if (state.status === 'anonymous' && previous.status === 'authenticated') {
+          setPhase('welcome');
+        }
+      }),
+    [],
+  );
+
   const retryOptions = useCallback(async () => {
     try {
       setOptions(await fetchOptionGroups());
@@ -59,12 +77,7 @@ export function RootNavigator() {
     return (
       <AuthNavigator
         onAuthenticated={(onboardingComplete) => {
-          // Giris, acilis sekansini yeniden kosturmuyor; uzlastirma burada da
-          // gerekiyor. Kullanici cikip tekrar girdiginde aradan gecen surede
-          // sunucudan bir secenek kaldirilmis olabilir.
-          const groups = readCachedOptionGroups();
-          if (groups !== null) reconcileDraftWithOptions(groups);
-          setPhase(onboardingComplete ? 'app' : 'onboarding');
+          void resolveSignIn(onboardingComplete, setPhase);
         }}
       />
     );
@@ -90,6 +103,40 @@ export function RootNavigator() {
   }
 
   return <HomeScreen />;
+}
+
+/**
+ * Giristen sonra nereye gidilecegi.
+ *
+ * Ayri bir fonksiyon cunku hata tam olarak burada yasadi: profili benimseyen
+ * fonksiyon dogru olsa bile **cagrilmadigi** surece kullanici baska bir
+ * cihazda verdigi cevaplari gormuyordu. O fonksiyonun kendi testleri bu
+ * cagriyi tutmuyor; burasi tutuyor.
+ *
+ * Giris, acilis sekansinin tamamini yeniden kosturmuyor ama sunucudaki
+ * profili okumasi gerekiyor. Uzlastirma da ayni cagrinin icinde, cunku
+ * aradan gecen surede sunucudan bir secenek kaldirilmis olabilir.
+ */
+export async function resolveSignIn(
+  onboardingComplete: boolean,
+  setPhase: (phase: Phase) => void,
+): Promise<void> {
+  setPhase('loading');
+
+  try {
+    const adoption = await adoptServerProfile();
+
+    // Oturum bu arada bittiyse kullanici akisin icine birakilmiyor: token'i
+    // olmayan biri her adimda 401 alir ve "oturumun sona erdi" bandini
+    // akisin ortasinda gorurdu.
+    if (adoption === 'session-lost') return setPhase('welcome');
+
+    setPhase(onboardingComplete || adoption === 'complete' ? 'app' : 'onboarding');
+  } catch {
+    // Beklenmeyen bir dusus bekleme ekraninda birakmamali: orada ne geri
+    // tusu var ne yeniden deneme, tek cikis uygulamayi kapatmak olurdu.
+    setPhase('welcome');
+  }
 }
 
 /** Hidrasyon bitene kadar hicbir yonlendirme yapilmiyor. */

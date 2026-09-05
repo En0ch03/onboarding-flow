@@ -69,22 +69,6 @@ export function progressOf(
   return { current: index === -1 ? 0 : index + 1, total: visible.length };
 }
 
-/**
- * Kaldigi adima donerken navigasyon yigini yeniden kurulur: kullanicinin
- * geri tusu, hic gormedigi bir ekrana degil bir onceki adima gitmeli.
- */
-export function stackUpTo(
-  steps: StepDefinition[],
-  answers: DraftAnswers,
-  currentId: string | null,
-): string[] {
-  const visible = computeVisibleSteps(steps, answers);
-  const index = indexOfStep(visible, currentId);
-  if (index === -1) return visible.length > 0 && visible[0] ? [visible[0].id] : [];
-
-  return visible.slice(0, index + 1).map((step) => step.id);
-}
-
 /** Bir adimin atlanabilir olup olmadigini ve tamamlanip tamamlanmadigini birlikte sorar. */
 export function canLeaveStep(step: StepDefinition, answers: DraftAnswers): boolean {
   return step.skippable || step.isComplete(answers);

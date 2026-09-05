@@ -8,7 +8,6 @@ import {
   nextStepId,
   prevStepId,
   progressOf,
-  stackUpTo,
 } from './stepFlow';
 import type { StepDefinition } from './types';
 
@@ -94,21 +93,6 @@ describe('progress', () => {
   it('grows with the flow when a step is added, with no other change', () => {
     const longer = [...flow, step('location')];
     expect(progressOf(longer, withIntent, 'photos')).toEqual({ current: 4, total: 6 });
-  });
-});
-
-describe('stack rebuild', () => {
-  it('rebuilds every step up to the one being resumed', () => {
-    expect(stackUpTo(flow, withIntent, 'photos')).toEqual([
-      'identity',
-      'audience',
-      'intent',
-      'photos',
-    ]);
-  });
-
-  it('rebuilds only the first step when there is nothing to resume', () => {
-    expect(stackUpTo(flow, noAnswers, null)).toEqual(['identity']);
   });
 });
 

@@ -30,6 +30,11 @@ export const strings = {
   },
 
   auth: {
+    // Bu iki cumle hem alan dogrulamasinda hem sunucu 422'sinde gerekiyor.
+    // Iki yere yazilirsa biri degisip digeri kalir; sifre cumlesindeki sayi
+    // da sinirin kendisinden geliyor.
+    emailInvalid: 'Bu e-posta adresi geçerli görünmüyor. Yazımını kontrol eder misin?',
+    passwordTooShort: (length: number) => `Şifren çok kısa. En az ${length} karakter olmalı.`,
     registerTitle: 'Hesabını oluşturalım',
     registerSubtitle: 'E-postanı yalnızca giriş için kullanıyoruz. Profilinde görünmez.',
     registerSubmit: 'Hesap oluştur',
@@ -42,9 +47,16 @@ export const strings = {
     passwordLabel: 'Şifre',
     showPassword: 'Şifreyi göster',
     hidePassword: 'Şifreyi gizle',
-    forgotPassword: 'Şifremi sıfırla',
 
     legal: 'Devam ederek Kullanım Şartları’nı ve Gizlilik Politikası’nı kabul etmiş olursun.',
+  },
+
+  photoSlot: {
+    cover: 'Kapak fotoğrafı',
+    filled: 'Fotoğraf',
+    failed: 'Yüklenemeyen fotoğraf, tekrar dene',
+    empty: 'Fotoğraf ekle',
+    remove: 'Fotoğrafı kaldır',
   },
 
   steps: {
@@ -80,7 +92,6 @@ export const strings = {
       'En az iki tane. İlk fotoğraf kapak olur. Yüzünün göründüğü bir kare iyi çalışıyor.',
     photosCover: 'Kapak',
     photosHint: 'Devam etmek için en az iki fotoğraf gerekiyor.',
-    photosReorderHint: 'sürükleyerek sıralayabilirsin',
     photosSkipCost: 'Fotoğrafsız profiller çok daha az görüntüleniyor.',
 
     interestsTitle: 'Neye vakit ayırırsın?',

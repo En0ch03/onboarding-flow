@@ -35,11 +35,11 @@ export function PhotoSlot({ state, cover = false, onPress, onRemove }: PhotoSlot
       accessibilityLabel={
         state.status === 'filled'
           ? cover
-            ? 'Kapak fotoğrafı'
-            : 'Fotoğraf'
+            ? strings.photoSlot.cover
+            : strings.photoSlot.filled
           : state.status === 'failed'
-            ? 'Yüklenemeyen fotoğraf, tekrar dene'
-            : 'Fotoğraf ekle'
+            ? strings.photoSlot.failed
+            : strings.photoSlot.empty
       }
       accessibilityState={{ busy: state.status === 'uploading' }}
       onPress={onPress}
@@ -80,7 +80,7 @@ export function PhotoSlot({ state, cover = false, onPress, onRemove }: PhotoSlot
           {onRemove ? (
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Fotoğrafı kaldır"
+              accessibilityLabel={strings.photoSlot.remove}
               onPress={onRemove}
               hitSlop={8}
               style={{

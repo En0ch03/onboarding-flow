@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 import { storageKeys } from '@/storage/keys';
 
 import { useAuthStore } from './authStore';
-import { bootstrap } from './bootstrap';
+import { adoptServerProfile, bootstrap } from './bootstrap';
 import { useOnboardingStore } from './onboardingStore';
 
 jest.mock('@/api/endpoints', () => ({ fetchProfile: jest.fn() }));
@@ -228,5 +228,93 @@ describe('sunucudan dusen secenekler', () => {
     await bootstrap();
 
     expect(useOnboardingStore.getState().answers.intent).toEqual(['long_term', 'bilinmeyen']);
+  });
+});
+
+describe('adoptServerProfile', () => {
+  it('cevaplarin isaret ettigi adimdan devam ediyor', async () => {
+    // Cevaplari almak yetmiyor: yer alinmazsa ekran "Adim 1 / 5"te aciliyor
+    // ve kullanici doldurulmus adimlari tek tek geciyor.
+    await signIn();
+    readCachedOptionGroups.mockReturnValue({});
+    fetchProfile.mockResolvedValue({
+      ...incompleteProfile,
+      preferences: {
+        birth_date: { day: '14', month: '3', year: '1996' },
+        gender: 'woman',
+        audience: ['everyone'],
+      },
+    });
+
+    await adoptServerProfile();
+
+    // Ilk iki adim dolu; devam edilecek yer ucuncusu.
+    expect(useOnboardingStore.getState().activeStepId).toBe('intent');
+  });
+
+  it('cihazdaki yeri sunucu cevabiyla geri almiyor', async () => {
+    // Kullanicinin en son durdugu nokta cihazda; sunucudaki cevaplar onu
+    // geri sarmamali.
+    await signIn();
+    readCachedOptionGroups.mockReturnValue({});
+    useOnboardingStore.getState().setActiveStep('photos');
+    fetchProfile.mockResolvedValue(incompleteProfile);
+
+    await adoptServerProfile();
+
+    expect(useOnboardingStore.getState().activeStepId).toBe('photos');
+  });
+
+  it('brings answers given on another device into the draft', async () => {
+    // Giris yolu bu cagriyi bir sure hic yapmiyordu: yeni bir telefona
+    // giren kullanici cevaplarini gormuyordu.
+    await signIn();
+    fetchProfile.mockResolvedValue(incompleteProfile);
+
+    const adoption = await adoptServerProfile();
+
+    expect(adoption).toBe('in-progress');
+    expect(useOnboardingStore.getState().answers.intent).toEqual(['long_term']);
+    expect(useOnboardingStore.getState().answers.name).toBe('Deniz');
+  });
+
+  it('reports a finished profile and drops the local draft', async () => {
+    await signIn();
+    useOnboardingStore.getState().setAnswers({ name: 'Eski' });
+    fetchProfile.mockResolvedValue({ ...incompleteProfile, onboarding_complete: true });
+
+    expect(await adoptServerProfile()).toBe('complete');
+    expect(useOnboardingStore.getState().answers).toEqual({});
+    expect(useAuthStore.getState().onboardingComplete).toBe(true);
+  });
+
+  it('reports a lost session rather than swallowing it', async () => {
+    await signIn();
+    fetchProfile.mockRejectedValue(unauthorised());
+
+    expect(await adoptServerProfile()).toBe('session-lost');
+  });
+
+  it('okunamayan bir profilden sonra yer yazmiyor', async () => {
+    // Basarisiz bir okumadan sonra yer kurmak, uygulamanin kendi yazdigi bir
+    // yer tutucuyu diske yaziyordu; sonraki acilista cevaplar dolu gelse
+    // bile "cihazda bir yer var" denip birinci adimda kalinirdi.
+    await signIn();
+    readCachedOptionGroups.mockReturnValue({});
+    fetchProfile.mockRejectedValue(new AxiosError('offline'));
+
+    await adoptServerProfile();
+
+    expect(useOnboardingStore.getState().activeStepId).toBeNull();
+  });
+
+  it('keeps the local draft when the profile cannot be read', async () => {
+    // Baglantiyi kaybetmek, cihazdaki cevaplara mal olmamali.
+    await signIn();
+    useOnboardingStore.getState().setAnswers({ name: 'Deniz' });
+    fetchProfile.mockRejectedValue(new AxiosError('offline'));
+
+    expect(await adoptServerProfile()).toBe('in-progress');
+    expect(useOnboardingStore.getState().answers.name).toBe('Deniz');
   });
 });
