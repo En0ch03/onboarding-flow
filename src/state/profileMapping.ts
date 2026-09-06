@@ -89,6 +89,28 @@ export function draftFromProfile(profile: Profile): DraftAnswers {
 }
 
 /**
+ * Hangi adimin hangi taslak alanlarindan sorumlu oldugu.
+ *
+ * `patchFromAnswers` ile birlikte okunmali ve birlikte degistirilmeli: biri
+ * bir alani sunucuya gonderiyorsa digeri de onu o adima saymali. Ikisinin
+ * ayrismadigini bir degismez test tutuyor.
+ */
+// Donduruluyor cunku disariya paylasilan bir dizi donuyor: bir cagiran
+// listeye ekleme yaparsa bozulma modul seviyesinde kalici olurdu.
+const fieldsByStep: Record<string, readonly (keyof DraftAnswers)[]> = {
+  identity: Object.freeze(['name', 'birthDate'] as const),
+  audience: Object.freeze(['gender', 'audience'] as const),
+  intent: Object.freeze(['intent'] as const),
+  photos: Object.freeze(['photos'] as const),
+  interests: Object.freeze(['interests'] as const),
+};
+
+/** Bir adimin dokundugu taslak alanlari; tanimadigimiz adim icin bos. */
+export function answerFieldsForStep(stepId: string): readonly (keyof DraftAnswers)[] {
+  return fieldsByStep[stepId] ?? [];
+}
+
+/**
  * Bir adimin cevabini kismi profil govdesine cevirir.
  *
  * Tek buyuk bir gonderim yerine adim basina gonderim: akis ortasinda kesilse

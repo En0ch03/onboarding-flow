@@ -240,6 +240,49 @@ describe('CompletionScreen', () => {
     await waitFor(() => expect(order).toEqual(['saveStep', 'complete']));
   });
 
+  it('gonderilen adimi bekleyenler listesinden dusuruyor', async () => {
+    // Isaret dusurulmezse ayni adim bir sonraki denemede yeniden gonderilir:
+    // kapanis basarisiz olup tekrar denendiginde ayni govde iki kez gidiyor.
+    await mount(answers, {}, ['interests']);
+
+    await waitFor(() => expect(useOnboardingStore.getState().unsyncedStepIds).toEqual([]));
+    expect(asMock(saveStep)).toHaveBeenCalledTimes(1);
+  });
+
+  it('bekleyen adimlarin hepsini gonderiyor, yalnizca ilkini degil', async () => {
+    // Baglanti gidince ardisik adimlar birlikte kuyruga giriyor. Yalnizca
+    // biri gonderilirse sunucu eksik bir profili "tamamlandi" damgalar.
+    // Kimlik yetmiyor, govde de sinaniyor: bos bir govde gonderilirse
+    // atlanmis sayilan adim sunucuda gercekten bosaltilir.
+    const sent: { stepId: string; name: string | undefined }[] = [];
+    asMock(saveStep).mockImplementation(async (stepId: string, draft: DraftAnswers) => {
+      sent.push({ stepId, name: draft.name });
+    });
+
+    await mount(answers, {}, ['intent', 'interests']);
+
+    await waitFor(() =>
+      expect(sent).toEqual([
+        { stepId: 'intent', name: 'Deniz' },
+        { stepId: 'interests', name: 'Deniz' },
+      ]),
+    );
+    expect(useOnboardingStore.getState().unsyncedStepIds).toEqual([]);
+  });
+
+  it('gonderilemeyen adimi bekleyenlerde birakiyor', async () => {
+    // Isaret gonderimden once dusurulurse, basarisiz bir gonderim "yapildi"
+    // sayilir ve cevap bir daha hic denenmez.
+    asMock(saveStep).mockImplementation(async () => {
+      throw { kind: 'network' };
+    });
+
+    const view = await mount(answers, {}, ['interests']);
+    await view.findByText(presentError({ kind: 'network' }).message);
+
+    expect(useOnboardingStore.getState().unsyncedStepIds).toEqual(['interests']);
+  });
+
   it('bekleyen adim gonderilemezse tamamlamayi hic denemiyor', async () => {
     asMock(saveStep).mockImplementation(async () => {
       throw { kind: 'network' };

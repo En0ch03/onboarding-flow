@@ -1,4 +1,7 @@
-import { draftFromProfile, patchFromAnswers } from './profileMapping';
+import { steps } from '@/features/onboarding/steps/steps';
+
+import type { DraftAnswers } from './onboardingStore';
+import { answerFieldsForStep, draftFromProfile, patchFromAnswers } from './profileMapping';
 
 const profile = {
   user_id: 'usr_1',
@@ -109,5 +112,64 @@ describe('patchFromAnswers', () => {
 
   it('sends an empty list when a skippable step is skipped', () => {
     expect(patchFromAnswers({}, 'interests').preferences).toEqual({ interests: [] });
+  });
+
+  it('names the fields of every step in the flow', () => {
+    // Beklenen liste elle yazili: sinanan eslemeden uretilseydi, eslemeden
+    // bir alan dusuruldugunde bu test de onu aramaktan vazgecerdi.
+    const expected: Record<string, (keyof DraftAnswers)[]> = {
+      identity: ['name', 'birthDate'],
+      audience: ['gender', 'audience'],
+      intent: ['intent'],
+      photos: ['photos'],
+      interests: ['interests'],
+    };
+
+    // Akista bu tabloda olmayan bir adim varsa alanlari korumasiz demektir.
+    expect(steps.map((step) => step.id).sort()).toEqual(Object.keys(expected).sort());
+
+    for (const [stepId, fields] of Object.entries(expected)) {
+      expect(`${stepId}: ${answerFieldsForStep(stepId).join(',')}`).toBe(
+        `${stepId}: ${fields.join(',')}`,
+      );
+    }
+  });
+
+  it('hands out a field list that cannot be modified', () => {
+    // Paylasilan dizi degistirilebilir olsaydi tek bir cagiranin ekledigi
+    // alan butun modul icin kalici olurdu.
+    expect(Object.isFrozen(answerFieldsForStep('intent'))).toBe(true);
+  });
+
+  it('claims a field for a step only if that step actually sends it', () => {
+    // Eslemenin iki yani ayrisirsa bir alan ya korumasiz kalir ya da hic
+    // gelmeyecek bir cevap bekler. Yalnizca o alani doldurup gonderim
+    // govdesinin gercekten dolmasi araniyor.
+    const sample: DraftAnswers = {
+      name: 'Deniz',
+      birthDate: { day: '01', month: '01', year: '1990' },
+      gender: 'woman',
+      audience: ['men'],
+      intent: ['long_term'],
+      interests: ['music'],
+      photos: [{ id: 'p1', url: 'https://example.test/a.jpg' }],
+    };
+
+    for (const step of steps) {
+      // Karsilastirma bos govdeye gore: `intent` gibi adimlar cevapsizken
+      // bile bir govde uretiyor, dolayisiyla "govde dolu mu" sorusu hicbir
+      // sey sinamiyordu. Aranan sey, alanin govdeye bir fark katmasi.
+      const empty = JSON.stringify(patchFromAnswers({}, step.id));
+
+      for (const field of answerFieldsForStep(step.id)) {
+        const patch = JSON.stringify(
+          patchFromAnswers({ [field]: sample[field] } as DraftAnswers, step.id),
+        );
+
+        expect(`${step.id}.${field} govdeyi degistiriyor: ${patch !== empty}`).toBe(
+          `${step.id}.${field} govdeyi degistiriyor: true`,
+        );
+      }
+    }
   });
 });

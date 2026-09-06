@@ -6,6 +6,9 @@ import { storageKeys } from '@/storage/keys';
 
 import { useAuthStore } from './authStore';
 import { adoptServerProfile, bootstrap } from './bootstrap';
+import { steps } from '@/features/onboarding/steps/steps';
+
+import type { DraftAnswers } from './onboardingStore';
 import { useOnboardingStore } from './onboardingStore';
 
 jest.mock('@/api/endpoints', () => ({ fetchProfile: jest.fn() }));
@@ -333,6 +336,179 @@ describe('adoptServerProfile', () => {
     // Sunucuda karsiligi olmayan yerel cevap, sahibi ayni oldugu icin duruyor.
     expect(useOnboardingStore.getState().answers.interests).toEqual(['music']);
   });
+
+  it('does not let the server overwrite a step that has not been sent yet', async () => {
+    // Cevrimdisi verilen bir cevap, sunucuya yazilamadigi icin bekleyenler
+    // listesinde duruyor. Acilista sunucudaki eski deger onun ustune
+    // yazilirsa, kullanici degisikligini sessizce kaybediyor.
+    await signIn();
+    useOnboardingStore.getState().setAnswers({ intent: ['friendship'] });
+    useOnboardingStore.getState().markStepUnsynced('intent');
+    fetchProfile.mockResolvedValue(incompleteProfile);
+
+    await adoptServerProfile();
+
+    expect(useOnboardingStore.getState().answers.intent).toEqual(['friendship']);
+  });
+
+  it('lets the server win on a step that has been sent', async () => {
+    // Bekleyen olmayan bir alanda sunucu kazanmaya devam ediyor: baska bir
+    // cihazdan verilmis yeni cevap, buradaki eskiyi gecmeli.
+    await signIn();
+    useOnboardingStore.getState().setAnswers({ intent: ['friendship'] });
+    fetchProfile.mockResolvedValue(incompleteProfile);
+
+    await adoptServerProfile();
+
+    expect(useOnboardingStore.getState().answers.intent).toEqual(['long_term']);
+  });
+
+  it('adopts a field the server has and the device does not, even while another step waits', async () => {
+    await signIn();
+    useOnboardingStore.getState().setAnswers({ interests: ['music'] });
+    useOnboardingStore.getState().markStepUnsynced('interests');
+    // Sunucunun da bir `interests` cevabi olmali, yoksa "korundu" iddiasi
+    // korumadan bagimsiz olarak dogru cikar.
+    fetchProfile.mockResolvedValue({
+      ...incompleteProfile,
+      preferences: { ...incompleteProfile.preferences, interests: ['cinema'] },
+    });
+
+    await adoptServerProfile();
+
+    expect(useOnboardingStore.getState().answers.interests).toEqual(['music']);
+    // Bekleyen adim yalnizca kendi alanlarini koruyor, digerlerini degil.
+    expect(useOnboardingStore.getState().answers.intent).toEqual(['long_term']);
+  });
+
+  // Sunucunun her alanda bir cevabi var ve hepsi yereldekinden farkli.
+  // Bir alan burada eksik kalirsa o alanin korunup korunmadigi sinanamaz:
+  // sunucu zaten bir sey gondermiyorsa ezilecek bir sey de yoktur.
+  const fullProfile = {
+    user_id: 'usr_1',
+    display_name: 'Sunucudaki ad',
+    avatar_url: null,
+    preferences: {
+      birth_date: { day: '02', month: '02', year: '1980' },
+      gender: 'man',
+      audience: ['women'],
+      intent: ['long_term'],
+      interests: ['cinema'],
+      photos: [{ id: 'sunucu', url: 'https://example.test/sunucu.jpg' }],
+    },
+    onboarding_complete: false,
+  };
+
+  const localAnswers: DraftAnswers = {
+    name: 'Cihazdaki ad',
+    birthDate: { day: '01', month: '01', year: '1990' },
+    gender: 'woman',
+    audience: ['men'],
+    intent: ['friendship'],
+    interests: ['music'],
+    photos: [{ id: 'cihaz', url: 'https://example.test/cihaz.jpg' }],
+  };
+
+  // Beklenen alan listesi burada elle yaziliyor, sinanan eslemeden
+  // uretilmiyor. Uretilseydi eslemeden bir alan dusuruldugunde test o alani
+  // aramaktan da vazgecer ve yesil kalirdi.
+  const fieldsOfStep: Record<string, (keyof DraftAnswers)[]> = {
+    identity: ['name', 'birthDate'],
+    audience: ['gender', 'audience'],
+    intent: ['intent'],
+    photos: ['photos'],
+    interests: ['interests'],
+  };
+
+  it('covers the whole flow with the expected field table', () => {
+    expect(steps.map((step) => step.id).sort()).toEqual(Object.keys(fieldsOfStep).sort());
+  });
+
+  it.each(Object.entries(fieldsOfStep))(
+    'protects every field of the waiting step %s',
+    async (stepId, fields) => {
+      await signIn();
+      useOnboardingStore.getState().setAnswers(localAnswers);
+      useOnboardingStore.getState().markStepUnsynced(stepId);
+      fetchProfile.mockResolvedValue(fullProfile);
+
+      await adoptServerProfile();
+
+      const after = useOnboardingStore.getState().answers;
+      for (const field of fields) {
+        expect(`${field}: ${JSON.stringify(after[field])}`).toBe(
+          `${field}: ${JSON.stringify(localAnswers[field])}`,
+        );
+      }
+    },
+  );
+
+  it('protects every waiting step, not only the first one', async () => {
+    // Baglanti gidince arka arkaya iki adim bekleyenlere giriyor. Yalnizca
+    // ilkini korumak, ikinci adimin cevabini eski hataya birakir.
+    await signIn();
+    useOnboardingStore.getState().setAnswers(localAnswers);
+    useOnboardingStore.getState().markStepUnsynced('identity');
+    useOnboardingStore.getState().markStepUnsynced('intent');
+    fetchProfile.mockResolvedValue(fullProfile);
+
+    await adoptServerProfile();
+
+    const after = useOnboardingStore.getState().answers;
+    expect(after.name).toBe('Cihazdaki ad');
+    expect(after.intent).toEqual(['friendship']);
+    // Bekleyen olmayan bir adimda sunucu hala kazaniyor.
+    expect(after.interests).toEqual(['cinema']);
+  });
+
+  it('reads the waiting list only after the draft has changed hands', async () => {
+    // Bekleyen liste sahiplendirmeden once okunursa, yabancinin biraktigi
+    // adimlarin alanlari yeni hesabin profilinden dusuyor ve o alanlar hic
+    // benimsenmiyor.
+    useOnboardingStore.setState({ ownerId: 'usr_2', unsyncedStepIds: ['identity', 'intent'] });
+    useOnboardingStore.getState().setAnswers(localAnswers);
+    useAuthStore.setState({ status: 'authenticated' });
+    fetchProfile.mockResolvedValue(fullProfile);
+
+    await adoptServerProfile();
+
+    const after = useOnboardingStore.getState().answers;
+    expect(after.name).toBe('Sunucudaki ad');
+    expect(after.intent).toEqual(['long_term']);
+  });
+
+  it('leaves the fields of an unknown step to the server', async () => {
+    // Bekleyen liste diskte yasiyor; eski bir surumden kalan bir adim
+    // kimligi gelebilir. Tanimadigimiz bir adim hicbir alani sahiplenmemeli,
+    // yoksa sunucudaki cevap sebepsiz yere benimsenmez.
+    await signIn();
+    useOnboardingStore.getState().setAnswers(localAnswers);
+    useOnboardingStore.getState().markStepUnsynced('eski-adim');
+    fetchProfile.mockResolvedValue(fullProfile);
+
+    await adoptServerProfile();
+
+    expect(useOnboardingStore.getState().answers.name).toBe('Sunucudaki ad');
+    expect(useOnboardingStore.getState().answers.intent).toEqual(['long_term']);
+  });
+
+  it.each(Object.entries(fieldsOfStep))(
+    'lets the server win on step %s once it has been sent',
+    async (stepId, fields) => {
+      await signIn();
+      useOnboardingStore.getState().setAnswers(localAnswers);
+      fetchProfile.mockResolvedValue(fullProfile);
+
+      await adoptServerProfile();
+
+      const after = useOnboardingStore.getState().answers;
+      for (const field of fields) {
+        expect(`${field}: ${JSON.stringify(after[field])}`).not.toBe(
+          `${field}: ${JSON.stringify(localAnswers[field])}`,
+        );
+      }
+    },
+  );
 
   it('keeps the local draft when the profile cannot be read', async () => {
     // Baglantiyi kaybetmek, cihazdaki cevaplara mal olmamali.
