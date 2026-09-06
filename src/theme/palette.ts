@@ -39,6 +39,14 @@ export type Palette = {
   danger: string;
   /** Hatanin cok soluk dolgusu. */
   dangerTint: string;
+  /**
+   * Sayfa altindan acilan yuzeylerin arkasindaki perde.
+   *
+   * Iki varyantta da ayni: perde bir yuzey degil, arkadaki icerigin uzerine
+   * cekilen bir orgu. Koyu temada zemine yaklasan bir perde is gormezdi --
+   * ayirmasi gereken sey zaten koyu.
+   */
+  scrim: string;
 };
 
 export const palettes: Record<ColorScheme, Palette> = {
@@ -56,6 +64,7 @@ export const palettes: Record<ColorScheme, Palette> = {
     success: '#4A6350',
     danger: '#8A4A42',
     dangerTint: 'rgba(138, 74, 66, 0.08)',
+    scrim: '#000000',
   },
   dark: {
     paper: '#14110F',
@@ -72,5 +81,6 @@ export const palettes: Record<ColorScheme, Palette> = {
     success: '#8FAE97',
     danger: '#D89A92',
     dangerTint: 'rgba(216, 154, 146, 0.12)',
+    scrim: '#000000',
   },
 };

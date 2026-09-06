@@ -79,7 +79,7 @@ curl -H 'x-chaos: 500' http://localhost:4000/api/v1/profile
 | `x-chaos`      | What happens                                                                                                               |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `500`          | Server error.                                                                                                              |
-| `slow`         | The response is never sent, so the client's own timeout has to catch it. Sending a late response would not test a timeout. |
+| `slow`         | The response is held far longer than the client's own timeout, so the client's timeout is what catches it. A 504 follows much later, only so the connection does not stay open forever. |
 | `malformed`    | A body that does not match the contract, so you can see boundary validation actually fire.                                 |
 | `expire-token` | The request succeeds, then the access token is invalidated, so the _next_ request has to be rescued by a silent refresh.   |
 | `end-session`  | Both tokens are invalidated: the session really is over, and the app has to end it politely with the draft intact.         |
@@ -124,7 +124,7 @@ npm test            # jest
 
 The cost of that choice is the keyboard. The library that handles keyboard motion best needs a native build, which would undo the reason for choosing Expo Go in the first place. So keyboard behaviour is solved with core APIs inside a single screen shell that every screen is built within. That makes it one thing to get right and one thing to test by hand, on both platforms, instead of a problem spread across nine screens.
 
-Inside that shell the action button stays at the foot of the page rather than riding above the keyboard. A button that moves every time the keyboard opens puts the target somewhere new under a thumb that was already going somewhere. The requirement the brief actually states is that the keyboard must not cover an input field, and that is what the shell guarantees: the scrollable area shortens by the height of the keyboard, so the focused field stays in view and the button is a scroll away.
+Inside that shell the action button stays at the foot of the page rather than riding above the keyboard. A button that moves every time the keyboard opens puts the target somewhere new under a thumb that was already going somewhere. The requirement is that the keyboard must not cover an input field, and that is what the shell guarantees: the scrollable area shortens by the height of the keyboard, so the focused field stays in view and the button is a scroll away.
 
 **Nothing that can change is hardcoded.** Option lists, their rules and step requirements all come from the server. Gender, intent and interest taxonomies shift over time and by region, and a change to one of them should not require a new app release. The numeric limits that are not taxonomy stay in the app: the photo minimum, the age gate and the password length each sit next to the rule they serve, with the reason written beside them.
 
@@ -149,7 +149,7 @@ That holds in both directions. No option id appears anywhere in the app: an opti
 ```
 src/api/          the client, endpoints, schemas, the error taxonomy
 src/state/        auth and onboarding stores, the boot sequence
-src/theme/        design tokens: colour, spacing, type, radius, motion
+src/theme/        design tokens: colour, spacing, type, radius, shadow, motion
 src/components/   the hand-written UI primitives
 src/navigation/   three macro phases: auth, onboarding, app
 src/features/     the screens, and the step engine that drives them

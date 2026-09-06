@@ -33,7 +33,7 @@ GoogleService-Info.plist
 id_rsa*
 id_ed25519*
 
-*.orig.*
+*.orig
 
 ios/
 android/
