@@ -48,7 +48,8 @@
 <text x="758" y="419" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Şifre</text>
 <rect x="758" y="427" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
 <text x="772" y="454" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">••••••••••</text>
-<text x="1010" y="475" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#C08668" text-anchor="end">Şifreyi göster</text>
+<path d="M 968 449 Q 980 439 992 449 Q 980 459 968 449 Z" fill="none" stroke="#A69C91" stroke-width="1.2"/>
+<circle cx="980" cy="449" r="3.2" fill="none" stroke="#A69C91" stroke-width="1.2"/>
 <rect x="758" y="497" width="252" height="50" rx="25" fill="#C08668"/>
 <text x="884" y="528" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Hesap oluştur</text>
 <text x="758" y="571" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="400" fill="#A69C91">Devam ederek Kullanım Şartları’nı ve</text>
@@ -129,12 +130,13 @@
 <text x="94" y="1259" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Başka bir şekilde tanımlıyorum</text>
 <rect x="294" y="1246" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
 <text x="78" y="1289" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Beni görsün</text>
-<rect x="78" y="1301" width="78.8" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="117.4" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Kadınlar</text>
-<rect x="164.8" y="1301" width="78.8" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="204.20000000000002" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Erkekler</text>
-<rect x="251.60000000000002" y="1301" width="65.6" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="284.40000000000003" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Herkes</text>
+<rect x="78.00" y="1301" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
+<text x="117.33" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Kadınlar</text>
+<rect x="164.67" y="1301" width="78.67" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
+<text x="174.67" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
+<text x="204.00" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Erkekler</text>
+<rect x="251.33" y="1301" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
+<text x="290.67" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Herkes</text>
 <rect x="78" y="1406" width="252" height="50" rx="25" fill="#C08668"/>
 <text x="204" y="1437" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
 <text x="56" y="1518" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Yalnızca iki alan: gender ve audience.</text>
@@ -152,12 +154,13 @@
 <text x="418" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Ne arıyorsun?</text>
 <text x="418" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Bu cevap profilinde görünür ve kimleri</text>
 <text x="418" y="1042" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">göreceğini etkiler.</text>
-<rect x="418" y="1073" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
+<rect x="1098.00" y="1073" width="78.67" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
+<text x="1108.00" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
 <text x="434" y="1101" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Uzun soluklu bir ilişki</text>
 <rect x="634" y="1088" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
 <text x="642" y="1100" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
 <rect x="418" y="1127" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="434" y="1155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Tanışalım, bakalım</text>
+<text x="434" y="1155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Henüz emin değilim</text>
 <rect x="634" y="1142" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
 <rect x="418" y="1181" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
 <text x="434" y="1209" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Arkadaşlık</text>
@@ -216,26 +219,29 @@
 <text x="1098" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Neye vakit ayırırsın?</text>
 <text x="1098" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Birkaç tane seç. Sohbet başlatmayı</text>
 <text x="1098" y="1042" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">kolaylaştırıyor.</text>
-<rect x="1098" y="1073" width="72.19999999999999" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="1134.1" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Yürüyüş</text>
-<rect x="1178.2" y="1073" width="65.6" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1211" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Sinema</text>
-<rect x="1251.8" y="1073" width="59" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="1281.3" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Yemek</text>
-<rect x="1098" y="1113" width="59" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1127.5" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Kitap</text>
-<rect x="1165" y="1113" width="65.6" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1197.8" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Konser</text>
-<rect x="1238.6" y="1113" width="59" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="1268.1" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Kahve</text>
-<rect x="1098" y="1153" width="59" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1127.5" y="1174" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Yüzme</text>
-<rect x="1165" y="1153" width="78.8" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1204.4" y="1174" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Fotoğraf</text>
-<rect x="1251.8" y="1153" width="72.19999999999999" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1287.8999999999999" y="1174" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Seyahat</text>
-<rect x="1098" y="1193" width="59" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1127.5" y="1214" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Müzik</text>
+<rect x="1184.67" y="1073" width="78.67" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
+<text x="1194.67" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
+<text x="1224.00" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Yürüyüş</text>
+<rect x="1271.33" y="1073" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
+<text x="1310.67" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Sinema</text>
+<rect x="1358.00" y="1073" width="78.67" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
+<text x="1368.00" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
+<text x="1397.33" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Yemek</text>
+<rect x="1098.00" y="1113" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
+<text x="1137.33" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Kitap</text>
+<rect x="1184.67" y="1113" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
+<text x="1224.00" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Konser</text>
+<rect x="1271.33" y="1113" width="78.67" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
+<text x="1281.33" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
+<text x="1310.67" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Kahve</text>
+<rect x="1098.00" y="1153" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
+<text x="1137.33" y="1174" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Yüzme</text>
+<rect x="1184.67" y="1153" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
+<text x="1224.00" y="1174" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Fotoğraf</text>
+<rect x="1271.33" y="1153" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
+<text x="1310.67" y="1174" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Seyahat</text>
+<rect x="1098.00" y="1193" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
+<text x="1137.33" y="1214" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Müzik</text>
 <text x="1098" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Ortak ilgi alanı, ilk mesajı yazmayı</text>
 <text x="1098" y="1335" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">kolaylaştırıyor.</text>
 <rect x="1098" y="1348" width="252" height="50" rx="25" fill="#C08668"/>
@@ -337,7 +343,7 @@
 <rect x="634" y="1850" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
 <text x="642" y="1862" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
 <rect x="418" y="1889" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="434" y="1917" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Tanışalım, bakalım</text>
+<text x="434" y="1917" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Henüz emin değilim</text>
 <rect x="634" y="1904" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
 <rect x="418" y="1943" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
 <text x="434" y="1971" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Arkadaşlık</text>
@@ -375,9 +381,9 @@
 <text x="884" y="1900" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
 <rect x="931.3333333333334" y="1858" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
 <text x="970.6666666666667" y="1900" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<rect x="758" y="2124" width="252" height="50" rx="25" fill="none" stroke="#2E2823"/>
-<text x="884" y="2155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#A69C91" text-anchor="middle">Devam</text>
+<rect x="758" y="2124" width="252" height="50" rx="25" fill="#C08668"/>
+<text x="884" y="2155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
 <text x="736" y="2236" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Yükleme sırasında slot kendi durumunu</text>
 <text x="736" y="2251" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">gösteriyor, ekranın tamamı kilitlenmiyor.</text>
-<text x="736" y="2266" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Devam, eşik dolana kadar sönük kalır.</text>
+<text x="736" y="2266" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Devam hiçbir zaman sönmez: basınca eksiği söyler.</text>
 </svg>

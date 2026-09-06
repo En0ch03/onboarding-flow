@@ -295,6 +295,19 @@ describe('tekli liste', () => {
     });
     expect(select).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith({ gender: 'man' });
+
+    // Tek secimli listede "onay kutusu" demek, ekran okuyucu kullanicisina
+    // birden fazla secebilecegini soylemek olurdu.
+    expect(view.getByLabelText('Kadın').props.accessibilityRole).toBe('radio');
+  });
+
+  it('coklu kart listesi onay kutusu olarak duyuruluyor', async () => {
+    const onChange = jest.fn();
+    const view = await renderWithTheme(
+      <IntentStep values={{ intent: ['long_term'] }} onChange={onChange} options={{ intent }} />,
+    );
+
+    expect(view.getByLabelText('Uzun süreli').props.accessibilityRole).toBe('checkbox');
   });
 });
 

@@ -136,4 +136,25 @@ describe('RegisterScreen', () => {
 
     expect(await view.findByText(/bizim tarafta bir şeyler ters gitti/i)).toBeTruthy();
   });
+
+  it('gecici bir arizada metnin soyledigi yeri de gosteriyor', async () => {
+    // Bant "tekrar dene" diyordu ama tekrar denenecek bir dugme yoktu; ayni
+    // hataya kardes ekran (giris) dugmeyi veriyordu.
+    register.mockRejectedValue(failure(500, { error: 'internal_error' }));
+    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+
+    await fillIn(view, 'deniz@ornek.com', 'agirates2026');
+    await press(view, 'Hesap oluştur');
+    await view.findByText(/bizim tarafta bir şeyler ters gitti/i);
+
+    register.mockResolvedValue({
+      user_id: 'u',
+      access_token: 'a',
+      refresh_token: 'r',
+      onboarding_complete: false,
+    });
+    await press(view, 'Tekrar dene');
+
+    await waitFor(() => expect(handlers.onRegistered).toHaveBeenCalled());
+  });
 });

@@ -1,6 +1,8 @@
 # Design
 
-Three files, drawn from the flow as it is actually built rather than from an early sketch that has since drifted.
+Three files, drawn from the flow as it is actually built rather than from an early sketch that has since drifted. Where a decision was reversed on a device, the sketch was redrawn to match the reversal rather than left showing the version that lost.
+
+They are sketches, so they abbreviate: a list that has five options may be drawn with three, and spacing is indicative. What they do not do is show a behaviour the app does not have.
 
 | File           | What it is                                                                                                                                                                                                   |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

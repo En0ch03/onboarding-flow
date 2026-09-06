@@ -36,6 +36,7 @@ function IntentChoices({ group, values, onChange, options }: StepProps & { group
           key={option.id}
           option={option}
           selected={selected.includes(option.id)}
+          multiple={group.multiSelect}
           blocked={limit.isBlocked(option.id)}
           blockedHint={limit.blockedHint(option.id)}
           onPress={() => {
