@@ -40,6 +40,9 @@
     "prettier": "^3.9.6",
     "typescript": "~6.0.3"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",

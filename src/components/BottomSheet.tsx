@@ -136,7 +136,7 @@ export function BottomSheet({ visible, title, onClose, children }: BottomSheetPr
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: '#000000',
+            backgroundColor: colors.scrim,
             opacity: progress.interpolate({ inputRange: [0, 1], outputRange: [0, 0.45] }),
           }}
           // Kapanis suresince perde gorunmez ama hala dokunuslari yutuyordu;

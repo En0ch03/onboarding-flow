@@ -221,7 +221,11 @@ describe('kimlerin gorecegi listesi', () => {
   it('sunucu sinir vermeyince satir yok ve hepsi secilebiliyor', async () => {
     const onChange = jest.fn();
     const view = await renderWithTheme(
-      <AudienceStep values={{ audience: ['women', 'men'] }} onChange={onChange} options={{ audience }} />,
+      <AudienceStep
+        values={{ audience: ['women', 'men'] }}
+        onChange={onChange}
+        options={{ audience }}
+      />,
     );
 
     expect(view.queryByText(/En fazla/)).toBeNull();
@@ -249,7 +253,11 @@ describe('tekli liste', () => {
   it('zaten secili olana tekrar dokunmak olay degil: ne his ne cevap', async () => {
     const onChange = jest.fn();
     const view = await renderWithTheme(
-      <InterestsStep values={{ interests: ['books'] }} onChange={onChange} options={{ interests: single }} />,
+      <InterestsStep
+        values={{ interests: ['books'] }}
+        onChange={onChange}
+        options={{ interests: single }}
+      />,
     );
 
     await act(async () => {
@@ -322,7 +330,11 @@ describe('niyet degisince ilgi alanlari', () => {
     };
     const onChange = jest.fn();
     const view = await renderWithTheme(
-      <IntentStep values={{ intent: ['friends'], interests: ['games'] }} onChange={onChange} options={options} />,
+      <IntentStep
+        values={{ intent: ['friends'], interests: ['games'] }}
+        onChange={onChange}
+        options={options}
+      />,
     );
 
     await act(async () => {

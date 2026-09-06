@@ -5,11 +5,7 @@ import { Alert } from 'react-native';
 
 import { uploadPhoto, type UploadedPhoto } from '@/api/media';
 import { strings } from '@/constants/strings';
-import {
-  useOnboardingStore,
-  type AnswersUpdate,
-  type DraftAnswers,
-} from '@/state/onboardingStore';
+import { useOnboardingStore, type AnswersUpdate, type DraftAnswers } from '@/state/onboardingStore';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { PHOTO_SLOTS, PhotosStep } from './photos.step';

@@ -74,8 +74,9 @@ function chaos(state) {
     }
 
     if (mode === 'slow') {
-      // Yanit hic gonderilmiyor: istemcinin kendi zaman asimini yakalamasi
-      // gerekiyor. Gec bir yanit gondermek, zaman asimini test etmez.
+      // Yanit istemcinin kendi zaman asimindan cok daha uzun sure tutuluyor,
+      // yani zaman asimini yakalayan sey istemcinin kendisi oluyor. Sondaki
+      // 504 bir emniyet: baglantinin sonsuza kadar acik kalmamasi icin.
       return setTimeout(() => {
         if (!res.headersSent) res.status(504).json({ error: 'timeout' });
       }, SLOW_MS);
