@@ -41,15 +41,21 @@ This is where local setups usually break, so it is worth a paragraph.
 
 The mock server runs on your development machine, on port 4000. The app runs somewhere else: in a simulator, in an emulator, or on a phone. `localhost` means a different machine in each of those three cases. On a phone it means the phone, and inside an Android emulator it means the emulator, so any address you write down by hand is wrong in at least two of the three.
 
-So the app does not ask. Expo is already serving the JavaScript bundle from your machine, and the app knows the address it is being served from. It reuses that host and swaps in port 4000. The result is correct in all three cases without configuration:
+So the app does not ask. It resolves the address in three steps, in this order:
 
-| Where the app runs         | What it resolves to                                                                                          |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| iOS Simulator              | `http://127.0.0.1:4000/api/v1`                                                                               |
-| Android Emulator           | the host Expo reports; if that comes back as loopback, `10.0.2.2`, which is how an emulator reaches its host |
-| Physical phone, same Wi-Fi | `http://<your machine's LAN IP>:4000/api/v1`                                                                 |
+1. If `EXPO_PUBLIC_API_URL` is set, that wins, always. Pointing the app at a staging host or a real backend is nothing more than this, and `.env.example` shows the shape.
+2. Otherwise the address is derived from the machine the app is already connected to. Expo serves the JavaScript bundle from your machine and the app knows the host it was served from; it reuses that host and swaps in port 4000.
+3. If neither is available — on the web, and in the tests — it falls back to `localhost`.
 
-If you want to point the app somewhere else, at a staging host or a real backend, set `EXPO_PUBLIC_API_URL` and it wins over everything above. `.env.example` shows the shape. Nothing in the app branches on environment; there is one address and one code path.
+Step 2 is the one that removes the configuration, and it lands correctly in all three cases:
+
+| Where the app runs         | What it resolves to                                                                                                                                                                        |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| iOS Simulator              | the host Expo reports, used as-is — the LAN address by default, or `127.0.0.1` when Expo is started with `--localhost`. The simulator shares the host's loopback, so both reach the server |
+| Android Emulator           | the host Expo reports; if that comes back as loopback, `10.0.2.2`, which is how an emulator reaches its host                                                                               |
+| Physical phone, same Wi-Fi | `http://<your machine's LAN IP>:4000/api/v1`                                                                                                                                               |
+
+Nothing in the app branches on the environment: there is no development path and no production path, only these three steps. The one platform difference is the Android correction in the table above, and it exists because the same address means something different inside an emulator.
 
 One requirement remains for the phone case, and it is the only one: the phone and the computer must be on the same network, and the network must allow them to talk to each other. Guest Wi-Fi and client isolation break this. If the app loads but every request fails, that is almost always the cause.
 
@@ -66,7 +72,7 @@ PATCH /api/v1/profile             200; preferences are merged, not replaced
 POST /api/v1/onboarding/complete  200
 ```
 
-Two more endpoints exist that the contract does not define. `GET /api/v1/config/options` serves the option lists, and `POST /api/v1/upload` accepts an image. Both are placeholders for mechanisms that have not been specified yet, and on the app side each one sits behind a single function so that there is exactly one file to change when they are.
+Two more endpoints exist that the contract does not define. `GET /api/v1/config/options` serves the option lists, and `POST /api/v1/upload` accepts an image. Both are placeholders for mechanisms that have not been specified yet, and on the app side each one sits behind a single function so that there is exactly one file to change when they are. `GET /api/v1/media/:id` serves back what was uploaded, and the `__chaos` pair below belongs to the server alone — the app never calls either.
 
 There is no mock code inside the app. The app knows a base address and nothing else.
 
@@ -124,11 +130,13 @@ npm test            # jest
 
 **Expo, on Expo Go.** The app deliberately stays inside what Expo Go ships, so anyone can run it in a few minutes without a native build. Everything it needs is already there: secure storage, the image picker, image processing, fonts.
 
-The cost of that choice is the keyboard. The library that handles keyboard motion best needs a native build, which would undo the reason for choosing Expo Go in the first place. So keyboard behaviour is solved with core APIs inside a single screen shell that every screen is built within. That makes it one thing to get right and one thing to test by hand, on both platforms, instead of a problem spread across nine screens.
+The cost of that choice is the keyboard. The library that handles keyboard motion best needs a native build, which would undo the reason for choosing Expo Go in the first place. So keyboard behaviour is solved with core APIs inside a single screen shell that every screen is built within. That makes it one thing to get right and one thing to test by hand, instead of a problem spread across nine screens.
+
+The two platforms get there differently, which is the part worth knowing before reading the shell. On iOS the scroll view shortens itself by the height of the keyboard. On Android the window itself resizes, which is a project setting rather than a component, so the shell does nothing there and the result is the same.
 
 Inside that shell the action button stays at the foot of the page rather than riding above the keyboard. A button that moves every time the keyboard opens puts the target somewhere new under a thumb that was already going somewhere. The requirement is that the keyboard must not cover an input field, and that is what the shell guarantees: the scrollable area shortens by the height of the keyboard, so the focused field stays in view and the button is a scroll away.
 
-**Nothing that can change is hardcoded.** Option lists, their rules and step requirements all come from the server. Gender, intent and interest taxonomies shift over time and by region, and a change to one of them should not require a new app release. The numeric limits that are not taxonomy stay in the app: the photo minimum, the age gate and the password length each sit next to the rule they serve, with the reason written beside them.
+**Nothing that can change is hardcoded.** The option lists come from the server, and so do their rules: whether a list must be answered, how many answers it takes, and which answer unlocks a further list. What stays in the app is the shape of the flow itself — which steps exist and what each one counts as answered. Gender, intent and interest taxonomies shift over time and by region, and a change to one of them should not require a new app release. The numeric limits that are not taxonomy stay in the app: the photo minimum, the age gate and the password length each sit next to the rule they serve, with the reason written beside them.
 
 That holds in both directions. No option id appears anywhere in the app: an option carries which conditional list it unlocks and whether its group must be answered, so adding one, renaming one or removing one is a change to the data alone. When an answer the user gave is no longer offered, the app drops it and asks that step again rather than carrying a value nothing on screen can show.
 
@@ -153,8 +161,12 @@ src/api/          the client, endpoints, schemas, the error taxonomy
 src/state/        auth and onboarding stores, the boot sequence
 src/theme/        design tokens: colour, spacing, type, radius, shadow, motion
 src/components/   the hand-written UI primitives
-src/navigation/   three macro phases: auth, onboarding, app
+src/navigation/   the root that chooses between auth, onboarding and the app
 src/features/     the screens, and the step engine that drives them
+src/constants/    the Turkish copy and the error dictionary
+src/hooks/        the four-state async action
+src/storage/      the keystore wrapper and the storage keys
+src/feedback/     haptics
 mock-server/      a standalone fake API, run separately
 design/           the flow diagram, screen sketches and token sheet
 assets/           icons and images
