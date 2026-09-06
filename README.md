@@ -20,8 +20,10 @@ npm install
 npm run mock
 ```
 
-`pnpm install` works too if that is your habit; both were run from a clean
-checkout before this was written. The committed lockfile is npm's.
+The committed lockfile is npm's, and npm is the install that was rehearsed
+from a clean clone. pnpm is not: its stricter layout does not give React
+Native the flat `node_modules` the Metro bundler expects, so the install
+finishes and then nothing runs.
 
 In the second:
 
