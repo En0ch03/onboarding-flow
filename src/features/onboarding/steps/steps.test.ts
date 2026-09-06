@@ -6,6 +6,7 @@ import type { OptionGroup } from '@/api/schemas';
 import { birthDateMessages } from './birthDate';
 import { toggleSelection } from './useSelection';
 import { DEFAULT_INTERESTS_GROUP } from './interestsGroup';
+import { MINIMUM_PHOTOS, PHOTO_SLOTS } from './photoSlots';
 import { steps } from './steps';
 
 const identity = steps.find((step) => step.id === 'identity');
@@ -99,5 +100,41 @@ describe('secim hissi yalnizca secim degistiginde', () => {
     const group = interests?.questions?.[0]?.group;
 
     expect(group).toBe(DEFAULT_INTERESTS_GROUP);
+  });
+});
+
+describe('photo step gate', () => {
+  const photos = steps.find((step) => step.id === 'photos');
+
+  /** `n` tane yuklenmis fotograf; icerigi degil sayisi sinaniyor. */
+  function withPhotos(n: number): DraftAnswers {
+    return {
+      photos: Array.from({ length: n }, (_, i) => ({
+        id: `ph_${i}`,
+        url: `https://example.invalid/${i}.jpg`,
+      })),
+    };
+  }
+
+  // Beklenen sayi burada literal duruyor. Sinanan sabitten okunsaydi, sabiti
+  // degistirmek testi de degistirir ve kapi sinanmamis olurdu.
+  it('asks for two photos, and two is what the constant says', () => {
+    expect(MINIMUM_PHOTOS).toBe(2);
+    expect(PHOTO_SLOTS).toBe(6);
+  });
+
+  it('does not let the flow past the step with fewer than two photos', () => {
+    expect(photos?.isComplete({})).toBe(false);
+    expect(photos?.isComplete(withPhotos(0))).toBe(false);
+    expect(photos?.isComplete(withPhotos(1))).toBe(false);
+  });
+
+  it('lets the flow past at two, and above two', () => {
+    expect(photos?.isComplete(withPhotos(2))).toBe(true);
+    expect(photos?.isComplete(withPhotos(6))).toBe(true);
+  });
+
+  it('cannot be skipped: the threshold is not a suggestion', () => {
+    expect(photos?.skippable).toBe(false);
   });
 });
