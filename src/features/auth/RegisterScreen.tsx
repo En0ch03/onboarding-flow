@@ -10,7 +10,7 @@ import { ErrorBanner } from '@/components/ErrorBanner';
 import { Screen } from '@/components/Screen';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { ScreenIntro } from '@/components/ScreenIntro';
-import { fieldErrorMessage, presentError } from '@/constants/errorMessages';
+import { fieldErrorMessage, isRetryable, presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
 import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthStore } from '@/state/authStore';
@@ -87,17 +87,28 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
     >
       <ScreenIntro title={strings.auth.registerTitle} subtitle={strings.auth.registerSubtitle} />
 
+      {/* Bandin eylemi hatanin turune gore degisiyor: alinmis bir e-posta
+          girise goturur, gecici bir ariza ise ayni istegi tekrarlatir.
+          Tekrar denenebilir bir hatada dugmesiz bir bant, metnin soyledigi
+          seyi ("tekrar dene") yapacak yeri gostermiyordu. */}
       {showBanner ? (
         <ErrorBanner
           message={presentError(failure).message}
-          action={
-            failure.kind === 'email_taken'
-              ? {
+          {...(failure.kind === 'email_taken'
+            ? {
+                action: {
                   label: presentError(failure).action ?? '',
                   onPress: () => onSignInInstead(form.getValues('email')),
+                },
+              }
+            : isRetryable(failure)
+              ? {
+                  action: {
+                    label: presentError(failure).action ?? strings.common.retry,
+                    onPress: () => void submit(),
+                  },
                 }
-              : undefined
-          }
+              : {})}
         />
       ) : null}
 
