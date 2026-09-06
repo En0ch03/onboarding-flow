@@ -1,10 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
-import {
-  useOnboardingStore,
-  type AnswersUpdate,
-  type DraftAnswers,
-} from '@/state/onboardingStore';
+import { useOnboardingStore, type AnswersUpdate, type DraftAnswers } from '@/state/onboardingStore';
 
 import {
   canLeaveStep,

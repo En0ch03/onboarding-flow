@@ -113,11 +113,7 @@ export function PhotosStep({ values, onChange }: StepProps) {
         // hic girmemesi iyidir. Kapi sıkı tarafa bozulur.
         if (list.length >= PHOTO_SLOTS) return {};
 
-        const position = insertPosition(
-          usePhotoTransfers.getState().transfers,
-          index,
-          list.length,
-        );
+        const position = insertPosition(usePhotoTransfers.getState().transfers, index, list.length);
         const next = [...list];
         next.splice(position, 0, uploaded);
         return { photos: next };

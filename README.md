@@ -76,13 +76,13 @@ Every endpoint can fail, and the interesting parts of an onboarding flow are the
 curl -H 'x-chaos: 500' http://localhost:4000/api/v1/profile
 ```
 
-| `x-chaos`      | What happens                                                                                                               |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `500`          | Server error.                                                                                                              |
+| `x-chaos`      | What happens                                                                                                                                                                            |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `500`          | Server error.                                                                                                                                                                           |
 | `slow`         | The response is held far longer than the client's own timeout, so the client's timeout is what catches it. A 504 follows much later, only so the connection does not stay open forever. |
-| `malformed`    | A body that does not match the contract, so you can see boundary validation actually fire.                                 |
-| `expire-token` | The request succeeds, then the access token is invalidated, so the _next_ request has to be rescued by a silent refresh.   |
-| `end-session`  | Both tokens are invalidated: the session really is over, and the app has to end it politely with the draft intact.         |
+| `malformed`    | A body that does not match the contract, so you can see boundary validation actually fire.                                                                                              |
+| `expire-token` | The request succeeds, then the access token is invalidated, so the _next_ request has to be rescued by a silent refresh.                                                                |
+| `end-session`  | Both tokens are invalidated: the session really is over, and the app has to end it politely with the draft intact.                                                                      |
 
 The header breaks exactly one request, which is what you want from `curl`. But the app does not send that header, deliberately: doing so would ship a dependency on something that will not exist in production. So the header alone cannot reach the app running on a phone.
 

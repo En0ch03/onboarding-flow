@@ -51,6 +51,9 @@ describe('uploadPhoto', () => {
 
     const uploaded = await uploadPhoto('file:///photo.jpg');
 
-    expect(uploaded).toEqual({ id: 'https://example.test/p.jpg', url: 'https://example.test/p.jpg' });
+    expect(uploaded).toEqual({
+      id: 'https://example.test/p.jpg',
+      url: 'https://example.test/p.jpg',
+    });
   });
 });
