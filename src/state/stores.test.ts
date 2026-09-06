@@ -184,6 +184,19 @@ describe('waiting steps', () => {
 
     expect(useOnboardingStore.getState().unsyncedStepIds).toEqual(['identity']);
   });
+
+  it('keeps the queue on disk, so a restart does not lose it', async () => {
+    // Kuyruk yalnizca bellekte dursaydi uygulamanin kapanmasi bekleyen adimi
+    // silerdi: cevap taslakta durur ama kimse onu gondermeye calismaz ve
+    // sunucu eksik profili "tamamlandi" damgalardi.
+    useOnboardingStore.getState().markStepUnsynced('intent');
+
+    await whenDraftHydrated();
+    const raw = await AsyncStorage.getItem(storageKeys.onboardingDraft);
+
+    const stored = JSON.parse(raw ?? '{}');
+    expect(stored.state.unsyncedStepIds).toEqual(['intent']);
+  });
 });
 
 describe('draft ownership', () => {
