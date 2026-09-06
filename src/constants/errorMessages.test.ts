@@ -7,7 +7,20 @@ import { fieldErrorMessage } from './errorMessages';
  */
 describe('fieldErrorMessage', () => {
   it('bildigi alani kendi cumlesiyle anlatiyor', () => {
-    expect(fieldErrorMessage('photos', 'required')).toBe('Fotoğraflar boş bırakılamaz.');
+    expect(fieldErrorMessage('gender', 'required')).toBe('Cinsiyet boş bırakılamaz.');
+  });
+
+  it('tamamlanma reddinde sebebi dogru soyluyor, alanin adini degil', () => {
+    // Sunucu iki alanda da tek kelimeyle konusuyor ve genel cumle yaniltiyordu.
+    // Bir fotografi olan kullaniciya "bos birakilamaz" demek yanlisti; eksik
+    // olan sayiydi. Yas kapisina takilan tarih de gecerli bir tarihti.
+    const photos = fieldErrorMessage('photos', 'required');
+    expect(photos).toContain('en az iki fotoğraf');
+    expect(photos).not.toContain('boş bırakılamaz');
+
+    const birthDate = fieldErrorMessage('birth_date', 'invalid');
+    expect(birthDate).toContain('18');
+    expect(birthDate).not.toBe('Doğum tarihi geçerli görünmüyor.');
   });
 
   it('alanin kendi kurali genel mesaji eziyor', () => {

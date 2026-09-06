@@ -205,14 +205,18 @@ describe('CompletionScreen', () => {
     await waitFor(() => expect(onFixProfile).toHaveBeenCalledWith(['gender']));
   });
 
-  it('sunucunun reddettigi alani kullaniciya adiyla soyluyor', async () => {
+  it('sunucunun reddettigi alanin sebebini soyluyor', async () => {
     // "Bir sey eksik" tek basina kullaniciyi ayni ekrana geri gonderiyordu.
+    // Alanin adi da yetmiyor: bir fotografi olan kullaniciya "Fotograflar"
+    // demek, bos olmayan bir alani bos gostermek olurdu. Sebep soyleniyor.
     asMock(completeOnboarding).mockImplementation(async () => {
       throw { kind: 'validation_failed', fields: { photos: 'required' } };
     });
     const view = await mount(answers);
 
-    expect(await view.findByText(/Fotoğraflar/)).toBeTruthy();
+    expect(
+      await view.findByText(`${strings.completion.incomplete} ${strings.steps.photosHint}`),
+    ).toBeTruthy();
   });
 
   it('tanimadigi bir alan adinda genel cumleye dusuyor', async () => {

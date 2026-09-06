@@ -1,6 +1,7 @@
 import type { ApiError, ApiErrorKind } from '@/api/errors';
 
 import { MIN_PASSWORD_LENGTH } from '@/features/auth/credentialsForm';
+import { MINIMUM_AGE } from '@/features/onboarding/steps/birthDate';
 
 import { strings } from './strings';
 
@@ -120,6 +121,15 @@ const specificMessages: Record<string, string> = {
   // Sinir tek yerde: sozluk cumleyi kuruyor, sayiyi kural veriyor.
   'password:too_short': strings.auth.passwordTooShort(MIN_PASSWORD_LENGTH),
   'email:invalid': strings.auth.emailInvalid,
+  // Tamamlanma reddinde iki alanin genel cumlesi yaniltiyordu. Bir fotografi
+  // olan kullaniciya "Fotograflar bos birakilamaz" deniyordu; bos degildi,
+  // sayisi yetmiyordu. Adimin kendi cumlesi ikisinde de dogru.
+  'photos:required': strings.steps.photosHint,
+  // Yas kapisina takilan tarih "gecerli gorunmuyor" diye geri geliyordu; tarih
+  // gecerliydi, yas yetmiyordu. Cumle iki okumada da dogru kalacak sekilde
+  // kuruldu: sozlesme bu kodun yalnizca yasi mi yoksa bozuk tarihi mi
+  // anlattigini soylemiyor ve varsayimi kullaniciya yansitmak yanlis olurdu.
+  'birth_date:invalid': strings.birthDate.rejected(MINIMUM_AGE),
 };
 
 /**
