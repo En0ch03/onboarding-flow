@@ -252,14 +252,21 @@ describe('CompletionScreen', () => {
   it('bekleyen adimlarin hepsini gonderiyor, yalnizca ilkini degil', async () => {
     // Baglanti gidince ardisik adimlar birlikte kuyruga giriyor. Yalnizca
     // biri gonderilirse sunucu eksik bir profili "tamamlandi" damgalar.
-    const sent: string[] = [];
-    asMock(saveStep).mockImplementation(async (stepId: string) => {
-      sent.push(stepId);
+    // Kimlik yetmiyor, govde de sinaniyor: bos bir govde gonderilirse
+    // atlanmis sayilan adim sunucuda gercekten bosaltilir.
+    const sent: { stepId: string; name: string | undefined }[] = [];
+    asMock(saveStep).mockImplementation(async (stepId: string, draft: DraftAnswers) => {
+      sent.push({ stepId, name: draft.name });
     });
 
     await mount(answers, {}, ['intent', 'interests']);
 
-    await waitFor(() => expect(sent).toEqual(['intent', 'interests']));
+    await waitFor(() =>
+      expect(sent).toEqual([
+        { stepId: 'intent', name: 'Deniz' },
+        { stepId: 'interests', name: 'Deniz' },
+      ]),
+    );
     expect(useOnboardingStore.getState().unsyncedStepIds).toEqual([]);
   });
 

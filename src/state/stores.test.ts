@@ -151,6 +151,41 @@ describe('photo transfers', () => {
   });
 });
 
+describe('waiting steps', () => {
+  it('drops only the step that was sent, not the whole queue', async () => {
+    // Baglanti gidince birden fazla adim birlikte bekliyor. Biri gonderilince
+    // digerinin isareti dusmemeli, yoksa o cevap kapanista hic gonderilmez ve
+    // sunucu eksik profili "tamamlandi" damgalar.
+    const draft = useOnboardingStore.getState();
+    draft.markStepUnsynced('identity');
+    draft.markStepUnsynced('intent');
+    draft.markStepUnsynced('interests');
+
+    draft.markStepSynced('intent');
+
+    expect(useOnboardingStore.getState().unsyncedStepIds).toEqual(['identity', 'interests']);
+  });
+
+  it('drops nothing when the sent step was not waiting', () => {
+    const draft = useOnboardingStore.getState();
+    draft.markStepUnsynced('identity');
+
+    draft.markStepSynced('photos');
+
+    expect(useOnboardingStore.getState().unsyncedStepIds).toEqual(['identity']);
+  });
+
+  it('does not queue the same step twice', () => {
+    // Ayni adim her denemede yeniden isaretleniyor; liste birikirse kapanista
+    // ayni govde birden cok kez gider.
+    const draft = useOnboardingStore.getState();
+    draft.markStepUnsynced('identity');
+    draft.markStepUnsynced('identity');
+
+    expect(useOnboardingStore.getState().unsyncedStepIds).toEqual(['identity']);
+  });
+});
+
 describe('draft ownership', () => {
   const otherSession = { ...session, user_id: 'usr_2', access_token: 'access_2' };
 
