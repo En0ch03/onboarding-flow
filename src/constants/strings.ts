@@ -116,6 +116,11 @@ export const strings = {
     incomplete: 'Doğum tarihini seçmen gerekiyor.',
     invalid: 'Böyle bir tarih yok. Gün, ay ve yılı kontrol eder misin?',
     tooYoung: 'Bu uygulama {age} yaşından küçüklere açık değil. Seni burada göremeyeceğiz.',
+    // Sunucu tarihi reddettiginde sebebi tek kelimeyle bildiriyor ve o kelime
+    // hem bozuk bir tarihi hem yas sinirini karsilayabiliyor. Cumle ikisini de
+    // dogru anlatiyor; kullaniciyi olmayan bir hataya bakmaya gondermiyor.
+    rejected: (age: number) =>
+      `Doğum tarihini kabul edemedik. Tarihi kontrol eder misin? Bu uygulama ${age} yaşından küçüklere açık değil.`,
   },
 
   errors: {
@@ -218,7 +223,13 @@ export function nameWithAge(name: string, age: number | null): string {
   return age === null ? trimmed : `${trimmed}, ${age}`;
 }
 
-/** Kapanis cumlesi. Isim yalin birakiliyor; ek getirilmiyor. */
+/**
+ * Kapanis cumlesi. Isim yalin birakiliyor; ek getirilmiyor.
+ *
+ * Kirpiliyor cunku isim buraya iki yoldan gelebiliyor: kullanicinin yazdigi
+ * taslak ve sunucudaki profil. Mobil klavyeler kelime sonuna bosluk ekliyor
+ * ve akisin son ekranindaki tek kisisel cumle "Hazirsin, Ayse ." oluyordu.
+ */
 export function completionTitle(name: string): string {
-  return `Hazırsın, ${name}.`;
+  return `Hazırsın, ${name.trim()}.`;
 }

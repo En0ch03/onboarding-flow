@@ -30,8 +30,18 @@ export function IdentityStep({ values, onChange }: StepProps) {
         label={strings.steps.nameLabel}
         value={values.name ?? ''}
         onChangeText={(name) => onChange({ name })}
+        // Kirpma yazarken degil alandan cikilinca: yazarken kirpmak, ad ile
+        // soyad arasina bosluk koymayi imkansiz kilardi.
+        onBlur={() => {
+          const settled = (values.name ?? '').trim();
+          if (settled !== values.name) onChange({ name: settled });
+        }}
         autoComplete="given-name"
         textContentType="givenName"
+        // Sunucunun kabul ettigi ad uzunlugu sozlesmede yazmiyor. Sinir yine
+        // de bir yerde durmali: sinirsiz bir alan, ekrani ve kapanis
+        // cumlesini bozacak kadar uzun bir deger kabul eder. Deger, bir adin
+        // makul ustunden secildi; sunucu bir sinir bildirirse oradan gelmeli.
         maxLength={50}
         returnKeyType="done"
       />
