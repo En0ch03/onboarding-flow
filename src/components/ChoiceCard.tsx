@@ -10,6 +10,11 @@ type ChoiceCardProps = {
   selected: boolean;
   onPress: () => void;
   /**
+   * Liste birden fazla cevap aliyor mu. Ekran okuyucunun kullandigi rolu bu
+   * belirliyor; goruntude bir karsiligi yok.
+   */
+  multiple: boolean;
+  /**
    * Sinir dolmusken secilemeyen kart sonuk gorunur ama kaybolmaz ve
    * dokunulabilir kalir: dokunus, neden secilemedigini soyletir.
    */
@@ -29,6 +34,7 @@ export function ChoiceCard({
   option,
   selected,
   onPress,
+  multiple,
   blocked = false,
   blockedHint,
 }: ChoiceCardProps) {
@@ -37,7 +43,9 @@ export function ChoiceCard({
 
   return (
     <Pressable
-      accessibilityRole="checkbox"
+      // Tek secimli listede "onay kutusu" yanlis: ekran okuyucu kullanicisina
+      // birden fazla secebilecegini soyler. Rol listenin turunden geliyor.
+      accessibilityRole={multiple ? 'checkbox' : 'radio'}
       accessibilityState={{ checked: selected }}
       accessibilityLabel={option.label}
       {...(hint ? { accessibilityHint: hint } : {})}

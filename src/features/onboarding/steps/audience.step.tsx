@@ -82,6 +82,7 @@ function GenderChoices({
           key={option.id}
           option={option}
           selected={selected === option.id}
+          multiple={group.multiSelect}
           onPress={() => {
             const next = limit.attempt(option.id);
             if (next?.[0] !== undefined) onSelect(next[0]);
