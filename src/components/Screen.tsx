@@ -54,7 +54,8 @@ const TOP_FADE = scale.xl;
  * tusa basista ziplayan bir arayuz demek ve elin altindaki hedef yer
  * degistiriyor. Buton icerigin sonunda, sayfanin dibinde duruyor; klavye
  * acildiginda onun ustunu ortuyor ve kullanici klavyeyi kapatinca geri
- * geliyor. Brief'in sarti girdi alaninin ortulmemesi, ki o korunuyor.
+ * geliyor. Korunmasi gereken sey butonun gorunurlugu degil, girdi alaninin
+ * ortulmemesi -- ve bunu kaydirma alaninin kisalmasi zaten sagliyor.
  *
  * Ust serit kaydirilmiyor: ortalanan ekranlarda icerikle birlikte ortalaniyor
  * ve geri dugmesi ekranin ortasinda kaliyordu. Seridin ustunde de gercek bir
