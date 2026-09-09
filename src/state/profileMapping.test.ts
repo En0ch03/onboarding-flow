@@ -54,9 +54,17 @@ describe('draftFromProfile', () => {
   it('skips a value that arrived in a shape we do not expect', () => {
     const answers = draftFromProfile({
       ...profile,
-      preferences: { intent: 'long_term', audience: [1, 2], birth_date: 'yesterday' },
+      preferences: {
+        intent: 'long_term',
+        audience: [1, 2],
+        birth_date: 'yesterday',
+        // Sayi olarak gelen bir numara sessizce atlanmazsa dogrulama onun
+        // uzerinde `replace` cagiriyor ve adim ekrani cizim sirasinda patliyor.
+        phone: 5551234567,
+      },
     });
 
+    expect(answers.phone).toBeUndefined();
     expect(answers.intent).toBeUndefined();
     expect(answers.audience).toBeUndefined();
     expect(answers.birthDate).toBeUndefined();
