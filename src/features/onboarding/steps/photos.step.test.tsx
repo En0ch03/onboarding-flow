@@ -212,6 +212,58 @@ describe('PhotosStep — kaynak secimi', () => {
     expect(sheetOnScreen).toBe(false);
   });
 
+  it('secimden sonra akis biterse secici acilmiyor', async () => {
+    // Nesil, kaynagin secildigi anda yakalaniyor -- sayfanin kapandigi anda
+    // degil. Aradaki kapanis penceresinde akis biterse (cikis, taslak
+    // temizligi) bundan sonra yapilan her sey baska bir kullaniciya ait
+    // olurdu. Yakalama kapanisa kaydigi an bu pencere aciliyor ve fotograf
+    // yeni akisin izgarasina dusuyor.
+    const { view, seen } = await renderStep();
+
+    await act(async () => {
+      fireEvent.press(view.getByLabelText(strings.photoSlot.empty));
+    });
+    await act(async () => {
+      fireEvent.press(view.getByLabelText(strings.photoSource.camera));
+    });
+
+    // Sayfa daha kapanmadan akis bitiyor.
+    await act(async () => {
+      usePhotoTransfers.getState().reset();
+    });
+
+    await waitFor(() => {
+      expect(view.queryByLabelText(strings.photoSource.camera)).toBeNull();
+    });
+    await act(async () => {});
+
+    expect(picker.launchCameraAsync).not.toHaveBeenCalled();
+    expect(ids(seen)).toEqual([]);
+  });
+
+  it('tuketilen secim geride kalmiyor: sayfa secilmeden kapatilinca tekrar acilmiyor', async () => {
+    // Bekleyen is temizlenmezse, sonraki sefer sayfa **hicbir sey secilmeden**
+    // kapatildiginda onceki secim yeniden calisiyor: kullanici iptal ediyor,
+    // kamera aciliyor.
+    const { view } = await renderStep();
+    await addPhoto(view, 'camera');
+    expect(picker.launchCameraAsync).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      fireEvent.press(view.getByLabelText(strings.photoSlot.empty));
+    });
+    await act(async () => {
+      fireEvent.press(view.getByLabelText(strings.common.close));
+    });
+
+    await waitFor(() => {
+      expect(view.queryByLabelText(strings.photoSource.camera)).toBeNull();
+    });
+    await act(async () => {});
+
+    expect(picker.launchCameraAsync).toHaveBeenCalledTimes(1);
+  });
+
   it('kamera secilince kamera aciliyor, galeri degil', async () => {
     const { view } = await renderStep();
     await addPhoto(view, 'camera');
