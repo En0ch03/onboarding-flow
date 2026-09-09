@@ -76,7 +76,7 @@ export type ProfileAdoption = 'complete' | 'in-progress' | 'session-lost';
  *
  * Cevaplari almak yetmiyor, **yeri** de almak gerekiyor. Yeni bir cihazda
  * `activeStepId` bos ve motor bos kimligi ilk gorunur adima dusuruyor -- ilk
- * *eksik* adima degil. Yani cevaplar dolu gelse bile ekran "Adim 1 / 5"te
+ * *eksik* adima degil. Yani cevaplar dolu gelse bile ekran ilk adimda
  * aciliyor ve kullanici doldurulmus uc adimi tek tek geciyordu. Bu, soguk
  * acilista da boyleydi: eksik olan sey giris yolu degil, yerin hic
  * benimsenmemesiydi.

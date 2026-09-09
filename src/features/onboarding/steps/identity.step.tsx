@@ -9,10 +9,12 @@ import { BirthDateField } from './BirthDateField';
 import { draftFromParts, partsFromDraft } from './dateParts';
 
 /**
- * Yas kapisi akisin ilk adiminda.
+ * Yas kapisi akisin basinda: onunde yalnizca telefon adimi var.
  *
  * Kullanicidan fotograf ve tercihlerini isteyip sonra "burayi kullanamazsin"
- * demek yanlis sira; sorunun cevabi akisin en basinda belli oluyor.
+ * demek yanlis sira; sorunun cevabi akisin en basinda belli oluyor. Telefon
+ * adimi bunu bozmuyor: tek bir alan ve kullanicinin zaten verdigi bir bilgi,
+ * kapiya varmadan once emek isteyen hicbir sey sorulmuyor.
  *
  * Ad yazilarak, tarih secilerek aliniyor. Ikisi ayni turden bir soru degil:
  * ad serbest metin, tarih ise takvimden bir nokta. Tarihi yazdirmak, ekranin

@@ -55,6 +55,7 @@ const options: OptionGroups = {
 };
 
 const answers: DraftAnswers = {
+  phone: '5551234567',
   name: 'Deniz',
   birthDate: { day: '14', month: '3', year: '1996' },
   audience: ['everyone'],
@@ -154,6 +155,13 @@ describe('CompletionScreen', () => {
 
     expect(view.queryByText('board_games')).toBeNull();
     expect(view.getByText(strings.completion.recapEmpty)).toBeTruthy();
+  });
+
+  it('telefon numarasini ulke koduyla geri okuyor', async () => {
+    // Ozet, cevaplari kullanicinin verdigi haliyle geri okuyor; numara da bir
+    // cevap ve kullanici onu `+90` ile taniyor.
+    const view = await mount(answers);
+    expect(view.getByLabelText(`${strings.completion.recapPhone}: +90 5551234567`)).toBeTruthy();
   });
 
   it('etiket ve degeri ekran okuyucuya tek parca veriyor', async () => {

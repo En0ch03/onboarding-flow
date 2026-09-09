@@ -72,6 +72,13 @@ export const strings = {
   },
 
   steps: {
+    phoneTitle: 'Telefon numaran nedir?',
+    phoneSubtitle: 'Hesabını korumak için kullanıyoruz. Profilinde görünmez.',
+    phoneLabel: 'Telefon numarası',
+    /** Alanda sabit duran ülke kodu; kullanıcı yazmıyor. */
+    phonePrefix: '+90',
+    phonePlaceholder: '5XX XXX XX XX',
+
     identityTitle: 'Sana nasıl hitap edelim?',
     identitySubtitle: 'Adın profilinde görünür. Doğum tarihin görünmez, yalnızca yaşın görünür.',
     nameLabel: 'Ad',
@@ -110,6 +117,13 @@ export const strings = {
     interestsSubtitle: 'Birkaç tane seç. Sohbet başlatmayı kolaylaştırıyor.',
     interestsSkipCost: 'Ortak ilgi alanı, ilk mesajı yazmayı kolaylaştırıyor.',
     interestsHint: 'En az bir ilgi alanı seçmen gerekiyor.',
+  },
+
+  phone: {
+    incomplete: 'Telefon numaranı yazman gerekiyor: 5 ile başlayan on hane.',
+    // Eksik ile yanlis ayri konusuyor. Yazmaya devam eden birine "gecersiz"
+    // demek, henuz yapmadigi bir hatayi yuzune vurmak olurdu.
+    invalid: 'Bu numara doğru görünmüyor. Cep numaraları 5 ile başlar ve on hanedir.',
   },
 
   birthDate: {
@@ -155,6 +169,7 @@ export const strings = {
     recapAudience: 'Kimler görecek',
     recapIntent: 'Ne aradığın',
     recapEmpty: 'Belirtmedin',
+    recapPhone: 'Telefon',
     recapPhotos: 'Fotoğraf',
     recapInterests: 'İlgi alanları',
     primary: 'Onboarding’a gir',
@@ -210,6 +225,18 @@ export function photoCount(added: number, total: number): string {
 /** Ozet satirinda fotograf sayisi. Cıplak bir rakam ne oldugunu soylemiyor. */
 export function photoSummary(count: number): string {
   return count === 1 ? '1 fotoğraf' : `${count} fotoğraf`;
+}
+
+/**
+ * Ozet satirindaki telefon numarasi.
+ *
+ * Ulke kodu burada yeniden ekleniyor: saklanan deger on hane ve kullanici
+ * numarasini `+90` ile taniyor. Numara yoksa satir bos bir tire yerine
+ * "Belirtmedin" diyor.
+ */
+export function phoneSummary(digits: string | undefined): string {
+  const value = (digits ?? '').trim();
+  return value === '' ? strings.completion.recapEmpty : `${strings.steps.phonePrefix} ${value}`;
 }
 
 /**

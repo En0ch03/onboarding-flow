@@ -4,6 +4,7 @@ import type { DraftAnswers } from '@/state/onboardingStore';
 import type { OptionGroup } from '@/api/schemas';
 
 import { birthDateMessages } from './birthDate';
+import { phoneMessages } from './phoneNumber';
 import { toggleSelection } from './useSelection';
 import { DEFAULT_INTERESTS_GROUP } from './interestsGroup';
 import { MINIMUM_PHOTOS, PHOTO_SLOTS } from './photoSlots';
@@ -100,6 +101,40 @@ describe('secim hissi yalnizca secim degistiginde', () => {
     const group = interests?.questions?.[0]?.group;
 
     expect(group).toBe(DEFAULT_INTERESTS_GROUP);
+  });
+});
+
+describe('phone step gate', () => {
+  const phone = steps.find((step) => step.id === 'phone');
+
+  it('akisin ilk adimi: numara addan ve dogum tarihinden once soruluyor', () => {
+    expect(steps[0]?.id).toBe('phone');
+    expect(steps[1]?.id).toBe('identity');
+  });
+
+  it('numara olmadan ileri gecilmiyor', () => {
+    expect(phone?.isComplete({})).toBe(false);
+    expect(phone?.isComplete({ phone: '' })).toBe(false);
+    expect(phone?.isComplete({ phone: '555123' })).toBe(false);
+    expect(phone?.isComplete({ phone: '2121234567' })).toBe(false);
+  });
+
+  it('gecerli numarayla geciliyor', () => {
+    expect(phone?.isComplete({ phone: '5551234567' })).toBe(true);
+  });
+
+  it('atlanamiyor', () => {
+    // Akisin tek atlanabilir adimi ilgi alanlari ve bilerek en sonda; basa
+    // atlanabilir bir adim koymak o karari bozardi.
+    expect(phone?.skippable).toBe(false);
+  });
+
+  it('yarim numaraya gecersiz demiyor', () => {
+    const hint = phone?.incompleteHint;
+    const say = (answers: DraftAnswers) => (typeof hint === 'function' ? hint(answers) : hint);
+
+    expect(say({ phone: '555123' })).toBe(phoneMessages.incomplete);
+    expect(say({ phone: '2121234567' })).toBe(phoneMessages.invalid);
   });
 });
 

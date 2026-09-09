@@ -12,6 +12,8 @@ import { storageKeys } from '@/storage/keys';
  * orada durmamali. Alan listesinin acik olmasi bunu gozle gorunur kiliyor.
  */
 export type DraftAnswers = {
+  /** Yalnizca rakamlar, on hane. Ulke kodu ekranda sabit; degerde tutulmuyor. */
+  phone?: string;
   name?: string;
   /** Uc ayri alan: yerel tarih secici mobilde daha cok hata uretiyor. */
   birthDate?: { day: string; month: string; year: string };
