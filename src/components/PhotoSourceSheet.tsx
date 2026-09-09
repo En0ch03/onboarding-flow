@@ -15,6 +15,8 @@ type PhotoSourceSheetProps = {
   visible: boolean;
   onSelect: (source: PhotoSource) => void;
   onClose: () => void;
+  /** Sayfa ekrandan tamamen kalktiginda; secici ancak o zaman acilabiliyor. */
+  onClosed?: (() => void) | undefined;
 };
 
 /**
@@ -28,7 +30,7 @@ type PhotoSourceSheetProps = {
  * secim sayfalarinin tamami bu kabukta ve iki farkli sunum, ayni soruyu iki
  * ayri dille sormak olurdu.
  */
-export function PhotoSourceSheet({ visible, onSelect, onClose }: PhotoSourceSheetProps) {
+export function PhotoSourceSheet({ visible, onSelect, onClose, onClosed }: PhotoSourceSheetProps) {
   const { colors, screenPadding } = useTheme();
 
   const rows: { source: PhotoSource; label: string }[] = [
@@ -37,7 +39,12 @@ export function PhotoSourceSheet({ visible, onSelect, onClose }: PhotoSourceShee
   ];
 
   return (
-    <BottomSheet visible={visible} title={strings.photoSource.title} onClose={onClose}>
+    <BottomSheet
+      visible={visible}
+      title={strings.photoSource.title}
+      onClose={onClose}
+      onClosed={onClosed}
+    >
       <View>
         {rows.map((row) => (
           <Pressable

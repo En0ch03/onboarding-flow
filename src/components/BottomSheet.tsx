@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import {
   Animated,
   Easing,
@@ -22,6 +22,16 @@ type BottomSheetProps = {
   visible: boolean;
   title: string;
   onClose: () => void;
+  /**
+   * Sayfa ekrandan tamamen kalktiginda cagriliyor.
+   *
+   * Native bir secici -- kamera, galeri, izin diyalogu -- ancak burada
+   * acilabilir. Gorunurlugu kaldirmak yetmiyor: kapanis animasyonu boyunca
+   * `Modal` ayakta kaliyor ve onun ustune sunulan denetleyici, `Modal`
+   * kapaninca altindan cekiliyor. Ekranda hicbir sey acilmiyor, dokunuslar
+   * bir yere gitmiyor.
+   */
+  onClosed?: (() => void) | undefined;
   children: ReactNode;
 };
 
@@ -44,7 +54,7 @@ type BottomSheetProps = {
  * Hareket `Animated` ile yaziliyor, ek bir kutuphaneyle degil: iki ozellik
  * (saydamlik ve dikey kayma) icin yerel surucu zaten yeterli.
  */
-export function BottomSheet({ visible, title, onClose, children }: BottomSheetProps) {
+export function BottomSheet({ visible, title, onClose, onClosed, children }: BottomSheetProps) {
   const { colors, radius, spacing, screenPadding, motion } = useTheme();
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
@@ -61,6 +71,31 @@ export function BottomSheet({ visible, title, onClose, children }: BottomSheetPr
   // animasyonu bastan basltirdi.
   const [progress] = useState(() => new Animated.Value(0));
   const [drag] = useState(() => new Animated.Value(0));
+
+  // Cagri her cizimde tazeleniyor ama asagidaki efektin bagimliligi degil.
+  // Bagimlilik olsaydi satir ici yazilmis bir fonksiyon her cizimde kimlik
+  // degistirir, efekt yeniden koser ve animasyon bastan baslardi.
+  const onClosedRef = useRef(onClosed);
+  useEffect(() => {
+    onClosedRef.current = onClosed;
+  });
+
+  // Haber, `Modal` sokuldukten **sonra** veriliyor. Animasyonun bitis geri
+  // cagrisinda vermek, React henuz `Modal`i sokmeden native bir secici acmak
+  // olurdu -- yani duzeltilmek istenen seyin ta kendisi.
+  const wasMounted = useRef(false);
+  useEffect(() => {
+    if (mounted) {
+      wasMounted.current = true;
+      return;
+    }
+
+    // Hic acilmamis bir sayfa kapanmis sayilmiyor: ilk cizimde `mounted`
+    // zaten false ve buradan haber gitmemeli.
+    if (!wasMounted.current) return;
+    wasMounted.current = false;
+    onClosedRef.current?.();
+  }, [mounted]);
 
   useEffect(() => {
     // Yarida kesilmis bir kapanistan kalan kayma yeni acilisa tasinmiyor:

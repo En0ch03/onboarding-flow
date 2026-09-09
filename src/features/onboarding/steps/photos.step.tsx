@@ -1,5 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 
 import { uploadPhoto } from '@/api/media';
@@ -38,6 +38,11 @@ export function PhotosStep({ values, onChange }: StepProps) {
   const markTransfer = usePhotoTransfers((state) => state.mark);
   const [asked, setAsked] = useState<number | null>(null);
 
+  // Secilen kaynak, sayfa ekrandan kalkana kadar burada bekliyor. Durum
+  // yerine ref: bekleyen isin okundugu an bir cizim degil, sayfanin
+  // sokulusu.
+  const queued = useRef<{ index: number; from: PhotoSource; generation: number } | null>(null);
+
   async function permitted(source: PhotoSource, stale: () => boolean): Promise<boolean> {
     const permission =
       source === 'camera'
@@ -71,13 +76,16 @@ export function PhotosStep({ values, onChange }: StepProps) {
     return false;
   }
 
-  async function pick(index: number, from: PhotoSource) {
-    // Nesil kaynak secildigi anda aliniyor ve her beklemeden sonra
-    // bakiliyor. Izin diyalogu ve secici dakikalarca acik kalabiliyor; o
-    // pencerede akis sokulurse (oturum bitti, taslak silindi) bundan sonra
-    // yapilacak her sey baska bir akisa -- baska bir kullaniciya -- ait
-    // olurdu.
-    const generation = usePhotoTransfers.getState().generation;
+  async function pick(index: number, from: PhotoSource, generation: number) {
+    // Nesil kaynak secildigi anda aliniyor -- burada degil -- ve her
+    // beklemeden sonra bakiliyor. Izin diyalogu ve secici dakikalarca acik
+    // kalabiliyor; o pencerede akis sokulurse (oturum bitti, taslak silindi)
+    // bundan sonra yapilacak her sey baska bir akisa -- baska bir
+    // kullaniciya -- ait olurdu.
+    //
+    // Yakalamanin cagirana ait olmasinin sebebi: secim ile bu fonksiyonun
+    // calismasi arasinda kaynak sayfasinin kapanmasi bekleniyor. Nesil burada
+    // okunsaydi o pencerede biten bir akis gozden kacardi.
     const stale = () => usePhotoTransfers.getState().generation !== generation;
 
     if (!(await permitted(from, stale))) return;
@@ -190,9 +198,26 @@ export function PhotosStep({ values, onChange }: StepProps) {
         visible={asked !== null}
         onClose={() => setAsked(null)}
         onSelect={(from) => {
-          const index = asked;
+          // Nesil burada yakalaniyor: akisin sahibi, kullanicinin secim
+          // yaptigi andaki akis. Sayfa kapanana kadar gecen surede akis
+          // biterse bu is dusuyor.
+          if (asked !== null) {
+            queued.current = {
+              index: asked,
+              from,
+              generation: usePhotoTransfers.getState().generation,
+            };
+          }
           setAsked(null);
-          if (index !== null) void pick(index, from);
+        }}
+        // Secici, sayfa ekrandan tamamen kalktiktan sonra aciliyor. Ayni
+        // karede acmak, kapanmakta olan sayfanin ustune sunmak demekti:
+        // sayfa kapaninca native denetleyici de altindan cekiliyor, ekranda
+        // hicbir sey acilmiyor ve dokunuslar bir yere gitmiyor.
+        onClosed={() => {
+          const job = queued.current;
+          queued.current = null;
+          if (job !== null) void pick(job.index, job.from, job.generation);
         }}
       />
     </View>
