@@ -13,6 +13,7 @@ import type { DraftAnswers } from './onboardingStore';
  * sessizce ayrismasi demek.
  */
 const keys = {
+  phone: 'phone',
   birthDate: 'birth_date',
   gender: 'gender',
   audience: 'audience',
@@ -65,6 +66,9 @@ export function draftFromProfile(profile: Profile): DraftAnswers {
   const preferences = profile.preferences as Preferences;
   const answers: DraftAnswers = {};
 
+  const phone = preferences[keys.phone];
+  if (typeof phone === 'string') answers.phone = phone;
+
   if (profile.display_name !== null) answers.name = profile.display_name;
 
   const birthDate = readBirthDate(preferences[keys.birthDate]);
@@ -98,6 +102,7 @@ export function draftFromProfile(profile: Profile): DraftAnswers {
 // Donduruluyor cunku disariya paylasilan bir dizi donuyor: bir cagiran
 // listeye ekleme yaparsa bozulma modul seviyesinde kalici olurdu.
 const fieldsByStep: Record<string, readonly (keyof DraftAnswers)[]> = {
+  phone: Object.freeze(['phone'] as const),
   identity: Object.freeze(['name', 'birthDate'] as const),
   audience: Object.freeze(['gender', 'audience'] as const),
   intent: Object.freeze(['intent'] as const),
@@ -118,6 +123,9 @@ export function answerFieldsForStep(stepId: string): readonly (keyof DraftAnswer
  */
 export function patchFromAnswers(answers: DraftAnswers, stepId: string): ProfilePatch {
   switch (stepId) {
+    case 'phone':
+      return { preferences: { [keys.phone]: answers.phone ?? '' } };
+
     case 'identity': {
       const patch: ProfilePatch = {};
       if (answers.name !== undefined) patch.display_name = answers.name;

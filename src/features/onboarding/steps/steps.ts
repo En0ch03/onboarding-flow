@@ -6,6 +6,8 @@ import { birthDateMessages, inspectBirthDate } from './birthDate';
 import { IdentityStep } from './identity.step';
 import { IntentStep } from './intent.step';
 import { InterestsStep } from './interests.step';
+import { PhoneStep } from './phone.step';
+import { inspectPhone, phoneMessages } from './phoneNumber';
 import { MINIMUM_PHOTOS, PhotosStep } from './photos.step';
 
 /**
@@ -15,6 +17,20 @@ import { MINIMUM_PHOTOS, PhotosStep } from './photos.step';
  * sayaci, geri davranisi ve yigin kurulumu hepsi buradan okuyor.
  */
 export const steps: StepDefinition[] = [
+  {
+    id: 'phone',
+    title: strings.steps.phoneTitle,
+    subtitle: strings.steps.phoneSubtitle,
+    component: PhoneStep,
+    skippable: false,
+    // Eksik ile yanlis ayri konusuyor: yarim bir numaraya "gecersiz" demek,
+    // kullanicinin henuz yapmadigi bir hatayi yuzune vurmak olurdu.
+    incompleteHint: (answers) => {
+      const problem = inspectPhone(answers.phone);
+      return problem === null ? null : phoneMessages[problem];
+    },
+    isComplete: (answers) => inspectPhone(answers.phone) === null,
+  },
   {
     id: 'identity',
     title: strings.steps.identityTitle,

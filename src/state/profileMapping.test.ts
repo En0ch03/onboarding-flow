@@ -16,6 +16,7 @@ describe('draftFromProfile', () => {
     const answers = draftFromProfile({
       ...profile,
       preferences: {
+        phone: '5551234567',
         birth_date: { day: '14', month: '3', year: '1996' },
         gender: 'woman',
         audience: ['men'],
@@ -26,6 +27,7 @@ describe('draftFromProfile', () => {
     });
 
     expect(answers).toEqual({
+      phone: '5551234567',
       name: 'Deniz',
       birthDate: { day: '14', month: '3', year: '1996' },
       gender: 'woman',
@@ -75,6 +77,15 @@ describe('draftFromProfile', () => {
 });
 
 describe('patchFromAnswers', () => {
+  it('sends the phone number in preferences', () => {
+    // Sozlesme yalnizca uc yazilabilir alan tanimliyor ve numaranin bugun
+    // sunucuda bir karsiligi yok; tercihler nesnesi zaten akisin butun
+    // cevaplarini tasiyor ve anahtar setini istemci tanimliyor.
+    expect(patchFromAnswers({ phone: '5551234567' }, 'phone').preferences).toEqual({
+      phone: '5551234567',
+    });
+  });
+
   it('sends the name on its own field and the birth date in preferences', () => {
     const patch = patchFromAnswers(
       { name: 'Deniz', birthDate: { day: '14', month: '3', year: '1996' } },
@@ -118,6 +129,7 @@ describe('patchFromAnswers', () => {
     // Beklenen liste elle yazili: sinanan eslemeden uretilseydi, eslemeden
     // bir alan dusuruldugunde bu test de onu aramaktan vazgecerdi.
     const expected: Record<string, (keyof DraftAnswers)[]> = {
+      phone: ['phone'],
       identity: ['name', 'birthDate'],
       audience: ['gender', 'audience'],
       intent: ['intent'],
@@ -146,6 +158,7 @@ describe('patchFromAnswers', () => {
     // gelmeyecek bir cevap bekler. Yalnizca o alani doldurup gonderim
     // govdesinin gercekten dolmasi araniyor.
     const sample: DraftAnswers = {
+      phone: '5551234567',
       name: 'Deniz',
       birthDate: { day: '01', month: '01', year: '1990' },
       gender: 'woman',

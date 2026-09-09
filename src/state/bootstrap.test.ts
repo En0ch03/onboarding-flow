@@ -236,13 +236,14 @@ describe('sunucudan dusen secenekler', () => {
 
 describe('adoptServerProfile', () => {
   it('cevaplarin isaret ettigi adimdan devam ediyor', async () => {
-    // Cevaplari almak yetmiyor: yer alinmazsa ekran "Adim 1 / 5"te aciliyor
-    // ve kullanici doldurulmus adimlari tek tek geciyor.
+    // Cevaplari almak yetmiyor: yer alinmazsa ekran ilk adimda aciliyor ve
+    // kullanici doldurulmus adimlari tek tek geciyor.
     await signIn();
     readCachedOptionGroups.mockReturnValue({});
     fetchProfile.mockResolvedValue({
       ...incompleteProfile,
       preferences: {
+        phone: '5551234567',
         birth_date: { day: '14', month: '3', year: '1996' },
         gender: 'woman',
         audience: ['everyone'],
@@ -251,7 +252,7 @@ describe('adoptServerProfile', () => {
 
     await adoptServerProfile();
 
-    // Ilk iki adim dolu; devam edilecek yer ucuncusu.
+    // Ilk uc adim dolu; devam edilecek yer dorduncusu.
     expect(useOnboardingStore.getState().activeStepId).toBe('intent');
   });
 
@@ -389,6 +390,7 @@ describe('adoptServerProfile', () => {
     display_name: 'Sunucudaki ad',
     avatar_url: null,
     preferences: {
+      phone: '5559998877',
       birth_date: { day: '02', month: '02', year: '1980' },
       gender: 'man',
       audience: ['women'],
@@ -400,6 +402,7 @@ describe('adoptServerProfile', () => {
   };
 
   const localAnswers: DraftAnswers = {
+    phone: '5551112233',
     name: 'Cihazdaki ad',
     birthDate: { day: '01', month: '01', year: '1990' },
     gender: 'woman',
@@ -413,6 +416,7 @@ describe('adoptServerProfile', () => {
   // uretilmiyor. Uretilseydi eslemeden bir alan dusuruldugunde test o alani
   // aramaktan da vazgecer ve yesil kalirdi.
   const fieldsOfStep: Record<string, (keyof DraftAnswers)[]> = {
+    phone: ['phone'],
     identity: ['name', 'birthDate'],
     audience: ['gender', 'audience'],
     intent: ['intent'],

@@ -23,6 +23,13 @@ type TextFieldProps = Omit<TextInputProps, 'style'> & {
   error?: string | undefined;
   /** Sifre alanlarinda gorunurluk anahtari. */
   secure?: boolean;
+  /**
+   * Alanin solunda sabit duran, yazilamayan parca -- ulke kodu gibi.
+   *
+   * Genisligi olculuyor, sabit yazilmiyor: sistem yazi tipi buyudugunde sabit
+   * bir bosluk metnin onekle cakismasina yol acardi.
+   */
+  prefix?: string | undefined;
 };
 
 /**
@@ -32,12 +39,13 @@ type TextFieldProps = Omit<TextInputProps, 'style'> & {
  * formun tepesindeki bir liste, hangi alanin kastedildigini aramaya birakiyor.
  */
 export const TextField = forwardRef<TextInput, TextFieldProps>(function TextField(
-  { label, error, secure = false, ...inputProps },
+  { label, error, secure = false, prefix, ...inputProps },
   ref,
 ) {
   const { colors, radius, spacing, type } = useTheme();
   const [revealed, setRevealed] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [prefixWidth, setPrefixWidth] = useState(0);
 
   const borderColor = error ? colors.danger : focused ? colors.clay : colors.hairline;
 
@@ -52,7 +60,10 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
           ref={ref}
           placeholderTextColor={colors.inkSoft}
           {...inputProps}
-          accessibilityLabel={label}
+          // Onek gorsel olarak alanin icinde ama ayri bir dugum; ekran
+          // okuyucuya alanin adiyla birlikte tek parca halinde veriliyor,
+          // yoksa "+90" baglamsiz bir sekilde ayrica okunurdu.
+          accessibilityLabel={prefix ? `${label}, ${prefix}` : label}
           // Yayilimdan sonra geliyorlar. Once yazildiklarinda cagiranin kendi
           // `onBlur`'u (form kutuphanesi her alana bir tane veriyor) bunlari
           // eziyordu: odak halkasi bir kez yandiktan sonra hic sonmuyor ve
@@ -75,12 +86,35 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
             borderRadius: radius.md,
             borderCurve: 'continuous',
             paddingVertical: spacing.lg,
-            paddingLeft: spacing.lg,
+            paddingLeft: prefix ? spacing.lg + prefixWidth + spacing.sm : spacing.lg,
             // Sifre alaninda metin, anahtarin ve ayirici cizginin altina
             // girmiyor: imlec goz ikonunun arkasinda kaybolmamali.
             paddingRight: secure ? TOGGLE_SIZE + spacing.lg : spacing.lg,
           }}
         />
+
+        {prefix ? (
+          <View
+            // Dokunuslar alana gidiyor: onek bir hedef degil, alanin
+            // yazilamayan bir parcasi.
+            pointerEvents="none"
+            // Ekran okuyucu bunu ayrica okumuyor; alanin etiketinde zaten var.
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            onLayout={(event) => setPrefixWidth(event.nativeEvent.layout.width)}
+            style={{
+              position: 'absolute',
+              left: spacing.lg,
+              top: 0,
+              bottom: 0,
+              justifyContent: 'center',
+            }}
+          >
+            <AppText variant="control" tone="inkSoft">
+              {prefix}
+            </AppText>
+          </View>
+        ) : null}
 
         {secure ? (
           <View
