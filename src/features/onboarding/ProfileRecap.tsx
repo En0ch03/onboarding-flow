@@ -2,7 +2,7 @@ import { View } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { AppText } from '@/components/AppText';
-import { nameWithAge, photoSummary, strings } from '@/constants/strings';
+import { nameWithAge, phoneSummary, photoSummary, strings } from '@/constants/strings';
 import type { DraftAnswers } from '@/state/onboardingStore';
 import { useTheme } from '@/theme';
 
@@ -56,6 +56,7 @@ export function ProfileRecap({ answers, options }: ProfileRecapProps) {
         {nameWithAge(answers.name ?? '', ageFromDraft(answers.birthDate))}
       </AppText>
 
+      <RecapRow label={strings.completion.recapPhone} value={phoneSummary(answers.phone)} />
       <RecapRow
         label={strings.completion.recapAudience}
         value={labelsFor('audience', answers.audience)}
