@@ -13,6 +13,18 @@ describe('alanin kabul ettigi uzunluk', () => {
     expect(pasted.length).toBeLessThanOrEqual(MAX_INPUT_LENGTH);
     expect(inspectPhone(pasted.slice(0, MAX_INPUT_LENGTH))).toBeNull();
   });
+
+  it.each([['0090 555 123 45 67'], ['+90 0555 123 45 67']])(
+    'alisilmis ama desteklenmeyen %s bicimi reddediliyor',
+    (pasted) => {
+      // Bunlar alana **tam** giriyor; reddin sebebi uzunluk degil kural seti.
+      // Sinirla karistirilmasin diye ikisi ayri ayri yaziliyor: biri gun gelip
+      // desteklenirse bu satir duser ve karar kaydi da guncellenmek zorunda
+      // kalir.
+      expect(pasted.length).toBeLessThanOrEqual(MAX_INPUT_LENGTH);
+      expect(inspectPhone(pasted)).toBe('invalid');
+    },
+  );
 });
 
 describe('normalizePhone', () => {

@@ -20,6 +20,11 @@ function paddingLeft(view: RenderResult, label: string): number {
  * Test ortaminda yerlesim hic calismiyor, yani `onLayout` kendiliginden
  * tetiklenmiyor ve olculen genislik sifir kaliyor. Bu cagri olmadan yazilan
  * her iddia, olcumu hic gormeden gecer.
+ *
+ * Sinirini bilerek yaziyorum: burada sinanan sey **olcumun kullanildigi**.
+ * Olcumun gercekten geldigi -- yani cihazda o dugum icin `onLayout`in sifirdan
+ * farkli bir genislik verdigi -- burada yanlislanamaz; o, cihazda goze bakan
+ * bir madde.
  */
 async function measurePrefix(view: RenderResult, width: number) {
   const node = view.getByText(PREFIX, { includeHiddenElements: true }).parent;
