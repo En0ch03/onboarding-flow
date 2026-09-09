@@ -6,6 +6,7 @@ import { useOnboardingStore, type AnswersUpdate, type DraftAnswers } from '@/sta
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { PhoneStep } from './phone.step';
+import { MAX_INPUT_LENGTH } from './phoneNumber';
 
 afterEach(cleanup);
 
@@ -58,6 +59,36 @@ describe('PhoneStep', () => {
     // Onek ayri bir dugum; etikete katilmasaydi ya baglamsiz okunurdu ya da
     // hic duyulmazdi.
     expect(view.getByLabelText(fieldLabel)).toBeTruthy();
+  });
+
+  it('ulke kodu ekran okuyucuya ikinci kez okunmuyor', async () => {
+    const { view } = await renderStep();
+
+    // Ayni bilgi alanin etiketinde zaten var. Gizlenmezse ekran okuyucu once
+    // baglamsiz bir "+90", sonra alanin etiketini okur.
+    expect(view.queryByText(strings.steps.phonePrefix)).toBeNull();
+  });
+
+  it('ulke koduna dokunmak alani odakliyor: onek bir hedef degil', async () => {
+    const { view } = await renderStep();
+
+    const prefix = view.getByText(strings.steps.phonePrefix, { includeHiddenElements: true });
+    expect(prefix.parent?.props.pointerEvents).toBe('none');
+  });
+
+  it('sayi klavyesi aciliyor', async () => {
+    const { view } = await renderStep();
+
+    // Harf klavyesi bu alanda yalnizca yer kaplar; numara rakamdan ibaret.
+    expect(view.getByLabelText(fieldLabel).props.keyboardType).toBe('phone-pad');
+  });
+
+  it('yapistirilan uzun yazim alana sigiyor', async () => {
+    const { view } = await renderStep();
+
+    // Dar bir sinir, temizligin hic gormedigi bir metin birakir ve on haneli
+    // ama yanlis bir numara uretir.
+    expect(view.getByLabelText(fieldLabel).props.maxLength).toBe(MAX_INPUT_LENGTH);
   });
 
   it('kaldigi yerden donen kullanici numarasini alanda buluyor', async () => {

@@ -1,4 +1,19 @@
-import { inspectPhone, normalizePhone } from './phoneNumber';
+import { MAX_INPUT_LENGTH, inspectPhone, normalizePhone } from './phoneNumber';
+
+describe('alanin kabul ettigi uzunluk', () => {
+  // `maxLength` yapistirmayi `onChangeText`'ten **once** kirpiyor, yani dar bir
+  // sinir temizligin hic gormedigi bir metin birakiyor. Sinir ile temizlik bu
+  // yuzden ayni testte bulusuyor: biri digerinden habersiz degistirilemesin.
+  it.each([
+    ['+90 555 123 45 67'],
+    ['+90 (555) 123 45 67'],
+    ['0555 123 45 67'],
+    ['90 555 123 45 67'],
+  ])('yapistirilan %s alana sigiyor ve temizlendiginde gecerli kaliyor', (pasted) => {
+    expect(pasted.length).toBeLessThanOrEqual(MAX_INPUT_LENGTH);
+    expect(inspectPhone(pasted.slice(0, MAX_INPUT_LENGTH))).toBeNull();
+  });
+});
 
 describe('normalizePhone', () => {
   it('yazim isaretlerini dusuruyor', () => {
@@ -9,6 +24,14 @@ describe('normalizePhone', () => {
     // Alistigimiz yazim bu: kullanicilarin cogu numarayi sifirla yaziyor ve
     // bunu bir hata olarak geri cevirmek, duzeltmesi bize ait olan bir seyi
     // kullaniciya yikmak olurdu.
+    expect(normalizePhone('05551234567')).toBe('5551234567');
+  });
+
+  it('bastaki sifiri yalnizca on birinci hane yazilinca dusuruyor', () => {
+    // Kirpma uzunluga bagli. Yarim yazilmis bir numarada sifiri dusurmek,
+    // kullanici yazmaya devam ederken alanin altindan kaymasi demek olurdu.
+    expect(normalizePhone('0555')).toBe('0555');
+    expect(normalizePhone('0555123456')).toBe('0555123456');
     expect(normalizePhone('05551234567')).toBe('5551234567');
   });
 

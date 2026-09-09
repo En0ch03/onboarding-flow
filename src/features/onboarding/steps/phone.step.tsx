@@ -4,7 +4,7 @@ import { TextField } from '@/components/TextField';
 import { strings } from '@/constants/strings';
 
 import type { StepProps } from '../engine/types';
-import { normalizePhone } from './phoneNumber';
+import { MAX_INPUT_LENGTH, normalizePhone } from './phoneNumber';
 
 /**
  * Akisin ilk adimi: telefon numarasi.
@@ -32,9 +32,9 @@ export function PhoneStep({ values, onChange }: StepProps) {
         keyboardType="phone-pad"
         textContentType="telephoneNumber"
         autoComplete="tel"
-        // On haneden uzun: yapistirilan ulke kodlu bicimler alana sigsin ve
-        // temizlik onlari kirpabilsin.
-        maxLength={15}
+        // Sinir modulden geliyor: temizlikle birlikte sinaniyor, cunku dar bir
+        // sinir yapistirilan metni temizlik gormeden kirpar.
+        maxLength={MAX_INPUT_LENGTH}
         returnKeyType="done"
       />
     </View>

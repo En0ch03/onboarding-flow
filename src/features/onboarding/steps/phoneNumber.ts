@@ -12,6 +12,22 @@ import { strings } from '@/constants/strings';
 const LENGTH = 10;
 const MOBILE_PREFIX = '5';
 
+/**
+ * Alanin kabul ettigi en uzun girdi.
+ *
+ * On haneden cok daha buyuk olmasi bilincli. `maxLength` yapistirmayi
+ * `onChangeText`'ten **once** kirpiyor, yani dar bir sinirda temizlik metnin
+ * tamamini hic gormuyor: `+90 555 123 45 67` on yedi karakter ve on beste
+ * kirpilirsa geriye `9055512345` kaliyor -- on haneli, tamamlanmis gorunen,
+ * yanlis bir numara. Kullanici akisin ilk adiminda kendi yapmadigi bir hata
+ * icin uyari aliyor.
+ *
+ * Sinir bu yuzden en uzun alisilmis yazimi (`+90 (555) 123 45 67`) alacak
+ * kadar genis. Deger yine de buyumuyor: alan kontrollu ve `normalizePhone`
+ * her tusta rakamlara indiriyor.
+ */
+export const MAX_INPUT_LENGTH = 24;
+
 export type PhoneProblem = 'incomplete' | 'invalid' | null;
 
 /**
