@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, type RenderResult } from '@testing-library/react-native';
+import { act, cleanup, fireEvent, waitFor, type RenderResult } from '@testing-library/react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
@@ -97,12 +97,16 @@ async function renderStep(photos: UploadedPhoto[] = []) {
   return { view, seen };
 }
 
-/** Siradaki bos kutuya dokunup kaynak secer. */
-async function addPhoto(view: RenderResult, source: 'camera' | 'library' = 'library') {
-  await act(async () => {
-    fireEvent.press(view.getByLabelText(strings.photoSlot.empty));
-  });
-
+/**
+ * Acik kaynak sayfasindan bir kaynak secer ve sayfanin ekrandan kalkmasini
+ * bekler.
+ *
+ * Secici, sayfa kapanmadan acilmiyor; beklemeden yazilan bir test seciciyi
+ * hic acilmamis sayar. Daha kotusu: yarim kalan bir secim, tuketilmemis bir
+ * `mockResolvedValueOnce` birakiyor ve `clearAllMocks` bir kerelik kuyrugu
+ * temizlemedigi icin o deger sonraki testin yuklemesine cevap veriyor.
+ */
+async function chooseSource(view: RenderResult, source: 'camera' | 'library') {
   await act(async () => {
     fireEvent.press(
       view.getByLabelText(
@@ -110,6 +114,20 @@ async function addPhoto(view: RenderResult, source: 'camera' | 'library' = 'libr
       ),
     );
   });
+
+  await waitFor(() => {
+    expect(view.queryByLabelText(strings.photoSource.camera)).toBeNull();
+  });
+  await act(async () => {});
+}
+
+/** Siradaki bos kutuya dokunup kaynak secer. */
+async function addPhoto(view: RenderResult, source: 'camera' | 'library' = 'library') {
+  await act(async () => {
+    fireEvent.press(view.getByLabelText(strings.photoSlot.empty));
+  });
+
+  await chooseSource(view, source);
 }
 
 /** Elle cozulen bir yukleme: sira ve es zamanlilik testin elinde. */
@@ -165,6 +183,35 @@ describe('PhotosStep — kutu duzeni', () => {
 });
 
 describe('PhotosStep — kaynak secimi', () => {
+  it('native secici, kaynak sayfasi ekranda dururken acilmiyor', async () => {
+    // Kapanmakta olan bir sayfanin ustune sunulan native denetleyici, sayfa
+    // kapaninca altindan cekiliyor: ekranda hicbir sey acilmiyor ve dokunuslar
+    // bir yere gitmiyor. Sayfanin gorunurlugunu kaldirmak yetmiyor -- kapanis
+    // animasyonu boyunca `Modal` ayakta kaliyor.
+    const { view } = await renderStep();
+
+    let sheetOnScreen: boolean | null = null;
+    picker.requestCameraPermissionsAsync.mockImplementation(async () => {
+      sheetOnScreen = view.queryByLabelText(strings.photoSource.camera) !== null;
+      return granted;
+    });
+
+    await act(async () => {
+      fireEvent.press(view.getByLabelText(strings.photoSlot.empty));
+    });
+    await act(async () => {
+      fireEvent.press(view.getByLabelText(strings.photoSource.camera));
+    });
+
+    // Izin istegi de bir native sunum: sayfa dururken o da yapilmamali.
+    expect(picker.requestCameraPermissionsAsync).not.toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(picker.launchCameraAsync).toHaveBeenCalled();
+    });
+    expect(sheetOnScreen).toBe(false);
+  });
+
   it('kamera secilince kamera aciliyor, galeri degil', async () => {
     const { view } = await renderStep();
     await addPhoto(view, 'camera');
@@ -332,9 +379,7 @@ describe('PhotosStep — fotograf nereye yerlesiyor', () => {
     await act(async () => {
       fireEvent.press(view.getByLabelText(strings.photoSlot.failed));
     });
-    await act(async () => {
-      fireEvent.press(view.getByLabelText(strings.photoSource.library));
-    });
+    await chooseSource(view, 'library');
 
     expect(ids(seen)).toEqual(['x', 'r', 'z']);
   });

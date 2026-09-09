@@ -1,5 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 
 import { uploadPhoto } from '@/api/media';
@@ -37,6 +37,11 @@ export function PhotosStep({ values, onChange }: StepProps) {
   const transfers = usePhotoTransfers((state) => state.transfers);
   const markTransfer = usePhotoTransfers((state) => state.mark);
   const [asked, setAsked] = useState<number | null>(null);
+
+  // Secilen kaynak, sayfa ekrandan kalkana kadar burada bekliyor. Durum
+  // yerine ref: bekleyen isin okundugu an bir cizim degil, sayfanin
+  // sokulusu.
+  const queued = useRef<{ index: number; from: PhotoSource } | null>(null);
 
   async function permitted(source: PhotoSource, stale: () => boolean): Promise<boolean> {
     const permission =
@@ -190,9 +195,17 @@ export function PhotosStep({ values, onChange }: StepProps) {
         visible={asked !== null}
         onClose={() => setAsked(null)}
         onSelect={(from) => {
-          const index = asked;
+          if (asked !== null) queued.current = { index: asked, from };
           setAsked(null);
-          if (index !== null) void pick(index, from);
+        }}
+        // Secici, sayfa ekrandan tamamen kalktiktan sonra aciliyor. Ayni
+        // karede acmak, kapanmakta olan sayfanin ustune sunmak demekti:
+        // sayfa kapaninca native denetleyici de altindan cekiliyor, ekranda
+        // hicbir sey acilmiyor ve dokunuslar bir yere gitmiyor.
+        onClosed={() => {
+          const job = queued.current;
+          queued.current = null;
+          if (job !== null) void pick(job.index, job.from);
         }}
       />
     </View>
