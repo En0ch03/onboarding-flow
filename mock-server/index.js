@@ -3,8 +3,12 @@
 /**
  * Sozlesmeyi birebir uygulayan gelistirme sunucusu.
  *
- * Uygulamanin icinde sahte veri veya sahte dal yok; uygulama yalnizca bir
- * temel adres biliyor. Gercek sunucuya gecis tek bir ortam degiskeni.
+ * Uygulamanin icinde sahte veri veya sahte dal yok; bildigi sey bir adresten
+ * ibaret ve gercek sunucuya gecis tek bir ortam degiskeni.
+ *
+ * Sozlesmenin tamami baska bir sunucuda karsilaniyorsa burasi yalnizca
+ * sozlesmede yeri olmayan iki uc icin ayakta kalabilir: secenek listeleri ve
+ * gorsel yukleme.
  */
 
 const express = require('express');
@@ -91,6 +95,23 @@ function requireAuth(req, res, next) {
   const user = state.findUserById(req.userId);
   if (!user) return res.status(401).json({ error: 'token_expired' });
   req.user = user;
+  next();
+}
+
+/**
+ * Sozlesmede yeri olmayan uclarin kimlik kontrolu.
+ *
+ * Bu sunucu sozlesmenin tamami baska bir yerde karsilanirken de ayakta
+ * kalabiliyor: o durumda token'i baska bir sunucu veriyor ve burasi onu
+ * cozemiyor. Kendi defterinde bulamadigi bir token'i reddetseydi, sozlesmeyi
+ * tasiyan sunucu degistiginde yukleme yolu sessizce olurdu.
+ *
+ * Yine de token'in **varligi** araniyor: istemcinin bu ucu kimliksiz
+ * cagirmadigi sinanmaya devam etsin.
+ */
+function requireBearer(req, res, next) {
+  const header = req.get('authorization') || '';
+  if (!header.startsWith('Bearer ')) return res.status(401).json({ error: 'token_expired' });
   next();
 }
 
@@ -228,7 +249,7 @@ app.get('/api/v1/config/options', (_req, res) => {
  * sabit; bu uc nokta gecicidir ve gercek mekanizma netlestiginde degisecek.
  * Istemci tarafinda tek bir fonksiyonun arkasinda yalitildi.
  */
-app.post('/api/v1/upload', requireAuth, upload.single('file'), (req, res) => {
+app.post('/api/v1/upload', requireBearer, upload.single('file'), (req, res) => {
   if (!req.file)
     return res.status(422).json({ error: 'validation_failed', fields: { file: 'required' } });
 
