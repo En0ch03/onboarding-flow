@@ -35,9 +35,12 @@ describe('LaunchScreen', () => {
 
     const screen = await renderWithTheme(<LaunchScreen />);
 
-    expect(screen.getByText(strings.launch.title)).toBeTruthy();
-    expect(screen.getByText(strings.launch.status)).toBeTruthy();
-    expect(screen.getByText(strings.launch.hint)).toBeTruthy();
+    // Metinler sozlukten degil harfi harfine sinaniyor: sozluk uzerinden
+    // yazilan bir iddia, girdi bosaltildiginda kendisi de bosalir ve test
+    // hicbir sey soylemeden gecer.
+    expect(screen.getByText('Onboarding')).toBeTruthy();
+    expect(screen.getByText('Hazırlanıyor')).toBeTruthy();
+    expect(screen.getByText('Senin için her şeyi yoluna koyuyoruz.')).toBeTruthy();
   });
 
   it('bekleme cubugunu ekran okuyucuya bir ilerleme gostergesi olarak veriyor', async () => {

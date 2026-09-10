@@ -62,6 +62,13 @@ describe('journey artwork preloading', () => {
     await expect(preloadJourneyArtwork()).resolves.toBe('skipped');
   });
 
+  it('keeps the ceiling short enough to still be a launch', async () => {
+    // Ust sinirin varligi yetmiyor: yeterince buyuk bir sinir, sinirsiz
+    // beklemekle ayni sey. On saniye, bir acilisin kullanicinin sabrini
+    // asmadan bekleyebilecegi en ust nokta.
+    expect(ARTWORK_PRELOAD_CEILING_MS).toBeLessThanOrEqual(10_000);
+  });
+
   it('gives up on the artwork once the ceiling passes', async () => {
     jest.useFakeTimers();
     // Hicbir zaman cozulmeyen bir indirme: ust sinir olmasa acilis burada

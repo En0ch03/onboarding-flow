@@ -93,6 +93,10 @@ export function LaunchScreen() {
       <View
         testID="launch-progress"
         accessibilityRole="progressbar"
+        // Cubugun kendi cumlesi yok: ekranda yazan bekleme satirini
+        // kullaniyor, boylece ekran okuyucu duyduğu sey ile gorunen sey
+        // ayni kaliyor.
+        accessibilityLabel={strings.launch.status}
         onLayout={measureTrack}
         style={{
           height: TRACK_HEIGHT,
