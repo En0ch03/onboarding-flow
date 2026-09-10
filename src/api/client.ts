@@ -132,7 +132,12 @@ export function createApiClient(options: {
         config.headers.set('Authorization', `Bearer ${accessToken}`);
         return await client.request(config);
       } catch {
-        queue.cancel();
+        // Kuyruk burada **iptal edilmiyor.** Kuyruk paylasilan bir sey ve
+        // buradaki basarisizlik bu istege ait: iptal etmek, baska bir istegin
+        // o anda ucusta olan yenilemesini kuyruktan silerdi ve bir sonraki 401
+        // ikinci bir yenileme baslatirdi -- kuyrugun onlemek icin var oldugu
+        // durumun ta kendisi. Basarisiz bir yenileme zaten kendi `finally`'siyle
+        // kuyrugu bosaltiyor.
         await bridge.onSessionEnded();
         // Ozgun hata firlatiliyor: 401 govdesi zaten "oturum bitti" olarak
         // normallesiyor ve yenileme hatasinin detayi kullaniciyi ilgilendirmiyor.
@@ -192,8 +197,12 @@ export const api = createApiClient({ baseURL, bridge: delegatingBridge, refreshQ
  * koprusu ve yenileme kuyrugu bilerek paylasiliyor: yukleme kimlik istiyor,
  * kullanicinin tek bir oturumu var ve o oturumu yenileyecek yer her iki
  * durumda da sozlesme adresi. Ayri bir kuyruk iki es zamanli yenileme
- * baslatirdi; kendi adresine bagli bir yenileme ise tezgahtan gelen bir 401'i
- * gecerli bir oturumun kapanisina cevirirdi.
+ * baslatirdi; kendi adresine bagli bir yenileme ise refresh token'i tezgaha
+ * tasir ve tezgah onu tanimadigi icin gecerli bir oturumu kapatirdi.
+ *
+ * Bu, tezgahtan gelen bir 401'in oturumu asla kapatamayacagi anlamina gelmiyor:
+ * sozlesme sunucusuna sorulan yenileme de basarisiz olursa oturum gercekten
+ * bitmistir ve kapanir. Degisen sey, kararin dogru sunucuya sorulmasi.
  *
  * Adres verilmediginde `baseURL` ile ayni cikiyor, yani uygulama tek bir
  * sunucu biliyor. Ayrildiklarinda bunu kuran kisi bilerek yapmis oluyor ve

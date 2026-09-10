@@ -94,7 +94,17 @@ The two endpoints above that the contract does _not_ define are the catch. A ser
 EXPO_PUBLIC_API_URL=https://your-host/api/v1 EXPO_PUBLIC_STANDIN_API_URL=http://<your machine's LAN IP>:4000/api/v1 npm start
 ```
 
-Now the contract endpoints go to the real server and those two stay on the mock, which has to keep running. `POST /upload` accepts any bearer token in this arrangement, because the token was issued by a server it cannot check with; it still refuses a request that carries none. Uploaded images come back as absolute URLs pointing at the mock, and the real server stores them in `avatar_url` as given — which also means they are only reachable from the same network.
+Now the contract endpoints go to the real server and those two stay on the mock, which has to keep running — and in this arrangement it has to be told so:
+
+```bash
+MOCK_STANDIN=1 npm run mock
+```
+
+That flag only affects `POST /upload`: the token now comes from a server the mock cannot check with, so it accepts any bearer token while still refusing a request that carries none. Without the flag nothing is relaxed, and the default single-server setup keeps validating tokens as before.
+
+Uploaded images come back as absolute URLs pointing at the mock, and the real server stores them in `avatar_url` as given — which also means they are only reachable from the same network.
+
+One consequence worth stating plainly: the session token issued by the real server is sent to the mock as well, over plain HTTP on your LAN. Set this up on a network you trust, and not on shared or public Wi-Fi.
 
 Leave `EXPO_PUBLIC_STANDIN_API_URL` unset and both resolve to the same address, so this split cannot happen by accident. Set it only when you know why.
 

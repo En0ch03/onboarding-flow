@@ -10,11 +10,16 @@
  * Sozlesme su an rotasyon yapmiyor ama bu kod rotasyona dayanikli yazildi:
  * sunucu ileride rotasyona gecerse istemci degismeden calismaya devam eder.
  */
+/**
+ * Kuyrugun disari verdigi tek sey yenilemenin kendisi.
+ *
+ * Bekleyen yenilemeyi disaridan unutturan bir yol bilerek yok. Kuyruk birden
+ * fazla istemci tarafindan paylasiliyor ve bir istegin basarisizligi, baska bir
+ * istegin ucustaki yenilemesini silme yetkisi vermemeli.
+ */
 export type RefreshQueue = {
   /** Devam eden bir yenileme varsa ayni soz dondurulur; yoksa yenisi baslar. */
   refresh: () => Promise<string>;
-  /** Test ve oturum kapanisi icin: bekleyen yenilemeyi unutur. */
-  cancel: () => void;
 };
 
 export function createRefreshQueue(doRefresh: () => Promise<string>): RefreshQueue {
@@ -32,10 +37,6 @@ export function createRefreshQueue(doRefresh: () => Promise<string>): RefreshQue
 
       inFlight = attempt;
       return attempt;
-    },
-
-    cancel() {
-      inFlight = null;
     },
   };
 }

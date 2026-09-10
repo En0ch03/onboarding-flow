@@ -249,6 +249,23 @@ describe('paylasilan yenileme', () => {
     expect(refreshCalls[0]?.baseURL).toBe(CONTRACT);
   });
 
+  /**
+   * Yorumun soz vermedigi yarisi. Tezgahtan gelen 401 oturumu "asla"
+   * kapatmiyor degil: karar dogru sunucuya soruluyor ve o sunucu da hayir
+   * derse oturum gercekten bitmistir.
+   */
+  it('sozlesme yenilemesi de basarisizsa oturum gercekten kapaniyor', async () => {
+    const { bridge } = bridgeWith({ getRefreshToken: () => null });
+
+    const { adapter } = stubServer(() => ({ status: 401, data: { error: 'token_expired' } }));
+    const queue = createRefreshQueueFor({ baseURL: CONTRACT, bridge, adapter });
+    const standIn = createApiClient({ baseURL: STANDIN, bridge, adapter, refreshQueue: queue });
+
+    await expect(standIn.get('/config/options')).rejects.toBeDefined();
+
+    expect(bridge.onSessionEnded).toHaveBeenCalled();
+  });
+
   it('tezgahtan gelen 401 gecerli bir oturumu kapatmiyor', async () => {
     const { standIn, bridge } = twoClients();
 

@@ -45,6 +45,9 @@ function loadClient(env: Record<string, string | undefined>): {
 
   let loaded!: { api: AxiosInstance; standInApi: AxiosInstance };
   jest.isolateModules(() => {
+    // Modul her senaryoda yeniden yuklenmeli: adresler ice aktarma aninda
+    // cozuluyor. `import` bunu yapamaz.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     loaded = require('./client') as { api: AxiosInstance; standInApi: AxiosInstance };
   });
 

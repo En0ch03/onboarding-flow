@@ -20,6 +20,19 @@ const { completionProblems } = require('./completion');
 const { optionGroups } = require('./options');
 const state = require('./state');
 
+/**
+ * Tezgah kipi.
+ *
+ * Sozlesme baska bir sunucuda karsilaniyorsa burasi yalnizca sozlesmede yeri
+ * olmayan iki uc icin ayakta kaliyor ve token'i cozemiyor -- o durumda yukleme
+ * kapisi token'in yalnizca varligini arayabilir.
+ *
+ * Kip acikca isteniyor. Varsayilan kurulumda gevseme **yok**: her sey burada
+ * kosuyorsa token gercekten bir kullaniciya cozulmeli, yoksa yuklemenin
+ * 401 -> yenile -> tekrar yolu bu sunucuya karsi hic kosturulamazdi.
+ */
+const standInMode = process.env.MOCK_STANDIN === '1';
+
 const app = express();
 const port = Number(process.env.PORT || 4000);
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 12 * 1024 * 1024 } });
@@ -233,15 +246,20 @@ app.get('/api/v1/config/options', (_req, res) => {
  * sabit; bu uc nokta gecicidir ve gercek mekanizma netlestiginde degisecek.
  * Istemci tarafinda tek bir fonksiyonun arkasinda yalitildi.
  */
-app.post('/api/v1/upload', requireBearer, upload.single('file'), (req, res) => {
-  if (!req.file)
-    return res.status(422).json({ error: 'validation_failed', fields: { file: 'required' } });
+app.post(
+  '/api/v1/upload',
+  standInMode ? requireBearer : requireAuth,
+  upload.single('file'),
+  (req, res) => {
+    if (!req.file)
+      return res.status(422).json({ error: 'validation_failed', fields: { file: 'required' } });
 
-  const id = state.newId('med');
-  media.set(id, { buffer: req.file.buffer, mime: req.file.mimetype || 'image/jpeg' });
+    const id = state.newId('med');
+    media.set(id, { buffer: req.file.buffer, mime: req.file.mimetype || 'image/jpeg' });
 
-  res.status(201).json({ url: `${req.protocol}://${req.get('host')}/api/v1/media/${id}` });
-});
+    res.status(201).json({ url: `${req.protocol}://${req.get('host')}/api/v1/media/${id}` });
+  },
+);
 
 app.get('/api/v1/media/:id', (req, res) => {
   const item = media.get(req.params.id);
@@ -254,4 +272,5 @@ app.use((_req, res) => res.status(404).json({ error: 'not_found' }));
 app.listen(port, () => {
   console.log(`Mock API listening on http://localhost:${port}/api/v1`);
   console.log(`Access token lifetime: ${state.ACCESS_TTL_SECONDS}s`);
+  if (standInMode) console.log('Stand-in mode: uploads accept a token issued elsewhere');
 });
