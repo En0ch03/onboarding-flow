@@ -130,6 +130,19 @@ describe('BirthDateField', () => {
     }
   });
 
+  it('iOS: cark temanin varyantini aliyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      const { view } = await mount(empty);
+      await press(field(view));
+
+      // Uygulama koyu temada aciliyor; cark da acik zeminli gelmemeli.
+      expect(picker(view).props.themeVariant).toBe('dark');
+    } finally {
+      restore();
+    }
+  });
+
   it('iOS: yas kapisi gorunur kaliyor, on sekiz altindaki tarih secilebiliyor', async () => {
     const restore = onPlatform('ios');
     try {
