@@ -1,7 +1,15 @@
 import { BlurView } from 'expo-blur';
 import { GlassView, isGlassEffectAPIAvailable, isLiquidGlassAvailable } from 'expo-glass-effect';
-import type { ReactNode } from 'react';
-import { Platform, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { useEffect, useState, type ReactNode } from 'react';
+import {
+  AccessibilityInfo,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 
 import { useTheme, withAlpha } from '@/theme';
 
@@ -32,19 +40,94 @@ export function resolveGlassMode(): GlassMode {
   return isLiquidGlassAvailable() && isGlassEffectAPIAvailable() ? 'liquid' : 'blur';
 }
 
-/** Bulanik kipte dolgunun opakligi; cam kipte ayni deger tona gidiyor. */
-const TRANSLUCENT_FILL = 0.55;
+/**
+ * Bulanik kipte dolgunun opakligi; cam kipte ayni deger tona gidiyor.
+ *
+ * Deger bir denge noktasi: asagi inince metnin zemini zayifliyor, yukari
+ * cikinca arkadaki gorsel kayboluyor ve kart yeniden duz bir panele donuyor.
+ * Kontrast bilerek bu dolguya bagli, bulanikliga degil -- bulanikligin sonucu
+ * arkadaki goruntuye gore degisir, dolgunun opakligi degismez.
+ */
+const TRANSLUCENT_FILL = 0.4;
 
 /** Bulaniksiz kipte dolgu tek basina calisiyor, o yuzden daha opak. */
 const FLAT_FILL = 0.86;
+
+/** Rozette kipin yerini tutan harf. */
+const MODE_LETTERS: Record<GlassMode, string> = { liquid: 'L', blur: 'B', flat: 'F' };
+
+/**
+ * Sistemin saydamligi kisitlayip kisitlamadigi.
+ *
+ * Ayri bir kanca cunku cevap asenkron geliyor ve yalniz iOS'ta anlamli. Cevap
+ * gelmeden veya hic gelmeyecekse soru isareti kaliyor: burada yanlis bir
+ * "acik" yazmak, cihazi tutan kisiyi yanlis yone gonderir.
+ */
+function useTransparencyLabel() {
+  const [label, setLabel] = useState('saydamlık ?');
+
+  useEffect(() => {
+    if (Platform.OS !== 'ios') return;
+
+    let alive = true;
+    AccessibilityInfo.isReduceTransparencyEnabled()
+      .then((limited) => {
+        if (alive) setLabel(limited ? 'saydamlık kısıtlı' : 'saydamlık açık');
+      })
+      // Erisilebilirlik sorusu cevapsiz kalabilir; rozet bir teshis araci,
+      // cevaplayamadigi soru yuzunden ekrani dusurmemeli.
+      .catch(() => {});
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  return label;
+}
+
+/**
+ * Kartin hangi kiple cizildigini soyleyen kucuk etiket.
+ *
+ * Cihazda gorulen "efekt tam olmamis" tablosunun uc ayri sebebi olabiliyor:
+ * yanlis kip, isletim sistemi surumu, ya da saydamligi kisitlayan bir
+ * erisilebilirlik ayari. Uc bilgi ayni anda ekranda durursa cihazi tutan kisi
+ * tek bakista soyleyebiliyor; terminal ciktisi icin cihaz basina gecmek gerek.
+ */
+function GlassModeBadge({ mode }: { mode: GlassMode }) {
+  const { colors, radius, spacing } = useTheme();
+  const transparency = useTransparencyLabel();
+  const system = Platform.OS === 'ios' ? 'iOS' : 'Android';
+
+  return (
+    <Text
+      testID="glass-mode-badge"
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={{
+        position: 'absolute',
+        top: spacing.xs,
+        right: spacing.xs,
+        paddingHorizontal: spacing.xs,
+        paddingVertical: 2,
+        borderRadius: radius.sm,
+        overflow: 'hidden',
+        fontSize: 10,
+        color: colors.ink,
+        backgroundColor: withAlpha(colors.scrim, 0.55),
+      }}
+    >
+      {`${MODE_LETTERS[mode]} · ${system} ${Platform.Version} · ${transparency}`}
+    </Text>
+  );
+}
 
 /**
  * Form icerigini tasiyan buzlu kart.
  *
  * Arka plandaki gorseli karartmak yerine metne kendi zeminini veriyor:
  * karartma gorseli de yok ediyordu, kart onu kenarlardan sizdirmaya devam
- * ediyor. Okunabilirlik bilerek bulanikliga baglanmadi -- bulanikligin
- * sonucu arkadaki goruntuye gore degisir, dolgunun opakligi degismez.
+ * ediyor.
  *
  * Kart dekoratif: butun katmanlari ekran okuyucudan gizli ve dokunusu
  * gecirmiyor, icerik oldugu gibi erisilebilir kaliyor.
@@ -65,7 +148,9 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           // kenari dorde donduruyor.
           overflow: 'hidden',
           borderWidth: 1,
-          borderColor: withAlpha(colors.ink, 0.14),
+          // Kenarlik ust isigiyla alt golgenin arasinda kalmali; kendi tonu
+          // one cikinca kart yuzeyden cok cerceveye benziyordu.
+          borderColor: withAlpha(colors.ink, 0.12),
           padding: spacing.xl,
         },
         style,
@@ -90,8 +175,16 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           pointerEvents="none"
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          tint="dark"
-          intensity={50}
+          // `dark` iOS 10 oncesinden kalma duz bir koyu bulaniklik, sistemin
+          // materyali degil: arkadaki rengi tasimiyor ve kart camdan cok
+          // isli bir cama benziyor. Ince koyu materyal, kartin altindaki
+          // gorselden renk sizdiran ama metne zemin birakan tek kalinlik.
+          tint="systemThinMaterialDark"
+          // Siddet iOS'ta bir animatorun ilerleme oranina donuyor
+          // (`node_modules/expo-blur/ios/BlurEffectView.swift:53-56`): 100
+          // disindaki her deger materyali yarida kesiyor, yani hem bulaniklik
+          // hem materyalin kendi ton katmani yarim uygulaniyor.
+          intensity={100}
           style={StyleSheet.absoluteFill}
         />
       ) : null}
@@ -113,6 +206,7 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           kartin ust kenarinda toplanmasi. Kenarligin tek tonu, karti yuzeyden
           cok cerceveye benzetiyordu. */}
       <View
+        testID="glass-panel-edge-top"
         pointerEvents="none"
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
@@ -122,11 +216,33 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           left: 0,
           right: 0,
           height: 1,
-          backgroundColor: withAlpha(colors.ink, 0.22),
+          backgroundColor: withAlpha(colors.ink, 0.3),
+        }}
+      />
+
+      {/* Alt kenarda ust cizginin esi, ters yonde: isik yukaridan gelirse
+          govde asagida kalinlasir. Iki cizgi olmadan kart bir yuzey degil,
+          zemine yapisik bir dikdortgen gibi duruyordu. */}
+      <View
+        testID="glass-panel-edge-bottom"
+        pointerEvents="none"
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 1,
+          backgroundColor: withAlpha(colors.veil, 0.35),
         }}
       />
 
       {children}
+
+      {/* Yalniz gelistirme derlemesinde: urun derlemesinde bu dal hic
+          degerlendirilmiyor, paketleyici olu kodu ayikliyor. */}
+      {__DEV__ ? <GlassModeBadge mode={mode} /> : null}
     </View>
   );
 }
