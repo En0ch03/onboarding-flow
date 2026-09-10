@@ -15,79 +15,97 @@ const options: Option[] = [
 
 afterEach(cleanup);
 
-async function mount(selected: string[]) {
+async function mount(selected: string[], blocked: string[] = []) {
   const onPress = jest.fn();
   const view = await renderWithTheme(
     <ChipGrid
       options={options}
       isSelected={(id) => selected.includes(id)}
-      isBlocked={() => false}
-      blockedHint={() => undefined}
+      isBlocked={(id) => blocked.includes(id)}
+      blockedHint={(id) => (blocked.includes(id) ? 'Once birini birak' : undefined)}
       onPress={onPress}
     />,
   );
+  // Agac gercekten cizildi mi: bos bir agacta asagidaki negatif iddialar da
+  // gecerdi ve test yanlis sebeple yesil kalirdi.
+  expect(view.getByText('Kitap')).toBeTruthy();
   return { view, onPress };
 }
 
-/** Cipin dis kabugunun duzlestirilmis bicimi. */
-function chipStyle(view: Awaited<ReturnType<typeof renderWithTheme>>, label: string) {
-  return StyleSheet.flatten(view.getByLabelText(label).props.style) as Record<string, unknown>;
-}
+type ChipShell = {
+  borderWidth: number;
+  paddingHorizontal: number;
+  paddingVertical: number;
+  opacity: number;
+  width?: number;
+};
 
-async function layout(view: Awaited<ReturnType<typeof renderWithTheme>>, width: number) {
-  await act(async () => {
-    fireEvent(view.getByLabelText('Kitap').parent!, 'layout', {
-      nativeEvent: { layout: { width, height: 0, x: 0, y: 0 } },
-    });
-  });
+/** Cipin dis kabugunun duzlestirilmis bicimi. */
+function chipStyle(view: Awaited<ReturnType<typeof renderWithTheme>>, label: string): ChipShell {
+  return StyleSheet.flatten(view.getByLabelText(label).props.style) as ChipShell;
 }
 
 describe('ChipGrid', () => {
-  it('etikete secim isareti karistirmiyor', async () => {
+  it('hicbir cipte onay isareti yok', async () => {
     const { view } = await mount(['books']);
-    // Eski surumde secili cipin metni "✓  Kitap" oluyordu ve cip genisliyordu.
-    expect(view.getByText('Kitap')).toBeTruthy();
-    expect(view.queryByText('✓  Kitap')).toBeNull();
+    // Secim kenarlik ve dolguyla anlatiliyor. Bos bir isaret yuvasi
+    // kullaniciya hicbir sey soylemiyordu, dolu olani da etiketin yerini
+    // caliyordu.
+    expect(view.queryByText('✓')).toBeNull();
   });
 
-  it('secili ve secili olmayan cip ayni olculerde', async () => {
+  it('secim cipin olculerini degistirmiyor', async () => {
     const off = await mount([]);
     const on = await mount(['books']);
 
     const a = chipStyle(off.view, 'Kitap');
     const b = chipStyle(on.view, 'Kitap');
 
-    for (const key of ['paddingVertical', 'paddingHorizontal', 'borderWidth', 'width'] as const) {
-      expect(b[key]).toBe(a[key]);
-    }
+    // Kenarlik secilince kalinlasiyor; ic bosluk ayni miktarda kucululuyor.
+    // Toplam ayni kalmazsa dokunulan cip parmagin altinda buyur ve komsu
+    // cipler kayar.
+    expect(b.borderWidth + b.paddingHorizontal).toBe(a.borderWidth + a.paddingHorizontal);
+    expect(b.borderWidth + b.paddingVertical).toBe(a.borderWidth + a.paddingVertical);
   });
 
-  it('olculen genisligi esit sutunlara boluyor', async () => {
-    const { view } = await mount([]);
-    await layout(view, 342);
-
-    const widths = options.map((option) => chipStyle(view, option.label).width);
-    // 342 genislik, uc sutun, aralarinda 8 birim bosluk.
-    expect(widths).toEqual([108, 108, 108, 108]);
-  });
-
-  it('dar ekranda iki sutuna, tablette dorde gidiyor', async () => {
-    const narrow = await mount([]);
-    await layout(narrow.view, 260);
-    expect(chipStyle(narrow.view, 'Kitap').width).toBe(126);
-
-    const wide = await mount([]);
-    await layout(wide.view, 700);
-    expect(chipStyle(wide.view, 'Kitap').width).toBe(169);
-  });
-
-  it('secim degisince genislik degismiyor', async () => {
+  it('secili durumu yalnizca renkle anlatmiyor', async () => {
     const off = await mount([]);
-    await layout(off.view, 342);
     const on = await mount(['books']);
-    await layout(on.view, 342);
 
-    expect(chipStyle(on.view, 'Kitap').width).toBe(chipStyle(off.view, 'Kitap').width);
+    // Rengi ayirt edemeyen kullanici icin kenarlik kalinligi ikinci kanal.
+    expect(chipStyle(off.view, 'Kitap').borderWidth).toBe(1);
+    expect(chipStyle(on.view, 'Kitap').borderWidth).toBe(2);
+  });
+
+  it('etiket tek satirda kaliyor', async () => {
+    const { view } = await mount([]);
+    // Cip etiketi kadar genisledigi icin kirilmasina gerek yok; alt alta
+    // yazilan bir etiket cipi bir karta cevirir.
+    expect(view.getByText('Uzun yürüyüş').props.numberOfLines).toBe(1);
+  });
+
+  it('cip kendi genisligini etiketinden aliyor', async () => {
+    const { view } = await mount([]);
+    // Disaridan dayatilan bir hucre genisligi yok: esit sutun, uzun etiketi
+    // dikey kiriyordu.
+    expect(chipStyle(view, 'Uzun yürüyüş').width).toBeUndefined();
+  });
+
+  it('cipler dolan satirin ardindan alta sariyor', async () => {
+    const { view } = await mount([]);
+    const container = StyleSheet.flatten(
+      view.getByTestId('chip-grid').props.style,
+    ) as unknown as Record<string, unknown>;
+
+    expect(container.flexDirection).toBe('row');
+    expect(container.flexWrap).toBe('wrap');
+  });
+
+  it('secili durum ekran okuyucuya tasiniyor', async () => {
+    const { view } = await mount(['books']);
+
+    expect(view.getByLabelText('Kitap').props.accessibilityState.checked).toBe(true);
+    expect(view.getByLabelText('Kahve').props.accessibilityState.checked).toBe(false);
   });
 
   it('dokunulan secenegin kimligini bildiriyor', async () => {
@@ -98,31 +116,25 @@ describe('ChipGrid', () => {
     expect(onPress).toHaveBeenCalledWith('coffee');
   });
 
-  it('etiket kirpilmiyor', async () => {
-    // Kesilmis bir etiket kullaniciya ne sectigini soylemiyor.
-    const { view } = await mount([]);
-    expect(view.getByText('Uzun yürüyüş').props.numberOfLines).toBeUndefined();
+  it('sinir dolunca cip sonuk ama dokunulabilir kaliyor', async () => {
+    const { view, onPress } = await mount([], ['cinema']);
+
+    expect(chipStyle(view, 'Sinema').opacity).toBe(0.45);
+    await act(async () => {
+      fireEvent.press(view.getByLabelText('Sinema'));
+    });
+    // Dokunus reddi soyluyor; sessizce olen bir cip sebebini anlatamaz.
+    expect(onPress).toHaveBeenCalledWith('cinema');
   });
 
-  it('etiket sabit genislikteki hucrede sarabiliyor', async () => {
-    // Sarmayi mumkun kilan tek sey bu: bu ortamda varsayilan sifir, yani
-    // stil silinirse etiket kirpilmaz ama cipten tasar ve kapanan hata
-    // sessizce geri gelir.
-    const { view } = await mount([]);
-    const label = StyleSheet.flatten(view.getByText('Uzun yürüyüş').props.style) as Record<
-      string,
-      unknown
-    >;
-
-    expect(label.flexShrink).toBe(1);
-  });
-
-  it('secim isareti sistem yazisiyla sinirsiz buyumuyor', async () => {
-    // Yuva sabit genislikte; tavansiz bir glif onu asip etiketin uzerine
-    // biniyordu. Isaretin tasidigi bilgi ekran okuyucuya ayrica veriliyor.
+  it('nabiz durgun halde cipi yerinden oynatmiyor', async () => {
     const { view } = await mount(['books']);
-    const mark = view.getByText('✓');
+    const pulse = StyleSheet.flatten(view.getByTestId('chip-pulse-books').props.style) as {
+      transform: { scale: number }[];
+    };
 
-    expect(mark.props.maxFontSizeMultiplier).toBe(1.5);
+    // Nabiz secim anina ait; durgun cip bir olcekte duruyor, yoksa izgara
+    // kalici olarak kaymis olurdu.
+    expect(pulse.transform).toEqual([{ scale: 1 }]);
   });
 });

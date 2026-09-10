@@ -1,6 +1,12 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import type { ReactNode } from 'react';
-import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
+import { useState, type ReactNode } from 'react';
+import {
+  Platform,
+  ScrollView,
+  useWindowDimensions,
+  View,
+  type LayoutChangeEvent,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { JourneyBackdrop } from '@/features/onboarding/artwork/JourneyBackdrop';
@@ -68,7 +74,16 @@ const TOP_FADE = scale.xl;
 export function Screen({ header, children, footer, align = 'top', journeyProgress }: ScreenProps) {
   const { colors, scheme, screenPadding, spacing } = useTheme();
   const { height } = useWindowDimensions();
+  const [contentHeight, setContentHeight] = useState(0);
   const showJourney = journeyProgress !== undefined && scheme === 'dark';
+  // Olculmeden once perde cizilmiyor: yuksekligi bilinmeyen bir perde ya tum
+  // ekrani kaplar ya da hic gorunmez, ikisi de yanlis.
+  const showVeil = showJourney && contentHeight > 0;
+
+  const measureContent = (event: LayoutChangeEvent) => {
+    const next = event.nativeEvent.layout.height;
+    if (next !== contentHeight) setContentHeight(next);
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.paper }}>
@@ -114,7 +129,39 @@ export function Screen({ header, children, footer, align = 'top', journeyProgres
                   : null),
               }}
             >
-              {children}
+              {/* Blok kendi boyunu aliyor, ebeveyni gibi buyumuyor: perde
+                  yalnizca metnin arkasini kapatmali. Tum ekrani kaplayan bir
+                  perde okunabilirligi cozer ama arka plan gorselini de yok
+                  eder ve o zaman gorseli cizmenin bir anlami kalmaz. */}
+              <View testID="content-block" onLayout={measureContent}>
+                {showVeil ? (
+                  <LinearGradient
+                    testID="content-veil"
+                    pointerEvents="none"
+                    accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
+                    colors={[
+                      withAlpha(colors.paper, 0),
+                      withAlpha(colors.paper, 0.72),
+                      withAlpha(colors.paper, 0.86),
+                    ]}
+                    // Perde tam opakliga metnin bastigi yerde ulasiyor; ustteki
+                    // yumusama payi solma seridiyle ayni yukseklikte, yoksa
+                    // perdenin ust kenari gorselin uzerinde bir cizgi olarak
+                    // okunuyor. Yatayda ekran kenarina kadar tasiyor: kenar
+                    // boslugu kadar dar kalsaydi iki yanda seritler kalirdi.
+                    locations={[0, TOP_FADE / (contentHeight + TOP_FADE * 2), 1]}
+                    style={{
+                      position: 'absolute',
+                      top: -TOP_FADE,
+                      left: -screenPadding,
+                      right: -screenPadding,
+                      height: contentHeight + TOP_FADE * 2,
+                    }}
+                  />
+                ) : null}
+                {children}
+              </View>
             </View>
 
             {footer ? <View style={{ paddingTop: spacing.xl }}>{footer}</View> : null}

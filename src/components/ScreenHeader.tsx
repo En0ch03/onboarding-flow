@@ -1,7 +1,7 @@
 import { Pressable, View } from 'react-native';
 
 import { stepCounter, stepCounterLabel, strings } from '@/constants/strings';
-import { useTheme } from '@/theme';
+import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 
@@ -24,6 +24,25 @@ type ScreenHeaderProps = {
  * dugmeyi kacirmak olmasin.
  */
 const BACK_SIZE = 48;
+
+/**
+ * Okun tepeden tirnaga yuksekligi.
+ *
+ * Ok bir metin glifi degil, cizilmis bir sekil: glif ailenin kesimine gore
+ * inceliyor, dikeyde satir yuksekligiyle kayiyor ve yazi tipi yuklenemezse
+ * bambaska bir karaktere donusuyordu. Cizim yazi tipinden bagimsiz.
+ */
+const CHEVRON_HEIGHT = 22;
+
+/**
+ * Kolun uzunlugu. Kare kirk bes derece dondurulunce iki kenari bir "<"
+ * olusturuyor ve o seklin yuksekligi kenarin koseden koseye izdusumu kadar
+ * cikiyor; istenen yuksekligi kenara cevirmenin yolu bu.
+ */
+const CHEVRON_ARM = CHEVRON_HEIGHT / Math.SQRT2;
+
+/** Dokunma hedefinin platform asgarisi. */
+const SKIP_MIN_HEIGHT = 44;
 
 /**
  * Ekranlarin ust seridi. Uc yuvasi var ve bos yuvalar yer tutuyor: baslik
@@ -62,10 +81,21 @@ export function ScreenHeader({ onBack, step, skip }: ScreenHeaderProps) {
             })}
           >
             {/* Isaret dugmeyle birlikte buyumuyor: buyuyen sey hedef, cizim
-                degil. Kalin bir ok, sade seride agir geliyor. */}
-            <AppText variant="control" style={{ lineHeight: 20 }}>
-              ‹
-            </AppText>
+                degil. */}
+            <View
+              testID="back-chevron"
+              style={{
+                width: CHEVRON_ARM,
+                height: CHEVRON_ARM,
+                borderLeftWidth: 2,
+                borderBottomWidth: 2,
+                borderColor: colors.ink,
+                transform: [{ rotate: '45deg' }],
+                // Dondurulen sekil kendi kutusunun sagina yasliyor; daireye
+                // gore ortalamak icin geri cekiliyor.
+                marginLeft: 4,
+              }}
+            />
           </Pressable>
         ) : null}
       </View>
@@ -84,16 +114,25 @@ export function ScreenHeader({ onBack, step, skip }: ScreenHeaderProps) {
 
       <View style={{ minWidth: BACK_SIZE, alignItems: 'flex-end' }}>
         {skip ? (
-          // Atlama bilerek bir baglanti gibi duruyor: ikincil bir cikis yolu
-          // birincil eylem kadar yer kaplamamali. Geri dugmesinin aksine
-          // gorunur bir hedefe buyutulmuyor, ama dokunulacak alan asgariyi
-          // karsiliyor.
+          // Atlama gorunur bir hedef: alti cizili kucuk bir baglanti cihazda
+          // hem zor okunuyor hem zor dokunuluyordu. Hedefi gorunmez bir
+          // `hitSlop`a birakmak yerine kapsulun kendisi asgariyi karsiliyor;
+          // kullanici gordugu seye nisan aliyor.
           <Pressable
             accessibilityRole="button"
+            accessibilityLabel={skip.label}
             onPress={skip.onPress}
-            hitSlop={{ top: 16, bottom: 16, left: 16, right: 16 }}
+            hitSlop={8}
+            style={({ pressed }) => ({
+              minHeight: SKIP_MIN_HEIGHT,
+              justifyContent: 'center',
+              paddingVertical: spacing.sm,
+              paddingHorizontal: spacing.md,
+              borderRadius: radius.full,
+              backgroundColor: withAlpha(colors.ink, pressed ? 0.16 : 0.08),
+            })}
           >
-            <AppText variant="label" tone="inkSoft" style={{ textDecorationLine: 'underline' }}>
+            <AppText variant="button" tone="ink">
               {skip.label}
             </AppText>
           </Pressable>

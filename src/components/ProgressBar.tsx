@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Animated, Easing, View } from 'react-native';
 
-import { useTheme } from '@/theme';
+import { useTheme, withAlpha } from '@/theme';
 
 type ProgressBarProps = {
   current: number;
@@ -49,9 +49,12 @@ export function ProgressBar({ current, total }: ProgressBarProps) {
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
       style={{
-        height: 3,
+        height: 4,
         borderRadius: radius.full,
-        backgroundColor: colors.hairline,
+        // Iz ana metnin renginden saydamlastirilarak turuyor: ayirici cizgi
+        // rengi koyu zeminde neredeyse gorunmuyordu ve dolu olmayan kisim
+        // "yok" gibi okunuyordu.
+        backgroundColor: withAlpha(colors.ink, 0.14),
         overflow: 'hidden',
       }}
     >
