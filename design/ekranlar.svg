@@ -123,8 +123,9 @@
 </g>
 <rect x="1076" y="168" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
 <rect x="1076" y="168" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="1076" y="288" width="296" height="490" fill="url(#veilBody)"/>
 </g>
+<rect x="1090" y="292" width="268" height="344" rx="20" fill="#050505" fill-opacity="0.55" stroke="#F5F2ED" stroke-opacity="0.14"/>
+<path d="M 1110 292.5 H 1338" stroke="#F5F2ED" stroke-opacity="0.22" stroke-width="1"/>
 <text x="1098" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="1320" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
 <circle cx="1116" cy="242" r="18" fill="#151316" stroke="#2A2529"/>
