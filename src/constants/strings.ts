@@ -200,7 +200,9 @@ export const monthNames = [
 
 /** Adim sayaci. Yuzde degil sayac: akisla birebir ve dogruyu soyluyor. */
 export function stepCounter(current: number, total: number): string {
-  return `${current} / ${total}`;
+  // Sifir dolgulu iki hane: sayac adim degistikce genislik degistirirse ust
+  // serit her ekranda biraz kayiyor.
+  return `${String(current).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
 }
 
 /** Ayni sayacin ekran okuyucuya soylenen hali; bolu isareti okunmuyor. */

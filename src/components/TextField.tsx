@@ -3,7 +3,7 @@ import { forwardRef, useState } from 'react';
 import { Pressable, TextInput, View, type TextInputProps } from 'react-native';
 
 import { strings } from '@/constants/strings';
-import { useTheme } from '@/theme';
+import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 import { EyeIcon } from './EyeIcon';
@@ -48,6 +48,10 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
   const [prefixWidth, setPrefixWidth] = useState(0);
 
   const borderColor = error ? colors.danger : focused ? colors.clay : colors.hairline;
+  // Alan zemini tam opak degil: arka plan gorseli formun altinda hafifce
+  // yasamaya devam ediyor, ama yazilan metnin kontrasti gorsele degil bu
+  // zemine gore olculuyor.
+  const fieldBackground = withAlpha(colors.surface, 0.92);
 
   return (
     <View style={{ marginBottom: spacing.lg }}>
@@ -80,7 +84,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
           style={{
             ...type.control,
             color: colors.ink,
-            backgroundColor: colors.surface,
+            backgroundColor: fieldBackground,
             borderWidth: 1,
             borderColor,
             borderRadius: radius.md,
@@ -130,7 +134,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
                 `transparent` degil alanin kendi zemini: saydam uc Android'de
                 griye caliyor. */}
             <LinearGradient
-              colors={[colors.surface, colors.hairline, colors.surface]}
+              colors={[fieldBackground, colors.hairline, fieldBackground]}
               style={{ width: 1, height: spacing.xl }}
             />
 
