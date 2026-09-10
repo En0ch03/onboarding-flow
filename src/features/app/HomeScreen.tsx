@@ -4,6 +4,7 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { strings } from '@/constants/strings';
+import { journeyStops } from '@/features/onboarding/artwork/journeyArtwork';
 import { useAuthStore } from '@/state/authStore';
 import { useTheme } from '@/theme';
 
@@ -20,6 +21,9 @@ export function HomeScreen() {
   return (
     <Screen
       align="center"
+      // Varis, akisin kesildigi yer degil bittigi yer: arkadaki gorsel
+      // yolculuk boyunca kayiyor ve burada son kadrajinda duruyor.
+      journeyProgress={journeyStops.completion}
       footer={
         // Varis noktasi cikmaz sokak olamaz. Cikis yolu olmayinca hesaptan
         // ayrilmanin tek yolu uygulamayi silmek kaliyordu, ve ayni telefonu

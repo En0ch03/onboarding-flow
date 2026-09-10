@@ -1,4 +1,5 @@
 import { act, cleanup, fireEvent, waitFor } from '@testing-library/react-native';
+import { Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
@@ -7,6 +8,8 @@ import { useAuthStore } from '@/state/authStore';
 import { useOnboardingStore } from '@/state/onboardingStore';
 import { storageKeys } from '@/storage/keys';
 import { renderWithTheme } from '@/test/renderWithTheme';
+
+import { journeyOffset, journeyStops } from '@/features/onboarding/artwork/journeyArtwork';
 
 import { HomeScreen } from './HomeScreen';
 
@@ -89,5 +92,27 @@ describe('varis ekrani', () => {
     await waitFor(async () => {
       expect(await SecureStore.getItemAsync(storageKeys.refreshToken)).toBeNull();
     });
+  });
+
+  /**
+   * Varis ekrani akisin devami; kendi basina duran bos bir sayfa degil.
+   * Yolculugun ardisik kadrajlari burada son buluyor ve ekranin geri kalani
+   * ayni gorseli tasidigi icin varis noktasi da onu tasimali.
+   */
+  it('yolculugun son kadrajini gosteriyor', async () => {
+    const screen = await renderWithTheme(<HomeScreen />);
+
+    const artwork = screen.getByTestId('journey-artwork', { includeHiddenElements: true });
+    // Olcu varsayilmiyor: arka plan pencereyi okuyor, test de ayni yerden okuyor.
+    const window = Dimensions.get('window');
+    const { width, translateX } = journeyOffset(
+      journeyStops.completion,
+      window.width,
+      window.height,
+    );
+
+    expect(artwork.props.style).toEqual(
+      expect.objectContaining({ width, transform: [{ translateX }] }),
+    );
   });
 });
