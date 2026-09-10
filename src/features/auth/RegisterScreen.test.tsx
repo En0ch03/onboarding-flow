@@ -1,6 +1,7 @@
 import { act, cleanup, fireEvent, waitFor, type RenderResult } from '@testing-library/react-native';
 import { AxiosError, AxiosHeaders } from 'axios';
 
+import { fieldErrorMessage } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
@@ -111,6 +112,26 @@ describe('RegisterScreen', () => {
     await press(view, 'Hesap oluştur');
 
     expect(await view.findByText(/Şifren çok kısa/i)).toBeTruthy();
+  });
+
+  it('sunucunun bilmedigi bir alan adini forma dagitmiyor', async () => {
+    // Dogrulama alani istemcide yasiyor: sunucu ayni sifreyi iki kez almiyor,
+    // dolayisiyla o alan hakkinda soyleyecegi bir sey de yok. Sunucudan gelen
+    // alan adlari koru korune yerlestirilseydi, kullanici hicbir zaman
+    // gonderilmemis bir alanin altinda bir hata gorurdu.
+    register.mockRejectedValue(
+      failure(422, {
+        error: 'validation_failed',
+        fields: { password: 'too_short', confirmPassword: 'too_short' },
+      }),
+    );
+    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+
+    await fillIn(view, 'deniz@ornek.com', 'agirates2026');
+    await press(view, 'Hesap oluştur');
+
+    expect(await view.findByText(/Şifren çok kısa/i)).toBeTruthy();
+    expect(view.queryByText(fieldErrorMessage('confirmPassword', 'too_short'))).toBeNull();
   });
 
   it('shows the button as busy while the request is in flight', async () => {
