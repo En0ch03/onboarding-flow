@@ -7,6 +7,7 @@ import { register as registerAccount } from '@/api/endpoints';
 import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { ErrorBanner } from '@/components/ErrorBanner';
+import { GlassPanel } from '@/components/GlassPanel';
 import { Screen } from '@/components/Screen';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { ScreenIntro } from '@/components/ScreenIntro';
@@ -71,6 +72,9 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
   return (
     <Screen
       journeyProgress={journeyStops.register}
+      // Metnin zeminini kart tasiyor; ustune bir de perde cekmek gorseli iki
+      // kez karartirdi. Ust serit kartin disinda, onun perdesi yerinde kaliyor.
+      contentVeil={false}
       header={<ScreenHeader onBack={onBack} />}
       footer={
         <View>
@@ -89,34 +93,38 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
         </View>
       }
     >
-      <ScreenIntro title={strings.auth.registerTitle} subtitle={strings.auth.registerSubtitle} />
+      {/* Kart yalnizca formu tasiyor: buton ve yasal satir disarida kaliyor,
+          cunku sayfanin dibindeki eylem kartin bir parcasi degil. */}
+      <GlassPanel>
+        <ScreenIntro title={strings.auth.registerTitle} subtitle={strings.auth.registerSubtitle} />
 
-      {/* Bandin eylemi hatanin turune gore degisiyor: alinmis bir e-posta
+        {/* Bandin eylemi hatanin turune gore degisiyor: alinmis bir e-posta
           girise goturur, gecici bir ariza ise ayni istegi tekrarlatir.
           Tekrar denenebilir bir hatada dugmesiz bir bant, metnin soyledigi
           seyi ("tekrar dene") yapacak yeri gostermiyordu. */}
-      {showBanner ? (
-        <ErrorBanner
-          message={presentError(failure).message}
-          {...(failure.kind === 'email_taken'
-            ? {
-                action: {
-                  label: presentError(failure).action ?? '',
-                  onPress: () => onSignInInstead(form.getValues('email')),
-                },
-              }
-            : isRetryable(failure)
+        {showBanner ? (
+          <ErrorBanner
+            message={presentError(failure).message}
+            {...(failure.kind === 'email_taken'
               ? {
                   action: {
-                    label: presentError(failure).action ?? strings.common.retry,
-                    onPress: () => void submit(),
+                    label: presentError(failure).action ?? '',
+                    onPress: () => onSignInInstead(form.getValues('email')),
                   },
                 }
-              : {})}
-        />
-      ) : null}
+              : isRetryable(failure)
+                ? {
+                    action: {
+                      label: presentError(failure).action ?? strings.common.retry,
+                      onPress: () => void submit(),
+                    },
+                  }
+                : {})}
+          />
+        ) : null}
 
-      <CredentialsFields control={form.control} mode="register" onSubmit={() => void submit()} />
+        <CredentialsFields control={form.control} mode="register" onSubmit={() => void submit()} />
+      </GlassPanel>
     </Screen>
   );
 }
