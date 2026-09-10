@@ -24,6 +24,38 @@ const media = new Map();
 
 app.use(express.json({ limit: '1mb' }));
 
+/**
+ * Istek gunlugu.
+ *
+ * Elle yapilan sinamalarda tek gozlem noktasi burasi. Bir istegin sunucuya
+ * ulasip ulasmadigi baska turlu anlasilamiyor: telefon yalnizca sonucu
+ * gosteriyor, terminal ise sessiz kaliyordu ve "hicbir sey yazmadi" ile
+ * "istek hic gelmedi" ayirt edilemiyordu. Govdenin yazilmasi ayrica hangi
+ * alanlarin gonderildigini goz ile dogrulamaya yariyor.
+ *
+ * Yanit tamamlandiginda yaziliyor, cunku durum kodu ancak o an belli.
+ *
+ * Sifre maskeleniyor: bu terminal sinama sirasinda acik duruyor ve ekranda
+ * duran bir sifrenin kayda gecmesi icin hicbir sebep yok. Yukleme govdesi
+ * ikili veri oldugu icin JSON olarak yazilmiyor.
+ */
+app.use((req, res, next) => {
+  const startedAt = Date.now();
+
+  res.on('finish', () => {
+    const elapsed = Date.now() - startedAt;
+    console.log(`${req.method} ${req.originalUrl} -> ${res.statusCode} (${elapsed} ms)`);
+
+    const body = req.body;
+    if (body && typeof body === 'object' && Object.keys(body).length > 0) {
+      const safe = 'password' in body ? { ...body, password: '***' } : body;
+      console.log(`    ${JSON.stringify(safe)}`);
+    }
+  });
+
+  next();
+});
+
 /** Token varsa cozulur; reddetme isi uc noktanin kendisine birakilir. */
 app.use((req, _res, next) => {
   const header = req.get('authorization') || '';
