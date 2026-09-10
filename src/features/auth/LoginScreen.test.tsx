@@ -125,4 +125,17 @@ describe('LoginScreen', () => {
     await waitFor(() => expect(handlers.onSignedIn).toHaveBeenCalledWith(true));
     expect(handlers.onSignedIn).toHaveBeenCalledTimes(1);
   });
+
+  it('girerken sifreyi ikinci kez sormuyor', async () => {
+    // Dogrulama alani yalnizca kayitta anlamli: girerken yazilan sifre zaten
+    // sunucudakiyle karsilastiriliyor, ikinci bir alan yalnizca bir adim
+    // daha eklerdi.
+    const view = await renderWithTheme(<LoginScreen {...handlers} />);
+
+    // Once formun gercekten cizildigi: bos bir agacta asagidaki sorgu da bos
+    // donerdi ve test hicbir sey soylemeden gecerdi.
+    expect(view.getByLabelText(strings.auth.passwordLabel)).toBeTruthy();
+
+    expect(view.queryByLabelText(strings.auth.confirmPasswordLabel)).toBeNull();
+  });
 });

@@ -185,7 +185,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
               {/* Anahtar ve dogrulama alani birlikte calisiyor: anahtar
                   yazilani gostermeyi teklif ediyor, dogrulama alani ise
                   bakmayani da durduruyor. Sifre sifirlama yolu olmayan bir
-                  uruntde yanlis yazilmis bir sifre hesabi kilitliyor; tek
+                  urunde yanlis yazilmis bir sifre hesabi kilitliyor; tek
                   basina teklif yeterli degil. */}
               <EyeIcon
                 open={revealed}

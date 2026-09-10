@@ -30,7 +30,7 @@ export type CredentialsForm = z.infer<typeof credentialsFormSchema>;
 /**
  * Kayit formu ayni ikiliye bir ucuncu alan ekliyor: sifrenin dogrulanmasi.
  *
- * Uruntde sifre sifirlama yolu yok. Yanlis yazilmis tek bir sifre, hesabi ilk
+ * Urunde sifre sifirlama yolu yok. Yanlis yazilmis tek bir sifre, hesabi ilk
  * girisin ardindan erisilemez birakiyor ve kullanicinin bunu ogrendigi an
  * cok gec oluyor. Gorunurluk anahtari yaziyi gosteriyor ama gosterilen seye
  * bakmayan bir kullaniciyi durdurmuyor; iki alan durduruyor.
