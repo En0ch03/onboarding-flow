@@ -1,7 +1,7 @@
 import { Pressable, View } from 'react-native';
 
 import type { Option } from '@/api/schemas';
-import { useTheme } from '@/theme';
+import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 
@@ -27,8 +27,12 @@ type ChoiceCardProps = {
  * Secim karti. Secenegin kendisi disaridan geliyor; bu bilesen hicbir liste
  * tasimiyor.
  *
- * Secili durum yalnizca renkle degil, isaret ve kenarlikla da anlatiliyor:
- * rengi ayirt edemeyen bir kullanici icin renk tek basina bilgi degil.
+ * Secim dili cip ile ayni: kenarlik ve dolgu. Sagdaki onay dairesi kalkti --
+ * secili olmayan kartta bos duran bir daire kullaniciya hicbir sey
+ * soylemiyordu, ustelik etiketin yerini aliyordu.
+ *
+ * Secili durum yalnizca renkle anlatilmiyor: kenarlik secilince kalinlasiyor
+ * ve ic bosluk ayni miktarda kucululuyor, yani kart olcu degistirmiyor.
  */
 export function ChoiceCard({
   option,
@@ -40,6 +44,10 @@ export function ChoiceCard({
 }: ChoiceCardProps) {
   const { colors, radius, spacing } = useTheme();
   const hint = blocked ? blockedHint : option.hint;
+
+  // Kenarlik farki ic boslukla telafi ediliyor: 1 + 17 = 2 + 16.
+  const border = selected ? 2 : 1;
+  const pad = selected ? 0 : 1;
 
   return (
     <Pressable
@@ -53,15 +61,14 @@ export function ChoiceCard({
       style={({ pressed }) => ({
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
         gap: spacing.md,
-        backgroundColor: selected ? colors.clayTint : colors.surface,
-        borderWidth: 1,
-        borderColor: selected || pressed ? colors.clay : colors.hairline,
+        backgroundColor: selected ? colors.clayTint : 'transparent',
+        borderWidth: border,
+        borderColor: selected || pressed ? colors.clay : withAlpha(colors.ink, 0.22),
         borderRadius: radius.md,
         borderCurve: 'continuous',
-        paddingVertical: spacing.lg,
-        paddingHorizontal: spacing.lg,
+        paddingVertical: spacing.lg + pad,
+        paddingHorizontal: spacing.lg + pad,
         marginBottom: spacing.md,
         opacity: blocked ? 0.45 : 1,
       })}
@@ -71,25 +78,6 @@ export function ChoiceCard({
         {option.hint ? (
           <AppText variant="caption" tone="inkSoft" style={{ marginTop: 2 }}>
             {option.hint}
-          </AppText>
-        ) : null}
-      </View>
-
-      <View
-        style={{
-          width: 22,
-          height: 22,
-          borderRadius: radius.full,
-          borderWidth: 1,
-          borderColor: selected ? colors.clay : colors.hairline,
-          backgroundColor: selected ? colors.clay : 'transparent',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        {selected ? (
-          <AppText variant="caption" tone="onClay" style={{ lineHeight: 14 }}>
-            ✓
           </AppText>
         ) : null}
       </View>

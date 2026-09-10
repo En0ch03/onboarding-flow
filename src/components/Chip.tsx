@@ -1,28 +1,19 @@
-import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, Animated, Easing, Pressable } from 'react-native';
 
 import type { Option } from '@/api/schemas';
-import { useTheme } from '@/theme';
+import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 
 /**
- * Isaret yuvasi. Bos da olsa yer tutuyor; secim cipin boyunu degistirmiyor.
- * Dar tutuldu: uc sutunlu izgarada her nokta metinden calindigi icin, on iki
- * punto genisligindeki bir yuva isareti tasimaya yetiyor -- sistem yazi
- * olcegi bir buçuk katina kadar buyudugunde de yetiyor, cunku isaretin
- * olcegi orada duruyor (asagida).
- */
-const MARK_SIZE = 12;
-
-/**
- * Isaretin buyumesine konan tavan.
+ * Secim anindaki nabzin tepesi.
  *
- * Etiket sistem yazisiyla serbestce buyuyor; isaret buyumuyor. Ikisi ayni
- * degil: etiket icerik, isaret ise bir durum gostergesi ve ayni durumu
- * ekran okuyucuya `accessibilityState` zaten soyluyor. Tavan olmadan glif
- * sabit genislikteki yuvayi asip etiketin uzerine biniyordu.
+ * Kucuk tutuldu: dokunulan seyin cevap verdigini gostermeye yetiyor ama
+ * komsu cipleri itecek kadar buyumuyor -- olcek yerlesimi yeniden akitmiyor,
+ * cip kendi merkezinde bir an genisleyip geri geliyor.
  */
-const MARK_MAX_SCALE = 1.5;
+const PULSE_SCALE = 1.04;
 
 type ChipProps = {
   option: Option;
@@ -36,82 +27,98 @@ type ChipProps = {
   blocked?: boolean;
   /** Sonuk cipe ekran okuyucunun verecegi cikis yolu. */
   blockedHint?: string | undefined;
-  /** Yerlesim genisligi disaridan gelir; cip kendi genisligini secmez. */
-  style?: StyleProp<ViewStyle>;
 };
 
 /**
  * Kisa etiketler icin kompakt secim. Karttan farki yalnizca yogunluk: on iki
  * etiketi kart olarak dizmek ekrani okunmaz hale getiriyor.
  *
- * Secili hal cipin olculerini degistirmiyor. Onceki surumde secilen cipin
- * metnine bir onek ekleniyordu; cip genisliyor, satir yeniden akiyor ve
- * kullanicinin dokunmak uzere oldugu bir sonraki hedef parmaginin altindan
- * kayiyordu. Isaret artik sabit genislikte bir yuvada duruyor ve o yuva
- * secili olmayan cipte de var.
+ * Cip kendi etiketi kadar genis. Esit genislikteki hucre denendi ve uzun
+ * etiketleri alt alta kiriyordu; kirilmis bir etiket cipi kucuk bir karta
+ * cevirip listenin taranabilirligini bitiriyor.
  *
- * Secili hal yalnizca renkle anlatilmiyor: rengi ayirt edemeyen bir kullanici
- * icin renk tek basina bilgi degil.
+ * Secili hal cipin olculerini degistirmiyor. Kenarlik secilince kalinlasiyor
+ * ama ic bosluk ayni miktarda kucululuyor; aksi halde dokunulan cip parmagin
+ * altinda buyur ve bir sonraki hedef kayardi.
+ *
+ * Secili hal yalnizca renkle anlatilmiyor: kalinlasan kenarlik, rengi ayirt
+ * edemeyen kullanici icin ikinci kanal; ekran okuyucu ise durumu zaten
+ * kelimeyle aliyor.
  */
-export function Chip({
-  option,
-  selected,
-  onPress,
-  blocked = false,
-  blockedHint,
-  style,
-}: ChipProps) {
-  const { colors, radius, spacing } = useTheme();
+export function Chip({ option, selected, onPress, blocked = false, blockedHint }: ChipProps) {
+  const { colors, radius, spacing, motion } = useTheme();
   const hint = blocked ? blockedHint : option.hint;
 
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const [scale] = useState(() => new Animated.Value(1));
+  // Ilk cizimde nabiz atmiyor: acilista zaten secili gelen cipler hep birden
+  // titrerdi. Nabiz bir gecise ait, bir duruma degil.
+  const wasSelected = useRef(selected);
+
+  useEffect(() => {
+    void AccessibilityInfo.isReduceMotionEnabled().then(setReduceMotion);
+    const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduceMotion);
+    return () => subscription.remove();
+  }, []);
+
+  useEffect(() => {
+    const becameSelected = selected && !wasSelected.current;
+    wasSelected.current = selected;
+    if (!becameSelected || reduceMotion) return;
+
+    const pulse = Animated.sequence([
+      Animated.timing(scale, {
+        toValue: PULSE_SCALE,
+        duration: motion.fast / 2,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.timing(scale, {
+        toValue: 1,
+        duration: motion.fast / 2,
+        easing: Easing.in(Easing.quad),
+        useNativeDriver: true,
+      }),
+    ]);
+    pulse.start();
+    return () => pulse.stop();
+  }, [motion.fast, reduceMotion, scale, selected]);
+
+  // Kenarlik farki ic boslukla telafi ediliyor: 1 + 17 = 2 + 16.
+  const border = selected ? 2 : 1;
+  const pad = selected ? 0 : 1;
+
   return (
-    <Pressable
-      accessibilityRole="checkbox"
-      accessibilityState={{ checked: selected }}
-      accessibilityLabel={option.label}
-      {...(hint ? { accessibilityHint: hint } : {})}
-      onPress={onPress}
-      style={({ pressed }) => [
-        {
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: spacing.xs,
-          backgroundColor: selected ? colors.clayTint : colors.surface,
-          borderWidth: 1,
-          borderColor: selected || pressed ? colors.clay : colors.hairline,
-          borderRadius: radius.full,
-          paddingVertical: spacing.md,
-          paddingHorizontal: spacing.sm,
-          opacity: blocked ? 0.45 : 1,
-        },
-        style,
-      ]}
+    <Animated.View
+      testID={`chip-pulse-${option.id}`}
+      // Cip kendi etiketi kadar yer kapliyor; satirin kalanina yayilmiyor.
+      style={{ alignSelf: 'flex-start', transform: [{ scale }] }}
     >
-      <View style={{ width: MARK_SIZE, alignItems: 'center' }}>
-        {selected ? (
-          <AppText
-            variant="caption"
-            tone="clay"
-            maxFontSizeMultiplier={MARK_MAX_SCALE}
-            style={{ lineHeight: 14 * MARK_MAX_SCALE }}
-          >
-            ✓
-          </AppText>
-        ) : null}
-      </View>
-
-      {/* Kirpma yok: hucre dar kaldiginda etiket satir sayisini artiriyor.
-          Kesilmis bir etiket kullaniciya ne sectigini soylemiyor ve sunucu
-          etiket uzunlugu icin bir sinir vermiyor.
-
-          `flexShrink` bunu mumkun kilan sey ve gereksiz gorunuyor: hucrenin
-          genisligi zaten sabit. Degil -- bu ortamda varsayilan sifir, yani
-          bu satir olmadan metin dogal genisliginde israr edip cipten
-          tasiyor. Testi var. */}
-      <AppText variant="label" style={{ flexShrink: 1 }}>
-        {option.label}
-      </AppText>
-    </Pressable>
+      <Pressable
+        accessibilityRole="checkbox"
+        accessibilityState={{ checked: selected }}
+        accessibilityLabel={option.label}
+        {...(hint ? { accessibilityHint: hint } : {})}
+        onPress={onPress}
+        style={({ pressed }) => ({
+          // Secilmemis cipin dolgusu yok: arka plan gorseli ciplerin arasindan
+          // gorunmeye devam ediyor, secili olan ise zeminden ayriliyor.
+          backgroundColor: selected ? colors.clayTint : 'transparent',
+          borderWidth: border,
+          borderColor: selected || pressed ? colors.clay : withAlpha(colors.ink, 0.22),
+          borderRadius: radius.full,
+          paddingVertical: spacing.md + pad,
+          paddingHorizontal: spacing.lg + pad,
+          opacity: blocked ? 0.45 : 1,
+        })}
+      >
+        {/* Etiket tek satirda kaliyor: cip zaten etiketi kadar genisliyor,
+            kirilma ihtimali yalnizca sistem yazisi asiri buyudugunde kaliyor
+            ve orada da satir kirmak yerine cipin tasmasi tercih ediliyor. */}
+        <AppText variant="control" numberOfLines={1}>
+          {option.label}
+        </AppText>
+      </Pressable>
+    </Animated.View>
   );
 }

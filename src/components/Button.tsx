@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { ActivityIndicator, Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
 
-import { useTheme } from '@/theme';
+import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 
@@ -16,6 +16,17 @@ type ButtonProps = {
   style?: ViewStyle;
   accessibilityHint?: string;
 };
+
+/**
+ * Birincil eylemin en az bu kadar yuksek olmasi gerekiyor.
+ *
+ * Asgari dokunma hedefi 48; buton ondan belirgin sekilde buyuk cunku ekrandaki
+ * tek birincil eylem o ve gozun once ona takilmasi isteniyor. Yukseklik ic
+ * boslukla birlikte veriliyor: sistem yazisi buyudugunde ic bosluk butonu
+ * kendiliginden buyutuyor, taban ise kucuk yazida butonun cilizlasmasini
+ * engelliyor.
+ */
+const MIN_HEIGHT = 56;
 
 /**
  * Dort durum gorsel olarak ayri: durur, basili, yukleniyor, devre disi.
@@ -48,6 +59,8 @@ export function Button({
       style={({ pressed }) => [
         {
           borderRadius: radius.full,
+          minHeight: MIN_HEIGHT,
+          justifyContent: 'center',
           overflow: 'hidden',
           opacity: disabled ? 0.45 : 1,
           transform: [{ translateY: pressed && !inactive ? 1 : 0 }],
@@ -70,8 +83,11 @@ export function Button({
               style={[
                 StyleSheet.absoluteFill,
                 {
-                  borderWidth: StyleSheet.hairlineWidth * 2,
-                  borderColor: pressed ? colors.clay : colors.hairline,
+                  // Kil payi bir cizgi, kizil zeminli bir ekranda ikincil
+                  // eylemi neredeyse gorunmez birakiyordu; kenarlik artik
+                  // metnin kendi renginden turuyor ve ayni ailede kaliyor.
+                  borderWidth: 1,
+                  borderColor: pressed ? colors.clay : withAlpha(colors.ink, 0.28),
                   borderRadius: radius.full,
                   borderCurve: 'continuous',
                 },
@@ -81,7 +97,9 @@ export function Button({
 
           <View
             style={{
-              paddingVertical: spacing.lg,
+              // Bir punto fazlasi bilincli: olcek adimlari 16 ve 24, ikisi de
+              // bu yukseklikte ya sikisik ya da gevsek duruyor.
+              paddingVertical: spacing.lg + 2,
               paddingHorizontal: spacing.xl,
               alignItems: 'center',
               justifyContent: 'center',
