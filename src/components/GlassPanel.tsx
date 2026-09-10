@@ -32,8 +32,15 @@ export function resolveGlassMode(): GlassMode {
   return isLiquidGlassAvailable() && isGlassEffectAPIAvailable() ? 'liquid' : 'blur';
 }
 
-/** Bulanik kipte dolgunun opakligi; cam kipte ayni deger tona gidiyor. */
-const TRANSLUCENT_FILL = 0.55;
+/**
+ * Bulanik kipte dolgunun opakligi; cam kipte ayni deger tona gidiyor.
+ *
+ * Deger bir denge noktasi: asagi inince metnin zemini zayifliyor, yukari
+ * cikinca arkadaki gorsel kayboluyor ve kart yeniden duz bir panele donuyor.
+ * Kontrast bilerek bu dolguya bagli, bulanikliga degil -- bulanikligin sonucu
+ * arkadaki goruntuye gore degisir, dolgunun opakligi degismez.
+ */
+const TRANSLUCENT_FILL = 0.4;
 
 /** Bulaniksiz kipte dolgu tek basina calisiyor, o yuzden daha opak. */
 const FLAT_FILL = 0.86;
@@ -43,8 +50,7 @@ const FLAT_FILL = 0.86;
  *
  * Arka plandaki gorseli karartmak yerine metne kendi zeminini veriyor:
  * karartma gorseli de yok ediyordu, kart onu kenarlardan sizdirmaya devam
- * ediyor. Okunabilirlik bilerek bulanikliga baglanmadi -- bulanikligin
- * sonucu arkadaki goruntuye gore degisir, dolgunun opakligi degismez.
+ * ediyor.
  *
  * Kart dekoratif: butun katmanlari ekran okuyucudan gizli ve dokunusu
  * gecirmiyor, icerik oldugu gibi erisilebilir kaliyor.
@@ -65,7 +71,9 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           // kenari dorde donduruyor.
           overflow: 'hidden',
           borderWidth: 1,
-          borderColor: withAlpha(colors.ink, 0.14),
+          // Kenarlik ust isigiyla alt golgenin arasinda kalmali; kendi tonu
+          // one cikinca kart yuzeyden cok cerceveye benziyordu.
+          borderColor: withAlpha(colors.ink, 0.12),
           padding: spacing.xl,
         },
         style,
@@ -90,8 +98,16 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           pointerEvents="none"
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          tint="dark"
-          intensity={50}
+          // `dark` iOS 10 oncesinden kalma duz bir koyu bulaniklik, sistemin
+          // materyali degil: arkadaki rengi tasimiyor ve kart camdan cok
+          // isli bir cama benziyor. Ince koyu materyal, kartin altindaki
+          // gorselden renk sizdiran ama metne zemin birakan tek kalinlik.
+          tint="systemThinMaterialDark"
+          // Siddet iOS'ta bir animatorun ilerleme oranina donuyor
+          // (`node_modules/expo-blur/ios/BlurEffectView.swift:53-56`): 100
+          // disindaki her deger materyali yarida kesiyor, yani hem bulaniklik
+          // hem materyalin kendi ton katmani yarim uygulaniyor.
+          intensity={100}
           style={StyleSheet.absoluteFill}
         />
       ) : null}
@@ -113,6 +129,7 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           kartin ust kenarinda toplanmasi. Kenarligin tek tonu, karti yuzeyden
           cok cerceveye benzetiyordu. */}
       <View
+        testID="glass-panel-edge-top"
         pointerEvents="none"
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
@@ -122,7 +139,25 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           left: 0,
           right: 0,
           height: 1,
-          backgroundColor: withAlpha(colors.ink, 0.22),
+          backgroundColor: withAlpha(colors.ink, 0.3),
+        }}
+      />
+
+      {/* Alt kenarda ust cizginin esi, ters yonde: isik yukaridan gelirse
+          govde asagida kalinlasir. Iki cizgi olmadan kart bir yuzey degil,
+          zemine yapisik bir dikdortgen gibi duruyordu. */}
+      <View
+        testID="glass-panel-edge-bottom"
+        pointerEvents="none"
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 1,
+          backgroundColor: withAlpha(colors.veil, 0.35),
         }}
       />
 

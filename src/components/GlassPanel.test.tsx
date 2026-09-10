@@ -22,6 +22,11 @@ function onPlatform(os: 'ios' | 'android') {
   };
 }
 
+/** `rgba(...)` dizesinden opaklik degerini okuyor. */
+function alphaOf(color: string) {
+  return Number(/rgba\([^)]*,\s*([\d.]+)\)\s*$/.exec(color)?.[1]);
+}
+
 beforeEach(() => {
   isLiquidGlassAvailable.mockReturnValue(false);
   isGlassEffectAPIAvailable.mockReturnValue(true);
@@ -45,7 +50,7 @@ describe('GlassPanel', () => {
 
       const glass = view.getByTestId(GLASS_VIEW_TEST_ID, hidden);
       expect(glass.props.glassEffectStyle).toBe('regular');
-      expect(glass.props.tintColor).toBe(withAlpha(palettes.dark.paper, 0.55));
+      expect(glass.props.tintColor).toBe(withAlpha(palettes.dark.paper, 0.4));
       // Yerel katman kartin `overflow: hidden` kirpmasini gormuyor, kendi kose
       // yaricapini okuyor: verilmezse cam dort koseli bir dikdortgen kaliyor.
       expect(StyleSheet.flatten(glass.props.style)).toMatchObject({
@@ -57,7 +62,7 @@ describe('GlassPanel', () => {
     }
   });
 
-  it('cam efekti olmayan surumde bulanikliga dusuyor', async () => {
+  it('cam efekti olmayan surumde sistemin kendi materyaline dusuyor', async () => {
     const restore = onPlatform('ios');
     try {
       const view = await renderWithTheme(
@@ -68,8 +73,12 @@ describe('GlassPanel', () => {
       expect(view.getByText('İçerik')).toBeTruthy();
 
       const blur = view.getByTestId(BLUR_VIEW_TEST_ID, hidden);
-      expect(blur.props.tint).toBe('dark');
-      expect(blur.props.intensity).toBe(50);
+      // `dark` iOS 10 oncesinden kalma duz bir bulaniklik; sistemin materyal
+      // ailesi ayri ve arkadaki renkleri koruyan tek secenek o.
+      expect(blur.props.tint).toBe('systemThinMaterialDark');
+      // Siddet, materyali kuran animatorun ilerleme orani olarak okunuyor: 100
+      // disindaki her deger materyali yarida birakiyor.
+      expect(blur.props.intensity).toBe(100);
       expect(view.queryByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeNull();
     } finally {
       restore();
@@ -91,7 +100,56 @@ describe('GlassPanel', () => {
       const fill = StyleSheet.flatten(view.getByTestId('glass-panel-fill', hidden).props.style) as {
         backgroundColor: string;
       };
-      expect(fill.backgroundColor).toBe(withAlpha(palettes.dark.paper, 0.55));
+      expect(fill.backgroundColor).toBe(withAlpha(palettes.dark.paper, 0.4));
+    } finally {
+      restore();
+    }
+  });
+
+  it('dolgunun opakligi okunabilirlikle cam hissi arasindaki citin icinde', async () => {
+    const restore = onPlatform('ios');
+    try {
+      const view = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+
+      const fill = StyleSheet.flatten(view.getByTestId('glass-panel-fill', hidden).props.style) as {
+        backgroundColor: string;
+      };
+      // Alt sinir metnin zemini, ust sinir camin kendisi: daha opak bir dolgu
+      // arkadaki gorseli bogar ve kart yeniden duz panele doner.
+      expect(alphaOf(fill.backgroundColor)).toBeGreaterThanOrEqual(0.4);
+      expect(alphaOf(fill.backgroundColor)).toBeLessThanOrEqual(0.5);
+    } finally {
+      restore();
+    }
+  });
+
+  it('kartin ustunde isik, altinda golge var', async () => {
+    const restore = onPlatform('ios');
+    try {
+      const view = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+
+      const top = StyleSheet.flatten(view.getByTestId('glass-panel-edge-top', hidden).props.style);
+      const bottom = StyleSheet.flatten(
+        view.getByTestId('glass-panel-edge-bottom', hidden).props.style,
+      );
+      expect(top).toMatchObject({ backgroundColor: withAlpha(palettes.dark.ink, 0.3) });
+      expect(bottom).toMatchObject({ backgroundColor: withAlpha(palettes.dark.veil, 0.35) });
+
+      // Kenarlik iki cizginin arasinda kalmali; kendi tonu one cikarsa kart
+      // yuzey degil cerceve gibi duruyor.
+      expect(StyleSheet.flatten(view.getByTestId('glass-panel').props.style)).toMatchObject({
+        borderColor: withAlpha(palettes.dark.ink, 0.12),
+      });
     } finally {
       restore();
     }
