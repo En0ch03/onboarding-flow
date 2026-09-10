@@ -22,37 +22,29 @@ const optionGroups = {
     maxSelection: null,
     required: true,
     options: [
-      { id: 'woman', label: 'Kadınım', order: 1 },
-      { id: 'man', label: 'Erkeğim', order: 2 },
+      { id: 'woman', label: 'Kadın', order: 1 },
+      { id: 'man', label: 'Erkek', order: 2 },
       {
         id: 'non_binary',
-        label: 'Non-binary biriyim',
+        label: 'Non-binary',
         hint: 'Kadın ve erkek ikiliğinin dışında',
         order: 3,
       },
-      {
-        id: 'genderfluid',
-        label: 'Cinsiyetim akışkan',
-        hint: 'Zamanla değişebiliyor',
-        order: 4,
-      },
-      // Bu kimlik ve etiketi yerinde birakildi. Anlamini degistirmek, o cevabi
-      // vermis bir kullanicinin profilini sessizce baska bir cevaba tasirdi.
-      { id: 'nonbinary', label: 'Başka bir şekilde tanımlıyorum', order: 5 },
     ],
   },
 
   audience: {
     key: 'audience',
     multiSelect: true,
-    // Uc secenegin ucu de secilebiliyor; bir sinir yazmak, hicbir sey
+    // Seceneklerin hepsi birlikte secilebiliyor; bir sinir yazmak, hicbir sey
     // yapmayan bir kural ilan etmek olurdu.
     maxSelection: null,
     required: true,
     options: [
       { id: 'women', label: 'Kadınlar', order: 1 },
       { id: 'men', label: 'Erkekler', order: 2 },
-      { id: 'everyone', label: 'Herkes', order: 3 },
+      { id: 'non_binary', label: 'Non-binary kişiler', order: 3 },
+      { id: 'everyone', label: 'Herkes', order: 4 },
     ],
   },
 
@@ -64,36 +56,42 @@ const optionGroups = {
     options: [
       {
         id: 'long_term',
-        label: 'Uzun soluklu bir ilişki',
-        hint: 'Ciddi, zaman tanıyan',
+        label: 'Uzun süreli ilişki',
+        hint: 'Ciddi bir bağ arıyorum',
         order: 1,
       },
       {
         id: 'long_term_open',
-        label: 'Uzun soluklu, kısaya da açığım',
-        hint: 'Önceliğim uzun vadeli',
+        label: 'Uzun süreli, kısaya açık',
+        hint: 'Önceliğim kalıcı olan',
         order: 2,
       },
       {
-        id: 'short_term',
-        label: 'Kısa süreli bir ilişki',
-        hint: 'Şimdilik ciddi bir bağ aramıyorum',
+        id: 'short_term_open',
+        label: 'Kısa süreli, uzuna açık',
+        hint: 'Akışına bırakıyorum',
         order: 3,
       },
       {
+        id: 'short_term',
+        label: 'Kısa süreli ilişki',
+        hint: 'Şimdilik ciddi bir bağ aramıyorum',
+        order: 4,
+      },
+      {
         id: 'friendship',
-        label: 'Arkadaşlık',
+        label: 'Yeni arkadaşlar',
         hint: 'Önce tanışalım',
         // Bu cevap ilgi alanlarinin baska bir setini aciyor. Iliski burada
         // duruyor; istemci hangi cevabin hangi listeyi actigini bilmiyor.
         unlocks: 'interests_friendship',
-        order: 4,
+        order: 5,
       },
       {
         id: 'unsure',
-        label: 'Henüz emin değilim',
+        label: 'Henüz karar vermedim',
         hint: 'Bakalım nereye gidiyor',
-        order: 5,
+        order: 6,
       },
     ],
   },
@@ -104,7 +102,7 @@ const optionGroups = {
     maxSelection: 8,
     required: false,
     options: [
-      { id: 'walking', label: 'Uzun yürüyüş', order: 1 },
+      { id: 'walking', label: 'Yürüyüş', order: 1 },
       { id: 'cinema', label: 'Sinema', order: 2 },
       { id: 'cooking', label: 'Yemek yapmak', order: 3 },
       { id: 'concert', label: 'Konser', order: 4 },
@@ -116,6 +114,10 @@ const optionGroups = {
       { id: 'podcast', label: 'Podcast', order: 10 },
       { id: 'theatre', label: 'Tiyatro', order: 11 },
       { id: 'camping', label: 'Kamp', order: 12 },
+      { id: 'travel', label: 'Seyahat', order: 13 },
+      { id: 'photography', label: 'Fotoğraf', order: 14 },
+      { id: 'yoga', label: 'Yoga', order: 15 },
+      { id: 'gaming', label: 'Oyun', order: 16 },
     ],
   },
 
@@ -145,6 +147,8 @@ const optionGroups = {
       { id: 'cinema', label: 'Sinema', order: 8 },
       { id: 'podcast', label: 'Podcast', order: 9 },
       { id: 'photography', label: 'Fotoğraf', order: 10 },
+      { id: 'running', label: 'Koşu', order: 11 },
+      { id: 'festival', label: 'Festival', order: 12 },
     ],
   },
 };
