@@ -1,396 +1,680 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1768" height="3080" viewBox="0 0 1768 3080" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif">
-<rect x="0" y="0" width="1768" height="3080" rx="0" fill="#FBF8F3"/>
-<text x="56" y="72" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="40" font-weight="400" fill="#1A1614">Onboarding — ekran eskizleri</text>
-<text x="56" y="102" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="14" font-weight="400" fill="#6B6259">Dokuz ekran, tamamlanma, ve kolay atlanan üç durum: klavye açık, hata, yükleme sürüyor. Koyu varyant birincil.</text>
-<line x1="56" y1="124" x2="1712" y2="124" stroke="#E3DCD1"/>
-<text x="56" y="142" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Karşılama 1 — Söz</text>
-<text x="56" y="159" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">akışın açılışı</text>
-<rect x="56" y="168" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="78" y="194" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="300" y="186" width="30" height="10" rx="3" fill="#A69C91"/>
-<text x="78" y="364" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="30" font-weight="400" fill="#F2EDE6">Doğru zamanda</text>
-<text x="78" y="398" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="30" font-weight="400" fill="#F2EDE6">doğru yerde.</text>
-<text x="78" y="446" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">O karşılaşmayı şansa</text>
-<text x="78" y="463" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">bırakmamak için.</text>
-<rect x="78" y="638" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="204" y="669" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Başlayalım</text>
-<text x="204" y="729" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91" text-anchor="middle">Zaten hesabım var</text>
-<text x="56" y="800" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Tek cümlelik söz, iki eylem.</text>
-<text x="56" y="815" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">İkincil eylem doğrudan girişe gider.</text>
-<text x="396" y="142" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Karşılama 2 — Fark</text>
-<text x="396" y="159" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">neden bu uygulama</text>
-<rect x="396" y="168" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="418" y="194" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="640" y="186" width="30" height="10" rx="3" fill="#A69C91"/>
-<text x="418" y="334" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="24" font-weight="400" fill="#F2EDE6">Belki de birbirinizi</text>
-<text x="418" y="362" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="24" font-weight="400" fill="#F2EDE6">aramıyordunuz. Sadece</text>
-<text x="418" y="390" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="24" font-weight="400" fill="#F2EDE6">henüz</text>
-<text x="418" y="418" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="24" font-weight="400" fill="#F2EDE6">karşılaşmamıştınız.</text>
-<text x="418" y="462" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">Her gün yalnızca birkaç kişi.</text>
-<text x="418" y="479" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">Her biri ne aradığını söylemiş.</text>
-<text x="418" y="496" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">Gerisi sana kalmış.</text>
-<rect x="418" y="678" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="544" y="709" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="396" y="800" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Ürünün farkı burada anlatılıyor;</text>
-<text x="396" y="815" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">kayıt ekranı bunu tekrar etmiyor.</text>
-<text x="736" y="142" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Kayıt ol</text>
-<text x="736" y="159" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">hesap oluşturma</text>
-<rect x="736" y="168" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="758" y="194" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="980" y="186" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 764 224 L 758 230 L 764 236" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="758" y="274" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Hesabını oluştur</text>
-<text x="758" y="307" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Bir e-posta ve bir şifre yeter.</text>
-<text x="758" y="322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">E-postan profilinde görünmez.</text>
-<text x="758" y="355" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">E-posta</text>
-<rect x="758" y="363" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="772" y="390" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">deniz@ornek.com</text>
-<text x="758" y="419" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Şifre</text>
-<rect x="758" y="427" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="772" y="454" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">••••••••••</text>
-<path d="M 968 449 Q 980 439 992 449 Q 980 459 968 449 Z" fill="none" stroke="#A69C91" stroke-width="1.2"/>
-<circle cx="980" cy="449" r="3.2" fill="none" stroke="#A69C91" stroke-width="1.2"/>
-<rect x="758" y="497" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="884" y="528" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Hesap oluştur</text>
-<text x="758" y="571" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="400" fill="#A69C91">Devam ederek Kullanım Şartları’nı ve</text>
-<text x="758" y="584" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="400" fill="#A69C91">Gizlilik Politikası’nı kabul etmiş</text>
-<text x="758" y="597" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="400" fill="#A69C91">olursun.</text>
-<text x="736" y="800" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">E-posta alınmışsa hata değil, çıkış yolu:</text>
-<text x="736" y="815" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">“bu adresle giriş yap” önerilir.</text>
-<text x="1076" y="142" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Giriş yap</text>
-<text x="1076" y="159" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">var olan hesap</text>
-<rect x="1076" y="168" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="1098" y="194" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="1320" y="186" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 1104 224 L 1098 230 L 1104 236" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="1098" y="274" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Tekrar hoş geldin</text>
-<text x="1098" y="307" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Giriş yap, kaldığın yerden devam et.</text>
-<text x="1098" y="340" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">E-posta</text>
-<rect x="1098" y="348" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="1112" y="375" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">deniz@ornek.com</text>
-<text x="1098" y="404" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Şifre</text>
-<rect x="1098" y="412" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="1112" y="439" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">••••••••••</text>
-<rect x="1098" y="482" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="1224" y="513" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Giriş yap</text>
-<text x="1076" y="800" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Giriş, taslağı silmez: sunucudaki profil</text>
-<text x="1076" y="815" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">ile birleşir ve kaldığı adım açılır.</text>
-<text x="1416" y="142" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Adım 2 — Ad ve doğum tarihi</text>
-<text x="1416" y="159" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">yaş kapısı burada</text>
-<rect x="1416" y="168" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="1438" y="194" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="1660" y="186" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 1444 224 L 1438 230 L 1444 236" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="1690" y="234" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 2 / 6</text>
-<rect x="1438" y="248" width="252" height="3" rx="2" fill="#2E2823"/>
-<rect x="1438" y="248" width="84" height="3" rx="2" fill="#C08668"/>
-<text x="1438" y="276" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Sana nasıl seslenelim?</text>
-<text x="1438" y="309" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Adın profilinde görünür. Doğum</text>
-<text x="1438" y="324" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">tarihinden yalnızca yaşın görünür.</text>
-<text x="1438" y="355" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Adın</text>
-<rect x="1438" y="363" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="1452" y="390" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Deniz</text>
-<text x="1438" y="419" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Doğum tarihin</text>
-<rect x="1438" y="427" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="1452" y="454" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">14 Mart 1998</text>
-<rect x="1438" y="688" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="1564" y="719" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="1416" y="800" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Tek alan; dokununca platformun kendi</text>
-<text x="1416" y="815" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">tarih çarkı açılıyor, klavye hiç açılmıyor.</text>
-<text x="56" y="860" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Adım 3 — Kimlik ve kitle</text>
-<text x="56" y="877" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">eşleşme havuzunu belirler</text>
-<rect x="56" y="886" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="78" y="912" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="300" y="904" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 84 942 L 78 948 L 84 954" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="330" y="952" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 3 / 6</text>
-<rect x="78" y="966" width="252" height="3" rx="2" fill="#2E2823"/>
-<rect x="78" y="966" width="126" height="3" rx="2" fill="#C08668"/>
-<text x="78" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Kimi görmek</text>
-<text x="78" y="1021" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">istersin?</text>
-<text x="78" y="1054" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">İkisini de sonra değiştirebilirsin.</text>
-<text x="78" y="1111" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Cinsiyetin</text>
-<rect x="78" y="1123" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="94" y="1151" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Kadın</text>
-<rect x="294" y="1138" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
-<text x="302" y="1150" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
-<rect x="78" y="1177" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="94" y="1205" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Erkek</text>
-<rect x="294" y="1192" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
-<rect x="78" y="1231" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="94" y="1259" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Non-binary</text>
-<rect x="294" y="1246" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
-<text x="78" y="1289" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Kimleri göstereyim</text>
-<rect x="78.00" y="1301" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="117.33" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Kadınlar</text>
-<rect x="164.67" y="1301" width="78.67" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="174.67" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
-<text x="204.00" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Erkekler</text>
-<rect x="251.33" y="1301" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="290.67" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Herkes</text>
-<rect x="78" y="1406" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="204" y="1437" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="56" y="1518" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Yalnızca iki alan: gender ve audience.</text>
-<text x="56" y="1533" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Yönelim etiketi burada sorulmuyor —</text>
-<text x="56" y="1548" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">profil düzenlemeye taşındı.</text>
-<text x="396" y="860" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Adım 4 — Ne arıyorsun</text>
-<text x="396" y="877" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">en fazla 2 seçim</text>
-<rect x="396" y="886" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="418" y="912" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="640" y="904" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 424 942 L 418 948 L 424 954" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="670" y="952" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 4 / 6</text>
-<rect x="418" y="966" width="252" height="3" rx="2" fill="#2E2823"/>
-<rect x="418" y="966" width="168" height="3" rx="2" fill="#C08668"/>
-<text x="418" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Ne arıyorsun?</text>
-<text x="418" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Dürüst ol. Önerilerin buna göre gelir.</text>
-<rect x="1098.00" y="1073" width="78.67" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="1108.00" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
-<text x="434" y="1101" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Uzun süreli ilişki</text>
-<rect x="634" y="1088" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
-<text x="642" y="1100" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
-<rect x="418" y="1127" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="434" y="1155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Kısa süreli ilişki</text>
-<rect x="634" y="1142" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
-<rect x="418" y="1181" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="434" y="1209" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Yeni arkadaşlar</text>
-<rect x="634" y="1196" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
-<text x="642" y="1208" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
-<rect x="418" y="1235" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="434" y="1263" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Henüz karar vermedim</text>
-<rect x="634" y="1250" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
-<text x="418" y="1299" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#C08668">En fazla 2 seçebilirsin · 2 seçili</text>
-<rect x="418" y="1406" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="544" y="1437" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="396" y="1518" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Sınıra ulaşınca kalan kartlar sönükleşir,</text>
-<text x="396" y="1533" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">kaybolmaz: seçimi değiştirmek kolay kalsın.</text>
-<text x="736" y="860" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Adım 5 — Fotoğraflar</text>
-<text x="736" y="877" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">en az 2, 6 slot</text>
-<rect x="736" y="886" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="758" y="912" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="980" y="904" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 764 942 L 758 948 L 764 954" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="1010" y="952" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 5 / 6</text>
-<rect x="758" y="966" width="252" height="3" rx="2" fill="#2E2823"/>
-<rect x="758" y="966" width="210" height="3" rx="2" fill="#C08668"/>
-<text x="758" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Fotoğraflarını ekle</text>
-<text x="758" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">En az iki fotoğraf. İlki kapak olur;</text>
-<text x="758" y="1042" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">yüzünün net göründüğü bir tane seç.</text>
-<rect x="758" y="1088" width="78.66666666666667" height="74" rx="14" fill="#262019" stroke="#2E2823"/>
-<circle cx="797.3333333333334" cy="1118" r="11" fill="#2E2823"/>
-<path d="M 770 1152 Q 797.3333333333334 1122 824.6666666666666 1152 Z" fill="#2E2823"/>
-<rect x="764" y="1094" width="42" height="16" rx="8" fill="#C08668"/>
-<text x="785" y="1105" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="8.5" font-weight="400" fill="#14110F" text-anchor="middle">Kapak</text>
-<rect x="844.6666666666666" y="1088" width="78.66666666666667" height="74" rx="14" fill="#262019" stroke="#2E2823"/>
-<circle cx="884" cy="1118" r="11" fill="#2E2823"/>
-<path d="M 856.6666666666666 1152 Q 884 1122 911.3333333333333 1152 Z" fill="#2E2823"/>
-<rect x="931.3333333333334" y="1088" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
-<text x="970.6666666666667" y="1130" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<rect x="758" y="1170" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
-<text x="797.3333333333334" y="1212" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<rect x="844.6666666666666" y="1170" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
-<text x="884" y="1212" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<rect x="931.3333333333334" y="1170" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
-<text x="970.6666666666667" y="1212" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<rect x="758" y="1406" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="884" y="1437" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="736" y="1518" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">İlk slot “Kapak” rozetiyle işaretli:</text>
-<text x="736" y="1533" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">sıranın anlamı gizli kalmamalı.</text>
-<text x="1076" y="860" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Adım 6 — İlgi alanları</text>
-<text x="1076" y="877" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">akışın tek atlanabilir adımı</text>
-<rect x="1076" y="886" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="1098" y="912" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="1320" y="904" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 1104 942 L 1098 948 L 1104 954" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="1350" y="952" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 6 / 6</text>
-<rect x="1098" y="966" width="252" height="3" rx="2" fill="#2E2823"/>
-<rect x="1098" y="966" width="252" height="3" rx="2" fill="#C08668"/>
-<text x="1098" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Neye vakit ayırıyorsun?</text>
-<text x="1098" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Ortak noktalar sohbeti başlatır.</text>
-<rect x="1184.67" y="1073" width="78.67" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="1194.67" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
-<text x="1224.00" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Yürüyüş</text>
-<rect x="1271.33" y="1073" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1310.67" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Sinema</text>
-<rect x="1358.00" y="1073" width="78.67" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="1368.00" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
-<text x="1397.33" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Yemek</text>
-<rect x="1098.00" y="1113" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1137.33" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Kitap</text>
-<rect x="1184.67" y="1113" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1224.00" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Konser</text>
-<rect x="1271.33" y="1113" width="78.67" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="1281.33" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
-<text x="1310.67" y="1134" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Kahve</text>
-<rect x="1098.00" y="1153" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1137.33" y="1174" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Yüzme</text>
-<rect x="1184.67" y="1153" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1224.00" y="1174" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Fotoğraf</text>
-<rect x="1271.33" y="1153" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1310.67" y="1174" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Seyahat</text>
-<rect x="1098.00" y="1193" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1137.33" y="1214" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Yoga</text>
-<text x="1098" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Ortak ilgi alanı, ilk mesajı yazmayı</text>
-<text x="1098" y="1335" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">kolaylaştırıyor.</text>
-<rect x="1098" y="1348" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="1224" y="1379" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Bitir</text>
-<text x="1224" y="1439" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91" text-anchor="middle">Şimdilik geç</text>
-<text x="1076" y="1518" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Atlama seçeneği gizlenmiyor ama bedeli</text>
-<text x="1076" y="1533" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">yazılıyor — karar kullanıcının.</text>
-<text x="1416" y="860" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Tamamlanma</text>
-<text x="1416" y="877" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">akışın vardığı yer</text>
-<rect x="1416" y="886" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="1438" y="912" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="1660" y="904" width="30" height="10" rx="3" fill="#A69C91"/>
-<circle cx="1564" cy="1022" r="30" fill="none" stroke="#8FAE97" stroke-width="2"/>
-<path d="M 1552 1022 L 1561 1031 L 1577 1012" fill="none" stroke="#8FAE97" stroke-width="2.5" stroke-linecap="round"/>
-<text x="1438" y="1084" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="27" font-weight="400" fill="#F2EDE6">Hazırsın, Deniz.</text>
-<text x="1438" y="1125" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12" font-weight="400" fill="#A69C91">Profilin hazır. İlk önerilerin yarın</text>
-<text x="1438" y="1141" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12" font-weight="400" fill="#A69C91">sabah burada.</text>
-<rect x="1438" y="1189" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="1452" y="1208" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="400" fill="#A69C91">Ne aradığın</text>
-<text x="1452" y="1223" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6">Uzun süreli · Yeni arkadaşlar</text>
-<rect x="1438" y="1241" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="1452" y="1260" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="400" fill="#A69C91">Fotoğraf</text>
-<text x="1452" y="1275" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6">2 fotoğraf</text>
-<rect x="1438" y="1293" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="1452" y="1312" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="400" fill="#A69C91">İlgi alanları</text>
-<text x="1452" y="1327" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6">Yürüyüş · Yemek · Kahve</text>
-<rect x="1438" y="1368" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="1564" y="1399" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Onboarding’a gir</text>
-<text x="1564" y="1459" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91" text-anchor="middle">Profilimi düzenle</text>
-<text x="1416" y="1518" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">İsme ek getirilmiyor: “Hazırsın, Deniz.”</text>
-<text x="1416" y="1533" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">“{ad}’in profili” kalıbı bir isimde bozulur.</text>
-<text x="56" y="1578" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Durum — klavye açık</text>
-<text x="56" y="1595" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">hiçbir alan örtülmez</text>
-<rect x="56" y="1604" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="78" y="1630" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="300" y="1622" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 84 1660 L 78 1666 L 84 1672" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="330" y="1670" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 2 / 6</text>
-<rect x="78" y="1684" width="252" height="3" rx="2" fill="#2E2823"/>
-<rect x="78" y="1684" width="84" height="3" rx="2" fill="#C08668"/>
-<text x="78" y="1712" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Sana nasıl seslenelim?</text>
-<text x="78" y="1751" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Adın</text>
-<rect x="78" y="1759" width="252" height="44" rx="14" fill="#1E1A17" stroke="#C08668"/>
-<text x="92" y="1786" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Deniz|</text>
-<rect x="57" y="1985" width="294" height="66" rx="0" fill="#14110F"/>
-<rect x="78" y="1991" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="204" y="2022" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<rect x="57" y="2004" width="294" height="209" rx="0" fill="#262019"/>
-<rect x="57" y="2004" width="294" height="30" rx="0" fill="#1E1A17"/>
-<text x="328" y="2024" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#C08668" text-anchor="end">Bitti</text>
-<rect x="71" y="2046" width="22.6" height="32" rx="5" fill="#1E1A17"/>
-<rect x="97.6" y="2046" width="22.6" height="32" rx="5" fill="#1E1A17"/>
-<rect x="124.2" y="2046" width="22.6" height="32" rx="5" fill="#1E1A17"/>
-<rect x="150.8" y="2046" width="22.6" height="32" rx="5" fill="#1E1A17"/>
-<rect x="177.4" y="2046" width="22.6" height="32" rx="5" fill="#1E1A17"/>
-<rect x="204" y="2046" width="22.6" height="32" rx="5" fill="#1E1A17"/>
-<rect x="230.60000000000002" y="2046" width="22.6" height="32" rx="5" fill="#1E1A17"/>
-<rect x="257.20000000000005" y="2046" width="22.6" height="32" rx="5" fill="#1E1A17"/>
-<rect x="283.8" y="2046" width="22.6" height="32" rx="5" fill="#1E1A17"/>
-<rect x="310.4" y="2046" width="22.6" height="32" rx="5" fill="#1E1A17"/>
-<rect x="76" y="2086" width="25.555555555555557" height="32" rx="5" fill="#1E1A17"/>
-<rect x="105.55555555555556" y="2086" width="25.555555555555557" height="32" rx="5" fill="#1E1A17"/>
-<rect x="135.11111111111111" y="2086" width="25.555555555555557" height="32" rx="5" fill="#1E1A17"/>
-<rect x="164.66666666666669" y="2086" width="25.555555555555557" height="32" rx="5" fill="#1E1A17"/>
-<rect x="194.22222222222223" y="2086" width="25.555555555555557" height="32" rx="5" fill="#1E1A17"/>
-<rect x="223.77777777777777" y="2086" width="25.555555555555557" height="32" rx="5" fill="#1E1A17"/>
-<rect x="253.33333333333334" y="2086" width="25.555555555555557" height="32" rx="5" fill="#1E1A17"/>
-<rect x="282.8888888888889" y="2086" width="25.555555555555557" height="32" rx="5" fill="#1E1A17"/>
-<rect x="312.44444444444446" y="2086" width="25.555555555555557" height="32" rx="5" fill="#1E1A17"/>
-<rect x="81" y="2126" width="34" height="32" rx="5" fill="#1E1A17"/>
-<rect x="119" y="2126" width="34" height="32" rx="5" fill="#1E1A17"/>
-<rect x="157" y="2126" width="34" height="32" rx="5" fill="#1E1A17"/>
-<rect x="195" y="2126" width="34" height="32" rx="5" fill="#1E1A17"/>
-<rect x="233" y="2126" width="34" height="32" rx="5" fill="#1E1A17"/>
-<rect x="271" y="2126" width="34" height="32" rx="5" fill="#1E1A17"/>
-<rect x="309" y="2126" width="34" height="32" rx="5" fill="#1E1A17"/>
-<rect x="116" y="2166" width="176" height="32" rx="5" fill="#1E1A17"/>
-<text x="56" y="2236" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Buton sayfanın dibinde kalıyor; klavye onu örtüyor.</text>
-<text x="56" y="2251" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Kaydırma alanı kısalıyor, odaklanan alan görünür kalıyor.</text>
-<text x="56" y="2266" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Tek ekran kabuğunda çözülüyor — bir kez</text>
-<text x="56" y="2281" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">doğrulanır, her ekranda geçerlidir.</text>
-<text x="396" y="1578" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Durum — sunucu hatası</text>
-<text x="396" y="1595" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">çıkış yolu her zaman var</text>
-<rect x="396" y="1604" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="418" y="1630" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="640" y="1622" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 424 1660 L 418 1666 L 424 1672" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="670" y="1670" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 4 / 6</text>
-<rect x="418" y="1684" width="252" height="3" rx="2" fill="#2E2823"/>
-<rect x="418" y="1684" width="168" height="3" rx="2" fill="#C08668"/>
-<text x="418" y="1712" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Ne arıyorsun?</text>
-<rect x="418" y="1749" width="252" height="74" rx="14" fill="rgba(216,154,146,0.12)" stroke="#D89A92"/>
-<text x="432" y="1771" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#D89A92">Sunucuya ulaşamadık. Bağlantını kontrol edip</text>
-<text x="432" y="1785" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#D89A92">tekrar dene. Yazdıkların duruyor.</text>
-<text x="432" y="1807" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="600" fill="#D89A92">Tekrar dene</text>
-<rect x="418" y="1835" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="434" y="1863" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Uzun süreli ilişki</text>
-<rect x="634" y="1850" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
-<text x="642" y="1862" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
-<rect x="418" y="1889" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="434" y="1917" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Kısa süreli ilişki</text>
-<rect x="634" y="1904" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
-<rect x="418" y="1943" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="434" y="1971" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Yeni arkadaşlar</text>
-<rect x="634" y="1958" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
-<text x="642" y="1970" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
-<rect x="418" y="2124" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="544" y="2155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="396" y="2236" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Hata girdiyi silmiyor ve akışı kilitlemiyor.</text>
-<text x="396" y="2251" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Teknik terim yok, durum kodu yok;</text>
-<text x="396" y="2266" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">her hata ya bir eylem sunuyor ya da girdiyi yerinde bırakıyor.</text>
-<text x="736" y="1578" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Durum — yükleme sürüyor</text>
-<text x="736" y="1595" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">dört durumun üçüncüsü</text>
-<rect x="736" y="1604" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="758" y="1630" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="980" y="1622" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 764 1660 L 758 1666 L 764 1672" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="1010" y="1670" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 5 / 6</text>
-<rect x="758" y="1684" width="252" height="3" rx="2" fill="#2E2823"/>
-<rect x="758" y="1684" width="210" height="3" rx="2" fill="#C08668"/>
-<text x="758" y="1712" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Fotoğraflarını ekle</text>
-<text x="758" y="1745" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">En az iki fotoğraf. İlki kapak olur.</text>
-<rect x="758" y="1776" width="78.66666666666667" height="74" rx="14" fill="#262019" stroke="#2E2823"/>
-<circle cx="797.3333333333334" cy="1806" r="11" fill="#2E2823"/>
-<path d="M 770 1840 Q 797.3333333333334 1810 824.6666666666666 1840 Z" fill="#2E2823"/>
-<rect x="764" y="1782" width="42" height="16" rx="8" fill="#C08668"/>
-<text x="785" y="1793" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="8.5" font-weight="400" fill="#14110F" text-anchor="middle">Kapak</text>
-<rect x="844.6666666666666" y="1776" width="78.66666666666667" height="74" rx="14" fill="#1E1A17" stroke="#C08668"/>
-<circle cx="884" cy="1809" r="10" fill="none" stroke="#2E2823" stroke-width="2.5"/>
-<path d="M 884 1799 A 10 10 0 0 1 894 1809" fill="none" stroke="#C08668" stroke-width="2.5" stroke-linecap="round"/>
-<rect x="931.3333333333334" y="1776" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
-<text x="970.6666666666667" y="1818" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<rect x="758" y="1858" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
-<text x="797.3333333333334" y="1900" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<rect x="844.6666666666666" y="1858" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
-<text x="884" y="1900" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<rect x="931.3333333333334" y="1858" width="78.66666666666667" height="74" rx="14" fill="none" stroke="#2E2823" stroke-dasharray="4 4"/>
-<text x="970.6666666666667" y="1900" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="20" font-weight="400" fill="#A69C91" text-anchor="middle">+</text>
-<rect x="758" y="2124" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="884" y="2155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="736" y="2236" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Yükleme sırasında slot kendi durumunu</text>
-<text x="736" y="2251" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">gösteriyor, ekranın tamamı kilitlenmiyor.</text>
-<text x="736" y="2266" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Devam hiçbir zaman sönmez: basınca eksiği söyler.</text>
-<text x="56" y="2360" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Adım 1 — Telefon numarası</text>
-<text x="56" y="2377" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">ülke kodu sabit, doğrulama yok</text>
-<rect x="56" y="2386" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
-<text x="78" y="2412" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
-<rect x="300" y="2404" width="30" height="10" rx="3" fill="#A69C91"/>
-<path d="M 84 2442 L 78 2448 L 84 2454" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="330" y="2452" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 1 / 6</text>
-<rect x="78" y="2466" width="252" height="3" rx="2" fill="#2E2823"/>
-<rect x="78" y="2466" width="42" height="3" rx="2" fill="#C08668"/>
-<text x="78" y="2494" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Telefon numaran</text>
-<text x="78" y="2527" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Yalnızca hesabını korumak için.</text>
-<text x="78" y="2542" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Profilinde görünmez.</text>
-<text x="78" y="2573" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Cep telefonu</text>
-<rect x="78" y="2581" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="92" y="2608" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">+90</text>
-<text x="130" y="2608" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">5551234567</text>
-<rect x="78" y="2906" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="204" y="2937" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="56" y="3018" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Ülke kodu alanda sabit: kullanıcı yazmıyor,</text>
-<text x="56" y="3033" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">on hane bekleniyor ve beş ile başlıyor.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1428" height="3230" viewBox="0 0 1428 3230" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif">
+<defs>
+<linearGradient id="veilTop" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#0B0B0B" stop-opacity="0.94"/>
+<stop offset="1" stop-color="#0B0B0B" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="veilBody" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#0B0B0B" stop-opacity="0"/>
+<stop offset="0.3" stop-color="#0B0B0B" stop-opacity="0.86"/>
+<stop offset="1" stop-color="#0B0B0B" stop-opacity="0.96"/>
+</linearGradient>
+<linearGradient id="brush" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#4A0710"/>
+<stop offset="0.55" stop-color="#B51F2E"/>
+<stop offset="1" stop-color="#4A0710"/>
+</linearGradient>
+<linearGradient id="photo" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#1C191D"/>
+<stop offset="0.6" stop-color="#4A0710"/>
+<stop offset="1" stop-color="#B51F2E" stop-opacity="0.7"/>
+</linearGradient>
+<filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="20"/></filter>
+<linearGradient id="clayFill" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#C50337"/>
+<stop offset="1" stop-color="#8B0D1A"/>
+</linearGradient>
+<clipPath id="clip-0-0"><rect x="56" y="168" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-0-1"><rect x="396" y="168" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-0-2"><rect x="736" y="168" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-0-3"><rect x="1076" y="168" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-1-0"><rect x="56" y="948" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-1-1"><rect x="396" y="948" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-1-2"><rect x="736" y="948" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-1-3"><rect x="1076" y="948" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-2-0"><rect x="56" y="1728" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-2-1"><rect x="396" y="1728" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-2-2"><rect x="736" y="1728" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-2-3"><rect x="1076" y="1728" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-3-0"><rect x="56" y="2508" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-3-1"><rect x="396" y="2508" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-3-2"><rect x="736" y="2508" width="296" height="610" rx="30"/></clipPath>
+<clipPath id="clip-3-3"><rect x="1076" y="2508" width="296" height="610" rx="30"/></clipPath>
+</defs>
+<rect x="0" y="0" width="1428" height="3230" fill="#F5F2ED"/>
+<text x="56" y="76" font-size="40" fill="#111011" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Onboarding ekran eskizleri</text>
+<text x="56" y="106" font-size="14" fill="#5E5652">On altı ekran ve kolay atlanan üç durum: klavye açık, sunucu hatası, yükleme sürüyor. Koyu varyant birincil.</text>
+<text x="56" y="126" font-size="13" fill="#5E5652">Metinler uygulamanın kendi metinleri. Ölçüler göstergesel: birincil eylem 56 piksel, sayaç 01 / 06, seçili durum kızıl kenarlık ve soluk dolgu.</text>
+<line x1="56" y1="142" x2="1372" y2="142" stroke="#DDD6CE"/>
+<text x="56" y="142" font-size="15" fill="#111011" font-weight="600">Açılış</text>
+<text x="56" y="159" font-size="11.5" fill="#5E5652">ilk görülen ekran</text>
+<rect x="56" y="168" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<text x="78" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="300" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="204" y="468" font-size="32" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" text-anchor="middle">Onboarding</text>
+<text x="204" y="500" font-size="12" fill="#B5ADA8" text-anchor="middle">Hazırlanıyor</text>
+<text x="204" y="520" font-size="10" fill="#B5ADA8" text-anchor="middle">Senin için her şeyi yoluna koyuyoruz.</text>
+<rect x="78" y="720" width="252" height="3" rx="1.5" fill="#2A2529"/>
+<rect x="140" y="720" width="81" height="3" rx="1.5" fill="#C50337"/>
+<text x="56" y="802" font-size="11" fill="#5E5652">Yazı tipleri ve arka plan görseli burada bekleniyor.</text>
+<text x="56" y="817" font-size="11" fill="#5E5652">Görsel en fazla altı saniye: süre dolarsa akış görselsiz</text>
+<text x="56" y="832" font-size="11" fill="#5E5652">başlar ve görsel geldiğinde yerine oturur.</text>
+<text x="396" y="142" font-size="15" fill="#111011" font-weight="600">Karşılama 1</text>
+<text x="396" y="159" font-size="11.5" fill="#5E5652">akışın açılışı</text>
+<rect x="396" y="168" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-0-1)">
+<g filter="url(#soft)">
+<path d="M 76 768 C 336 668, 516 488, 826 208 L 916 318 C 616 568, 456 738, 106 848 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M 96 638 C 336 568, 486 418, 776 188 L 816 248 C 536 478, 386 628, 96 698 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="396" y="168" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="396" y="168" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="396" y="288" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="418" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="640" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="418" y="498" font-size="30" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Doğru zamanda</text>
+<text x="418" y="534" font-size="30" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">doğru yerde.</text>
+<text x="418" y="570" font-size="12" fill="#B5ADA8">O karşılaşmayı şansa</text>
+<text x="418" y="588" font-size="12" fill="#B5ADA8">bırakmamak için.</text>
+<rect x="418" y="664" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="544" y="690" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Başlayalım</text>
+<rect x="418" y="713" width="252" height="41" rx="20.5" fill="none" stroke="#F5F2ED" stroke-opacity="0.28"/>
+<text x="544" y="739" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Zaten hesabım var</text>
+<text x="396" y="802" font-size="11" fill="#5E5652">Tek cümlelik söz, iki eylem. İkincil eylem doğrudan</text>
+<text x="396" y="817" font-size="11" fill="#5E5652">girişe gider; hesabı olan kayıt formunu hiç görmüyor.</text>
+<text x="736" y="142" font-size="15" fill="#111011" font-weight="600">Karşılama 2</text>
+<text x="736" y="159" font-size="11.5" fill="#5E5652">neden bu uygulama</text>
+<rect x="736" y="168" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-0-2)">
+<g filter="url(#soft)">
+<path d="M 386 768 C 646 668, 826 488, 1136 208 L 1226 318 C 926 568, 766 738, 416 848 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M 406 638 C 646 568, 796 418, 1086 188 L 1126 248 C 846 478, 696 628, 406 698 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="736" y="168" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="736" y="168" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="736" y="288" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="758" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="980" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="776" cy="242" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 780 234 L 772 242 L 780 250" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<rect x="961.12" y="226" width="48.879999999999995" height="32" rx="16" fill="#F5F2ED" fill-opacity="0.08"/>
+<text x="985.56" y="247" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Geç</text>
+<text x="758" y="352" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Belki de birbirinizi</text>
+<text x="758" y="380" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">aramıyordunuz.</text>
+<text x="758" y="416" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Sadece henüz</text>
+<text x="758" y="444" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">karşılaşmamıştınız.</text>
+<text x="758" y="484" font-size="12" fill="#B5ADA8">Her gün yalnızca birkaç kişi.</text>
+<text x="758" y="502" font-size="12" fill="#B5ADA8">Her biri ne aradığını söylemiş.</text>
+<text x="758" y="520" font-size="12" fill="#B5ADA8">Gerisi sana kalmış.</text>
+<rect x="758" y="708" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="884" y="734" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
+<text x="736" y="802" font-size="11" fill="#5E5652">Ürünün farkı burada anlatılıyor; kayıt ekranı bunu</text>
+<text x="736" y="817" font-size="11" fill="#5E5652">tekrar etmiyor. Atlama kapsülü gizlenmiyor: gizli bir</text>
+<text x="736" y="832" font-size="11" fill="#5E5652">çıkış, olmayan çıkıştan kötü.</text>
+<text x="1076" y="142" font-size="15" fill="#111011" font-weight="600">Kayıt ol</text>
+<text x="1076" y="159" font-size="11.5" fill="#5E5652">hesap oluşturma</text>
+<rect x="1076" y="168" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-0-3)">
+<g filter="url(#soft)">
+<path d="M 696 768 C 956 668, 1136 488, 1446 208 L 1536 318 C 1236 568, 1076 738, 726 848 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M 716 638 C 956 568, 1106 418, 1396 188 L 1436 248 C 1156 478, 1006 628, 716 698 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="1076" y="168" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="1076" y="168" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="1076" y="288" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="1098" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="1320" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="1116" cy="242" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 1120 234 L 1112 242 L 1120 250" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="1098" y="316" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Hesabını oluştur</text>
+<text x="1098" y="348" font-size="12" fill="#B5ADA8">Bir e-posta ve bir şifre yeter.</text>
+<text x="1098" y="366" font-size="12" fill="#B5ADA8">E-postan profilinde görünmez.</text>
+<text x="1098" y="396" font-size="10.5" fill="#B5ADA8" font-weight="500">E-posta</text>
+<rect x="1098" y="405" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
+<text x="1110" y="431" font-size="12.5" fill="#F5F2ED">deniz@ornek.com</text>
+<text x="1098" y="474" font-size="10.5" fill="#B5ADA8" font-weight="500">Şifre</text>
+<rect x="1098" y="483" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
+<text x="1110" y="509" font-size="12.5" fill="#F5F2ED">••••••••••</text>
+<path d="M 1313 504 Q 1324 495, 1335 504 Q 1324 513, 1313 504 Z" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
+<circle cx="1324" cy="504" r="3.2" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
+<text x="1098" y="552" font-size="10.5" fill="#B5ADA8" font-weight="500">Şifreyi doğrula</text>
+<rect x="1098" y="561" width="252" height="41" rx="13" fill="#151316" stroke="#E28B8B"/>
+<text x="1110" y="587" font-size="12.5" fill="#F5F2ED">••••••••</text>
+<path d="M 1313 582 Q 1324 573, 1335 582 Q 1324 591, 1313 582 Z" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
+<circle cx="1324" cy="582" r="3.2" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
+<text x="1098" y="618" font-size="10" fill="#E28B8B">Şifreler birbiriyle aynı değil.</text>
+<rect x="1098" y="638" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="1224" y="664" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Hesap oluştur</text>
+<text x="1098" y="700" font-size="10" fill="#B5ADA8">Devam ederek Kullanım Şartları’nı ve</text>
+<text x="1098" y="714" font-size="10" fill="#B5ADA8">Gizlilik Politikası’nı kabul etmiş</text>
+<text x="1098" y="728" font-size="10" fill="#B5ADA8">olursun.</text>
+<text x="1076" y="802" font-size="11" fill="#5E5652">Şifre iki kez alınıyor. Bu sürümde şifre sıfırlama yolu</text>
+<text x="1076" y="817" font-size="11" fill="#5E5652">yok; yanlış yazılmış bir şifre hesabı kilitler. Hata hangi</text>
+<text x="1076" y="832" font-size="11" fill="#5E5652">alanın yanlış olduğunu iddia etmiyor.</text>
+<text x="56" y="922" font-size="15" fill="#111011" font-weight="600">Giriş yap</text>
+<text x="56" y="939" font-size="11.5" fill="#5E5652">var olan hesap</text>
+<rect x="56" y="948" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-1-0)">
+<g filter="url(#soft)">
+<path d="M -324 1548 C -64 1448, 116 1268, 426 988 L 516 1098 C 216 1348, 56 1518, -294 1628 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M -304 1418 C -64 1348, 86 1198, 376 968 L 416 1028 C 136 1258, -14 1408, -304 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="56" y="948" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="56" y="948" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="56" y="1068" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="78" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="300" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="96" cy="1022" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 100 1014 L 92 1022 L 100 1030" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="78" y="1096" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Tekrar hoş geldin</text>
+<text x="78" y="1128" font-size="12" fill="#B5ADA8">Giriş yap, kaldığın yerden devam et.</text>
+<text x="78" y="1168" font-size="10.5" fill="#B5ADA8" font-weight="500">E-posta</text>
+<rect x="78" y="1177" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
+<text x="90" y="1203" font-size="12.5" fill="#F5F2ED">deniz@ornek.com</text>
+<text x="78" y="1246" font-size="10.5" fill="#B5ADA8" font-weight="500">Şifre</text>
+<rect x="78" y="1255" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
+<text x="90" y="1281" font-size="12.5" fill="#F5F2ED">••••••••••</text>
+<path d="M 293 1276 Q 304 1267, 315 1276 Q 304 1285, 293 1276 Z" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
+<circle cx="304" cy="1276" r="3.2" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
+<rect x="78" y="1488" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="204" y="1514" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Giriş yap</text>
+<text x="56" y="1582" font-size="11" fill="#5E5652">Kayıt ekranıyla aynı alanlar ve aynı doğrulama.</text>
+<text x="56" y="1597" font-size="11" fill="#5E5652">Şifre doğrulama yalnızca kayıtta var: burada</text>
+<text x="56" y="1612" font-size="11" fill="#5E5652">karşılaştırılacak ikinci bir şifre yok.</text>
+<text x="396" y="922" font-size="15" fill="#111011" font-weight="600">Adım 1 · Telefon</text>
+<text x="396" y="939" font-size="11.5" fill="#5E5652">zorunlu</text>
+<rect x="396" y="948" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-1-1)">
+<g filter="url(#soft)">
+<path d="M -9 1548 C 251 1448, 431 1268, 741 988 L 831 1098 C 531 1348, 371 1518, 21 1628 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M 11 1418 C 251 1348, 401 1198, 691 968 L 731 1028 C 451 1258, 301 1408, 11 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="396" y="948" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="396" y="948" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="396" y="1068" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="418" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="640" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="436" cy="1022" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 440 1014 L 432 1022 L 440 1030" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="544" y="1026" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">01 / 06</text>
+<rect x="418" y="1054" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
+<rect x="418" y="1054" width="42" height="3" rx="1.5" fill="#C50337"/>
+<text x="418" y="1114" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Telefon numaran</text>
+<text x="418" y="1146" font-size="12" fill="#B5ADA8">Yalnızca hesabını korumak için.</text>
+<text x="418" y="1164" font-size="12" fill="#B5ADA8">Profilinde görünmez.</text>
+<text x="418" y="1198" font-size="10.5" fill="#B5ADA8" font-weight="500">Cep telefonu</text>
+<rect x="418" y="1207" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
+<text x="430" y="1233" font-size="12.5" fill="#B5ADA8">+90</text>
+<text x="458.875" y="1233" font-size="12.5" fill="#B5ADA8">5XX XXX XX XX</text>
+<rect x="418" y="1488" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="544" y="1514" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
+<text x="396" y="1582" font-size="11" fill="#5E5652">Ülke kodu alanda sabit ve yazılamıyor: bir ülke listesi</text>
+<text x="396" y="1597" font-size="11" fill="#5E5652">sunucudan gelmesi gereken ikinci bir taksonomi açardı.</text>
+<text x="396" y="1612" font-size="11" fill="#5E5652">Sayısal klavyenin bitirme tuşu yok; iOS bunu şeritle çözüyor.</text>
+<text x="736" y="922" font-size="15" fill="#111011" font-weight="600">Adım 2 · Ad ve doğum tarihi</text>
+<text x="736" y="939" font-size="11.5" fill="#5E5652">zorunlu, yaş kapısı burada</text>
+<rect x="736" y="948" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-1-2)">
+<g filter="url(#soft)">
+<path d="M 303.5 1548 C 563.5 1448, 743.5 1268, 1053.5 988 L 1143.5 1098 C 843.5 1348, 683.5 1518, 333.5 1628 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M 323.5 1418 C 563.5 1348, 713.5 1198, 1003.5 968 L 1043.5 1028 C 763.5 1258, 613.5 1408, 323.5 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="736" y="948" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="736" y="948" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="736" y="1068" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="758" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="980" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="776" cy="1022" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 780 1014 L 772 1022 L 780 1030" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="884" y="1026" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">02 / 06</text>
+<rect x="758" y="1054" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
+<rect x="758" y="1054" width="84" height="3" rx="1.5" fill="#C50337"/>
+<text x="758" y="1114" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Sana nasıl</text>
+<text x="758" y="1142" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">seslenelim?</text>
+<text x="758" y="1174" font-size="12" fill="#B5ADA8">Adın profilinde görünür. Doğum</text>
+<text x="758" y="1192" font-size="12" fill="#B5ADA8">tarihinden yalnızca yaşın görünür.</text>
+<text x="758" y="1226" font-size="10.5" fill="#B5ADA8" font-weight="500">Adın</text>
+<rect x="758" y="1235" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
+<text x="770" y="1261" font-size="12.5" fill="#F5F2ED">Deniz</text>
+<text x="758" y="1304" font-size="10.5" fill="#B5ADA8" font-weight="500">Doğum tarihin</text>
+<rect x="758" y="1313" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
+<text x="770" y="1339" font-size="12.5" fill="#B5ADA8">Gün Ay Yıl</text>
+<rect x="758" y="1488" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="884" y="1514" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
+<text x="736" y="1582" font-size="11" fill="#5E5652">Tek alan, tek dokunuş. Alan bir düğme: dokunulunca</text>
+<text x="736" y="1597" font-size="11" fill="#5E5652">klavye değil çark açılıyor, yani yazılamayan bir tarih</text>
+<text x="736" y="1612" font-size="11" fill="#5E5652">hiç yazılamıyor.</text>
+<text x="1076" y="922" font-size="15" fill="#111011" font-weight="600">Adım 2 · Doğum tarihi çarkı</text>
+<text x="1076" y="939" font-size="11.5" fill="#5E5652">platformun kendi çarkı</text>
+<rect x="1076" y="948" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-1-3)">
+<g filter="url(#soft)">
+<path d="M 643.5 1548 C 903.5 1448, 1083.5 1268, 1393.5 988 L 1483.5 1098 C 1183.5 1348, 1023.5 1518, 673.5 1628 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M 663.5 1418 C 903.5 1348, 1053.5 1198, 1343.5 968 L 1383.5 1028 C 1103.5 1258, 953.5 1408, 663.5 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="1076" y="948" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="1076" y="948" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="1076" y="1068" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="1098" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="1320" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="1116" cy="1022" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 1120 1014 L 1112 1022 L 1120 1030" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="1224" y="1026" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">02 / 06</text>
+<rect x="1098" y="1054" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
+<rect x="1098" y="1054" width="84" height="3" rx="1.5" fill="#C50337"/>
+<text x="1098" y="1114" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Sana nasıl</text>
+<text x="1098" y="1142" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">seslenelim?</text>
+<text x="1098" y="1174" font-size="10.5" fill="#B5ADA8" font-weight="500">Adın</text>
+<rect x="1098" y="1183" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
+<text x="1110" y="1209" font-size="12.5" fill="#F5F2ED">Deniz</text>
+<text x="1098" y="1240" font-size="10.5" fill="#B5ADA8" font-weight="500">Doğum tarihin</text>
+<rect x="1098" y="1249" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
+<text x="1110" y="1275" font-size="12.5" fill="#B5ADA8">Gün Ay Yıl</text>
+<g clip-path="url(#clip-1-3)">
+<rect x="1076" y="948" width="296" height="610" fill="#000000" fill-opacity="0.45"/>
+<rect x="1076" y="1296" width="296" height="292" rx="26" fill="#1C191D"/>
+</g>
+<rect x="1206" y="1310" width="36" height="4" rx="2" fill="#F5F2ED" fill-opacity="0.22"/>
+<text x="1098" y="1342" font-size="13" fill="#F5F2ED" font-weight="600">Doğum tarihin</text>
+<rect x="1098" y="1392" width="252" height="34" rx="9" fill="#F5F2ED" fill-opacity="0.06"/>
+<text x="1140" y="1378" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">13</text>
+<text x="1224" y="1378" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">Şubat</text>
+<text x="1308" y="1378" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">1997</text>
+<text x="1140" y="1412" font-size="13" fill="#F5F2ED" text-anchor="middle">14</text>
+<text x="1224" y="1412" font-size="13" fill="#F5F2ED" text-anchor="middle">Mart</text>
+<text x="1308" y="1412" font-size="13" fill="#F5F2ED" text-anchor="middle">1998</text>
+<text x="1140" y="1446" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">15</text>
+<text x="1224" y="1446" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">Nisan</text>
+<text x="1308" y="1446" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">1999</text>
+<rect x="1098" y="1488" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="1224" y="1514" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Seç</text>
+<text x="1076" y="1582" font-size="11" fill="#5E5652">Çark çevrilirken değer sürekli değişiyor; onaysız her</text>
+<text x="1076" y="1597" font-size="11" fill="#5E5652">dönüşü cevap saymak, üstünden geçilen tarihi kaydederdi.</text>
+<text x="1076" y="1612" font-size="11" fill="#5E5652">Android’de sistemin kendi diyaloğu kendi düğmeleriyle geliyor.</text>
+<text x="56" y="1702" font-size="15" fill="#111011" font-weight="600">Adım 3 · Kimlik ve kitle</text>
+<text x="56" y="1719" font-size="11.5" fill="#5E5652">zorunlu, iki soru</text>
+<rect x="56" y="1728" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-2-0)">
+<g filter="url(#soft)">
+<path d="M -404 2328 C -144 2228, 36 2048, 346 1768 L 436 1878 C 136 2128, -24 2298, -374 2408 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M -384 2198 C -144 2128, 6 1978, 296 1748 L 336 1808 C 56 2038, -94 2188, -384 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="56" y="1728" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="56" y="1728" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="56" y="1848" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="78" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="300" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="96" cy="1802" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 100 1794 L 92 1802 L 100 1810" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="204" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">03 / 06</text>
+<rect x="78" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
+<rect x="78" y="1834" width="126" height="3" rx="1.5" fill="#C50337"/>
+<text x="78" y="1894" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Kimi görmek</text>
+<text x="78" y="1922" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">istersin?</text>
+<text x="78" y="1952" font-size="12" fill="#B5ADA8">İkisini de sonra değiştirebilirsin.</text>
+<text x="78" y="1984" font-size="13" fill="#F5F2ED" font-weight="600">Cinsiyetin</text>
+<text x="78" y="2000" font-size="10" fill="#B5ADA8">Bir tane seç.</text>
+<g>
+<rect x="78" y="2010" width="252" height="36" rx="13" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
+<text x="92" y="2033" font-size="12.5" fill="#F5F2ED">Kadın</text>
+</g>
+<g>
+<rect x="78" y="2052" width="252" height="36" rx="13" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="92" y="2075" font-size="12.5" fill="#F5F2ED">Erkek</text>
+</g>
+<g>
+<rect x="78" y="2094" width="252" height="48" rx="13" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="92" y="2115" font-size="12.5" fill="#F5F2ED">Non-binary</text>
+<text x="92" y="2131" font-size="10" fill="#B5ADA8">Kadın ve erkek ikiliğinin dışında</text>
+</g>
+<text x="78" y="2168" font-size="13" fill="#F5F2ED" font-weight="600">Kimleri göstereyim</text>
+<text x="78" y="2184" font-size="10" fill="#B5ADA8">Birden fazla seçebilirsin.</text>
+<rect x="78" y="2194" width="73" height="34" rx="17" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
+<text x="114.5" y="2216" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Kadınlar</text>
+<rect x="157" y="2194" width="73" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="193.5" y="2216" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Erkekler</text>
+<rect x="78" y="2234" width="130" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="143" y="2256" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Non-binary kişiler</text>
+<rect x="214" y="2234" width="64" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="246" y="2256" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Herkes</text>
+<rect x="78" y="2280" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="204" y="2306" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
+<text x="56" y="2362" font-size="11" fill="#5E5652">Seçili hal onay işaretiyle değil kenarlık ve dolguyla</text>
+<text x="56" y="2377" font-size="11" fill="#5E5652">anlatılıyor. Kenarlık seçilince kalınlaşıyor ve iç boşluk</text>
+<text x="56" y="2392" font-size="11" fill="#5E5652">aynı kadar küçülüyor: kart parmağın altında büyümüyor.</text>
+<text x="396" y="1702" font-size="15" fill="#111011" font-weight="600">Adım 4 · Ne arıyorsun</text>
+<text x="396" y="1719" font-size="11.5" fill="#5E5652">zorunlu, en fazla iki cevap</text>
+<rect x="396" y="1728" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-2-1)">
+<g filter="url(#soft)">
+<path d="M -91.5 2328 C 168.5 2228, 348.5 2048, 658.5 1768 L 748.5 1878 C 448.5 2128, 288.5 2298, -61.5 2408 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M -71.5 2198 C 168.5 2128, 318.5 1978, 608.5 1748 L 648.5 1808 C 368.5 2038, 218.5 2188, -71.5 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="396" y="1728" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="396" y="1728" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="396" y="1848" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="418" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="640" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="436" cy="1802" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 440 1794 L 432 1802 L 440 1810" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="544" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">04 / 06</text>
+<rect x="418" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
+<rect x="418" y="1834" width="168" height="3" rx="1.5" fill="#C50337"/>
+<text x="418" y="1894" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Ne arıyorsun?</text>
+<text x="418" y="1926" font-size="12" fill="#B5ADA8">Dürüst ol. Önerilerin buna göre gelir.</text>
+<g>
+<rect x="418" y="1944" width="252" height="48" rx="13" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
+<text x="432" y="1965" font-size="12.5" fill="#F5F2ED">Uzun süreli ilişki</text>
+<text x="432" y="1981" font-size="10" fill="#B5ADA8">Ciddi bir bağ arıyorum</text>
+</g>
+<g>
+<rect x="418" y="2001" width="252" height="48" rx="13" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
+<text x="432" y="2022" font-size="12.5" fill="#F5F2ED">Uzun süreli, kısaya açık</text>
+<text x="432" y="2038" font-size="10" fill="#B5ADA8">Önceliğim kalıcı olan</text>
+</g>
+<g opacity="0.45">
+<rect x="418" y="2058" width="252" height="48" rx="13" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="432" y="2079" font-size="12.5" fill="#F5F2ED">Kısa süreli, uzuna açık</text>
+<text x="432" y="2095" font-size="10" fill="#B5ADA8">Akışına bırakıyorum</text>
+</g>
+<g opacity="0.45">
+<rect x="418" y="2115" width="252" height="48" rx="13" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="432" y="2136" font-size="12.5" fill="#F5F2ED">Kısa süreli ilişki</text>
+<text x="432" y="2152" font-size="10" fill="#B5ADA8">Şimdilik ciddi bir bağ aramıyorum</text>
+</g>
+<g opacity="0.45">
+<rect x="418" y="2172" width="252" height="48" rx="13" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="432" y="2193" font-size="12.5" fill="#F5F2ED">Yeni arkadaşlar</text>
+<text x="432" y="2209" font-size="10" fill="#B5ADA8">Önce tanışalım</text>
+</g>
+<text x="418" y="2240" font-size="10" fill="#B5ADA8">En fazla 2 seçebilirsin · 2 seçili</text>
+<rect x="418" y="2268" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="544" y="2294" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
+<text x="396" y="2362" font-size="11" fill="#5E5652">Altı seçenekten beşi çizildi. Sınır dolunca kalanlar sönüyor</text>
+<text x="396" y="2377" font-size="11" fill="#5E5652">ama dokunulabilir kalıyor: dokunuş sebebi söyletiyor.</text>
+<text x="396" y="2392" font-size="11" fill="#5E5652">Sınırı sunucu veriyor, ekran değil.</text>
+<text x="736" y="1702" font-size="15" fill="#111011" font-weight="600">Adım 5 · Fotoğraflar</text>
+<text x="736" y="1719" font-size="11.5" fill="#5E5652">zorunlu, en az iki</text>
+<rect x="736" y="1728" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-2-2)">
+<g filter="url(#soft)">
+<path d="M 221 2328 C 481 2228, 661 2048, 971 1768 L 1061 1878 C 761 2128, 601 2298, 251 2408 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M 241 2198 C 481 2128, 631 1978, 921 1748 L 961 1808 C 681 2038, 531 2188, 241 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="736" y="1728" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="736" y="1728" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="736" y="1848" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="758" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="980" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="776" cy="1802" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 780 1794 L 772 1802 L 780 1810" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="884" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">05 / 06</text>
+<rect x="758" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
+<rect x="758" y="1834" width="210" height="3" rx="1.5" fill="#C50337"/>
+<text x="758" y="1894" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Fotoğraflarını ekle</text>
+<text x="758" y="1926" font-size="12" fill="#B5ADA8">En az iki fotoğraf. İlki kapak olur;</text>
+<text x="758" y="1944" font-size="12" fill="#B5ADA8">yüzünün net göründüğü bir tane seç.</text>
+<g>
+<rect x="758" y="1964" width="80" height="100" rx="9" fill="url(#photo)" stroke="#2A2529"/>
+<rect x="764" y="1970" width="40" height="17" rx="8.5" fill="#0B0B0B" fill-opacity="0.7"/>
+<text x="784" y="1982" font-size="10" fill="#F5F2ED" text-anchor="middle">Kapak</text>
+<circle cx="823" cy="1979" r="9" fill="#0B0B0B" fill-opacity="0.7"/>
+<text x="823" y="1983" font-size="10" fill="#F5F2ED" text-anchor="middle">✕</text>
+</g>
+<g>
+<rect x="844" y="1964" width="80" height="100" rx="9" fill="url(#photo)" stroke="#2A2529"/>
+<circle cx="909" cy="1979" r="9" fill="#0B0B0B" fill-opacity="0.7"/>
+<text x="909" y="1983" font-size="10" fill="#F5F2ED" text-anchor="middle">✕</text>
+</g>
+<g>
+<rect x="930" y="1964" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
+<text x="970" y="2023" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+</g>
+<g opacity="0.4">
+<rect x="758" y="2070" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
+<text x="798" y="2129" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+</g>
+<g opacity="0.4">
+<rect x="844" y="2070" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
+<text x="884" y="2129" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+</g>
+<g opacity="0.4">
+<rect x="930" y="2070" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
+<text x="970" y="2129" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+</g>
+<text x="758" y="2190" font-size="10" fill="#B5ADA8">2 / 6 eklendi</text>
+<rect x="758" y="2268" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="884" y="2294" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
+<text x="736" y="2362" font-size="11" fill="#5E5652">İlk kutu kapak. Dolu kutunun çıkışı kaldırma düğmesi;</text>
+<text x="736" y="2377" font-size="11" fill="#5E5652">sıradaki boş kutu dışındakiler kilitli, çünkü fotoğraflar</text>
+<text x="736" y="2392" font-size="11" fill="#5E5652">sıra bozmadan ekleniyor.</text>
+<text x="1076" y="1702" font-size="15" fill="#111011" font-weight="600">Adım 6 · İlgi alanları</text>
+<text x="1076" y="1719" font-size="11.5" fill="#5E5652">akışın tek atlanabilir adımı</text>
+<rect x="1076" y="1728" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-2-3)">
+<g filter="url(#soft)">
+<path d="M 536 2328 C 796 2228, 976 2048, 1286 1768 L 1376 1878 C 1076 2128, 916 2298, 566 2408 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M 556 2198 C 796 2128, 946 1978, 1236 1748 L 1276 1808 C 996 2038, 846 2188, 556 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="1076" y="1728" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="1076" y="1728" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="1076" y="1848" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="1098" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="1320" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="1116" cy="1802" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 1120 1794 L 1112 1802 L 1120 1810" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="1224" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">06 / 06</text>
+<rect x="1246.91" y="1786" width="103.08999999999999" height="32" rx="16" fill="#F5F2ED" fill-opacity="0.08"/>
+<text x="1298.455" y="1807" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Şimdilik geç</text>
+<rect x="1098" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
+<rect x="1098" y="1834" width="252" height="3" rx="1.5" fill="#C50337"/>
+<text x="1098" y="1894" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Neye vakit</text>
+<text x="1098" y="1922" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">ayırıyorsun?</text>
+<text x="1098" y="1952" font-size="12" fill="#B5ADA8">Ortak noktalar sohbeti başlatır.</text>
+<rect x="1098" y="1968" width="71" height="34" rx="17" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
+<text x="1133.5" y="1990" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Yürüyüş</text>
+<rect x="1175" y="1968" width="68" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="1209" y="1990" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Sinema</text>
+<rect x="1098" y="2008" width="112" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="1154" y="2030" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Yemek yapmak</text>
+<rect x="1216" y="2008" width="64" height="34" rx="17" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
+<text x="1248" y="2030" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Konser</text>
+<rect x="1286" y="2008" width="55" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="1313.5" y="2030" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Kitap</text>
+<rect x="1098" y="2048" width="60" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="1128" y="2070" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Kahve</text>
+<rect x="1164" y="2048" width="64" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="1196" y="2070" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Yüzme</text>
+<rect x="1234" y="2048" width="55" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="1261.5" y="2070" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Müze</text>
+<rect x="1098" y="2088" width="70" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="1133" y="2110" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Bisiklet</text>
+<rect x="1174" y="2088" width="71" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="1209.5" y="2110" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Podcast</text>
+<rect x="1251" y="2088" width="66" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="1284" y="2110" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Tiyatro</text>
+<rect x="1098" y="2128" width="57" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
+<text x="1126.5" y="2150" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Kamp</text>
+<text x="1098" y="2182" font-size="10" fill="#B5ADA8">En fazla 8 seçebilirsin · 2 seçili</text>
+<rect x="1098" y="2240" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="1224" y="2266" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Bitir</text>
+<text x="1224" y="2298" font-size="10" fill="#B5ADA8" text-anchor="middle">Ortak ilgi alanı, ilk mesajı yazmayı</text>
+<text x="1224" y="2312" font-size="10" fill="#B5ADA8" text-anchor="middle">kolaylaştırıyor.</text>
+<text x="1076" y="2362" font-size="11" fill="#5E5652">On altı etiketten on ikisi çizildi. Çipler etiketleri kadar</text>
+<text x="1076" y="2377" font-size="11" fill="#5E5652">geniş: eşit sütun uzun etiketi alt alta kırıyordu.</text>
+<text x="1076" y="2392" font-size="11" fill="#5E5652">Son adımda butonun etiketi Bitir oluyor.</text>
+<text x="56" y="2482" font-size="15" fill="#111011" font-weight="600">Tamamlanma</text>
+<text x="56" y="2499" font-size="11.5" fill="#5E5652">akışın kapanışı</text>
+<rect x="56" y="2508" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-3-0)">
+<g filter="url(#soft)">
+<path d="M -514 3108 C -254 3008, -74 2828, 236 2548 L 326 2658 C 26 2908, -134 3078, -484 3188 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M -494 2978 C -254 2908, -104 2758, 186 2528 L 226 2588 C -54 2818, -204 2968, -494 3038 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="56" y="2508" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="56" y="2508" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="56" y="2628" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="78" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="300" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="110" cy="2676" r="32" fill="url(#photo)"/>
+<text x="78" y="2756" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Hazırsın, Deniz.</text>
+<text x="78" y="2788" font-size="12" fill="#B5ADA8">Profilin hazır. İlk önerilerin</text>
+<text x="78" y="2806" font-size="12" fill="#B5ADA8">yarın sabah burada.</text>
+<rect x="78" y="2826" width="252" height="152" rx="13" fill="#151316" stroke="#2A2529"/>
+<text x="92" y="2852" font-size="13" fill="#F5F2ED" font-weight="600">Deniz, 27</text>
+<text x="92" y="2880" font-size="10.5" fill="#B5ADA8" font-weight="500">Telefon</text>
+<text x="316" y="2880" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">+90 555 123 45 67</text>
+<text x="92" y="2902" font-size="10.5" fill="#B5ADA8" font-weight="500">Kimler görecek</text>
+<text x="316" y="2902" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">Kadınlar</text>
+<text x="92" y="2924" font-size="10.5" fill="#B5ADA8" font-weight="500">Ne aradığın</text>
+<text x="316" y="2924" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">Uzun süreli ilişki</text>
+<text x="92" y="2946" font-size="10.5" fill="#B5ADA8" font-weight="500">İlgi alanları</text>
+<text x="316" y="2946" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">Yürüyüş, Konser</text>
+<text x="92" y="2968" font-size="10.5" fill="#B5ADA8" font-weight="500">Fotoğraf</text>
+<text x="316" y="2968" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">2 fotoğraf</text>
+<rect x="78" y="3004" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="204" y="3030" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Onboarding’a gir</text>
+<rect x="78" y="3053" width="252" height="41" rx="20.5" fill="none" stroke="#F5F2ED" stroke-opacity="0.28"/>
+<text x="204" y="3079" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Profilimi düzenle</text>
+<text x="56" y="3142" font-size="11" fill="#5E5652">Kapanış kullanıcıya ne kurduğunu gösteriyor: kapak</text>
+<text x="56" y="3157" font-size="11" fill="#5E5652">fotoğrafı, ad ve yaş, cevapların özeti. Kapak yoksa</text>
+<text x="56" y="3172" font-size="11" fill="#5E5652">yerinde adın ilk harfi duruyor.</text>
+<text x="396" y="2482" font-size="15" fill="#111011" font-weight="600">Durum · Klavye açık</text>
+<text x="396" y="2499" font-size="11.5" fill="#5E5652">iki platformda elle sınandı</text>
+<rect x="396" y="2508" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-3-1)">
+<g filter="url(#soft)">
+<path d="M -9 3108 C 251 3008, 431 2828, 741 2548 L 831 2658 C 531 2908, 371 3078, 21 3188 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M 11 2978 C 251 2908, 401 2758, 691 2528 L 731 2588 C 451 2818, 301 2968, 11 3038 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="396" y="2508" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="396" y="2508" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="396" y="2628" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="418" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="640" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="436" cy="2582" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 440 2574 L 432 2582 L 440 2590" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="544" y="2586" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">01 / 06</text>
+<rect x="418" y="2614" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
+<rect x="418" y="2614" width="42" height="3" rx="1.5" fill="#C50337"/>
+<text x="418" y="2674" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Telefon numaran</text>
+<text x="418" y="2706" font-size="12" fill="#B5ADA8">Yalnızca hesabını korumak için.</text>
+<text x="418" y="2724" font-size="12" fill="#B5ADA8">Profilinde görünmez.</text>
+<text x="418" y="2758" font-size="10.5" fill="#B5ADA8" font-weight="500">Cep telefonu</text>
+<rect x="418" y="2767" width="252" height="41" rx="13" fill="#151316" stroke="#C50337"/>
+<text x="430" y="2793" font-size="12.5" fill="#B5ADA8">+90</text>
+<text x="458.875" y="2793" font-size="12.5" fill="#F5F2ED">532 145 67 89</text>
+<g clip-path="url(#clip-3-1)">
+<rect x="396" y="2894" width="296" height="34" fill="#1C191D"/>
+<line x1="396" y1="2894" x2="692" y2="2894" stroke="#2A2529"/>
+<text x="670" y="2916" font-size="13" fill="#C50337" font-weight="600" text-anchor="end">Bitti</text>
+<rect x="396" y="2928" width="296" height="190" fill="#0B0B0B"/>
+<rect x="410" y="2940" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="451" y="2965" font-size="14" fill="#F5F2ED" text-anchor="middle">1</text>
+<rect x="500" y="2940" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="541" y="2965" font-size="14" fill="#F5F2ED" text-anchor="middle">2</text>
+<rect x="590" y="2940" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="631" y="2965" font-size="14" fill="#F5F2ED" text-anchor="middle">3</text>
+<rect x="410" y="2984" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="451" y="3009" font-size="14" fill="#F5F2ED" text-anchor="middle">4</text>
+<rect x="500" y="2984" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="541" y="3009" font-size="14" fill="#F5F2ED" text-anchor="middle">5</text>
+<rect x="590" y="2984" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="631" y="3009" font-size="14" fill="#F5F2ED" text-anchor="middle">6</text>
+<rect x="410" y="3028" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="451" y="3053" font-size="14" fill="#F5F2ED" text-anchor="middle">7</text>
+<rect x="500" y="3028" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="541" y="3053" font-size="14" fill="#F5F2ED" text-anchor="middle">8</text>
+<rect x="590" y="3028" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="631" y="3053" font-size="14" fill="#F5F2ED" text-anchor="middle">9</text>
+<rect x="500" y="3072" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="541" y="3097" font-size="14" fill="#F5F2ED" text-anchor="middle">0</text>
+<rect x="590" y="3072" width="82" height="38" rx="6" fill="#1C191D"/>
+<text x="631" y="3097" font-size="14" fill="#F5F2ED" text-anchor="middle">⌫</text>
+</g>
+<text x="396" y="3142" font-size="11" fill="#5E5652">Klavye hiçbir alanı örtmüyor: kaydırma alanı klavye kadar</text>
+<text x="396" y="3157" font-size="11" fill="#5E5652">kısalıyor. Buton klavyenin üstüne binmiyor, bir kaydırma</text>
+<text x="396" y="3172" font-size="11" fill="#5E5652">uzakta duruyor; her açılışta yer değiştiren bir hedef olmuyor.</text>
+<text x="736" y="2482" font-size="15" fill="#111011" font-weight="600">Durum · Sunucu hatası</text>
+<text x="736" y="2499" font-size="11.5" fill="#5E5652">seçenek listeleri gelmedi</text>
+<rect x="736" y="2508" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<text x="758" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="980" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="758" y="2796" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Seçenekleri</text>
+<text x="758" y="2824" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">getiremedik</text>
+<text x="758" y="2858" font-size="12" fill="#B5ADA8">Sunucuya ulaşamadık. Bağlantını</text>
+<text x="758" y="2876" font-size="12" fill="#B5ADA8">kontrol edip tekrar dene.</text>
+<rect x="758" y="3048" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="884" y="3074" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Tekrar dene</text>
+<text x="736" y="3142" font-size="11" fill="#5E5652">Boş bir seçim ekranı gösterilmiyor. Hata teknik olmayan</text>
+<text x="736" y="3157" font-size="11" fill="#5E5652">bir dille yazılmış ve çıkış yolu butonun kendisi.</text>
+<text x="736" y="3172" font-size="11" fill="#5E5652">Bu ekranda arka plan görseli çizilmiyor.</text>
+<text x="1076" y="2482" font-size="15" fill="#111011" font-weight="600">Durum · Yükleme sürüyor</text>
+<text x="1076" y="2499" font-size="11.5" fill="#5E5652">fotoğraf sunucuya gidiyor</text>
+<rect x="1076" y="2508" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
+<g clip-path="url(#clip-3-3)">
+<g filter="url(#soft)">
+<path d="M 561 3108 C 821 3008, 1001 2828, 1311 2548 L 1401 2658 C 1101 2908, 941 3078, 591 3188 Z" fill="url(#brush)" fill-opacity="0.9"/>
+<path d="M 581 2978 C 821 2908, 971 2758, 1261 2528 L 1301 2588 C 1021 2818, 871 2968, 581 3038 Z" fill="#B51F2E" fill-opacity="0.5"/>
+</g>
+<rect x="1076" y="2508" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
+<rect x="1076" y="2508" width="296" height="130" fill="url(#veilTop)"/>
+<rect x="1076" y="2628" width="296" height="490" fill="url(#veilBody)"/>
+</g>
+<text x="1098" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
+<rect x="1320" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<circle cx="1116" cy="2582" r="18" fill="#151316" stroke="#2A2529"/>
+<path d="M 1120 2574 L 1112 2582 L 1120 2590" fill="none" stroke="#F5F2ED" stroke-width="2"/>
+<text x="1224" y="2586" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">05 / 06</text>
+<rect x="1098" y="2614" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
+<rect x="1098" y="2614" width="210" height="3" rx="1.5" fill="#C50337"/>
+<text x="1098" y="2674" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Fotoğraflarını ekle</text>
+<text x="1098" y="2706" font-size="12" fill="#B5ADA8">En az iki fotoğraf. İlki kapak olur;</text>
+<text x="1098" y="2724" font-size="12" fill="#B5ADA8">yüzünün net göründüğü bir tane seç.</text>
+<g>
+<rect x="1098" y="2744" width="80" height="100" rx="9" fill="url(#photo)" stroke="#2A2529"/>
+<rect x="1104" y="2750" width="40" height="17" rx="8.5" fill="#0B0B0B" fill-opacity="0.7"/>
+<text x="1124" y="2762" font-size="10" fill="#F5F2ED" text-anchor="middle">Kapak</text>
+<circle cx="1163" cy="2759" r="9" fill="#0B0B0B" fill-opacity="0.7"/>
+<text x="1163" y="2763" font-size="10" fill="#F5F2ED" text-anchor="middle">✕</text>
+</g>
+<g>
+<rect x="1184" y="2744" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529"/>
+<path d="M 1224 2782 A 12 12 0 1 1 1212 2794" fill="none" stroke="#C50337" stroke-width="2.4"/>
+</g>
+<g>
+<rect x="1270" y="2744" width="80" height="100" rx="9" fill="#151316" stroke="#E28B8B"/>
+<text x="1310" y="2798" font-size="10" fill="#E28B8B" text-anchor="middle">Tekrar dene</text>
+</g>
+<g>
+<rect x="1098" y="2850" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
+<text x="1138" y="2909" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+</g>
+<g opacity="0.4">
+<rect x="1184" y="2850" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
+<text x="1224" y="2909" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+</g>
+<g opacity="0.4">
+<rect x="1270" y="2850" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
+<text x="1310" y="2909" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+</g>
+<text x="1098" y="2970" font-size="10" fill="#B5ADA8">1 / 6 eklendi</text>
+<rect x="1098" y="3048" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
+<text x="1224" y="3074" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
+<text x="1076" y="3142" font-size="11" fill="#5E5652">Yükleme sürerken kutu meşgul ve yeri korunuyor.</text>
+<text x="1076" y="3157" font-size="11" fill="#5E5652">Düşen bir yükleme kutuda kalıyor: kırmızı kenarlık ve</text>
+<text x="1076" y="3172" font-size="11" fill="#5E5652">tekrar dene, akış durmadan.</text>
 </svg>
