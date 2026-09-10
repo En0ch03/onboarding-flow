@@ -1,5 +1,6 @@
 import { act, cleanup, fireEvent } from '@testing-library/react-native';
 import { useState } from 'react';
+import { Keyboard, Platform } from 'react-native';
 
 import { strings } from '@/constants/strings';
 import { useOnboardingStore, type AnswersUpdate, type DraftAnswers } from '@/state/onboardingStore';
@@ -132,6 +133,68 @@ describe('PhoneStep', () => {
     });
 
     expect(seen.answers.phone).toBe('5551234567');
+  });
+});
+
+/** Platformu gecici olarak degistirir; test bitince eski tanimi geri koyar. */
+function onPlatform(os: 'ios' | 'android') {
+  const original = Object.getOwnPropertyDescriptor(Platform, 'OS');
+  Object.defineProperty(Platform, 'OS', { get: () => os, configurable: true });
+  return () => {
+    if (original) Object.defineProperty(Platform, 'OS', original);
+  };
+}
+
+describe('klavyeyi kapatan serit', () => {
+  it("iOS'ta alanin ustunde Turkce bir bitirme dugmesi var", async () => {
+    const restore = onPlatform('ios');
+    try {
+      const { view } = await renderStep();
+
+      // Once agacin cizildigi: bos bir agacta asagidaki iddia da patlardi.
+      expect(view.getByLabelText(fieldLabel)).toBeTruthy();
+
+      const dismiss = view.getByLabelText(strings.common.dismissKeyboard);
+      expect(dismiss.props.accessibilityRole).toBe('button');
+      expect(view.getByText(strings.common.dismissKeyboard)).toBeTruthy();
+
+      // Seridin cizilmis olmasi yetmiyor: alanin onu kendi klavyesine
+      // baglamasi gerekiyor, yoksa serit hicbir klavyenin ustunde cikmaz.
+      expect(view.getByLabelText(fieldLabel).props.inputAccessoryViewID).toBeTruthy();
+    } finally {
+      restore();
+    }
+  });
+
+  it('dugmeye dokunmak klavyeyi kapatiyor', async () => {
+    const restore = onPlatform('ios');
+    const dismiss = jest.spyOn(Keyboard, 'dismiss').mockImplementation(() => {});
+    try {
+      const { view } = await renderStep();
+
+      await act(async () => {
+        fireEvent.press(view.getByLabelText(strings.common.dismissKeyboard));
+      });
+
+      expect(dismiss).toHaveBeenCalled();
+    } finally {
+      dismiss.mockRestore();
+      restore();
+    }
+  });
+
+  it("Android'de serit cizilmiyor: klavyenin kendi onay tusu var", async () => {
+    const restore = onPlatform('android');
+    try {
+      const { view } = await renderStep();
+
+      // Baglantinin kendisi sinaniyor: seridin gorunmedigini iddia etmek
+      // yetmez, cunku platform bu bileseni zaten kendisi cizmiyor.
+      expect(view.getByLabelText(fieldLabel).props.inputAccessoryViewID).toBeUndefined();
+      expect(view.queryByLabelText(strings.common.dismissKeyboard)).toBeNull();
+    } finally {
+      restore();
+    }
   });
 });
 

@@ -1,6 +1,14 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { forwardRef, useState } from 'react';
-import { Pressable, TextInput, View, type TextInputProps } from 'react-native';
+import { forwardRef, useId, useState } from 'react';
+import {
+  InputAccessoryView,
+  Keyboard,
+  Platform,
+  Pressable,
+  TextInput,
+  View,
+  type TextInputProps,
+} from 'react-native';
 
 import { strings } from '@/constants/strings';
 import { useTheme, withAlpha } from '@/theme';
@@ -17,6 +25,9 @@ import { EyeIcon } from './EyeIcon';
  */
 const TOGGLE_SIZE = 48;
 
+/** Klavyeyi kapatan dugmenin dokunma hedefi; iOS'un asgarisi. */
+const DISMISS_MIN_HEIGHT = 44;
+
 type TextFieldProps = Omit<TextInputProps, 'style'> & {
   label: string;
   /** Alanin altinda gorunen hata; varsa ekran okuyucuya duyurulur. */
@@ -30,6 +41,15 @@ type TextFieldProps = Omit<TextInputProps, 'style'> & {
    * bir bosluk metnin onekle cakismasina yol acardi.
    */
   prefix?: string | undefined;
+  /**
+   * Klavyenin ustune klavyeyi kapatan bir serit koyar.
+   *
+   * Sayisal klavyenin kendi bitirme tusu yok; onsuz kullanicinin klavyeden
+   * cikmak icin ekranin bos bir yerine dokunmayi bilmesi gerekiyor. Yalnizca
+   * iOS'ta ciziliyor: Android'in sayisal klavyesi bu tusu kendisi tasiyor ve
+   * ikinci bir serit yalnizca yer kaplardi.
+   */
+  dismissAccessory?: boolean;
 };
 
 /**
@@ -39,10 +59,14 @@ type TextFieldProps = Omit<TextInputProps, 'style'> & {
  * formun tepesindeki bir liste, hangi alanin kastedildigini aramaya birakiyor.
  */
 export const TextField = forwardRef<TextInput, TextFieldProps>(function TextField(
-  { label, error, secure = false, prefix, ...inputProps },
+  { label, error, secure = false, prefix, dismissAccessory = false, ...inputProps },
   ref,
 ) {
   const { colors, radius, spacing, type } = useTheme();
+  // Kimlik alan basina benzersiz: ayni ekranda iki serit olursa klavye
+  // hangisini cizecegini kimlikten okuyor.
+  const accessoryId = useId();
+  const showAccessory = dismissAccessory && Platform.OS === 'ios';
   const [revealed, setRevealed] = useState(false);
   const [focused, setFocused] = useState(false);
   const [prefixWidth, setPrefixWidth] = useState(0);
@@ -73,6 +97,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
           // eziyordu: odak halkasi bir kez yandiktan sonra hic sonmuyor ve
           // alanlar arasi gecisten sonra iki alan da odakli gorunuyordu.
           secureTextEntry={secure && !revealed}
+          {...(showAccessory ? { inputAccessoryViewID: accessoryId } : null)}
           onFocus={(event) => {
             setFocused(true);
             inputProps.onFocus?.(event);
@@ -171,6 +196,34 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
           </View>
         ) : null}
       </View>
+
+      {showAccessory ? (
+        <InputAccessoryView nativeID={accessoryId}>
+          <View
+            style={{
+              backgroundColor: colors.surfaceRaised,
+              alignItems: 'flex-end',
+              paddingHorizontal: spacing.lg,
+            }}
+          >
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={strings.common.dismissKeyboard}
+              onPress={() => Keyboard.dismiss()}
+              style={({ pressed }) => ({
+                minHeight: DISMISS_MIN_HEIGHT,
+                justifyContent: 'center',
+                paddingHorizontal: spacing.sm,
+                opacity: pressed ? 0.6 : 1,
+              })}
+            >
+              <AppText variant="button" tone="clay">
+                {strings.common.dismissKeyboard}
+              </AppText>
+            </Pressable>
+          </View>
+        </InputAccessoryView>
+      ) : null}
 
       {error ? (
         <AppText

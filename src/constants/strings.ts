@@ -14,6 +14,8 @@ export const strings = {
     retry: 'Tekrar dene',
     finish: 'Bitir',
     close: 'Kapat',
+    // Sayisal klavyenin kendi bitirme tusu yok; serit onun yerine geciyor.
+    dismissKeyboard: 'Bitti',
   },
 
   welcome: {
