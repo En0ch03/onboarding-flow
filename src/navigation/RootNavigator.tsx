@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
 
 import { fetchOptionGroups, readCachedOptionGroups } from '@/api/config';
 import type { OptionGroups } from '@/api/schemas';
@@ -8,6 +7,8 @@ import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { strings } from '@/constants/strings';
 import { HomeScreen } from '@/features/app/HomeScreen';
+import { LaunchScreen } from '@/features/app/LaunchScreen';
+import { preloadJourneyArtwork } from '@/features/onboarding/artwork/journeyArtwork';
 import { useAuthStore } from '@/state/authStore';
 import { adoptServerProfile, bootstrap } from '@/state/bootstrap';
 import { useTheme } from '@/theme';
@@ -31,7 +32,11 @@ export function RootNavigator() {
   const start = useCallback(async () => {
     // Baslangic durumu zaten 'loading'; burada tekrar ayarlamak, etkinin
     // govdesinde es zamanli bir durum yazmasi anlamina gelirdi.
-    const result = await bootstrap();
+    //
+    // Gorsel sekansla birlikte bekleniyor, arkasindan degil: sirayla
+    // koslardi ve acilis iki beklemenin toplami kadar uzardi. Gorselin
+    // kendi ust siniri var, o yuzden bu bekleme sinirsiz degil.
+    const [result] = await Promise.all([bootstrap(), preloadJourneyArtwork()]);
     setOptions(readCachedOptionGroups());
     setPhase(result.destination);
   }, []);
@@ -71,7 +76,7 @@ export function RootNavigator() {
     }
   }, []);
 
-  if (phase === 'loading') return <HoldingScreen />;
+  if (phase === 'loading') return <LaunchScreen />;
 
   if (phase === 'welcome') {
     return (
@@ -137,24 +142,6 @@ export async function resolveSignIn(
     // tusu var ne yeniden deneme, tek cikis uygulamayi kapatmak olurdu.
     setPhase('welcome');
   }
-}
-
-/** Hidrasyon bitene kadar hicbir yonlendirme yapilmiyor. */
-function HoldingScreen() {
-  const { colors } = useTheme();
-
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: colors.paper,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <ActivityIndicator color={colors.clay} />
-    </View>
-  );
 }
 
 function OptionsUnavailableScreen({ onRetry }: { onRetry: () => void }) {

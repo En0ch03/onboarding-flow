@@ -1,8 +1,8 @@
 import { DarkTheme, DefaultTheme, NavigationContainer, type Theme } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { LaunchScreen } from '@/features/app/LaunchScreen';
 import { RootNavigator } from '@/navigation/RootNavigator';
 import { ThemeProvider, useTheme } from '@/theme';
 import { useAppFonts } from '@/theme/useAppFonts';
@@ -21,10 +21,15 @@ function Root() {
   const { ready } = useAppFonts();
   const theme = useTheme();
 
-  // Yazi tipleri hazir olmadan ekran cizilmiyor: once varsayilan aileyle
+  // Yazi tipleri hazir olmadan akis cizilmiyor: once varsayilan aileyle
   // cizip sonra degistirmek, metnin gozle gorulur sekilde yeniden akmasina
   // yol aciyor.
-  if (!ready) return <View style={{ flex: 1, backgroundColor: theme.colors.paper }} />;
+  //
+  // Bekleme ekrani burada da ayni ekran: bos bir zemin, uygulamanin acilip
+  // acilmadigini soylemiyordu. Yazi tipleri gelmeden sistem ailesiyle
+  // ciziliyor ve bir kez yeniden akiyor -- tek satirlik bir marka adinda bu,
+  // bos bir zeminden daha az rahatsiz edici.
+  if (!ready) return <LaunchScreen />;
 
   return (
     <NavigationContainer theme={navigationTheme(theme)}>

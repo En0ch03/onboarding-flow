@@ -1,5 +1,6 @@
 import { act, cleanup, waitFor } from '@testing-library/react-native';
 
+import { strings } from '@/constants/strings';
 import { useAuthStore } from '@/state/authStore';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
@@ -12,6 +13,12 @@ jest.mock('@/state/bootstrap', () => ({
 jest.mock('@/api/config', () => ({
   fetchOptionGroups: jest.fn(),
   readCachedOptionGroups: jest.fn(() => ({})),
+}));
+
+// Gorselin kendisi degil, acilisin onu bekleyip beklemedigi sinaniyor.
+jest.mock('@/features/onboarding/artwork/journeyArtwork', () => ({
+  ...jest.requireActual('@/features/onboarding/artwork/journeyArtwork'),
+  preloadJourneyArtwork: jest.fn(),
 }));
 
 /**
@@ -32,6 +39,7 @@ jest.mock('./AuthNavigator', () => ({
 jest.mock('./OnboardingNavigator', () => ({ OnboardingNavigator: () => null }));
 
 const { bootstrap, adoptServerProfile } = jest.requireMock('@/state/bootstrap');
+const { preloadJourneyArtwork } = jest.requireMock('@/features/onboarding/artwork/journeyArtwork');
 
 /**
  * Hata tam olarak burada yasadi: giris yolu sunucudaki profili hic
@@ -42,6 +50,9 @@ beforeEach(() => {
   signedIn = null;
   adoptServerProfile.mockReset();
   adoptServerProfile.mockResolvedValue('in-progress');
+
+  preloadJourneyArtwork.mockReset();
+  preloadJourneyArtwork.mockResolvedValue('ready');
 
   bootstrap.mockReset();
   bootstrap.mockResolvedValue({
@@ -154,5 +165,31 @@ describe('RootNavigator', () => {
     // kancasinin yeniden kurulmasindan okunuyor.
     await waitFor(() => expect(signedIn).not.toBeNull());
     expect(view).toBeTruthy();
+  });
+
+  it('gorsel inmeden bekleme ekranindan cikmiyor', async () => {
+    // Yusuf'un cihazda gordugu kusur buydu: ilk ekran acilip arka plandaki
+    // gorsel sonradan yerine oturuyordu. Acilis artik ikisini birlikte
+    // bekliyor.
+    let artworkArrived: (() => void) | null = null;
+    preloadJourneyArtwork.mockReturnValue(
+      new Promise<'ready'>((resolve) => {
+        artworkArrived = () => resolve('ready');
+      }),
+    );
+
+    const view = await renderWithTheme(<RootNavigator />);
+    await waitFor(() => expect(bootstrap).toHaveBeenCalled());
+    await act(async () => {});
+
+    // Acilis sekansi bitti ama gorsel hala yolda: ekran bekleme ekrani.
+    expect(view.getByText(strings.launch.status)).toBeTruthy();
+    expect(signedIn).toBeNull();
+
+    await act(async () => {
+      artworkArrived?.();
+    });
+
+    await waitFor(() => expect(signedIn).not.toBeNull());
   });
 });

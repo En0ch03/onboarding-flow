@@ -11,9 +11,7 @@ import {
 
 import { useTheme, withAlpha } from '@/theme';
 
-import { journeyOffset } from './journeyArtwork';
-
-const artwork = require('../../../../assets/onboarding/onboarding-crimson-journey-master-v2.png');
+import { journeyArtworkModule, journeyOffset } from './journeyArtwork';
 
 type JourneyBackdropProps = {
   progress: number;
@@ -58,7 +56,7 @@ export function JourneyBackdrop({ progress }: JourneyBackdropProps) {
     >
       <Animated.Image
         testID="journey-artwork"
-        source={artwork}
+        source={journeyArtworkModule}
         resizeMode="stretch"
         style={{
           position: 'absolute',
