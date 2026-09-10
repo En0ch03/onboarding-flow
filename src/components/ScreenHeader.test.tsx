@@ -59,4 +59,19 @@ describe('ScreenHeader', () => {
     expect(view.queryByText('‹')).toBeNull();
     expect(view.getByTestId('back-chevron')).toBeTruthy();
   });
+
+  it('ok, dairenin icinde bir kil payi kalmiyor', async () => {
+    const view = await renderWithTheme(<ScreenHeader onBack={noop} />);
+    const style = StyleSheet.flatten(view.getByTestId('back-chevron').props.style) as {
+      width: number;
+    };
+
+    // Kol kirk bes derece donunce iki kenari bir "<" olusturuyor ve o seklin
+    // yuksekligi kolun kosegen izdusumu kadar cikiyor. Kirk sekiz noktalik
+    // dairenin icinde bu isaretin gorunur bir agirligi olmali: cok kucuk bir
+    // ok, dokunulacak seyin nerede oldugunu soylemiyor.
+    const height = style.width * Math.SQRT2;
+    expect(height).toBeGreaterThanOrEqual(20);
+    expect(height).toBeLessThanOrEqual(24);
+  });
 });

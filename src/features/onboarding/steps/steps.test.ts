@@ -4,7 +4,6 @@ import type { DraftAnswers } from '@/state/onboardingStore';
 import type { OptionGroup } from '@/api/schemas';
 
 import { birthDateMessages } from './birthDate';
-import { phoneMessages } from './phoneNumber';
 import { toggleSelection } from './useSelection';
 import { DEFAULT_INTERESTS_GROUP } from './interestsGroup';
 import { MINIMUM_PHOTOS, PHOTO_SLOTS } from './photoSlots';
@@ -133,8 +132,11 @@ describe('phone step gate', () => {
     const hint = phone?.incompleteHint;
     const say = (answers: DraftAnswers) => (typeof hint === 'function' ? hint(answers) : hint);
 
-    expect(say({ phone: '555123' })).toBe(phoneMessages.incomplete);
-    expect(say({ phone: '2121234567' })).toBe(phoneMessages.invalid);
+    // Uc cumle uc ayri durum anlatiyor. Ikisi birlestirilirse kullanicilardan
+    // biri kendi durumuna ait olmayan bir cumle okuyor.
+    expect(say({})).toBe(strings.phone.empty);
+    expect(say({ phone: '555123' })).toBe(strings.phone.partial);
+    expect(say({ phone: '2121234567' })).toBe(strings.phone.invalid);
   });
 });
 

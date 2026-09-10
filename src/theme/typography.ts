@@ -13,7 +13,6 @@ import type { TextStyle } from 'react-native';
  */
 export const fonts = {
   serifSemiBold: 'PlayfairDisplay_600SemiBold',
-  serifBold: 'PlayfairDisplay_700Bold',
   sansRegular: 'Figtree_400Regular',
   sansMedium: 'Figtree_500Medium',
   sansSemiBold: 'Figtree_600SemiBold',

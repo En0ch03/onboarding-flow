@@ -18,7 +18,7 @@ import { useAuthStore } from '@/state/authStore';
 import { useTheme } from '@/theme';
 
 import { CredentialsFields } from './CredentialsFields';
-import { credentialsFormSchema, type CredentialsForm } from './credentialsForm';
+import { registerFormSchema, type RegisterForm } from './credentialsForm';
 
 type RegisterScreenProps = {
   onBack: () => void;
@@ -31,9 +31,9 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
   const { spacing } = useTheme();
   const startSession = useAuthStore((state) => state.startSession);
 
-  const form = useForm<CredentialsForm>({
-    resolver: zodResolver(credentialsFormSchema),
-    defaultValues: { email: '', password: '' },
+  const form = useForm<RegisterForm>({
+    resolver: zodResolver(registerFormSchema),
+    defaultValues: { email: '', password: '', confirmPassword: '' },
     // Her tus vurusunda degil, alandan cikildiginda dogrula: kullanici hala
     // yazarken kirmizi bir mesaj gostermek yardim degil, acele ettirme.
     mode: 'onTouched',
@@ -56,7 +56,9 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
   }, [action.state, form]);
 
   const submit = form.handleSubmit(async (values) => {
-    const session = await action.run(values);
+    // Dogrulama alani formda kaliyor, istekte yer almiyor: sunucu ayni sifreyi
+    // iki kez almiyor ve sozlesme buyumuyor.
+    const session = await action.run({ email: values.email, password: values.password });
     if (!session) return;
 
     await startSession(session);

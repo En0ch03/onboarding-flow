@@ -93,7 +93,32 @@ export function Screen({ header, children, footer, align = 'top', journeyProgres
         edges={['top', 'bottom']}
       >
         {header ? (
-          <View style={{ paddingHorizontal: screenPadding, paddingTop: spacing.lg }}>{header}</View>
+          <View style={{ paddingHorizontal: screenPadding, paddingTop: spacing.lg }}>
+            {/* Serit gorselin uzerinde ciplak duruyordu: geri oku ve sayac,
+                arkalarindaki parlak bir bolgeye denk geldiginde okunmuyor.
+                Perde icerigin perdesiyle ayni aileden ve seridin altinda
+                bitiyor, boylece gorselin ustunde ikinci bir kenar cizgisi
+                olusmuyor. */}
+            {showJourney ? (
+              <LinearGradient
+                testID="header-veil"
+                pointerEvents="none"
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                colors={[withAlpha(colors.paper, 0.8), withAlpha(colors.paper, 0)]}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  bottom: 0,
+                  // Yatayda ekran kenarina kadar: kenar boslugu kadar dar
+                  // kalsaydi iki yanda seritler kalirdi.
+                  left: -screenPadding,
+                  right: -screenPadding,
+                }}
+              />
+            ) : null}
+            {header}
+          </View>
         ) : null}
 
         <View style={{ flex: 1 }}>
@@ -142,7 +167,7 @@ export function Screen({ header, children, footer, align = 'top', journeyProgres
                     importantForAccessibility="no-hide-descendants"
                     colors={[
                       withAlpha(colors.paper, 0),
-                      withAlpha(colors.paper, 0.72),
+                      withAlpha(colors.paper, 0.8),
                       withAlpha(colors.paper, 0.86),
                     ]}
                     // Perde tam opakliga metnin bastigi yerde ulasiyor; ustteki

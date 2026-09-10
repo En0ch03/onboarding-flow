@@ -1,6 +1,7 @@
 import { act, cleanup, fireEvent, waitFor, type RenderResult } from '@testing-library/react-native';
 import { AxiosError, AxiosHeaders } from 'axios';
 
+import { strings } from '@/constants/strings';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { RegisterScreen } from './RegisterScreen';
@@ -34,12 +35,25 @@ async function press(view: RenderResult, label: string) {
   });
 }
 
-async function fillIn(view: RenderResult, email: string, password: string) {
+async function fillIn(
+  view: RenderResult,
+  email: string,
+  password: string,
+  confirmPassword: string = password,
+) {
   await act(async () => {
-    fireEvent.changeText(view.getByLabelText('E-posta'), email);
-    fireEvent.changeText(view.getByLabelText('Şifre'), password);
+    fireEvent.changeText(view.getByLabelText(strings.auth.emailLabel), email);
+    fireEvent.changeText(view.getByLabelText(strings.auth.passwordLabel), password);
+    fireEvent.changeText(view.getByLabelText(strings.auth.confirmPasswordLabel), confirmPassword);
   });
 }
+
+const session = {
+  user_id: 'u',
+  access_token: 'a',
+  refresh_token: 'r',
+  onboarding_complete: false,
+};
 
 beforeEach(() => {
   // Yalnizca kendi taklidimiz sifirlaniyor: `clearAllMocks` yerel modul
@@ -104,13 +118,7 @@ describe('RegisterScreen', () => {
     register.mockImplementation(
       () =>
         new Promise((resolve) => {
-          release = () =>
-            resolve({
-              user_id: 'u',
-              access_token: 'a',
-              refresh_token: 'r',
-              onboarding_complete: false,
-            });
+          release = () => resolve(session);
         }),
     );
 
@@ -125,6 +133,33 @@ describe('RegisterScreen', () => {
     });
 
     release();
+  });
+
+  it('sends only the address and the password to the server', async () => {
+    // Dogrulama alani formun isi; sozlesmeye girerse sunucu ayni sifreyi iki
+    // kez almaya baslar ve iki kopyanin hangisinin dogru oldugu bir soru olur.
+    register.mockResolvedValue(session);
+    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+
+    await fillIn(view, 'deniz@ornek.com', 'agirates2026');
+    await press(view, 'Hesap oluştur');
+
+    await waitFor(() =>
+      expect(register).toHaveBeenCalledWith({
+        email: 'deniz@ornek.com',
+        password: 'agirates2026',
+      }),
+    );
+  });
+
+  it('stops a mistyped password before it reaches the server', async () => {
+    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+
+    await fillIn(view, 'deniz@ornek.com', 'agirates2026', 'agirates2027');
+    await press(view, 'Hesap oluştur');
+
+    expect(await view.findByText(strings.auth.passwordMismatch)).toBeTruthy();
+    expect(register).not.toHaveBeenCalled();
   });
 
   it('explains a server failure in plain language', async () => {
@@ -147,12 +182,7 @@ describe('RegisterScreen', () => {
     await press(view, 'Hesap oluştur');
     await view.findByText(/bizim tarafta bir şeyler ters gitti/i);
 
-    register.mockResolvedValue({
-      user_id: 'u',
-      access_token: 'a',
-      refresh_token: 'r',
-      onboarding_complete: false,
-    });
+    register.mockResolvedValue(session);
     await press(view, 'Tekrar dene');
 
     await waitFor(() => expect(handlers.onRegistered).toHaveBeenCalled());

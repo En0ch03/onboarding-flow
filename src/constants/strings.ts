@@ -14,6 +14,8 @@ export const strings = {
     retry: 'Tekrar dene',
     finish: 'Bitir',
     close: 'Kapat',
+    // Sayisal klavyenin kendi bitirme tusu yok; serit onun yerine geciyor.
+    dismissKeyboard: 'Bitti',
   },
 
   welcome: {
@@ -25,8 +27,8 @@ export const strings = {
     differenceTitleFirst: 'Belki de birbirinizi aramıyordunuz.',
     differenceTitleSecond: 'Sadece henüz karşılaşmamıştınız.',
     differenceSubtitle:
-      'Onboarding’da günde birkaç kişi görürsün. Herkes ne aradığını yazmıştır. Gerisi size kalmış.',
-    differencePrimary: 'Anladım, devam',
+      'Her gün yalnızca birkaç kişi. Her biri ne aradığını söylemiş. Gerisi sana kalmış.',
+    differencePrimary: 'Devam',
   },
 
   auth: {
@@ -35,16 +37,20 @@ export const strings = {
     // da sinirin kendisinden geliyor.
     emailInvalid: 'Bu e-posta adresi geçerli görünmüyor. Yazımını kontrol eder misin?',
     passwordTooShort: (length: number) => `Şifren çok kısa. En az ${length} karakter olmalı.`,
-    registerTitle: 'Hesabını oluşturalım',
-    registerSubtitle: 'E-postanı yalnızca giriş için kullanıyoruz. Profilinde görünmez.',
+    registerTitle: 'Hesabını oluştur',
+    registerSubtitle: 'Bir e-posta ve bir şifre yeter. E-postan profilinde görünmez.',
     registerSubmit: 'Hesap oluştur',
 
     loginTitle: 'Tekrar hoş geldin',
-    loginSubtitle: 'Kaldığın yerden devam edelim.',
+    loginSubtitle: 'Giriş yap, kaldığın yerden devam et.',
     loginSubmit: 'Giriş yap',
 
     emailLabel: 'E-posta',
     passwordLabel: 'Şifre',
+    confirmPasswordLabel: 'Şifreyi doğrula',
+    // Cumle hangi alanin yanlis oldugunu iddia etmiyor: kullanici hangisini
+    // duzeltecegini kendi biliyor, biz bilmiyoruz.
+    passwordMismatch: 'Şifreler birbiriyle aynı değil.',
     showPassword: 'Şifreyi göster',
     hidePassword: 'Şifreyi gizle',
 
@@ -72,17 +78,17 @@ export const strings = {
   },
 
   steps: {
-    phoneTitle: 'Telefon numaran nedir?',
-    phoneSubtitle: 'Hesabını korumak için kullanıyoruz. Profilinde görünmez.',
-    phoneLabel: 'Telefon numarası',
+    phoneTitle: 'Telefon numaran',
+    phoneSubtitle: 'Yalnızca hesabını korumak için. Profilinde görünmez.',
+    phoneLabel: 'Cep telefonu',
     /** Alanda sabit duran ülke kodu; kullanıcı yazmıyor. */
     phonePrefix: '+90',
     phonePlaceholder: '5XX XXX XX XX',
 
-    identityTitle: 'Sana nasıl hitap edelim?',
-    identitySubtitle: 'Adın profilinde görünür. Doğum tarihin görünmez, yalnızca yaşın görünür.',
-    nameLabel: 'Ad',
-    birthDateLabel: 'Doğum tarihi',
+    identityTitle: 'Sana nasıl seslenelim?',
+    identitySubtitle: 'Adın profilinde görünür. Doğum tarihinden yalnızca yaşın görünür.',
+    nameLabel: 'Adın',
+    birthDateLabel: 'Doğum tarihin',
     dayLabel: 'Gün',
     monthLabel: 'Ay',
     yearLabel: 'Yıl',
@@ -90,37 +96,40 @@ export const strings = {
     identityNameHint: 'Devam etmek için adını yazman gerekiyor.',
     identityDateHint: 'Devam etmek için doğum tarihini seçmen gerekiyor.',
 
-    audienceTitle: 'Kimlere görünmek istersin?',
-    audienceSubtitle:
-      'Bu iki cevap eşleşme havuzunu belirliyor. İstediğin zaman değiştirebilirsin.',
-    genderLabel: 'Ben',
-    genderHelp: 'Profilinde görünür. Bir tane seç.',
-    audienceLabel: 'Beni görsün',
+    audienceTitle: 'Kimi görmek istersin?',
+    audienceSubtitle: 'İkisini de sonra değiştirebilirsin.',
+    genderLabel: 'Cinsiyetin',
+    genderHelp: 'Bir tane seç.',
+    audienceLabel: 'Kimleri göstereyim',
     audienceHelp: 'Birden fazla seçebilirsin.',
     audienceSkipCost: 'Bu iki cevap olmadan sana kimseyi gösteremeyiz.',
     audienceHint:
       'İki soruyu da yanıtlaman gerekiyor: kendini nasıl tanımladığın ve kimlere görünmek istediğin.',
 
     intentTitle: 'Ne arıyorsun?',
-    intentSubtitle: 'Bu cevap profilinde görünür ve kimleri göreceğini etkiler.',
+    intentSubtitle: 'Dürüst ol. Önerilerin buna göre gelir.',
     intentHint: 'En az bir seçenek işaretlemen gerekiyor.',
     intentSkipCost: 'Ne aradığını yazmayan profiller çok daha az yanıt alıyor.',
 
-    photosTitle: 'Birkaç fotoğraf ekle',
-    photosSubtitle:
-      'En az iki tane. İlk fotoğraf kapak olur. Yüzünün göründüğü bir kare iyi çalışıyor.',
+    photosTitle: 'Fotoğraflarını ekle',
+    photosSubtitle: 'En az iki fotoğraf. İlki kapak olur; yüzünün net göründüğü bir tane seç.',
     photosCover: 'Kapak',
     photosHint: 'Devam etmek için en az iki fotoğraf gerekiyor.',
     photosSkipCost: 'Fotoğrafsız profiller çok daha az görüntüleniyor.',
 
-    interestsTitle: 'Neye vakit ayırırsın?',
-    interestsSubtitle: 'Birkaç tane seç. Sohbet başlatmayı kolaylaştırıyor.',
+    interestsTitle: 'Neye vakit ayırıyorsun?',
+    interestsSubtitle: 'Ortak noktalar sohbeti başlatır.',
     interestsSkipCost: 'Ortak ilgi alanı, ilk mesajı yazmayı kolaylaştırıyor.',
     interestsHint: 'En az bir ilgi alanı seçmen gerekiyor.',
   },
 
   phone: {
-    incomplete: 'Telefon numaranı yazman gerekiyor: 5 ile başlayan on hane.',
+    // Hic yazmamis kullanici ile yarim birakmis kullanici ayni cumleyi
+    // almiyor: birine ne yapacagi soyleniyor, digerine neyin eksik oldugu.
+    // Tek cumle ikisine de yaziliyordu ve bos alana bakan birine "on hane"
+    // demek, henuz sormadigi bir soruya cevap vermek oluyordu.
+    empty: 'Devam etmek için telefon numaranı yaz.',
+    partial: 'Numara eksik görünüyor. 5 ile başlayan on hane olmalı.',
     // Eksik ile yanlis ayri konusuyor. Yazmaya devam eden birine "gecersiz"
     // demek, henuz yapmadigi bir hatayi yuzune vurmak olurdu.
     invalid: 'Bu numara doğru görünmüyor. Cep numaraları 5 ile başlar ve on hanedir.',
@@ -139,8 +148,7 @@ export const strings = {
 
   errors: {
     optionsUnavailableTitle: 'Seçenekleri getiremedik',
-    optionsUnavailableBody:
-      'Sunucuya ulaşamadığımız için bu adımın seçeneklerini gösteremiyoruz. Bağlantını kontrol edip tekrar dene.',
+    optionsUnavailableBody: 'Sunucuya ulaşamadık. Bağlantını kontrol edip tekrar dene.',
   },
 
   exitFlow: {
@@ -161,12 +169,12 @@ export const strings = {
 
   home: {
     title: 'Onboarding',
-    subtitle: 'İlk önerilerin yarın sabah burada olacak.',
+    subtitle: 'İlk önerilerin yarın sabah burada.',
     signOut: 'Çıkış yap',
   },
 
   completion: {
-    subtitle: 'Profilin yayında. İlk önerilerin yarın sabah burada olacak. Acelesi yok.',
+    subtitle: 'Profilin hazır. İlk önerilerin yarın sabah burada.',
     recapAudience: 'Kimler görecek',
     recapIntent: 'Ne aradığın',
     recapEmpty: 'Belirtmedin',

@@ -36,6 +36,9 @@ export function PhoneStep({ values, onChange }: StepProps) {
         // sinir yapistirilan metni temizlik gormeden kirpar.
         maxLength={MAX_INPUT_LENGTH}
         returnKeyType="done"
+        // Sayisal klavyede bitirme tusu yok: onsuz klavyeden cikmanin yolu
+        // ekranin bos bir yerine dokunmak ve bu, gorunmeyen bir yol.
+        dismissAccessory
       />
     </View>
   );
