@@ -70,16 +70,29 @@ export function JourneyBackdrop({ progress }: JourneyBackdropProps) {
         }}
       />
 
+      {/* Aydinlatma ve karartma renkleri paletten geliyor. Burada ham hex
+          tasimak, "altili renk kodu yalnizca tek dosyada" kuralini sessizce
+          delerdi: perde bir efekt degil, temanin bir parcasi. */}
       <LinearGradient
-        colors={[withAlpha('#B51F2E', 0.34), withAlpha('#4A0710', 0.16), withAlpha('#050505', 0)]}
+        testID="journey-glow"
+        colors={[
+          withAlpha(colors.glowStrong, 0.34),
+          withAlpha(colors.glowDeep, 0.16),
+          withAlpha(colors.veil, 0),
+        ]}
         locations={[0, 0.44, 1]}
         start={{ x: 1, y: 0 }}
         end={{ x: 0.12, y: 0.72 }}
         style={StyleSheet.absoluteFill}
       />
+      {/* Karartma daha erken basliyor ve daha derine iniyor: metin blogu
+          ekranin ust yarisinda duruyor ve gorselin en acik bolgesi tam oraya
+          denk gelebiliyor. Kontrast gorsele gore degil, perdeye gore olculur;
+          perde zayifsa olculen sey bir sey ifade etmez. */}
       <LinearGradient
-        colors={[withAlpha('#050505', 0), withAlpha('#050505', 0.76)]}
-        locations={[0.46, 1]}
+        testID="journey-veil"
+        colors={[withAlpha(colors.veil, 0), withAlpha(colors.veil, 0.86)]}
+        locations={[0.36, 1]}
         style={StyleSheet.absoluteFill}
       />
     </View>
