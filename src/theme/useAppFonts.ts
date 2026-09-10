@@ -4,14 +4,16 @@ import {
   Figtree_600SemiBold,
 } from '@expo-google-fonts/figtree';
 import {
-  Newsreader_300Light,
-  Newsreader_400Regular,
-  Newsreader_500Medium,
-} from '@expo-google-fonts/newsreader';
+  PlayfairDisplay_600SemiBold,
+  PlayfairDisplay_700Bold,
+} from '@expo-google-fonts/playfair-display';
 import { useFonts } from 'expo-font';
 
 /**
  * Yazi tipleri acilista bir kez yuklenir.
+ *
+ * Yalnizca olcegin adiyla cagirdigi kesimler yukleniyor. Kullanilmayan bir
+ * kesim acilis suresine giren ama ekranda hicbir karsiligi olmayan bir dosya.
  *
  * Donen ikinci deger hata: yukleme basarisiz olursa akis durmaz, platform kendi
  * varsayilan ailesine duser. Bir yazi tipi dosyasi yuzunden kullanicinin
@@ -19,9 +21,8 @@ import { useFonts } from 'expo-font';
  */
 export function useAppFonts(): { ready: boolean; error: Error | null } {
   const [loaded, error] = useFonts({
-    Newsreader_300Light,
-    Newsreader_400Regular,
-    Newsreader_500Medium,
+    PlayfairDisplay_600SemiBold,
+    PlayfairDisplay_700Bold,
     Figtree_400Regular,
     Figtree_500Medium,
     Figtree_600SemiBold,

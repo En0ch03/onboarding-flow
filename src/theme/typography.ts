@@ -1,7 +1,8 @@
 import type { TextStyle } from 'react-native';
 
 /**
- * Iki aile: basliklarda editoryal bir serif, arayuzde dost canlisi bir sans.
+ * Iki aile: basliklarda yuksek kontrastli bir display serifi, arayuzde dost
+ * canlisi bir sans.
  *
  * Agirlik `fontWeight` ile degil ayri dosya adlariyla veriliyor. Statik font
  * dosyalari yuklendiginde `fontWeight` iOS'ta sentetik kalinlik uretir veya
@@ -11,9 +12,8 @@ import type { TextStyle } from 'react-native';
  * eder; yazi tipi bir engel degil.
  */
 export const fonts = {
-  serifLight: 'Newsreader_300Light',
-  serifRegular: 'Newsreader_400Regular',
-  serifMedium: 'Newsreader_500Medium',
+  serifSemiBold: 'PlayfairDisplay_600SemiBold',
+  serifBold: 'PlayfairDisplay_700Bold',
   sansRegular: 'Figtree_400Regular',
   sansMedium: 'Figtree_500Medium',
   sansSemiBold: 'Figtree_600SemiBold',
@@ -25,72 +25,73 @@ export const fonts = {
  * Renk bilerek disarida birakildi: renk varyanta gore degisiyor, bu olcek ise
  * statik. Ikisini ayni nesnede birlestirmek, olcegi bir cengele bagimli kilardi.
  *
- * Olcek bilerek cesur: bu gorsel yonun en buyuk riski "sablon" hissi ve
- * kucuk basliklarla uygulandiginda o riske dusuyor.
+ * Basliklar ince degil dolgun: "tok" gorunmenin yolu boyuttan cok kontrasttan
+ * ve agirliktan geciyor. Ince bir serif buyutuldugunde daha buyuk degil daha
+ * kirilgan gorunuyor.
  */
 export const type = {
   /** Karsilama ekranlarinin ana cumlesi. */
   display: {
-    fontFamily: fonts.serifLight,
-    fontSize: 42,
-    lineHeight: 44,
-    letterSpacing: -0.8,
+    fontFamily: fonts.serifSemiBold,
+    fontSize: 44,
+    lineHeight: 48,
+    letterSpacing: -0.6,
   },
   /** Adim ve form basliklari. */
   title: {
-    fontFamily: fonts.serifLight,
-    fontSize: 32,
-    lineHeight: 36,
-    letterSpacing: -0.6,
+    fontFamily: fonts.serifSemiBold,
+    fontSize: 34,
+    lineHeight: 38,
+    letterSpacing: -0.4,
   },
   /** Uzun basliklarin sigmadigi yerde bir kademe asagi. */
   titleCompact: {
-    fontFamily: fonts.serifLight,
-    fontSize: 27,
-    lineHeight: 31,
+    fontFamily: fonts.serifSemiBold,
+    fontSize: 28,
+    lineHeight: 32,
     letterSpacing: -0.4,
   },
   /** Bolum basligi. */
   heading: {
     fontFamily: fonts.sansSemiBold,
-    fontSize: 17,
-    lineHeight: 22,
+    fontSize: 18,
+    lineHeight: 23,
   },
   /** Govde metni. */
   body: {
     fontFamily: fonts.sansRegular,
-    fontSize: 16,
-    lineHeight: 25,
+    fontSize: 17,
+    lineHeight: 26,
   },
   /** Baslik altindaki aciklama satiri. */
   subhead: {
     fontFamily: fonts.sansRegular,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 16,
+    lineHeight: 23,
   },
-  /** Secim karti ve girdi metni. */
+  /** Secim karti, cip ve girdi metni. */
   control: {
     fontFamily: fonts.sansRegular,
-    fontSize: 16,
-    lineHeight: 21,
+    fontSize: 17,
+    lineHeight: 22,
   },
   /** Buton metni. */
   button: {
     fontFamily: fonts.sansSemiBold,
-    fontSize: 16,
-    lineHeight: 20,
+    fontSize: 17,
+    lineHeight: 21,
   },
   /** Alan etiketi ve adim sayaci. */
   label: {
-    fontFamily: fonts.sansRegular,
-    fontSize: 13,
-    lineHeight: 17,
+    fontFamily: fonts.sansMedium,
+    fontSize: 14,
+    lineHeight: 18,
   },
   /** Hata metni, sinir aciklamasi, yasal satir. */
   caption: {
     fontFamily: fonts.sansRegular,
-    fontSize: 12,
-    lineHeight: 17,
+    fontSize: 13,
+    lineHeight: 18,
   },
 } as const satisfies Record<string, TextStyle>;
 

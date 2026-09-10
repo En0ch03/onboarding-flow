@@ -4,6 +4,10 @@
  * Palet iki varyantli kuruldu cunku koyu varyant sonradan eklenecek bir is degil,
  * urunun birincil gorunumu. Tek varyantla baslayip sonra ikinciyi turetmek,
  * kontrast kararlarini iki kez almak demek olurdu.
+ *
+ * Renkler akisin arka planindaki gorselden turedi, tersi degil: siyah zemin
+ * uzerine kizil bir firca seridi. Vurgu rengi gorselle ayni aileden olmazsa
+ * ekranda iki ayri urun goruntusu cikiyor.
  */
 
 export type ColorScheme = 'light' | 'dark';
@@ -19,7 +23,13 @@ export type Palette = {
   ink: string;
   /** Ikincil metin, etiket, aciklama. */
   inkSoft: string;
-  /** Birincil eylem rengi. */
+  /**
+   * Birincil eylem, kizil.
+   *
+   * Kizil yalnizca eylemde, secili kenarlikta ve ilerleme cubugunda kullanilir;
+   * genis yuzeylerde ve govde metninde asla. Kirmizinin olculmus kacinma etkisi
+   * doygunluk ve kapladigi alanla buyuyor, hue'nun kendisiyle degil.
+   */
   clay: string;
   /** Birincil eylemin gradyan alt ucu ve basili hali. */
   clayDeep: string;
@@ -32,9 +42,8 @@ export type Palette = {
   /** Basari. */
   success: string;
   /**
-   * Hata. Doygun kirmizi degil: kirmizinin olculmus etkisi arzu ekseninde ve
-   * degerlendirme baglaminda kacinma uretiyor; bir kayit akisi bastan sona
-   * degerlendirme baglami. Yasak hue duzeyinde degil doygunluk duzeyinde.
+   * Hata. Eylem kiziliyla karistirilmayacak kadar acik ve soluk: ikisi ayni
+   * hue ailesinden oldugu icin ayrimi parlaklik tasiyor.
    */
   danger: string;
   /** Hatanin cok soluk dolgusu. */
@@ -47,40 +56,62 @@ export type Palette = {
    * ayirmasi gereken sey zaten koyu.
    */
   scrim: string;
+  /** Arka plan gorselinin uzerindeki kizil aydinlatmanin sicak ucu. */
+  glowStrong: string;
+  /** Ayni aydinlatmanin derin ucu. */
+  glowDeep: string;
+  /**
+   * Gorselin uzerine cekilen karartma perdesi.
+   *
+   * Zeminden bir tik daha koyu: perde zeminle ayni olsaydi gorselin bittigi
+   * yerle ekranin bittigi yer ayni tonda birlesir ve karartma is gormezdi.
+   */
+  veil: string;
 };
 
 export const palettes: Record<ColorScheme, Palette> = {
   light: {
-    paper: '#FBF8F3',
-    surface: '#F4EFE7',
-    surfaceRaised: '#EFE8DD',
-    ink: '#1A1614',
-    inkSoft: '#6B6259',
-    clay: '#7A4A3A',
-    clayDeep: '#5F3729',
-    clayTint: 'rgba(122, 74, 58, 0.08)',
-    onClay: '#FBF8F3',
-    hairline: '#E3DCD1',
+    paper: '#F5F2ED',
+    surface: '#EDE8E1',
+    surfaceRaised: '#E6E0D8',
+    ink: '#111011',
+    inkSoft: '#5E5652',
+    clay: '#8B0D1A',
+    clayDeep: '#63080F',
+    clayTint: 'rgba(139, 13, 26, 0.10)',
+    onClay: '#F5F2ED',
+    hairline: '#DDD6CE',
     success: '#4A6350',
-    danger: '#8A4A42',
-    dangerTint: 'rgba(138, 74, 66, 0.08)',
+    danger: '#8A2F2F',
+    dangerTint: 'rgba(138, 47, 47, 0.10)',
     scrim: '#000000',
+    // Uc perde rolu iki varyantta ayni. Acik varyantta arka plan gorseli
+    // cizilmiyor; degerleri bos birakmak yerine koyu varyanttakiyle esitlemek,
+    // gorsel bir gun acik varyanta acilirsa perdenin gorselle ayni aileden
+    // kalmasini sagliyor.
+    glowStrong: '#B51F2E',
+    glowDeep: '#4A0710',
+    veil: '#050505',
   },
   dark: {
-    paper: '#14110F',
-    surface: '#1E1A17',
-    surfaceRaised: '#262019',
-    ink: '#F2EDE6',
-    inkSoft: '#A69C91',
-    clay: '#C08668',
-    clayDeep: '#9B6647',
-    clayTint: 'rgba(192, 134, 104, 0.14)',
-    // Koyu varyantta birincil buton acik renkli, uzerindeki metin koyu olur.
-    onClay: '#14110F',
-    hairline: '#2E2823',
+    paper: '#0B0B0B',
+    surface: '#151316',
+    surfaceRaised: '#1C191D',
+    ink: '#F5F2ED',
+    inkSoft: '#B5ADA8',
+    clay: '#C50337',
+    clayDeep: '#8B0D1A',
+    clayTint: 'rgba(197, 3, 55, 0.16)',
+    // Kizil yeterince koyu: uzerindeki metin kirik beyaz kaliyor ve buton iki
+    // varyantta da ayni sesle konusuyor.
+    onClay: '#F5F2ED',
+    hairline: '#2A2529',
     success: '#8FAE97',
-    danger: '#D89A92',
-    dangerTint: 'rgba(216, 154, 146, 0.12)',
+    danger: '#E28B8B',
+    dangerTint: 'rgba(226, 139, 139, 0.12)',
     scrim: '#000000',
+    glowStrong: '#B51F2E',
+    glowDeep: '#4A0710',
+    veil: '#050505',
   },
 };
