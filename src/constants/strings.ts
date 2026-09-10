@@ -162,6 +162,7 @@ export const strings = {
   home: {
     title: 'Onboarding',
     subtitle: 'İlk önerilerin yarın sabah burada olacak.',
+    signOut: 'Çıkış yap',
   },
 
   completion: {
