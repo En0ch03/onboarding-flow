@@ -112,9 +112,10 @@ export function Chip({ option, selected, onPress, blocked = false, blockedHint }
           opacity: blocked ? 0.45 : 1,
         })}
       >
-        {/* Etiket tek satirda kaliyor: cip zaten etiketi kadar genisliyor,
-            kirilma ihtimali yalnizca sistem yazisi asiri buyudugunde kaliyor
-            ve orada da satir kirmak yerine cipin tasmasi tercih ediliyor. */}
+        {/* Etiket tek satirda kaliyor. Buyuk sistem yazisinda bu, etiketin
+            kuyrugunun kirpilmasi demek; bu bedel, satir kirmanin cipi
+            yukseltip parmagin altindaki hedefi kaydirmasina tercih
+            ediliyor. */}
         <AppText variant="control" numberOfLines={1}>
           {option.label}
         </AppText>

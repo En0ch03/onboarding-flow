@@ -3,10 +3,7 @@ import {
   Figtree_500Medium,
   Figtree_600SemiBold,
 } from '@expo-google-fonts/figtree';
-import {
-  PlayfairDisplay_600SemiBold,
-  PlayfairDisplay_700Bold,
-} from '@expo-google-fonts/playfair-display';
+import { PlayfairDisplay_600SemiBold } from '@expo-google-fonts/playfair-display';
 import { useFonts } from 'expo-font';
 
 /**
@@ -22,7 +19,6 @@ import { useFonts } from 'expo-font';
 export function useAppFonts(): { ready: boolean; error: Error | null } {
   const [loaded, error] = useFonts({
     PlayfairDisplay_600SemiBold,
-    PlayfairDisplay_700Bold,
     Figtree_400Regular,
     Figtree_500Medium,
     Figtree_600SemiBold,

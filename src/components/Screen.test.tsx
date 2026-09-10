@@ -61,6 +61,38 @@ describe('Screen journey artwork', () => {
   });
 });
 
+describe('Screen ust serit perdesi', () => {
+  it('serit gorselin uzerinde ciplak durmuyor', async () => {
+    const view = await renderWithTheme(
+      <Screen journeyProgress={0.5} header={<AppText>Geri</AppText>}>
+        <AppText>İçerik</AppText>
+      </Screen>,
+    );
+    // Once agacin cizildigi: bos bir agacta perde sorgusu da patlardi.
+    expect(view.getByText('Geri')).toBeTruthy();
+
+    const veil = view.getByTestId('header-veil', hidden);
+    // Perde seridin altinda tamamen kayboluyor; kalan bir opaklik gorselin
+    // uzerinde yatay bir bant birakirdi.
+    expect(veil.props.colors).toEqual([
+      processColor(withAlpha(palettes.dark.paper, 0.8)),
+      processColor(withAlpha(palettes.dark.paper, 0)),
+    ]);
+  });
+
+  it('gorselsiz ekranin seridine perde koymuyor', async () => {
+    const view = await renderWithTheme(
+      <Screen header={<AppText>Geri</AppText>}>
+        <AppText>İçerik</AppText>
+      </Screen>,
+    );
+    expect(view.getByText('Geri')).toBeTruthy();
+
+    // Duz zemin uzerinde zeminden zemine bir gradyan hicbir sey yapmaz.
+    expect(view.queryByTestId('header-veil', hidden)).toBeNull();
+  });
+});
+
 /** Icerik blogunun olculdugunu bildiren yerlesim olayi. */
 async function layoutContent(view: Awaited<ReturnType<typeof renderWithTheme>>, height: number) {
   await act(async () => {
@@ -85,7 +117,7 @@ describe('Screen icerik perdesi', () => {
     const veil = view.getByTestId('content-veil', hidden);
     expect(veil.props.colors).toEqual([
       processColor(withAlpha(palettes.dark.paper, 0)),
-      processColor(withAlpha(palettes.dark.paper, 0.72)),
+      processColor(withAlpha(palettes.dark.paper, 0.8)),
       processColor(withAlpha(palettes.dark.paper, 0.86)),
     ]);
   });
