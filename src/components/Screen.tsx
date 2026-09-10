@@ -31,6 +31,15 @@ type ScreenProps = {
   align?: ScreenAlign;
   /** Sifir ile bir arasinda, uzun onboarding sanatinin gorunecek kadraji. */
   journeyProgress?: number;
+  /**
+   * Icerigin arkasindaki perde.
+   *
+   * Metnin zeminini kendisi getiren bir ekranda -- icerigini bir kartin icine
+   * alan ekranlar gibi -- perde ikinci bir karartma katmani oluyor ve gorsel
+   * iki kez karariyor. O ekranlar perdeyi kapatir; ust serit perdesi ise her
+   * durumda kaliyor, cunku geri oku ve sayac kartin disinda duruyor.
+   */
+  contentVeil?: boolean;
 };
 
 export type ScreenAlign = 'top' | 'upper' | 'center';
@@ -71,14 +80,21 @@ const TOP_FADE = scale.xl;
  * bosluk var: cihazin durum cubuguna yaslanan bir dugme dokunulmasi zor bir
  * dugme.
  */
-export function Screen({ header, children, footer, align = 'top', journeyProgress }: ScreenProps) {
+export function Screen({
+  header,
+  children,
+  footer,
+  align = 'top',
+  journeyProgress,
+  contentVeil = true,
+}: ScreenProps) {
   const { colors, scheme, screenPadding, spacing } = useTheme();
   const { height } = useWindowDimensions();
   const [contentHeight, setContentHeight] = useState(0);
   const showJourney = journeyProgress !== undefined && scheme === 'dark';
   // Olculmeden once perde cizilmiyor: yuksekligi bilinmeyen bir perde ya tum
   // ekrani kaplar ya da hic gorunmez, ikisi de yanlis.
-  const showVeil = showJourney && contentHeight > 0;
+  const showVeil = showJourney && contentVeil && contentHeight > 0;
 
   const measureContent = (event: LayoutChangeEvent) => {
     const next = event.nativeEvent.layout.height;

@@ -143,6 +143,23 @@ describe('Screen icerik perdesi', () => {
     expect(Dimensions.get('window').height).toBeGreaterThan(style.height);
   });
 
+  it('kendi zeminini getiren ekranda perdeyi birakiyor', async () => {
+    const view = await renderWithTheme(
+      <Screen journeyProgress={0.5} contentVeil={false} header={<AppText>Geri</AppText>}>
+        <AppText>İçerik</AppText>
+      </Screen>,
+    );
+    expect(view.getByText('İçerik')).toBeTruthy();
+
+    await layoutContent(view, 200);
+
+    // Icerigin arkasindaki perde yok: metnin zeminini artik icerik kendisi
+    // tasiyor ve iki katman ust uste binseydi gorsel yine bogulurdu.
+    expect(view.queryByTestId('content-veil', hidden)).toBeNull();
+    // Ust serit perdesi yerinde: geri oku ve sayac hala gorselin uzerinde.
+    expect(view.getByTestId('header-veil', hidden)).toBeTruthy();
+  });
+
   it('gorselsiz ekrana perde koymuyor', async () => {
     const view = await renderWithTheme(
       <Screen>
