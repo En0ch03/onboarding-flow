@@ -1,11 +1,31 @@
 import { act, fireEvent, waitFor } from '@testing-library/react-native';
 import { useState } from 'react';
-import { Text } from 'react-native';
+import { Platform, StyleSheet, Text } from 'react-native';
 
 import { strings } from '@/constants/strings';
 import { renderWithTheme } from '@/test/renderWithTheme';
+import { palettes } from '@/theme';
 
 import { BottomSheet } from './BottomSheet';
+
+const { isLiquidGlassAvailable, isGlassEffectAPIAvailable } = jest.requireMock('expo-glass-effect');
+
+/** Arka katmanlar ekran okuyucudan gizli; sorgular gizli ogeleri de kapsiyor. */
+const hidden = { includeHiddenElements: true } as const;
+
+/** Platformu gecici olarak degistirir; test bitince eski tanimi geri koyar. */
+function onPlatform(os: 'ios' | 'android') {
+  const original = Object.getOwnPropertyDescriptor(Platform, 'OS');
+  Object.defineProperty(Platform, 'OS', { get: () => os, configurable: true });
+  return () => {
+    if (original) Object.defineProperty(Platform, 'OS', original);
+  };
+}
+
+beforeEach(() => {
+  isLiquidGlassAvailable.mockReturnValue(false);
+  isGlassEffectAPIAvailable.mockReturnValue(true);
+});
 
 /**
  * Sayfa, ekrandan tamamen kalktigini haber veriyor ve cagiran taraf native bir
@@ -85,5 +105,82 @@ describe('BottomSheet', () => {
     });
 
     expect(onClosed).toHaveBeenCalledTimes(1);
+  });
+
+  describe('yuzey', () => {
+    it('cam kipte sistemin materyaliyle ciziliyor', async () => {
+      const restore = onPlatform('ios');
+      try {
+        isLiquidGlassAvailable.mockReturnValue(true);
+
+        const view = await renderWithTheme(<Host visible onClosed={() => {}} />);
+        // Once agacin gercekten cizildigi: bos bir agacta asagidaki sorgular
+        // da "yok" derdi ve kural silinse bile test yesil kalirdi.
+        expect(view.getByText('icerik')).toBeTruthy();
+
+        const glass = view.getByTestId('glass-sheet', hidden);
+        expect(glass.props.glassEffectStyle).toBe('regular');
+        expect(glass.props.colorScheme).toBe('dark');
+        // Sayfa suruklenen bir yuzey ama dokunusu tutan sey tutamak
+        // bolgesindeki dinleyici; materyalin kendi deformasyonu burada ikinci
+        // bir tepki olurdu.
+        expect(glass.props.isInteractive).toBeUndefined();
+        // Yerel katman kabin yaricapini gormuyor, kendi kosesini okuyor.
+        expect(StyleSheet.flatten(glass.props.style)).toMatchObject({
+          borderTopLeftRadius: expect.any(Number),
+          borderTopRightRadius: expect.any(Number),
+        });
+      } finally {
+        restore();
+      }
+    });
+
+    it('cam kipte yuzeyin kendi rengi kalmiyor', async () => {
+      const restore = onPlatform('ios');
+      try {
+        isLiquidGlassAvailable.mockReturnValue(true);
+
+        const view = await renderWithTheme(<Host visible onClosed={() => {}} />);
+        const surface = StyleSheet.flatten(
+          view.getByText('Baslik').parent?.parent?.props.style,
+        ) as { backgroundColor?: string };
+
+        // Opak bir dolgu materyali tamamen ortuyor ve cam yeniden duz bir
+        // panele donuyor.
+        expect(surface.backgroundColor).toBe('transparent');
+      } finally {
+        restore();
+      }
+    });
+
+    it('cam yokken bugunku opak yuzey duruyor', async () => {
+      const restore = onPlatform('ios');
+      try {
+        const view = await renderWithTheme(<Host visible onClosed={() => {}} />);
+        expect(view.getByText('icerik')).toBeTruthy();
+
+        expect(view.queryByTestId('glass-sheet', hidden)).toBeNull();
+        const surface = StyleSheet.flatten(
+          view.getByText('Baslik').parent?.parent?.props.style,
+        ) as { backgroundColor?: string };
+        expect(surface.backgroundColor).toBe(palettes.dark.surfaceRaised);
+      } finally {
+        restore();
+      }
+    });
+
+    it('Android tarafinda hicbir sey degismiyor', async () => {
+      const restore = onPlatform('android');
+      try {
+        isLiquidGlassAvailable.mockReturnValue(true);
+
+        const view = await renderWithTheme(<Host visible onClosed={() => {}} />);
+        expect(view.getByText('icerik')).toBeTruthy();
+
+        expect(view.queryByTestId('glass-sheet', hidden)).toBeNull();
+      } finally {
+        restore();
+      }
+    });
   });
 });

@@ -1,9 +1,11 @@
-import { Pressable, View } from 'react-native';
+import { GlassContainer, GlassView } from 'expo-glass-effect';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { stepCounter, stepCounterLabel, strings } from '@/constants/strings';
 import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
+import { resolveGlassMode } from './glassMode';
 
 type ScreenHeaderProps = {
   onBack?: () => void;
@@ -48,20 +50,27 @@ const SKIP_MIN_HEIGHT = 44;
  * Ekranlarin ust seridi. Uc yuvasi var ve bos yuvalar yer tutuyor: baslik
  * her ekranda ayni yukseklikte basliyor, ekrandan ekrana zipliyor gibi
  * gorunmuyor.
+ *
+ * Cam kipte geri dairesi ve gecme kapsulu ayni grubun icinde duruyor: ikisi
+ * seridin iki ucunda ve birlikte hareket ediyor, ayri gruplarda olsalardi
+ * sistem onlari birbirinden habersiz iki yuzey gibi cizerdi. Sayac grubun
+ * icinde ama cam degil -- okunmasi gereken bir metin, dokunulacak bir hedef
+ * degil.
  */
 export function ScreenHeader({ onBack, step, skip }: ScreenHeaderProps) {
-  const { colors, radius, spacing } = useTheme();
+  const { colors, radius, scheme, spacing } = useTheme();
+  const liquid = resolveGlassMode() === 'liquid';
 
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        minHeight: BACK_SIZE,
-        marginBottom: spacing.xl,
-      }}
-    >
+  const rowStyle = {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: BACK_SIZE,
+    marginBottom: spacing.xl,
+  } as const;
+
+  const content = (
+    <>
       <View style={{ width: BACK_SIZE, alignItems: 'flex-start' }}>
         {onBack ? (
           <Pressable
@@ -69,17 +78,42 @@ export function ScreenHeader({ onBack, step, skip }: ScreenHeaderProps) {
             accessibilityLabel={strings.common.back}
             onPress={onBack}
             hitSlop={8}
-            style={({ pressed }) => ({
-              width: BACK_SIZE,
-              height: BACK_SIZE,
-              borderRadius: radius.full,
-              borderWidth: 1,
-              borderColor: pressed ? colors.clay : colors.hairline,
-              backgroundColor: colors.surface,
-              alignItems: 'center',
-              justifyContent: 'center',
-            })}
+            style={({ pressed }) => [
+              {
+                width: BACK_SIZE,
+                height: BACK_SIZE,
+                borderRadius: radius.full,
+                alignItems: 'center',
+                justifyContent: 'center',
+              },
+              // Cam kipte dugmenin dolgusu ve kenarligi yok: ikisi de
+              // materyalin uzerine binen opak katmanlar ve basili hali de
+              // sistemin kendi deformasyonu tasiyor.
+              liquid
+                ? null
+                : {
+                    borderWidth: 1,
+                    borderColor: pressed ? colors.clay : colors.hairline,
+                    backgroundColor: colors.surface,
+                  },
+            ]}
           >
+            {liquid ? (
+              <GlassView
+                testID="glass-back"
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                glassEffectStyle="regular"
+                // Basili hal icin ayri bir solma yok: dokunusa tepki veren
+                // sivi deformasyon materyalin kendi davranisi ve onu acan sey
+                // bu bayrak. Ustune eklenen bir saydamlik animasyonu, camin
+                // uyum davranisini bozan ikinci bir hareket olurdu.
+                isInteractive
+                colorScheme={scheme}
+                style={[StyleSheet.absoluteFill, { borderRadius: radius.full }]}
+              />
+            ) : null}
+
             {/* Isaret dugmeyle birlikte buyumuyor: buyuyen sey hedef, cizim
                 degil. */}
             <View
@@ -123,21 +157,48 @@ export function ScreenHeader({ onBack, step, skip }: ScreenHeaderProps) {
             accessibilityLabel={skip.label}
             onPress={skip.onPress}
             hitSlop={8}
-            style={({ pressed }) => ({
-              minHeight: SKIP_MIN_HEIGHT,
-              justifyContent: 'center',
-              paddingVertical: spacing.sm,
-              paddingHorizontal: spacing.md,
-              borderRadius: radius.full,
-              backgroundColor: withAlpha(colors.ink, pressed ? 0.16 : 0.08),
-            })}
+            style={({ pressed }) => [
+              {
+                minHeight: SKIP_MIN_HEIGHT,
+                justifyContent: 'center',
+                paddingVertical: spacing.sm,
+                paddingHorizontal: spacing.md,
+                borderRadius: radius.full,
+              },
+              liquid ? null : { backgroundColor: withAlpha(colors.ink, pressed ? 0.16 : 0.08) },
+            ]}
           >
+            {liquid ? (
+              <GlassView
+                testID="glass-skip"
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                glassEffectStyle="regular"
+                isInteractive
+                colorScheme={scheme}
+                style={[StyleSheet.absoluteFill, { borderRadius: radius.full }]}
+              />
+            ) : null}
+
             <AppText variant="button" tone="ink">
               {skip.label}
             </AppText>
           </Pressable>
         ) : null}
       </View>
-    </View>
+    </>
+  );
+
+  // Grup yalnizca cam kipte var: yedek kiplerde bos bir sarmalayici, seridin
+  // olcusunu degistirmeden agaci derinlestirmekten baska bir sey yapmaz.
+  return liquid ? (
+    // Mesafe, iki yuzeyin birbirini etkilemeye basladigi uzaklik. Serit
+    // olcusunde en kucuk aralik yeterli: daha buyugu, ekranin iki ucundaki
+    // dugmelerin birbirine dogru akmasina yol aciyor.
+    <GlassContainer spacing={spacing.sm} style={rowStyle}>
+      {content}
+    </GlassContainer>
+  ) : (
+    <View style={rowStyle}>{content}</View>
   );
 }

@@ -1,3 +1,4 @@
+import { GlassView } from 'expo-glass-effect';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import {
   Animated,
@@ -5,6 +6,7 @@ import {
   Modal,
   PanResponder,
   Pressable,
+  StyleSheet,
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -14,6 +16,7 @@ import { strings } from '@/constants/strings';
 import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
+import { resolveGlassMode } from './glassMode';
 
 /** Bu mesafenin altinda birakilan bir surukleme, sayfayi kapatmiyor. */
 const DISMISS_DISTANCE = 96;
@@ -55,8 +58,12 @@ type BottomSheetProps = {
  * (saydamlik ve dikey kayma) icin yerel surucu zaten yeterli.
  */
 export function BottomSheet({ visible, title, onClose, onClosed, children }: BottomSheetProps) {
-  const { colors, radius, spacing, screenPadding, motion } = useTheme();
+  const { colors, radius, scheme, spacing, screenPadding, motion } = useTheme();
   const insets = useSafeAreaInsets();
+  // Sayfa yuzeyi cam kipte sistemin materyaliyle, yedeklerde bugunku opak
+  // yuzeyle ciziliyor. Perde cam degil: karartmasi gereken sey arkadaki ekran
+  // ve saydam bir perde o isi yapmaz.
+  const liquid = resolveGlassMode() === 'liquid';
   const { height } = useWindowDimensions();
 
   // Kapanis animasyonunun gorunebilmesi icin `Modal` bir sure daha ayakta
@@ -190,7 +197,11 @@ export function BottomSheet({ visible, title, onClose, onClosed, children }: Bot
 
         <Animated.View
           style={{
-            backgroundColor: colors.surfaceRaised,
+            // Cam kipte yuzeyin kendi rengi yok: opak bir dolgu materyali
+            // tamamen ortuyordu. Kayma `transform` ile, `opacity` ile degil --
+            // solan bir kapta cam yuzey de soluyor ve sistem materyali yarim
+            // uygulanmis gibi gorunuyor.
+            backgroundColor: liquid ? 'transparent' : colors.surfaceRaised,
             borderTopLeftRadius: radius.lg,
             borderTopRightRadius: radius.lg,
             borderCurve: 'continuous',
@@ -206,6 +217,31 @@ export function BottomSheet({ visible, title, onClose, onClosed, children }: Bot
             ],
           }}
         >
+          {liquid ? (
+            <GlassView
+              testID="glass-sheet"
+              pointerEvents="none"
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+              glassEffectStyle="regular"
+              // Sayfa suruklenen bir yuzey ama dokunusu tutan sey tutamak
+              // bolgesindeki hareket dinleyicisi; materyalin kendi dokunma
+              // deformasyonu burada ikinci bir tepki olurdu.
+              colorScheme={scheme}
+              // Yerel katman kabin yaricapini gormuyor, kendi kosesini okuyor:
+              // verilmezse cam dort koseli kalir ve sayfanin yuvarlak ust
+              // kenarinin ustunde bir dikdortgen olarak durur.
+              style={[
+                StyleSheet.absoluteFill,
+                {
+                  borderTopLeftRadius: radius.lg,
+                  borderTopRightRadius: radius.lg,
+                  borderCurve: 'continuous',
+                },
+              ]}
+            />
+          ) : null}
+
           {/* Surukleme yalnizca bu baslik bolgesinden tutuluyor. Sayfanin
               tamamina baglansaydi icerideki listenin asagi kaydirilmasi
               sayfayi kapatmaya calisirdi. */}

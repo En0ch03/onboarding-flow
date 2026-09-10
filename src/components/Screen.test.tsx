@@ -1,12 +1,16 @@
 import { act, fireEvent, render } from '@testing-library/react-native';
-import { Dimensions, processColor, StyleSheet } from 'react-native';
+import { Dimensions, Platform, processColor, StyleSheet } from 'react-native';
 import { SafeAreaProvider, type Metrics } from 'react-native-safe-area-context';
 
+import { strings } from '@/constants/strings';
 import { renderWithTheme } from '@/test/renderWithTheme';
 import { palettes, ThemeProvider, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
+import { Button } from './Button';
+import { GlassPanel } from './GlassPanel';
 import { Screen } from './Screen';
+import { ScreenHeader } from './ScreenHeader';
 
 /**
  * Olculer elle veriliyor cunku bu test kendi saglayicisini kuruyor: acik tema
@@ -173,5 +177,77 @@ describe('Screen icerik perdesi', () => {
     // Duz zemin uzerinde zeminden zemine bir gradyan hicbir sey yapmaz; bos
     // bir katman cizmek yerine hic cizilmiyor.
     expect(view.queryByTestId('content-veil', hidden)).toBeNull();
+  });
+});
+
+describe('cam yuzeyler ve ekran ritmi', () => {
+  const { isLiquidGlassAvailable, isGlassEffectAPIAvailable } =
+    jest.requireMock('expo-glass-effect');
+
+  /** Platformu gecici olarak degistirir; test bitince eski tanimi geri koyar. */
+  function onPlatform(os: 'ios' | 'android') {
+    const original = Object.getOwnPropertyDescriptor(Platform, 'OS');
+    Object.defineProperty(Platform, 'OS', { get: () => os, configurable: true });
+    return () => {
+      if (original) Object.defineProperty(Platform, 'OS', original);
+    };
+  }
+
+  /**
+   * Bir dugumden koke kadar, tam opak olmayan her saydamlik degeri. Tam opak
+   * bir deger solma degil; solma, birden kucuk ya da animasyonlu bir deger.
+   */
+  function opacitiesAbove(node: { parent: unknown; props: { style?: unknown } } | null) {
+    const values: unknown[] = [];
+    let current = node;
+    while (current) {
+      const style = StyleSheet.flatten(current.props.style) as { opacity?: unknown } | undefined;
+      if (style?.opacity !== undefined && style.opacity !== 1) values.push(style.opacity);
+      current = current.parent as typeof node;
+    }
+    return values;
+  }
+
+  beforeEach(() => {
+    isLiquidGlassAvailable.mockReturnValue(true);
+    isGlassEffectAPIAvailable.mockReturnValue(true);
+  });
+
+  afterEach(() => {
+    isLiquidGlassAvailable.mockReturnValue(false);
+  });
+
+  it('hicbir cam yuzey solan bir kabin icinde durmuyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      const view = await renderWithTheme(
+        <Screen
+          header={<ScreenHeader onBack={() => {}} skip={{ label: strings.common.skip, onPress: () => {} }} />}
+          journeyProgress={0.5}
+          footer={<Button title="Vazgeç" onPress={() => {}} variant="ghost" />}
+        >
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>
+        </Screen>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+
+      // Ekranin butun cam yuzeyleri: karti bulamayan bir sorgu, "hicbiri
+      // solmuyor" iddiasini bos bir listeyle dogrularadi.
+      const surfaces = view.getAllByTestId(/^glass-(view|back|skip|ghost)$/, hidden);
+      expect(surfaces).toHaveLength(4);
+
+      for (const surface of surfaces) {
+        // Solan bir kapta sistem materyali de soluyor ve yarim uygulanmis bir
+        // efekt gibi gorunuyor; ekranin ritmi camin ustunden gecmemeli.
+        expect(opacitiesAbove(surface)).toEqual([]);
+        // Ustlerin gercekten gezildigi: gezinme kirilirsa liste her yuzey icin
+        // bos doner ve iddia hicbir sey olcmez.
+        expect(surface.parent).not.toBeNull();
+      }
+    } finally {
+      restore();
+    }
   });
 });

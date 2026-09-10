@@ -1,9 +1,11 @@
+import { GlassView } from 'expo-glass-effect';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ActivityIndicator, Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
 
 import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
+import { resolveGlassMode } from './glassMode';
 
 type ButtonVariant = 'primary' | 'ghost';
 
@@ -46,8 +48,18 @@ export function Button({
   style,
   accessibilityHint,
 }: ButtonProps) {
-  const { colors, radius, spacing, shadows } = useTheme();
+  const { colors, radius, scheme, spacing, shadows } = useTheme();
   const inactive = disabled || loading;
+
+  // Birincil eylem kizil kaliyor: marka rengi kimligin tasiyicisi ve cama
+  // cevrilirse ekranda tutunacak tek renk kalmiyor. Cam yalnizca ikincil
+  // eylemde.
+  //
+  // Devre disi hal disarida cunku o hali anlatan sey butun butonun solmasi ve
+  // solan bir kapta sistem materyali de soluyor -- cam, yarim uygulanmis bir
+  // efekte donuyor. Orada bugunku kenarlikli cizim, solmasiyla birlikte
+  // oldugu gibi kaliyor.
+  const glassGhost = variant === 'ghost' && !disabled && resolveGlassMode() === 'liquid';
 
   return (
     <Pressable
@@ -78,8 +90,23 @@ export function Button({
               end={{ x: 0.5, y: 1 }}
               style={StyleSheet.absoluteFill}
             />
+          ) : glassGhost ? (
+            <GlassView
+              testID="glass-ghost"
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+              glassEffectStyle="regular"
+              // Basili hal icin ayri bir solma yok: dokunusa tepki veren sivi
+              // deformasyonu materyalin kendisi tasiyor ve ustune eklenen bir
+              // saydamlik animasyonu onun uzerine binen ikinci bir hareket
+              // olurdu.
+              isInteractive
+              colorScheme={scheme}
+              style={[StyleSheet.absoluteFill, { borderRadius: radius.full }]}
+            />
           ) : (
             <View
+              testID="ghost-edge"
               style={[
                 StyleSheet.absoluteFill,
                 {
