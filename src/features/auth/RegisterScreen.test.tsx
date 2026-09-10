@@ -1,4 +1,11 @@
-import { act, cleanup, fireEvent, waitFor, type RenderResult } from '@testing-library/react-native';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  waitFor,
+  within,
+  type RenderResult,
+} from '@testing-library/react-native';
 import { AxiosError, AxiosHeaders } from 'axios';
 
 import { fieldErrorMessage } from '@/constants/errorMessages';
@@ -207,5 +214,34 @@ describe('RegisterScreen', () => {
     await press(view, 'Tekrar dene');
 
     await waitFor(() => expect(handlers.onRegistered).toHaveBeenCalled());
+  });
+});
+
+describe('RegisterScreen cam kart', () => {
+  it('basligi, hata bandini ve alanlari kartin icine aliyor', async () => {
+    register.mockRejectedValue(failure(500, { error: 'internal_error' }));
+    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+
+    await fillIn(view, 'deniz@ornek.com', 'agirates2026');
+    await press(view, 'Hesap oluştur');
+    await view.findByText(/bizim tarafta bir şeyler ters gitti/i);
+
+    const panel = within(view.getByTestId('glass-panel'));
+    expect(panel.getByText(strings.auth.registerTitle)).toBeTruthy();
+    expect(panel.getByText(/bizim tarafta bir şeyler ters gitti/i)).toBeTruthy();
+    expect(panel.getByLabelText(strings.auth.emailLabel)).toBeTruthy();
+    expect(panel.getByLabelText(strings.auth.passwordLabel)).toBeTruthy();
+    expect(panel.getByLabelText(strings.auth.confirmPasswordLabel)).toBeTruthy();
+  });
+
+  it('butonu ve yasal satiri kartin disinda birakiyor', async () => {
+    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+
+    // Buton kartin degil sayfanin dibine ait: klavye acildiginda kartla
+    // birlikte yukari cikan bir buton, hedefi elin altinda oynatiyor.
+    expect(view.getByText(strings.auth.registerSubmit)).toBeTruthy();
+    const panel = within(view.getByTestId('glass-panel'));
+    expect(panel.queryByText(strings.auth.registerSubmit)).toBeNull();
+    expect(panel.queryByText(strings.auth.legal)).toBeNull();
   });
 });

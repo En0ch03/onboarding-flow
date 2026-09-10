@@ -34,3 +34,9 @@ jest.mock('expo-haptics', () => ({
 // Tarih carki yerel bir gorunum aciyor; testte cizilecek bir sey yok. Taklit
 // prop'lari agacta tutuyor ve olayi testin tetiklemesine izin veriyor.
 jest.mock('@react-native-community/datetimepicker', () => require('@/test/dateTimePickerMock'));
+
+// Cam ve bulaniklik yerel katmanlarda ciziliyor; ikisi de testte yerel modul
+// aramaya cikiyor ve bulamayinca agaci dusuruyor. Taklitler prop'lari agacta
+// birakiyor, boylece kartin hangi kiple cizildigi dogrulanabiliyor.
+jest.mock('expo-glass-effect', () => require('@/test/glassEffectMock'));
+jest.mock('expo-blur', () => require('@/test/blurMock'));
