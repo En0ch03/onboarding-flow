@@ -30,3 +30,7 @@ jest.mock('expo-haptics', () => ({
   impactAsync: jest.fn(async () => {}),
   notificationAsync: jest.fn(async () => {}),
 }));
+
+// Tarih carki yerel bir gorunum aciyor; testte cizilecek bir sey yok. Taklit
+// prop'lari agacta tutuyor ve olayi testin tetiklemesine izin veriyor.
+jest.mock('@react-native-community/datetimepicker', () => require('@/test/dateTimePickerMock'));

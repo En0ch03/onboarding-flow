@@ -1,6 +1,8 @@
 import { act, cleanup, fireEvent, type RenderResult } from '@testing-library/react-native';
+import { Platform } from 'react-native';
 
 import { strings } from '@/constants/strings';
+import { PICKER_TEST_ID } from '@/test/dateTimePickerMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { BirthDateField } from './BirthDateField';
@@ -11,6 +13,15 @@ const empty: PartialDate = { day: null, month: null, year: null };
 
 afterEach(cleanup);
 
+/** Platformu gecici olarak degistirir; test bitince eski tanimi geri koyar. */
+function onPlatform(os: 'ios' | 'android') {
+  const original = Object.getOwnPropertyDescriptor(Platform, 'OS');
+  Object.defineProperty(Platform, 'OS', { get: () => os, configurable: true });
+  return () => {
+    if (original) Object.defineProperty(Platform, 'OS', original);
+  };
+}
+
 async function mount(value: PartialDate) {
   const onChange = jest.fn();
   const view = await renderWithTheme(
@@ -19,123 +30,206 @@ async function mount(value: PartialDate) {
   return { view, onChange };
 }
 
-async function press(view: RenderResult, element: Parameters<typeof fireEvent.press>[0]) {
+async function press(element: Parameters<typeof fireEvent.press>[0]) {
   await act(async () => {
     fireEvent.press(element);
   });
 }
 
-/** Sayfa acikken listenin satirlari; alanin kendi etiketi disarida kaliyor. */
-function rows(view: RenderResult, label: string) {
-  return view.queryAllByLabelText(label);
+/** Alanin kendisi; dokununca cark aciliyor. */
+function field(view: RenderResult) {
+  return view.getByLabelText(strings.steps.birthDateLabel);
+}
+
+function picker(view: RenderResult) {
+  return view.getByTestId(PICKER_TEST_ID);
+}
+
+type Node = { type?: unknown; children?: unknown } | string | null;
+
+/** Agacta yazilabilir bir alan var mi: klavyeyi acacak tek sey o. */
+function hasTextInput(node: Node | Node[]): boolean {
+  if (node === null || typeof node === 'string') return false;
+  if (Array.isArray(node)) return node.some(hasTextInput);
+  if (node.type === 'TextInput') return true;
+  return hasTextInput((node.children ?? []) as Node[]);
+}
+
+/** Carkin kendi olayi: kullanici carki cevirdi. */
+async function spin(view: RenderResult, date: Date) {
+  await act(async () => {
+    picker(view).props.onChange({ type: 'set' }, date);
+  });
 }
 
 describe('BirthDateField', () => {
-  it('uc ayri alan sunuyor', async () => {
+  it('tek alan sunuyor ve bos haldeyken gun ay yil yaziyor', async () => {
     const { view } = await mount(empty);
-    expect(view.getByLabelText(strings.steps.dayLabel)).toBeTruthy();
-    expect(view.getByLabelText(strings.steps.monthLabel)).toBeTruthy();
-    expect(view.getByLabelText(strings.steps.yearLabel)).toBeTruthy();
+
+    // Agac gercekten cizildi: alan yerinde ve bir dugme.
+    expect(field(view).props.accessibilityRole).toBe('button');
+    expect(view.getByText('Gün Ay Yıl')).toBeTruthy();
   });
 
-  it('secilmemis alan kendi adini gosteriyor', async () => {
-    const { view } = await mount(empty);
-    expect(view.getByText(strings.steps.dayLabel)).toBeTruthy();
+  it('secili tarihi ay adiyla yaziyor', async () => {
+    const { view } = await mount({ day: 14, month: 3, year: 1998 });
+
+    expect(view.getByText('14 Mart 1998')).toBeTruthy();
   });
 
-  it('secili degerleri gosteriyor, ay adiyla', async () => {
-    const { view } = await mount({ day: 14, month: 3, year: 1996 });
-    expect(view.getByText('14')).toBeTruthy();
-    expect(view.getByText('Mart')).toBeTruthy();
-    expect(view.getByText('1996')).toBeTruthy();
+  it('klavye acacak bir sey yok: alan bir dugme', async () => {
+    const { view } = await mount(empty);
+
+    // Klavye acan tek sey bir TextInput olurdu; alan dugme.
+    expect(field(view).props.accessibilityRole).toBe('button');
+    expect(hasTextInput(view.toJSON())).toBe(false);
   });
 
-  it('hicbir alan yazilabilir degil: klavye acacak bir sey yok', async () => {
+  it('dokunulmadan cark ekranda degil', async () => {
     const { view } = await mount(empty);
-    // Klavye acacak tek sey bir TextInput olurdu; uc alanin ucu de dugme.
-    for (const label of [
-      strings.steps.dayLabel,
-      strings.steps.monthLabel,
-      strings.steps.yearLabel,
-    ]) {
-      expect(view.getByLabelText(label).props.accessibilityRole).toBe('button');
+
+    expect(view.queryByTestId(PICKER_TEST_ID)).toBeNull();
+  });
+
+  it('iOS: dokununca cark aciliyor ve taslaktaki tarihte duruyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      const { view } = await mount({ day: 14, month: 3, year: 1998 });
+      await press(field(view));
+
+      expect(picker(view).props.value).toEqual(new Date(1998, 2, 14));
+    } finally {
+      restore();
     }
   });
 
-  it('gune dokununca yalnizca gun sayfasi aciliyor', async () => {
-    const { view } = await mount(empty);
-    await press(view, view.getByLabelText(strings.steps.dayLabel));
+  it('iOS: bos taslakta cark bugunden on sekiz yil once aciliyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      const { view, onChange } = await mount(empty);
+      await press(field(view));
 
-    // Gun satirlari geldi; ay ya da yil listesi acilmadi.
-    expect(rows(view, '1').length).toBeGreaterThan(0);
-    expect(view.queryByText('Ocak')).toBeNull();
-    expect(view.queryByText('2026')).toBeNull();
+      expect(picker(view).props.value).toEqual(new Date(2008, 8, 4));
+      // Acilis konumu bir varsayim, secim degil: taslaga hicbir sey yazilmadi.
+      expect(onChange).not.toHaveBeenCalled();
+    } finally {
+      restore();
+    }
   });
 
-  it('aya dokununca yalnizca ay sayfasi aciliyor', async () => {
-    const { view } = await mount(empty);
-    await press(view, view.getByLabelText(strings.steps.monthLabel));
+  it('iOS: cark bugunden ilerisini ve 1900 oncesini sunmuyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      const { view } = await mount(empty);
+      await press(field(view));
 
-    // Ay adlari geldi; gun ya da yil listesi acilmadi. Liste sanallastirildigi
-    // icin yalnizca gorunen satirlar agacta.
-    expect(rows(view, 'Ocak').length).toBeGreaterThan(0);
-    expect(view.queryByText('2026')).toBeNull();
+      expect(picker(view).props.maximumDate).toEqual(today);
+      expect(picker(view).props.minimumDate).toEqual(new Date(1900, 0, 1));
+    } finally {
+      restore();
+    }
   });
 
-  it('bir satira dokunmak o alani isliyor', async () => {
-    const { view, onChange } = await mount(empty);
-    await press(view, view.getByLabelText(strings.steps.monthLabel));
-    await press(view, rows(view, 'Mart')[0]!);
+  it('iOS: yas kapisi gorunur kaliyor, on sekiz altindaki tarih secilebiliyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      const { view, onChange } = await mount(empty);
+      await press(field(view));
+      await spin(view, new Date(2020, 0, 5));
+      await press(view.getByText(strings.birthDate.confirm));
 
-    expect(onChange).toHaveBeenCalledWith({ day: null, month: 3, year: null });
+      // Cark 18 altini kesseydi kapi sessiz bir engele donerdi; deger geciyor
+      // ve dogrulama gorunur hatayi kendisi uretiyor.
+      expect(onChange).toHaveBeenCalledWith({ day: 5, month: 1, year: 2020 });
+    } finally {
+      restore();
+    }
   });
 
-  it('yil listesi bu yildan basliyor, gelecege acilmiyor', async () => {
-    const { view } = await mount(empty);
-    await press(view, view.getByLabelText(strings.steps.yearLabel));
+  it('iOS: cevrilen deger ancak Sec ile isleniyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      const { view, onChange } = await mount(empty);
+      await press(field(view));
+      await spin(view, new Date(1998, 2, 14));
 
-    expect(rows(view, String(today.getFullYear())).length).toBeGreaterThan(0);
-    expect(view.queryByText(String(today.getFullYear() + 1))).toBeNull();
+      // Cark cevrildi ama onaylanmadi: taslak henuz degismedi.
+      expect(onChange).not.toHaveBeenCalled();
+
+      await press(view.getByText(strings.birthDate.confirm));
+      expect(onChange).toHaveBeenCalledWith({ day: 14, month: 3, year: 1998 });
+    } finally {
+      restore();
+    }
   });
 
-  it('ay degisip secili gun o aya sigmiyorsa gun dusuyor', async () => {
-    const { view, onChange } = await mount({ day: 31, month: 1, year: 2023 });
-    await press(view, view.getByLabelText(strings.steps.monthLabel));
-    await press(view, rows(view, 'Şubat')[0]!);
+  it('iOS: perdeyle kapatmak degeri degistirmiyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      const { view, onChange } = await mount(empty);
+      await press(field(view));
+      await spin(view, new Date(1998, 2, 14));
+      await press(view.getByLabelText(strings.common.close));
 
-    // Sessizce 28'e cekmek, kullanicinin vermedigi bir cevabi vermek olurdu.
-    expect(onChange).toHaveBeenCalledWith({ day: null, month: 2, year: 2023 });
+      expect(onChange).not.toHaveBeenCalled();
+
+      // Onaylanmamis donus atiliyor: sayfa yeniden acildiginda cark, taslagin
+      // acilis yerinde duruyor, birakildigi yerde degil.
+      await press(field(view));
+      expect(picker(view).props.value).toEqual(new Date(2008, 8, 4));
+    } finally {
+      restore();
+    }
   });
 
-  it('gun 31 iken Subat secilmek istenirse 31 zaten listede yok', async () => {
-    // Yili beklemeden liste kisaliyor: "31 Subat" ara durumu hic olusmuyor ve
-    // gun, kullanici yili sectigi anda aciklamasiz kaybolmuyor.
-    const { view } = await mount({ day: null, month: 2, year: null });
-    await press(view, view.getByLabelText(strings.steps.dayLabel));
-    expect(view.queryByText('30')).toBeNull();
+  it('Android: sistem diyalogu bir tarih verirse deger isleniyor', async () => {
+    const restore = onPlatform('android');
+    try {
+      const { view, onChange } = await mount(empty);
+      await press(field(view));
+
+      // Android'de ayri bir onay yok: sistem diyalogunun kendi dugmesi var.
+      expect(view.queryByText(strings.birthDate.confirm)).toBeNull();
+
+      await act(async () => {
+        picker(view).props.onChange({ type: 'set' }, new Date(1998, 2, 14));
+      });
+
+      expect(onChange).toHaveBeenCalledWith({ day: 14, month: 3, year: 1998 });
+    } finally {
+      restore();
+    }
   });
 
-  it('yil degisip secili gun o aya sigmiyorsa gun dusuyor', async () => {
-    const { view, onChange } = await mount({ day: 29, month: 2, year: null });
-    await press(view, view.getByLabelText(strings.steps.yearLabel));
-    await press(view, rows(view, '2023')[0]!);
+  it('Android: diyalog kapatilirsa deger degismiyor', async () => {
+    const restore = onPlatform('android');
+    try {
+      const { view, onChange } = await mount({ day: 14, month: 3, year: 1998 });
+      await press(field(view));
 
-    expect(onChange).toHaveBeenCalledWith({ day: null, month: 2, year: 2023 });
+      await act(async () => {
+        picker(view).props.onChange({ type: 'dismissed' }, new Date(2001, 0, 1));
+      });
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(view.queryByTestId(PICKER_TEST_ID)).toBeNull();
+      // Alan eski cevabini koruyor.
+      expect(view.getByText('14 Mart 1998')).toBeTruthy();
+    } finally {
+      restore();
+    }
   });
 
-  it('artik yil secilirse 29 Subat yerinde kaliyor', async () => {
-    const { view, onChange } = await mount({ day: 29, month: 2, year: null });
-    await press(view, view.getByLabelText(strings.steps.yearLabel));
-    await press(view, rows(view, '2024')[0]!);
+  it('Android: cark kipinde aciliyor', async () => {
+    const restore = onPlatform('android');
+    try {
+      const { view } = await mount(empty);
+      await press(field(view));
 
-    expect(onChange).toHaveBeenCalledWith({ day: 29, month: 2, year: 2024 });
-  });
-
-  it('siğan gun ay degisince yerinde kaliyor', async () => {
-    const { view, onChange } = await mount({ day: 14, month: 1, year: 2023 });
-    await press(view, view.getByLabelText(strings.steps.monthLabel));
-    await press(view, rows(view, 'Şubat')[0]!);
-
-    expect(onChange).toHaveBeenCalledWith({ day: 14, month: 2, year: 2023 });
+      expect(picker(view).props.display).toBe('spinner');
+      expect(picker(view).props.mode).toBe('date');
+    } finally {
+      restore();
+    }
   });
 });

@@ -144,6 +144,9 @@ export const strings = {
   },
 
   birthDate: {
+    // Carkin altindaki onay. Cark cevrilirken deger surekli degisiyor; onaysiz
+    // her donusu cevap saymak, kullanicinin ustunden gectigi tarihi kaydederdi.
+    confirm: 'Seç',
     incomplete: 'Doğum tarihini seçmen gerekiyor.',
     invalid: 'Böyle bir tarih yok. Gün, ay ve yılı kontrol eder misin?',
     tooYoung: 'Bu uygulama {age} yaşından küçüklere açık değil. Seni burada göremeyeceğiz.',

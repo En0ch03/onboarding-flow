@@ -1,67 +1,4 @@
-import {
-  dayCount,
-  daysInMonth,
-  draftFromParts,
-  EARLIEST_YEAR,
-  partsFromDraft,
-  yearRange,
-} from './dateParts';
-
-const today = new Date(2026, 8, 4);
-
-describe('daysInMonth', () => {
-  it('artik yili biliyor', () => {
-    expect(daysInMonth(2024, 2)).toBe(29);
-    expect(daysInMonth(2023, 2)).toBe(28);
-  });
-
-  it('yuzyil kuralini biliyor', () => {
-    expect(daysInMonth(1900, 2)).toBe(28);
-    expect(daysInMonth(2000, 2)).toBe(29);
-  });
-
-  it('kisa ve uzun aylari ayirt ediyor', () => {
-    expect(daysInMonth(2026, 4)).toBe(30);
-    expect(daysInMonth(2026, 12)).toBe(31);
-  });
-});
-
-describe('yearRange', () => {
-  const years = yearRange(today);
-
-  it('bu yildan baslayip 1900e iniyor', () => {
-    expect(years[0]).toBe(2026);
-    expect(years[years.length - 1]).toBe(EARLIEST_YEAR);
-  });
-
-  it('gelecek bir yil sunmuyor', () => {
-    expect(years.some((year) => year > today.getFullYear())).toBe(false);
-  });
-
-  it('yas kapisinin atesleyebilmesi icin kucuk yaslari da sunuyor', () => {
-    expect(years).toContain(today.getFullYear() - 10);
-  });
-});
-
-describe('dayCount', () => {
-  it('ay secilmeden takvimin en uzun ayini sunuyor', () => {
-    expect(dayCount(null, null)).toBe(31);
-    expect(dayCount(null, 2024)).toBe(31);
-  });
-
-  it('yil verilmemisken ayin en uzun halini sunuyor', () => {
-    // Yili beklemek "31 Subat" ara durumunu mumkun kiliyor ve gun, kullanici
-    // yili sectigi anda aciklamasiz kayboluyordu.
-    expect(dayCount(2, null)).toBe(29);
-    expect(dayCount(4, null)).toBe(30);
-  });
-
-  it('ay ve yil seciliyken o ayin uzunlugunu veriyor', () => {
-    expect(dayCount(2, 2023)).toBe(28);
-    expect(dayCount(2, 2024)).toBe(29);
-    expect(dayCount(4, 2026)).toBe(30);
-  });
-});
+import { dateFromParts, draftFromParts, partsFromDate, partsFromDraft } from './dateParts';
 
 describe('partsFromDraft', () => {
   it('bos taslakta uc alan da bos', () => {
@@ -109,5 +46,30 @@ describe('draftFromParts', () => {
       month: '',
       year: '',
     });
+  });
+});
+
+describe('dateFromParts', () => {
+  it('tamamlanmis tarihi takvimdeki noktaya cevirir', () => {
+    expect(dateFromParts({ day: 14, month: 3, year: 1998 })).toEqual(new Date(1998, 2, 14));
+  });
+
+  it('yarim tarihten nokta uretmez', () => {
+    expect(dateFromParts({ day: 14, month: null, year: 1998 })).toBeNull();
+  });
+
+  it('takvimde olmayan tarihi kabul etmez', () => {
+    // Sessizce 3 Mart'a kaymak, kullaniciya vermedigi bir cevabi gostermek olurdu.
+    expect(dateFromParts({ day: 31, month: 2, year: 2023 })).toBeNull();
+  });
+
+  it('artik yilin 29 Subatini korur', () => {
+    expect(dateFromParts({ day: 29, month: 2, year: 2024 })).toEqual(new Date(2024, 1, 29));
+  });
+});
+
+describe('partsFromDate', () => {
+  it('ayi birden baslatarak taslak bicimine doner', () => {
+    expect(partsFromDate(new Date(1998, 2, 14))).toEqual({ day: 14, month: 3, year: 1998 });
   });
 });
