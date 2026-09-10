@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, type RenderResult } from '@testing-library/react-native';
+import { act, cleanup, fireEvent, waitFor, type RenderResult } from '@testing-library/react-native';
 import { AxiosError, AxiosHeaders } from 'axios';
 
 import { presentError } from '@/constants/errorMessages';
@@ -90,5 +90,39 @@ describe('LoginScreen', () => {
     );
 
     expect(view.getByLabelText(strings.auth.emailLabel).props.value).toBe('deniz@example.test');
+  });
+
+  // Sunucunun soyledigi isaret oldugu gibi tasinmali. Kok gecisi bu
+  // isareti "ya da sunucudaki profil tamamlanmis" ile birlikte okuyor;
+  // burada sabit bir `true` gecilseydi, akisi yarim birakmis bir kullanici
+  // dogrudan uygulamaya dusurdu ve gecis testleri bunu goremezdi.
+  it('sunucu akis yarim diyorsa yarim isaretini geciriyor', async () => {
+    login.mockResolvedValue({
+      user_id: 'u_1',
+      access_token: 'a',
+      refresh_token: 'r',
+      onboarding_complete: false,
+    });
+
+    const view = await renderWithTheme(<LoginScreen {...handlers} />);
+    await signIn(view, 'deniz@example.test', 'parolaparola');
+
+    await waitFor(() => expect(handlers.onSignedIn).toHaveBeenCalledWith(false));
+    expect(handlers.onSignedIn).toHaveBeenCalledTimes(1);
+  });
+
+  it('sunucu akis tamam diyorsa tamam isaretini geciriyor', async () => {
+    login.mockResolvedValue({
+      user_id: 'u_1',
+      access_token: 'a',
+      refresh_token: 'r',
+      onboarding_complete: true,
+    });
+
+    const view = await renderWithTheme(<LoginScreen {...handlers} />);
+    await signIn(view, 'deniz@example.test', 'parolaparola');
+
+    await waitFor(() => expect(handlers.onSignedIn).toHaveBeenCalledWith(true));
+    expect(handlers.onSignedIn).toHaveBeenCalledTimes(1);
   });
 });
