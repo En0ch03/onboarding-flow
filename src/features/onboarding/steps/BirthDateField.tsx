@@ -83,7 +83,9 @@ export function BirthDateField({ value, onChange, today }: BirthDateFieldProps) 
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={strings.steps.birthDateLabel}
-        {...(text ? { accessibilityValue: { text } } : {})}
+        // Bos alanda da bir deger bildiriliyor: soluk yer tutucu gozle
+        // okunuyordu ama ekran okuyucuya alan degersiz duruyordu.
+        accessibilityValue={{ text: text ?? placeholder }}
         onPress={start}
         style={({ pressed }) => ({
           backgroundColor: colors.surface,

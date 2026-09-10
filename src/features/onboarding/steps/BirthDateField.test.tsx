@@ -88,7 +88,23 @@ describe('BirthDateField', () => {
   it('dokunulmadan cark ekranda degil', async () => {
     const { view } = await mount(empty);
 
+    // Yokluk iddiasi once varligi kanitliyor: bos render eden bir bilesen de
+    // "cark yok" derdi ve test sessizce gecerdi.
+    expect(view.getByText('Gün Ay Yıl')).toBeTruthy();
     expect(view.queryByTestId(PICKER_TEST_ID)).toBeNull();
+  });
+
+  it('bos alan ekran okuyucuya da bekledigi uc parcayi soyluyor', async () => {
+    const { view } = await mount(empty);
+
+    // Soluk yazi yalnizca gozle okunuyordu; deger olarak da duyulmali.
+    expect(field(view).props.accessibilityValue).toEqual({ text: 'Gün Ay Yıl' });
+  });
+
+  it('dolu alan degerini secili tarihle bildiriyor', async () => {
+    const { view } = await mount({ day: 14, month: 3, year: 1998 });
+
+    expect(field(view).props.accessibilityValue).toEqual({ text: '14 Mart 1998' });
   });
 
   it('iOS: dokununca cark aciliyor ve taslaktaki tarihte duruyor', async () => {
