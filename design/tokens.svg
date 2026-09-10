@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1240" height="2460" viewBox="0 0 1240 2460" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif">
 <rect width="1240" height="2460" fill="#F5F2ED"/>
-<text x="56" y="76" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" font-size="40" fill="#111011">Onboarding — tasarım belirteçleri</text>
+<text x="56" y="76" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" font-size="40" fill="#111011">Onboarding tasarım belirteçleri</text>
 <text x="56" y="106" font-size="14" fill="#5E5652">Uygulamada geçerli olan değerler. Altılı renk kodu yalnızca palette.ts içinde bulunur; ekranlar fontSize görmez.</text>
 <line x1="56" y1="128" x2="1184" y2="128" stroke="#DDD6CE" stroke-width="1"/>
 <text x="56" y="176" font-size="19" font-weight="600" fill="#111011">Renk rolleri</text>
 <text x="56" y="198" font-size="13" fill="#5E5652">Koyu varyant birincil. İki varyant birlikte kuruldu: tek varyantla başlayıp diğerini türetmek, kontrast kararlarını iki kez almak olurdu.</text>
 <text x="230" y="232" font-size="12" letter-spacing="1.2" fill="#5E5652">AÇIK</text>
-<text x="472" y="232" font-size="12" letter-spacing="1.2" fill="#5E5652">KOYU — BİRİNCİL</text>
+<text x="472" y="232" font-size="12" letter-spacing="1.2" fill="#5E5652">KOYU · BİRİNCİL</text>
 <rect x="452" y="248" width="290" height="644" rx="14" fill="#0B0B0B"/>
 <text x="56" y="272" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">paper</text>
 <rect x="230" y="254" width="60" height="28" rx="7" fill="#F5F2ED" stroke="#DDD6CE"/>
@@ -53,7 +53,7 @@
 <text x="300" y="503" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#8B0D1A</text>
 <rect x="472" y="484" width="60" height="28" rx="7" fill="#C50337" stroke="#2A2529"/>
 <text x="544" y="503" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#C50337</text>
-<text x="772" y="503" font-size="13" fill="#5E5652">Birincil eylem — kızıl, yalnızca eylem ve seçimde</text>
+<text x="772" y="503" font-size="13" fill="#5E5652">Birincil eylem: kızıl, yalnızca eylem ve seçimde</text>
 <line x1="56" y1="520" x2="440" y2="520" stroke="#DDD6CE"/>
 <line x1="756" y1="520" x2="1184" y2="520" stroke="#DDD6CE"/>
 <text x="56" y="548" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">clayDeep</text>
@@ -101,7 +101,7 @@
 <text x="300" y="779" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#8A2F2F</text>
 <rect x="472" y="760" width="60" height="28" rx="7" fill="#E28B8B" stroke="#2A2529"/>
 <text x="544" y="779" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#E28B8B</text>
-<text x="772" y="779" font-size="13" fill="#5E5652">Hata — eylem kızılıyla karışmasın diye açık</text>
+<text x="772" y="779" font-size="13" fill="#5E5652">Hata: eylem kızılıyla karışmasın diye açık</text>
 <line x1="56" y1="796" x2="440" y2="796" stroke="#DDD6CE"/>
 <line x1="756" y1="796" x2="1184" y2="796" stroke="#DDD6CE"/>
 <text x="56" y="824" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">dangerTint</text>
@@ -117,7 +117,7 @@
 <text x="300" y="871" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#000000</text>
 <rect x="472" y="852" width="60" height="28" rx="7" fill="#000000" stroke="#2A2529"/>
 <text x="544" y="871" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#000000</text>
-<text x="772" y="871" font-size="13" fill="#5E5652">Sayfa altı yüzeyinin perdesi — %45</text>
+<text x="772" y="871" font-size="13" fill="#5E5652">Sayfa altı yüzeyinin perdesi, %45</text>
 <line x1="56" y1="888" x2="440" y2="888" stroke="#DDD6CE"/>
 <line x1="756" y1="888" x2="1184" y2="888" stroke="#DDD6CE"/>
 <text x="56" y="934" font-size="19" font-weight="600" fill="#111011">Görsel perdesi</text>
@@ -133,9 +133,9 @@
 <rect x="230" y="1056" width="60" height="28" rx="7" fill="#050505" stroke="#DDD6CE"/>
 <text x="56" y="1075" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">veil</text>
 <text x="300" y="1075" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#050505</text>
-<text x="472" y="1075" font-size="13" fill="#5E5652">Görselin üzerine çekilen karartma — metnin arkasında %86</text>
+<text x="472" y="1075" font-size="13" fill="#5E5652">Görselin üzerine çekilen karartma: metnin arkasında %86</text>
 <text x="56" y="1134" font-size="19" font-weight="600" fill="#111011">Tipografi ölçeği</text>
-<text x="56" y="1156" font-size="13" fill="#5E5652">İki aile: başlıklarda yüksek kontrastlı bir display serifi, arayüzde bir sans. Ağırlık fontWeight ile değil ayrı kesim dosyalarıyla verilir — statik dosyalarda fontWeight iOS'ta sentetik kalınlık üretir.</text>
+<text x="56" y="1156" font-size="13" fill="#5E5652">İki aile: başlıklarda yüksek kontrastlı bir display serifi, arayüzde bir sans. Ağırlık fontWeight ile değil ayrı kesim dosyalarıyla verilir; statik dosyalarda fontWeight iOS'ta sentetik kalınlık üretir.</text>
 <text x="56" y="1174" font-size="13" fill="#5E5652">Başlıklar ince değil dolgun: "tok" görünmenin yolu boyuttan çok kontrasttan ve ağırlıktan geçiyor. İnce bir serif büyütüldüğünde daha büyük değil daha kırılgan görünüyor.</text>
 <text x="56" y="1241" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">display</text>
 <text x="200" y="1241" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">44/48</text>
@@ -216,7 +216,7 @@
 <text x="565" y="2021" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">kapsül</text>
 <text x="56" y="2101" font-size="19" font-weight="600" fill="#111011">Gölge</text>
 <text x="56" y="2123" font-size="13" fill="#5E5652">İki kademe, ikisi de çift katmanlı: yakın ve dar olan kenarı ayırıyor, uzak ve geniş olan yüzeyi kaldırıyor. Tek katmanlı gölge kâğıt yerine kesilmiş kenar hissi veriyor.</text>
-<text x="56" y="2141" font-size="13" fill="#5E5652">Koyu varyantta gölge daha derin: açık zeminde gölgeyi görünür kılan şey kontrast, koyu zeminde ise yoğunluk. Tek biçim olarak boxShadow yazılıyor — eski shadow* ve elevation özellikleri iki platformda ayrı davranıyordu.</text>
+<text x="56" y="2141" font-size="13" fill="#5E5652">Koyu varyantta gölge daha derin: açık zeminde gölgeyi görünür kılan şey kontrast, koyu zeminde ise yoğunluk. Tek biçim olarak boxShadow yazılıyor; eski shadow* ve elevation özellikleri iki platformda ayrı davranıyordu.</text>
 <defs>
 <filter id="soft-light" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#111011" flood-opacity="0.04"/><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#111011" flood-opacity="0.07"/></filter>
 <filter id="lift-light" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#111011" flood-opacity="0.05"/><feDropShadow dx="0" dy="24" stdDeviation="30" flood-color="#111011" flood-opacity="0.12"/></filter>
@@ -225,7 +225,7 @@
 </defs>
 <rect x="452" y="2163" width="404" height="150" rx="14" fill="#0B0B0B"/>
 <text x="56" y="2185" font-size="12" letter-spacing="1.2" fill="#5E5652">AÇIK</text>
-<text x="472" y="2185" font-size="12" letter-spacing="1.2" fill="#B5ADA8">KOYU — BİRİNCİL</text>
+<text x="472" y="2185" font-size="12" letter-spacing="1.2" fill="#B5ADA8">KOYU · BİRİNCİL</text>
 <rect x="56" y="2203" width="150" height="70" rx="18" fill="#F5F2ED" filter="url(#soft-light)"/>
 <text x="131" y="2244" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">soft</text>
 <rect x="246" y="2203" width="150" height="70" rx="18" fill="#F5F2ED" filter="url(#lift-light)"/>
@@ -234,10 +234,10 @@
 <text x="547" y="2244" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#F5F2ED">soft</text>
 <rect x="662" y="2203" width="150" height="70" rx="18" fill="#151316" filter="url(#lift-dark)"/>
 <text x="737" y="2244" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#F5F2ED">lift</text>
-<text x="56" y="2297" font-size="13" fill="#5E5652">soft — kart, girdi alanı, sayfa altı yüzeyi</text>
-<text x="56" y="2317" font-size="13" fill="#5E5652">lift — üstte duran ve kapatılabilen yüzeyler</text>
+<text x="56" y="2297" font-size="13" fill="#5E5652">soft: kart, girdi alanı, sayfa altı yüzeyi</text>
+<text x="56" y="2317" font-size="13" fill="#5E5652">lift: üstte duran ve kapatılabilen yüzeyler</text>
 <text x="56" y="2351" font-size="19" font-weight="600" fill="#111011">Hareket</text>
-<text x="56" y="2373" font-size="13" fill="#5E5652">Süreler tek yerde: ekranlar arası hareketin akraba hissetmesi buradan geliyor. Ölçülü tarafta tutuldu — bir kayıt akışında hareket, kullanıcının bir sonraki girdiye ulaşmasını geciktirdiği anda zarar vermeye başlıyor.</text>
+<text x="56" y="2373" font-size="13" fill="#5E5652">Süreler tek yerde: ekranlar arası hareketin akraba hissetmesi buradan geliyor. Ölçülü tarafta tutuldu; bir kayıt akışında hareket, kullanıcının bir sonraki girdiye ulaşmasını geciktirdiği anda zarar vermeye başlıyor.</text>
 <rect x="56" y="2395" width="70" height="10" rx="5" fill="#8B0D1A"/>
 <text x="56" y="2429" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">fast</text>
 <text x="56" y="2445" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">140 ms</text>
