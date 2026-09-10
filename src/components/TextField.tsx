@@ -144,7 +144,10 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
               // "Sifreyi gizle". Ustune bir `selected` eklemek, ekran
               // okuyucunun "secildi" demesine ve kullanicinin neyin secildigini
               // sormasina yol aciyor.
-              accessibilityLabel={revealed ? strings.auth.hidePassword : strings.auth.showPassword}
+              // Etiket alanin adiyla birlikte veriliyor: kayit ekraninda iki
+              // sifre alani var ve ciplak bir "Sifreyi goster" ekran okuyucuda
+              // hangisinin anahtari oldugunu soylemiyor.
+              accessibilityLabel={`${label}, ${revealed ? strings.auth.hidePassword : strings.auth.showPassword}`}
               onPress={() => setRevealed((current) => !current)}
               style={({ pressed }) => ({
                 width: TOGGLE_SIZE,
@@ -154,8 +157,11 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
                 opacity: pressed ? 0.6 : 1,
               })}
             >
-              {/* Sifre tekrari alani yerine gorunurluk anahtari: yaziyi iki kez
-                  yazdirmadan ayni yazim hatasini yakaliyor. */}
+              {/* Anahtar ve dogrulama alani birlikte calisiyor: anahtar
+                  yazilani gostermeyi teklif ediyor, dogrulama alani ise
+                  bakmayani da durduruyor. Sifre sifirlama yolu olmayan bir
+                  uruntde yanlis yazilmis bir sifre hesabi kilitliyor; tek
+                  basina teklif yeterli degil. */}
               <EyeIcon
                 open={revealed}
                 color={revealed ? colors.clay : colors.inkSoft}

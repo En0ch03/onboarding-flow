@@ -26,3 +26,22 @@ export const credentialsFormSchema = z.object({
 });
 
 export type CredentialsForm = z.infer<typeof credentialsFormSchema>;
+
+/**
+ * Kayit formu ayni ikiliye bir ucuncu alan ekliyor: sifrenin dogrulanmasi.
+ *
+ * Uruntde sifre sifirlama yolu yok. Yanlis yazilmis tek bir sifre, hesabi ilk
+ * girisin ardindan erisilemez birakiyor ve kullanicinin bunu ogrendigi an
+ * cok gec oluyor. Gorunurluk anahtari yaziyi gosteriyor ama gosterilen seye
+ * bakmayan bir kullaniciyi durdurmuyor; iki alan durduruyor.
+ *
+ * Hata ikinci alanin yoluna yaziliyor: duzeltmenin yapilacagi yer orasi.
+ */
+export const registerFormSchema = credentialsFormSchema
+  .extend({ confirmPassword: z.string() })
+  .refine((values) => values.password === values.confirmPassword, {
+    path: ['confirmPassword'],
+    message: strings.auth.passwordMismatch,
+  });
+
+export type RegisterForm = z.infer<typeof registerFormSchema>;

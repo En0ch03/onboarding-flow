@@ -45,6 +45,10 @@ export const strings = {
 
     emailLabel: 'E-posta',
     passwordLabel: 'Şifre',
+    confirmPasswordLabel: 'Şifreyi doğrula',
+    // Cumle hangi alanin yanlis oldugunu iddia etmiyor: kullanici hangisini
+    // duzeltecegini kendi biliyor, biz bilmiyoruz.
+    passwordMismatch: 'Şifreler birbiriyle aynı değil.',
     showPassword: 'Şifreyi göster',
     hidePassword: 'Şifreyi gizle',
 

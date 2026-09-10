@@ -6,14 +6,18 @@ import { strings } from '@/constants/strings';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { CredentialsFields } from './CredentialsFields';
-import type { CredentialsForm } from './credentialsForm';
+import type { RegisterForm } from './credentialsForm';
 
 const submit = jest.fn();
 
 beforeEach(() => submit.mockReset());
 
 function Harness({ mode = 'register' }: { mode?: 'register' | 'login' }) {
-  const form = useForm<CredentialsForm>({ defaultValues: { email: '', password: '' } });
+  // Genis form iki kipe de yetiyor: giris kipinde ucuncu alan zaten
+  // cizilmiyor.
+  const form = useForm<RegisterForm>({
+    defaultValues: { email: '', password: '', confirmPassword: '' },
+  });
   return <CredentialsFields control={form.control} mode={mode} onSubmit={submit} />;
 }
 
@@ -25,6 +29,12 @@ async function mount() {
 
 const email = (view: RenderResult) => view.getByLabelText(strings.auth.emailLabel);
 const password = (view: RenderResult) => view.getByLabelText(strings.auth.passwordLabel);
+const confirmPassword = (view: RenderResult) =>
+  view.getByLabelText(strings.auth.confirmPasswordLabel);
+
+/** Anahtarin etiketi alanin adiyla birlikte veriliyor. */
+const toggleLabel = (label: string, revealed: boolean) =>
+  `${label}, ${revealed ? strings.auth.hidePassword : strings.auth.showPassword}`;
 
 describe('CredentialsFields', () => {
   it('e-postadaki bitirme tusu klavyeyi kapatmiyor, siradaki alani isaret ediyor', async () => {
@@ -87,12 +97,12 @@ describe('CredentialsFields', () => {
     const view = await mount();
 
     await act(async () => {
-      fireEvent.press(view.getByLabelText(strings.auth.showPassword));
+      fireEvent.press(view.getByLabelText(toggleLabel(strings.auth.passwordLabel, false)));
     });
     expect(password(view).props.secureTextEntry).toBe(false);
 
     await act(async () => {
-      fireEvent.press(view.getByLabelText(strings.auth.hidePassword));
+      fireEvent.press(view.getByLabelText(toggleLabel(strings.auth.passwordLabel, true)));
     });
     expect(password(view).props.secureTextEntry).toBe(true);
   });
@@ -101,17 +111,73 @@ describe('CredentialsFields', () => {
     const view = await mount();
     // Once agacin gercekten cizildigi kanitlaniyor: bos render eden bir test
     // "metin yok" der ve sessizce gecerdi.
-    expect(view.getByLabelText(strings.auth.showPassword)).toBeTruthy();
+    expect(view.getByLabelText(toggleLabel(strings.auth.passwordLabel, false))).toBeTruthy();
     expect(view.queryByText('Göster')).toBeNull();
     expect(view.queryByText('Gizle')).toBeNull();
   });
 
-  it('sifredeki bitirme tusu formu gonderiyor', async () => {
-    const view = await mount();
+  it('giriste sifredeki bitirme tusu formu gonderiyor', async () => {
+    const view = await renderWithTheme(<Harness mode="login" />);
     expect(password(view).props.returnKeyType).toBe('done');
     await act(async () => {
       fireEvent(password(view), 'submitEditing');
     });
+    expect(submit).toHaveBeenCalled();
+  });
+});
+
+describe('sifre dogrulama', () => {
+  it('kayit sifreyi ikinci kez soruyor', async () => {
+    const view = await mount();
+
+    // Once agacin cizildigi: bos bir agacta asagidaki iddialar da patlardi.
+    expect(password(view)).toBeTruthy();
+    expect(confirmPassword(view).props.secureTextEntry).toBe(true);
+    expect(confirmPassword(view).props.textContentType).toBe('newPassword');
+  });
+
+  it('dogrulama alaninin da kendi gorunurluk anahtari var', async () => {
+    const view = await mount();
+    const label = toggleLabel(strings.auth.confirmPasswordLabel, false);
+
+    await act(async () => {
+      fireEvent.press(view.getByLabelText(label));
+    });
+    expect(confirmPassword(view).props.secureTextEntry).toBe(false);
+  });
+
+  it('giris ikinci kez sormuyor', async () => {
+    const view = await renderWithTheme(<Harness mode="login" />);
+
+    expect(password(view)).toBeTruthy();
+    expect(view.queryByLabelText(strings.auth.confirmPasswordLabel)).toBeNull();
+  });
+
+  it('kayitta sifredeki bitirme tusu odagi dogrulama alanina veriyor', async () => {
+    const focus = jest.spyOn(TextInput.prototype, 'focus').mockImplementation(() => {});
+    const view = await mount();
+
+    expect(password(view).props.returnKeyType).toBe('next');
+    // Klavye kapanirsa odak devri gorunmez oluyor ve form ortasinda duruyor.
+    expect(password(view).props.submitBehavior).toBe('submit');
+
+    await act(async () => {
+      fireEvent(password(view), 'submitEditing');
+    });
+
+    expect(focus).toHaveBeenCalled();
+    expect(submit).not.toHaveBeenCalled();
+    focus.mockRestore();
+  });
+
+  it('dogrulama alanindaki bitirme tusu formu gonderiyor', async () => {
+    const view = await mount();
+    expect(confirmPassword(view).props.returnKeyType).toBe('done');
+
+    await act(async () => {
+      fireEvent(confirmPassword(view), 'submitEditing');
+    });
+
     expect(submit).toHaveBeenCalled();
   });
 });

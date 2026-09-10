@@ -5,10 +5,14 @@ import type { TextInput } from 'react-native';
 import { TextField } from '@/components/TextField';
 import { strings } from '@/constants/strings';
 
-import type { CredentialsForm } from './credentialsForm';
+import type { CredentialsForm, RegisterForm } from './credentialsForm';
 
 type CredentialsFieldsProps = {
-  control: Control<CredentialsForm>;
+  /**
+   * Iki ekranin formu ayni degil: kayit formunda bir alan fazla. Ortak iki
+   * alan iki formda da ayni ad ve ayni tiple duruyor.
+   */
+  control: Control<CredentialsForm> | Control<RegisterForm>;
   /** Kayit yeni bir sifre ister, giris kayitli olani; ikisi ayri ipucu. */
   mode: 'register' | 'login';
   /** Sifre alanindaki bitirme tusu formu gonderiyor. */
@@ -23,15 +27,21 @@ type CredentialsFieldsProps = {
  *
  * E-postadaki bitirme tusu klavyeyi kapatmiyor, sifreye geciriyor. Kapanan
  * klavye, kullanicidan ekrana uzanip ikinci alana dokunmasini istiyor;
- * formun ritmi orada kesiliyor.
+ * formun ritmi orada kesiliyor. Kayitta ayni devir bir alan daha suruyor:
+ * sifreden dogrulama alanina.
  */
 export function CredentialsFields({ control, mode, onSubmit }: CredentialsFieldsProps) {
   const password = useRef<TextInput>(null);
+  const confirmPassword = useRef<TextInput>(null);
+  const isRegister = mode === 'register';
+  // Ortak iki alan icin formun dar hali yetiyor; ucuncu alan yalnizca genis
+  // olaninda var ve zaten yalnizca kayitta ciziliyor.
+  const shared = control as Control<CredentialsForm>;
 
   return (
     <>
       <Controller
-        control={control}
+        control={shared}
         name="email"
         render={({ field, fieldState }) => (
           <TextField
@@ -54,7 +64,7 @@ export function CredentialsFields({ control, mode, onSubmit }: CredentialsFields
       />
 
       <Controller
-        control={control}
+        control={shared}
         name="password"
         render={({ field, fieldState }) => (
           <TextField
@@ -66,13 +76,41 @@ export function CredentialsFields({ control, mode, onSubmit }: CredentialsFields
             error={fieldState.error?.message}
             secure
             autoCapitalize="none"
-            autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
-            textContentType={mode === 'register' ? 'newPassword' : 'password'}
-            returnKeyType="done"
-            onSubmitEditing={onSubmit}
+            autoComplete={isRegister ? 'new-password' : 'current-password'}
+            textContentType={isRegister ? 'newPassword' : 'password'}
+            returnKeyType={isRegister ? 'next' : 'done'}
+            {...(isRegister
+              ? {
+                  submitBehavior: 'submit' as const,
+                  onSubmitEditing: () => confirmPassword.current?.focus(),
+                }
+              : { onSubmitEditing: onSubmit })}
           />
         )}
       />
+
+      {isRegister ? (
+        <Controller
+          control={control as Control<RegisterForm>}
+          name="confirmPassword"
+          render={({ field, fieldState }) => (
+            <TextField
+              ref={confirmPassword}
+              label={strings.auth.confirmPasswordLabel}
+              value={field.value}
+              onChangeText={field.onChange}
+              onBlur={field.onBlur}
+              error={fieldState.error?.message}
+              secure
+              autoCapitalize="none"
+              autoComplete="new-password"
+              textContentType="newPassword"
+              returnKeyType="done"
+              onSubmitEditing={onSubmit}
+            />
+          )}
+        />
+      ) : null}
     </>
   );
 }
