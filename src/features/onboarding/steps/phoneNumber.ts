@@ -28,7 +28,7 @@ const MOBILE_PREFIX = '5';
  */
 export const MAX_INPUT_LENGTH = 24;
 
-export type PhoneProblem = 'incomplete' | 'invalid' | null;
+export type PhoneProblem = 'empty' | 'partial' | 'invalid' | null;
 
 /**
  * Kullanicinin yazdigini saklanabilir bir numaraya cevirir.
@@ -54,17 +54,23 @@ export function normalizePhone(value: string): string {
  *
  * Eksik ile gecersiz ayri: yazmaya devam eden birine "gecersiz" demek, henuz
  * yapmadigi bir hatayi yuzune vurmak olurdu.
+ *
+ * Eksigin kendisi de ikiye ayriliyor. Hic yazmamis birine "on hane olmali"
+ * demek, sormadigi bir soruya cevap vermek; yarim birakmis birine "numaranI
+ * yaz" demek ise yazdigini gormemek.
  */
 export function inspectPhone(value: string | undefined): PhoneProblem {
   const digits = normalizePhone(value ?? '');
 
-  if (digits.length < LENGTH) return 'incomplete';
+  if (digits.length === 0) return 'empty';
+  if (digits.length < LENGTH) return 'partial';
   if (digits.length > LENGTH) return 'invalid';
 
   return digits.startsWith(MOBILE_PREFIX) ? null : 'invalid';
 }
 
 export const phoneMessages: Record<Exclude<PhoneProblem, null>, string> = {
-  incomplete: strings.phone.incomplete,
+  empty: strings.phone.empty,
+  partial: strings.phone.partial,
   invalid: strings.phone.invalid,
 };

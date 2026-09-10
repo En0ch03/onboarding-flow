@@ -124,7 +124,12 @@ export const strings = {
   },
 
   phone: {
-    incomplete: 'Telefon numaranı yazman gerekiyor: 5 ile başlayan on hane.',
+    // Hic yazmamis kullanici ile yarim birakmis kullanici ayni cumleyi
+    // almiyor: birine ne yapacagi soyleniyor, digerine neyin eksik oldugu.
+    // Tek cumle ikisine de yaziliyordu ve bos alana bakan birine "on hane"
+    // demek, henuz sormadigi bir soruya cevap vermek oluyordu.
+    empty: 'Devam etmek için telefon numaranı yaz.',
+    partial: 'Numara eksik görünüyor. 5 ile başlayan on hane olmalı.',
     // Eksik ile yanlis ayri konusuyor. Yazmaya devam eden birine "gecersiz"
     // demek, henuz yapmadigi bir hatayi yuzune vurmak olurdu.
     invalid: 'Bu numara doğru görünmüyor. Cep numaraları 5 ile başlar ve on hanedir.',

@@ -59,15 +59,20 @@ describe('normalizePhone', () => {
 });
 
 describe('inspectPhone', () => {
-  it('bos deger eksik sayiliyor', () => {
-    expect(inspectPhone(undefined)).toBe('incomplete');
-    expect(inspectPhone('')).toBe('incomplete');
+  it('bos alan yarim numaradan ayri sayiliyor', () => {
+    // Ikisi ayni sayilirsa bos alana bakan kullanici "on hane olmali"
+    // uyarisini aliyor: henuz sormadigi bir soruya cevap.
+    expect(inspectPhone(undefined)).toBe('empty');
+    expect(inspectPhone('')).toBe('empty');
+    // Yalnizca yazim isaretleri yazilmis bir alanda da rakam yok: kullanici
+    // henuz numarasindan bir sey soylememis.
+    expect(inspectPhone('( ) - ')).toBe('empty');
   });
 
   it('yarim numara eksik sayiliyor, yanlis degil', () => {
     // Yazmaya devam eden birine "gecersiz" demek, henuz yapmadigi bir hatayi
     // yuzune vurmak olurdu.
-    expect(inspectPhone('555123')).toBe('incomplete');
+    expect(inspectPhone('555123')).toBe('partial');
   });
 
   it('on haneden uzun numara gecersiz', () => {
