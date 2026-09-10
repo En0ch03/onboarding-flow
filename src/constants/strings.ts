@@ -18,6 +18,14 @@ export const strings = {
     dismissKeyboard: 'Bitti',
   },
 
+  // Acilis ekrani: kullanicinin gordugu ilk metin. Marka adi yalin duruyor,
+  // altindaki iki satir bekletmenin sebebini soyluyor.
+  launch: {
+    title: 'Onboarding',
+    status: 'Hazırlanıyor',
+    hint: 'Senin için her şeyi yoluna koyuyoruz.',
+  },
+
   welcome: {
     promiseTitle: 'Doğru zamanda doğru yerde.',
     promiseSubtitle: 'O karşılaşmayı şansa bırakmamak için.',
