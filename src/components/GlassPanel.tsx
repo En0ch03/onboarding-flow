@@ -45,10 +45,12 @@ const MODE_LETTERS: Record<GlassMode, string> = { liquid: 'L', blur: 'B', flat: 
  *
  * Ayri bir kanca cunku cevap asenkron geliyor ve yalniz iOS'ta anlamli. Cevap
  * gelmeden veya hic gelmeyecekse soru isareti kaliyor: burada yanlis bir
- * "acik" yazmak, cihazi tutan kisiyi yanlis yone gonderir.
+ * "acik" yazmak, cihazi tutan kisiyi yanlis yone gonderir. Android'de soru
+ * hic sorulmuyor ve rozette yeri de bos kalmiyor: cevaplanmayacak bir soru
+ * icin ayrilan yer, orada bir cevap oldugunu ima ediyordu.
  */
-function useTransparencyLabel() {
-  const [label, setLabel] = useState('saydamlık ?');
+function useTransparencyLabel(): string | null {
+  const [label, setLabel] = useState<string | null>(Platform.OS === 'ios' ? 'saydamlık ?' : null);
 
   useEffect(() => {
     if (Platform.OS !== 'ios') return;
@@ -82,10 +84,16 @@ function GlassModeBadge({ mode }: { mode: GlassMode }) {
   const { colors, radius, spacing } = useTheme();
   const transparency = useTransparencyLabel();
   const system = Platform.OS === 'ios' ? 'iOS' : 'Android';
+  const parts = [MODE_LETTERS[mode], `${system} ${Platform.Version}`];
+  if (transparency !== null) parts.push(transparency);
 
   return (
     <Text
       testID="glass-mode-badge"
+      // Rozet kartin sag ust kosesinde duruyor ve orasi bir alanin ustune denk
+      // gelebiliyor: dokunusu gecirmezse teshis araci, formun bir parcasini
+      // kullanilamaz hale getirir.
+      pointerEvents="none"
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
       style={{
@@ -101,7 +109,7 @@ function GlassModeBadge({ mode }: { mode: GlassMode }) {
         backgroundColor: withAlpha(colors.scrim, 0.55),
       }}
     >
-      {`${MODE_LETTERS[mode]} · ${system} ${Platform.Version} · ${transparency}`}
+      {parts.join(' · ')}
     </Text>
   );
 }

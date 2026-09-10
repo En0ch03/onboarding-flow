@@ -445,6 +445,46 @@ describe('GlassPanel', () => {
       }
     });
 
+    it('Android tarafinda cevaplanmayan soruya yer ayirmiyor', async () => {
+      const restore = onPlatform('android');
+      const restoreDev = onDevFlag(true);
+      try {
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        // Saydamlik sorusu yalnizca iOS'ta anlamli; Android'de bos birakilan
+        // yer, orada bir cevap oldugunu ima ediyordu.
+        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).not.toContain('saydamlık');
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
+
+    it('rozet dokunusu gecirmiyor', async () => {
+      const restore = onPlatform('ios');
+      const restoreDev = onDevFlag(true);
+      try {
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        // Rozet kartin sag ust kosesinde ve orasi bir alanin ustune denk
+        // gelebiliyor: dokunusu tutarsa teshis araci formu kullanilamaz kilar.
+        expect(view.getByTestId('glass-mode-badge', hidden).props.pointerEvents).toBe('none');
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
+
     it('rozet ekran okuyucudan gizli', async () => {
       const restore = onPlatform('ios');
       const restoreDev = onDevFlag(true);
