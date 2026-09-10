@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-import { DEV_API_PORT, resolveBaseUrl } from './baseUrl';
+import { DEV_API_PORT, resolveBaseUrl, resolveStandInUrl } from './baseUrl';
 
 jest.mock('expo-constants', () => ({
   __esModule: true,
@@ -22,9 +22,11 @@ function runningOn(os: 'ios' | 'android' | 'web') {
 
 const originalOS = Platform.OS;
 const originalEnv = process.env.EXPO_PUBLIC_API_URL;
+const originalStandInEnv = process.env.EXPO_PUBLIC_STANDIN_API_URL;
 
 beforeEach(() => {
   delete process.env.EXPO_PUBLIC_API_URL;
+  delete process.env.EXPO_PUBLIC_STANDIN_API_URL;
   servedFrom('192.168.1.24:8081');
   runningOn('ios');
 });
@@ -33,6 +35,8 @@ afterAll(() => {
   runningOn(originalOS as 'ios');
   if (originalEnv === undefined) delete process.env.EXPO_PUBLIC_API_URL;
   else process.env.EXPO_PUBLIC_API_URL = originalEnv;
+  if (originalStandInEnv === undefined) delete process.env.EXPO_PUBLIC_STANDIN_API_URL;
+  else process.env.EXPO_PUBLIC_STANDIN_API_URL = originalStandInEnv;
 });
 
 describe('resolveBaseUrl', () => {
@@ -87,5 +91,43 @@ describe('resolveBaseUrl', () => {
     runningOn('web');
 
     expect(resolveBaseUrl()).toBe(`http://localhost:${DEV_API_PORT}/api/v1`);
+  });
+});
+
+/**
+ * Sozlesmede olmayan iki uc: secenek listeleri ve gorsel yukleme. Bunlarin
+ * adresi ayri cozuluyor, cunku sozlesmeyi karsilayan bir sunucunun onlari
+ * karsilamasi gerekmiyor.
+ */
+describe('resolveStandInUrl', () => {
+  it('stays on the contract address unless told otherwise, so the app knows one server', () => {
+    expect(resolveStandInUrl()).toBe(resolveBaseUrl());
+  });
+
+  it('follows the contract address when only that one is configured', () => {
+    process.env.EXPO_PUBLIC_API_URL = 'https://api.example.com/api/v1';
+
+    expect(resolveStandInUrl()).toBe('https://api.example.com/api/v1');
+  });
+
+  it('splits off only when a stand-in is named, and leaves the contract address alone', () => {
+    process.env.EXPO_PUBLIC_API_URL = 'https://api.example.com/api/v1';
+    process.env.EXPO_PUBLIC_STANDIN_API_URL = 'http://192.168.1.24:4000/api/v1';
+
+    expect(resolveStandInUrl()).toBe('http://192.168.1.24:4000/api/v1');
+    expect(resolveBaseUrl()).toBe('https://api.example.com/api/v1');
+  });
+
+  it('trims a named stand-in rather than producing a broken url', () => {
+    process.env.EXPO_PUBLIC_STANDIN_API_URL = '  http://192.168.1.24:4000/api/v1  ';
+
+    expect(resolveStandInUrl()).toBe('http://192.168.1.24:4000/api/v1');
+  });
+
+  it('can be named on its own, while the contract address is still derived', () => {
+    process.env.EXPO_PUBLIC_STANDIN_API_URL = 'http://10.0.0.5:4000/api/v1';
+
+    expect(resolveStandInUrl()).toBe('http://10.0.0.5:4000/api/v1');
+    expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
   });
 });

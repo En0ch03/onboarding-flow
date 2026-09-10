@@ -1,7 +1,7 @@
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import { z } from 'zod';
 
-import { api } from './client';
+import { standInApi } from './client';
 
 /**
  * Yukleme dikisi.
@@ -54,7 +54,7 @@ async function prepareAndSend(uri: string): Promise<UploadedPhoto> {
     // sahip degil; tip burada bilerek gevsetildi.
   } as unknown as Blob);
 
-  const response = await api.post('/upload', form, {
+  const response = await standInApi.post('/upload', form, {
     headers: { 'Content-Type': 'multipart/form-data' },
     // Yukleme diger isteklerden uzun surer; genel zaman asimi burada gecerli olmamali.
     timeout: UPLOAD_TIMEOUT_MS,

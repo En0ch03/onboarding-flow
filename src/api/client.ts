@@ -6,7 +6,7 @@ import {
   type InternalAxiosRequestConfig,
 } from 'axios';
 
-import { resolveBaseUrl } from './baseUrl';
+import { resolveBaseUrl, resolveStandInUrl } from './baseUrl';
 import { createRefreshQueue } from './refresh';
 import { RefreshResponseSchema } from './schemas';
 
@@ -119,7 +119,7 @@ export function createApiClient(options: {
 }
 
 /**
- * Uygulamanin kullandigi tek ornek.
+ * Her iki ornegin de paylastigi oturum koprusu.
  *
  * Koprü calisma aninda takiliyor cunku oturum deposu acilista kuruluyor ve ag
  * katmani deponun varligini beklememeli. Takilmadan once uygulama oturumsuz
@@ -139,10 +139,33 @@ const delegatingBridge: AuthBridge = {
 };
 
 /**
- * Uygulamanin sunucu hakkinda bildigi tek sey. Sahte veri, sahte dal veya
- * ortama gore degisen bir kod yolu yok; gercek sunucuya gecis tek bir ortam
- * degiskeni. Adresin nasil bulundugu `baseUrl.ts` icinde.
+ * Sozlesmedeki alti uc noktanin adresi.
+ *
+ * Uygulamanin icinde sahte veri, sahte dal veya ortama gore degisen bir kod
+ * yolu yok; gercek sunucuya gecis tek bir ortam degiskeni. Adresin nasil
+ * bulundugu `baseUrl.ts` icinde.
  */
 export const baseURL = resolveBaseUrl();
 
 export const api = createApiClient({ baseURL, bridge: delegatingBridge });
+
+/**
+ * Sozlesmede yeri olmayan iki ucun istemcisi: secenek listeleri ve gorsel
+ * yukleme.
+ *
+ * Ayni yapilandirma, yalnizca adresi farkli olabilen ikinci bir ornek. Oturum
+ * koprusu bilerek paylasiliyor: yukleme kimlik istiyor ve kullanicinin tek bir
+ * oturumu var. Yenileme de ayni sebeple acik birakildi -- iki adres tek
+ * sunucuya cozuldugunde davranis bugunkunden farksiz olmali.
+ *
+ * Adres verilmediginde `baseURL` ile ayni cikiyor, yani uygulama tek bir
+ * sunucu biliyor. Ayrildiklarinda bunu kuran kisi bilerek yapmis oluyor ve
+ * hangi iki ucun ayrildigi yalnizca su iki dosyadan okunuyor: `config.ts` ve
+ * `media.ts`.
+ */
+export const standInBaseURL = resolveStandInUrl();
+
+export const standInApi = createApiClient({
+  baseURL: standInBaseURL,
+  bridge: delegatingBridge,
+});
