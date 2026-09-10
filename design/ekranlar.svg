@@ -26,11 +26,11 @@
 <text x="418" y="362" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="24" font-weight="400" fill="#F2EDE6">aramıyordunuz. Sadece</text>
 <text x="418" y="390" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="24" font-weight="400" fill="#F2EDE6">henüz</text>
 <text x="418" y="418" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="24" font-weight="400" fill="#F2EDE6">karşılaşmamıştınız.</text>
-<text x="418" y="462" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">Onboarding’da günde birkaç kişi</text>
-<text x="418" y="479" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">görürsün. Herkes ne aradığını</text>
-<text x="418" y="496" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">yazmıştır — gerisi size kalmış.</text>
+<text x="418" y="462" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">Her gün yalnızca birkaç kişi.</text>
+<text x="418" y="479" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">Her biri ne aradığını söylemiş.</text>
+<text x="418" y="496" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">Gerisi sana kalmış.</text>
 <rect x="418" y="678" width="252" height="50" rx="25" fill="#C08668"/>
-<text x="544" y="709" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Anladım, devam</text>
+<text x="544" y="709" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
 <text x="396" y="800" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Ürünün farkı burada anlatılıyor;</text>
 <text x="396" y="815" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">kayıt ekranı bunu tekrar etmiyor.</text>
 <text x="736" y="142" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Kayıt ol</text>
@@ -39,9 +39,9 @@
 <text x="758" y="194" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">9:41</text>
 <rect x="980" y="186" width="30" height="10" rx="3" fill="#A69C91"/>
 <path d="M 764 224 L 758 230 L 764 236" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
-<text x="758" y="274" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Hesabını oluşturalım</text>
-<text x="758" y="307" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">E-postanı yalnızca giriş için</text>
-<text x="758" y="322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">kullanıyoruz. Profilinde görünmez.</text>
+<text x="758" y="274" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Hesabını oluştur</text>
+<text x="758" y="307" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Bir e-posta ve bir şifre yeter.</text>
+<text x="758" y="322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">E-postan profilinde görünmez.</text>
 <text x="758" y="355" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">E-posta</text>
 <rect x="758" y="363" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
 <text x="772" y="390" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">deniz@ornek.com</text>
@@ -64,7 +64,7 @@
 <rect x="1320" y="186" width="30" height="10" rx="3" fill="#A69C91"/>
 <path d="M 1104 224 L 1098 230 L 1104 236" fill="none" stroke="#F2EDE6" stroke-width="1.6"/>
 <text x="1098" y="274" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Tekrar hoş geldin</text>
-<text x="1098" y="307" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Kaldığın yerden devam edelim.</text>
+<text x="1098" y="307" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Giriş yap, kaldığın yerden devam et.</text>
 <text x="1098" y="340" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">E-posta</text>
 <rect x="1098" y="348" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
 <text x="1112" y="375" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">deniz@ornek.com</text>
@@ -84,13 +84,13 @@
 <text x="1690" y="234" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 2 / 6</text>
 <rect x="1438" y="248" width="252" height="3" rx="2" fill="#2E2823"/>
 <rect x="1438" y="248" width="84" height="3" rx="2" fill="#C08668"/>
-<text x="1438" y="276" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Sana nasıl hitap edelim?</text>
-<text x="1438" y="309" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Adın profilinde görünür. Doğum tarihin</text>
-<text x="1438" y="324" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">görünmez, yalnızca yaşın görünür.</text>
-<text x="1438" y="355" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Ad</text>
+<text x="1438" y="276" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Sana nasıl seslenelim?</text>
+<text x="1438" y="309" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Adın profilinde görünür. Doğum</text>
+<text x="1438" y="324" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">tarihinden yalnızca yaşın görünür.</text>
+<text x="1438" y="355" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Adın</text>
 <rect x="1438" y="363" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
 <text x="1452" y="390" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Deniz</text>
-<text x="1438" y="419" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Doğum tarihi</text>
+<text x="1438" y="419" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Doğum tarihin</text>
 <rect x="1438" y="427" width="78.66666666666667" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
 <text x="1477.3333333333333" y="454" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">11</text>
 <rect x="1524.6666666666667" y="427" width="78.66666666666667" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
@@ -113,23 +113,21 @@
 <text x="330" y="952" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 3 / 6</text>
 <rect x="78" y="966" width="252" height="3" rx="2" fill="#2E2823"/>
 <rect x="78" y="966" width="126" height="3" rx="2" fill="#C08668"/>
-<text x="78" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Kimlere görünmek</text>
+<text x="78" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Kimi görmek</text>
 <text x="78" y="1021" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">istersin?</text>
-<text x="78" y="1054" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Bu iki cevap eşleşme havuzunu</text>
-<text x="78" y="1069" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">belirliyor. İstediğin zaman</text>
-<text x="78" y="1084" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">değiştirebilirsin.</text>
-<text x="78" y="1111" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Ben</text>
+<text x="78" y="1054" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">İkisini de sonra değiştirebilirsin.</text>
+<text x="78" y="1111" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Cinsiyetin</text>
 <rect x="78" y="1123" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="94" y="1151" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Kadınım</text>
+<text x="94" y="1151" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Kadın</text>
 <rect x="294" y="1138" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
 <text x="302" y="1150" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
 <rect x="78" y="1177" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="94" y="1205" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Erkeğim</text>
+<text x="94" y="1205" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Erkek</text>
 <rect x="294" y="1192" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
 <rect x="78" y="1231" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="94" y="1259" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Başka bir şekilde tanımlıyorum</text>
+<text x="94" y="1259" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Non-binary</text>
 <rect x="294" y="1246" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
-<text x="78" y="1289" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Beni görsün</text>
+<text x="78" y="1289" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Kimleri göstereyim</text>
 <rect x="78.00" y="1301" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
 <text x="117.33" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Kadınlar</text>
 <rect x="164.67" y="1301" width="78.67" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
@@ -152,22 +150,21 @@
 <rect x="418" y="966" width="252" height="3" rx="2" fill="#2E2823"/>
 <rect x="418" y="966" width="168" height="3" rx="2" fill="#C08668"/>
 <text x="418" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Ne arıyorsun?</text>
-<text x="418" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Bu cevap profilinde görünür ve kimleri</text>
-<text x="418" y="1042" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">göreceğini etkiler.</text>
+<text x="418" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Dürüst ol. Önerilerin buna göre gelir.</text>
 <rect x="1098.00" y="1073" width="78.67" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
 <text x="1108.00" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
-<text x="434" y="1101" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Uzun soluklu bir ilişki</text>
+<text x="434" y="1101" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Uzun süreli ilişki</text>
 <rect x="634" y="1088" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
 <text x="642" y="1100" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
 <rect x="418" y="1127" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="434" y="1155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Henüz emin değilim</text>
+<text x="434" y="1155" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Kısa süreli ilişki</text>
 <rect x="634" y="1142" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
 <rect x="418" y="1181" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="434" y="1209" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Arkadaşlık</text>
+<text x="434" y="1209" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Yeni arkadaşlar</text>
 <rect x="634" y="1196" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
 <text x="642" y="1208" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
 <rect x="418" y="1235" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="434" y="1263" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Henüz emin değilim</text>
+<text x="434" y="1263" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Henüz karar vermedim</text>
 <rect x="634" y="1250" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
 <text x="418" y="1299" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#C08668">En fazla 2 seçebilirsin · 2 seçili</text>
 <rect x="418" y="1406" width="252" height="50" rx="25" fill="#C08668"/>
@@ -183,10 +180,9 @@
 <text x="1010" y="952" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 5 / 6</text>
 <rect x="758" y="966" width="252" height="3" rx="2" fill="#2E2823"/>
 <rect x="758" y="966" width="210" height="3" rx="2" fill="#C08668"/>
-<text x="758" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Birkaç fotoğraf ekle</text>
-<text x="758" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">En az iki tane. İlk fotoğraf kapak olur</text>
-<text x="758" y="1042" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">— yüzünün göründüğü bir kare iyi</text>
-<text x="758" y="1057" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">çalışıyor.</text>
+<text x="758" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Fotoğraflarını ekle</text>
+<text x="758" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">En az iki fotoğraf. İlki kapak olur;</text>
+<text x="758" y="1042" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">yüzünün net göründüğü bir tane seç.</text>
 <rect x="758" y="1088" width="78.66666666666667" height="74" rx="14" fill="#262019" stroke="#2E2823"/>
 <circle cx="797.3333333333334" cy="1118" r="11" fill="#2E2823"/>
 <path d="M 770 1152 Q 797.3333333333334 1122 824.6666666666666 1152 Z" fill="#2E2823"/>
@@ -216,9 +212,8 @@
 <text x="1350" y="952" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 6 / 6</text>
 <rect x="1098" y="966" width="252" height="3" rx="2" fill="#2E2823"/>
 <rect x="1098" y="966" width="252" height="3" rx="2" fill="#C08668"/>
-<text x="1098" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Neye vakit ayırırsın?</text>
-<text x="1098" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Birkaç tane seç. Sohbet başlatmayı</text>
-<text x="1098" y="1042" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">kolaylaştırıyor.</text>
+<text x="1098" y="994" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Neye vakit ayırıyorsun?</text>
+<text x="1098" y="1027" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Ortak noktalar sohbeti başlatır.</text>
 <rect x="1184.67" y="1073" width="78.67" height="32" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
 <text x="1194.67" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#C08668">✓</text>
 <text x="1224.00" y="1094" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#C08668" text-anchor="middle">Yürüyüş</text>
@@ -241,7 +236,7 @@
 <rect x="1271.33" y="1153" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
 <text x="1310.67" y="1174" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Seyahat</text>
 <rect x="1098.00" y="1193" width="78.67" height="32" rx="16" fill="none" stroke="#2E2823"/>
-<text x="1137.33" y="1214" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Müzik</text>
+<text x="1137.33" y="1214" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">Yoga</text>
 <text x="1098" y="1322" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Ortak ilgi alanı, ilk mesajı yazmayı</text>
 <text x="1098" y="1335" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">kolaylaştırıyor.</text>
 <rect x="1098" y="1348" width="252" height="50" rx="25" fill="#C08668"/>
@@ -257,12 +252,11 @@
 <circle cx="1564" cy="1022" r="30" fill="none" stroke="#8FAE97" stroke-width="2"/>
 <path d="M 1552 1022 L 1561 1031 L 1577 1012" fill="none" stroke="#8FAE97" stroke-width="2.5" stroke-linecap="round"/>
 <text x="1438" y="1084" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="27" font-weight="400" fill="#F2EDE6">Hazırsın, Deniz.</text>
-<text x="1438" y="1125" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12" font-weight="400" fill="#A69C91">Profilin yayında. İlk önerilerin</text>
-<text x="1438" y="1141" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12" font-weight="400" fill="#A69C91">yarın sabah burada olacak — acelesi</text>
-<text x="1438" y="1157" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12" font-weight="400" fill="#A69C91">yok.</text>
+<text x="1438" y="1125" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12" font-weight="400" fill="#A69C91">Profilin hazır. İlk önerilerin yarın</text>
+<text x="1438" y="1141" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12" font-weight="400" fill="#A69C91">sabah burada.</text>
 <rect x="1438" y="1189" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
 <text x="1452" y="1208" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="400" fill="#A69C91">Ne aradığın</text>
-<text x="1452" y="1223" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6">Uzun soluklu · Arkadaşlık</text>
+<text x="1452" y="1223" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6">Uzun süreli · Yeni arkadaşlar</text>
 <rect x="1438" y="1241" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
 <text x="1452" y="1260" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10" font-weight="400" fill="#A69C91">Fotoğraf</text>
 <text x="1452" y="1275" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#F2EDE6">2 fotoğraf</text>
@@ -283,8 +277,8 @@
 <text x="330" y="1670" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 2 / 6</text>
 <rect x="78" y="1684" width="252" height="3" rx="2" fill="#2E2823"/>
 <rect x="78" y="1684" width="84" height="3" rx="2" fill="#C08668"/>
-<text x="78" y="1712" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Sana nasıl hitap edelim?</text>
-<text x="78" y="1751" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Ad</text>
+<text x="78" y="1712" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Sana nasıl seslenelim?</text>
+<text x="78" y="1751" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Adın</text>
 <rect x="78" y="1759" width="252" height="44" rx="14" fill="#1E1A17" stroke="#C08668"/>
 <text x="92" y="1786" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Deniz|</text>
 <rect x="57" y="1985" width="294" height="66" rx="0" fill="#14110F"/>
@@ -339,14 +333,14 @@
 <text x="432" y="1785" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#D89A92">tekrar dene. Yazdıkların duruyor.</text>
 <text x="432" y="1807" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="600" fill="#D89A92">Tekrar dene</text>
 <rect x="418" y="1835" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="434" y="1863" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Uzun soluklu bir ilişki</text>
+<text x="434" y="1863" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Uzun süreli ilişki</text>
 <rect x="634" y="1850" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
 <text x="642" y="1862" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
 <rect x="418" y="1889" width="252" height="46" rx="16" fill="#1E1A17" stroke="#2E2823"/>
-<text x="434" y="1917" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Henüz emin değilim</text>
+<text x="434" y="1917" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Kısa süreli ilişki</text>
 <rect x="634" y="1904" width="16" height="16" rx="8" fill="none" stroke="#2E2823"/>
 <rect x="418" y="1943" width="252" height="46" rx="16" fill="rgba(192,134,104,0.14)" stroke="#C08668"/>
-<text x="434" y="1971" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Arkadaşlık</text>
+<text x="434" y="1971" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Yeni arkadaşlar</text>
 <rect x="634" y="1958" width="16" height="16" rx="8" fill="#C08668" stroke="#C08668"/>
 <text x="642" y="1970" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9" font-weight="400" fill="#14110F" text-anchor="middle">✓</text>
 <rect x="418" y="2124" width="252" height="50" rx="25" fill="#C08668"/>
@@ -363,8 +357,8 @@
 <text x="1010" y="1670" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 5 / 6</text>
 <rect x="758" y="1684" width="252" height="3" rx="2" fill="#2E2823"/>
 <rect x="758" y="1684" width="210" height="3" rx="2" fill="#C08668"/>
-<text x="758" y="1712" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Birkaç fotoğraf ekle</text>
-<text x="758" y="1745" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">En az iki tane. İlk fotoğraf kapak olur.</text>
+<text x="758" y="1712" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Fotoğraflarını ekle</text>
+<text x="758" y="1745" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">En az iki fotoğraf. İlki kapak olur.</text>
 <rect x="758" y="1776" width="78.66666666666667" height="74" rx="14" fill="#262019" stroke="#2E2823"/>
 <circle cx="797.3333333333334" cy="1806" r="11" fill="#2E2823"/>
 <path d="M 770 1840 Q 797.3333333333334 1810 824.6666666666666 1840 Z" fill="#2E2823"/>
@@ -395,10 +389,10 @@
 <text x="330" y="2452" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#A69C91" text-anchor="end">Adım 1 / 6</text>
 <rect x="78" y="2466" width="252" height="3" rx="2" fill="#2E2823"/>
 <rect x="78" y="2466" width="42" height="3" rx="2" fill="#C08668"/>
-<text x="78" y="2494" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Telefon numaran nedir?</text>
-<text x="78" y="2527" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Hesabını korumak için kullanıyoruz.</text>
+<text x="78" y="2494" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="23" font-weight="400" fill="#F2EDE6">Telefon numaran</text>
+<text x="78" y="2527" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Yalnızca hesabını korumak için.</text>
 <text x="78" y="2542" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#A69C91">Profilinde görünmez.</text>
-<text x="78" y="2573" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Telefon numarası</text>
+<text x="78" y="2573" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Cep telefonu</text>
 <rect x="78" y="2581" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
 <text x="92" y="2608" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#A69C91">+90</text>
 <text x="130" y="2608" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">5551234567</text>
