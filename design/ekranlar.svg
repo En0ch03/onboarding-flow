@@ -91,19 +91,12 @@
 <rect x="1438" y="363" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
 <text x="1452" y="390" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">Deniz</text>
 <text x="1438" y="419" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="10.5" font-weight="400" fill="#A69C91">Doğum tarihin</text>
-<rect x="1438" y="427" width="78.66666666666667" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="1477.3333333333333" y="454" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">11</text>
-<rect x="1524.6666666666667" y="427" width="78.66666666666667" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="1564" y="454" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">04</text>
-<rect x="1611.3333333333333" y="427" width="78.66666666666667" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
-<text x="1650.6666666666665" y="454" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6" text-anchor="middle">1996</text>
-<text x="1477.3333333333333" y="487" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9.5" font-weight="400" fill="#A69C91" text-anchor="middle">Gün</text>
-<text x="1564" y="487" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9.5" font-weight="400" fill="#A69C91" text-anchor="middle">Ay</text>
-<text x="1650.6666666666665" y="487" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="9.5" font-weight="400" fill="#A69C91" text-anchor="middle">Yıl</text>
+<rect x="1438" y="427" width="252" height="44" rx="14" fill="#1E1A17" stroke="#2E2823"/>
+<text x="1452" y="454" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12.5" font-weight="400" fill="#F2EDE6">14 Mart 1998</text>
 <rect x="1438" y="688" width="252" height="50" rx="25" fill="#C08668"/>
 <text x="1564" y="719" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#14110F" text-anchor="middle">Devam</text>
-<text x="1416" y="800" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Üç ayrı alan, her biri kendi sayfasını</text>
-<text x="1416" y="815" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">açıyor: tarih için klavye hiç açılmıyor.</text>
+<text x="1416" y="800" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">Tek alan; dokununca platformun kendi</text>
+<text x="1416" y="815" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11" font-weight="400" fill="#6B6259">tarih çarkı açılıyor, klavye hiç açılmıyor.</text>
 <text x="56" y="860" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="600" fill="#1A1614">Adım 3 — Kimlik ve kitle</text>
 <text x="56" y="877" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="11.5" font-weight="400" fill="#6B6259">eşleşme havuzunu belirler</text>
 <rect x="56" y="886" width="296" height="610" rx="30" fill="#14110F" stroke="#2E2823"/>
