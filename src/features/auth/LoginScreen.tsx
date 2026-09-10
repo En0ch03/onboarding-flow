@@ -9,6 +9,7 @@ import { ScreenHeader } from '@/components/ScreenHeader';
 import { ScreenIntro } from '@/components/ScreenIntro';
 import { isRetryable, presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
+import { journeyStops } from '@/features/onboarding/artwork/journeyArtwork';
 import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthStore } from '@/state/authStore';
 
@@ -45,6 +46,7 @@ export function LoginScreen({ onBack, onSignedIn, initialEmail = '' }: LoginScre
 
   return (
     <Screen
+      journeyProgress={journeyStops.register}
       header={<ScreenHeader onBack={onBack} />}
       footer={
         <Button

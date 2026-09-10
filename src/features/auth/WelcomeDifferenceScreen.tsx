@@ -5,6 +5,7 @@ import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { strings } from '@/constants/strings';
+import { journeyStops } from '@/features/onboarding/artwork/journeyArtwork';
 import { useTheme } from '@/theme';
 
 type WelcomeDifferenceScreenProps = {
@@ -34,6 +35,7 @@ export function WelcomeDifferenceScreen({
 
   return (
     <Screen
+      journeyProgress={journeyStops.difference}
       header={
         <ScreenHeader onBack={onBack} skip={{ label: strings.common.skip, onPress: onSkip }} />
       }

@@ -4,6 +4,7 @@ import { AppText } from '@/components/AppText';
 import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { strings } from '@/constants/strings';
+import { journeyStops } from '@/features/onboarding/artwork/journeyArtwork';
 import { useTheme } from '@/theme';
 
 type WelcomePromiseScreenProps = {
@@ -28,6 +29,7 @@ export function WelcomePromiseScreen({ onStart, onSignIn }: WelcomePromiseScreen
   return (
     <Screen
       align="upper"
+      journeyProgress={journeyStops.welcome}
       footer={
         <View>
           <Button title={strings.welcome.promisePrimary} onPress={onStart} />
