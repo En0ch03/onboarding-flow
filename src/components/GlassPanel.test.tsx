@@ -1,4 +1,5 @@
-import { Platform, StyleSheet } from 'react-native';
+import { waitFor } from '@testing-library/react-native';
+import { AccessibilityInfo, Platform, StyleSheet } from 'react-native';
 
 import { BLUR_VIEW_TEST_ID } from '@/test/blurMock';
 import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
@@ -22,6 +23,24 @@ function onPlatform(os: 'ios' | 'android') {
   };
 }
 
+/**
+ * Gelistirme bayragini gecici olarak degistirir. Rozetin urun derlemesinde hic
+ * cizilmedigi ancak bayrak kapatilarak sinanabilir.
+ */
+function onDevFlag(value: boolean) {
+  const scope = globalThis as unknown as { __DEV__: boolean };
+  const original = scope.__DEV__;
+  scope.__DEV__ = value;
+  return () => {
+    scope.__DEV__ = original;
+  };
+}
+
+/** Rozetin ekrandaki metnini tek parca dizeye ceviriyor. */
+function badgeText(node: { props: Record<string, unknown> }) {
+  return String(node.props.children);
+}
+
 /** `rgba(...)` dizesinden opaklik degerini okuyor. */
 function alphaOf(color: string) {
   return Number(/rgba\([^)]*,\s*([\d.]+)\)\s*$/.exec(color)?.[1]);
@@ -30,6 +49,11 @@ function alphaOf(color: string) {
 beforeEach(() => {
   isLiquidGlassAvailable.mockReturnValue(false);
   isGlassEffectAPIAvailable.mockReturnValue(true);
+  jest.spyOn(AccessibilityInfo, 'isReduceTransparencyEnabled').mockResolvedValue(false);
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 describe('GlassPanel', () => {
@@ -242,5 +266,150 @@ describe('GlassPanel', () => {
     } finally {
       restore();
     }
+  });
+
+  describe('teshis rozeti', () => {
+    it('urun derlemesinde hic cizilmiyor', async () => {
+      const restore = onPlatform('ios');
+      const restoreDev = onDevFlag(false);
+      try {
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        expect(view.queryByTestId('glass-mode-badge', hidden)).toBeNull();
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
+
+    it('bulanik kipte kipin harfini gosteriyor', async () => {
+      const restore = onPlatform('ios');
+      const restoreDev = onDevFlag(true);
+      try {
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toMatch(/^B · /);
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
+
+    it('cam kipte kipin harfini gosteriyor', async () => {
+      const restore = onPlatform('ios');
+      const restoreDev = onDevFlag(true);
+      try {
+        isLiquidGlassAvailable.mockReturnValue(true);
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toMatch(/^L · /);
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
+
+    it('Android tarafinda duz kartin harfini gosteriyor', async () => {
+      const restore = onPlatform('android');
+      const restoreDev = onDevFlag(true);
+      try {
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toMatch(/^F · /);
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
+
+    it('saydamligin kisitli oldugunu yaziyor', async () => {
+      const restore = onPlatform('ios');
+      const restoreDev = onDevFlag(true);
+      try {
+        jest.spyOn(AccessibilityInfo, 'isReduceTransparencyEnabled').mockResolvedValue(true);
+
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        // Sistem saydamligi kisitliyorsa cam duz bir yuzeye duser; "efekt tam
+        // olmamis" gorunumunun kod disindaki aciklamasi bu.
+        await waitFor(() =>
+          expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toContain(
+            'saydamlık kısıtlı',
+          ),
+        );
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
+
+    it('saydamlik sorusu cevapsiz kalirsa soru isareti yaziyor', async () => {
+      const restore = onPlatform('ios');
+      const restoreDev = onDevFlag(true);
+      try {
+        jest
+          .spyOn(AccessibilityInfo, 'isReduceTransparencyEnabled')
+          .mockRejectedValue(new Error('yok'));
+
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        await waitFor(() =>
+          expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toContain('saydamlık ?'),
+        );
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
+
+    it('rozet ekran okuyucudan gizli', async () => {
+      const restore = onPlatform('ios');
+      const restoreDev = onDevFlag(true);
+      try {
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        // Gizli ogeleri katmayan sorgu: rozet gelistiriciye ait, ekran
+        // okuyucunun okuyacagi bir icerik degil.
+        expect(view.queryByTestId('glass-mode-badge')).toBeNull();
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
   });
 });

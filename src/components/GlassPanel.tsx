@@ -1,7 +1,15 @@
 import { BlurView } from 'expo-blur';
 import { GlassView, isGlassEffectAPIAvailable, isLiquidGlassAvailable } from 'expo-glass-effect';
-import type { ReactNode } from 'react';
-import { Platform, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { useEffect, useState, type ReactNode } from 'react';
+import {
+  AccessibilityInfo,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 
 import { useTheme, withAlpha } from '@/theme';
 
@@ -44,6 +52,75 @@ const TRANSLUCENT_FILL = 0.4;
 
 /** Bulaniksiz kipte dolgu tek basina calisiyor, o yuzden daha opak. */
 const FLAT_FILL = 0.86;
+
+/** Rozette kipin yerini tutan harf. */
+const MODE_LETTERS: Record<GlassMode, string> = { liquid: 'L', blur: 'B', flat: 'F' };
+
+/**
+ * Sistemin saydamligi kisitlayip kisitlamadigi.
+ *
+ * Ayri bir kanca cunku cevap asenkron geliyor ve yalniz iOS'ta anlamli. Cevap
+ * gelmeden veya hic gelmeyecekse soru isareti kaliyor: burada yanlis bir
+ * "acik" yazmak, cihazi tutan kisiyi yanlis yone gonderir.
+ */
+function useTransparencyLabel() {
+  const [label, setLabel] = useState('saydamlık ?');
+
+  useEffect(() => {
+    if (Platform.OS !== 'ios') return;
+
+    let alive = true;
+    AccessibilityInfo.isReduceTransparencyEnabled()
+      .then((limited) => {
+        if (alive) setLabel(limited ? 'saydamlık kısıtlı' : 'saydamlık açık');
+      })
+      // Erisilebilirlik sorusu cevapsiz kalabilir; rozet bir teshis araci,
+      // cevaplayamadigi soru yuzunden ekrani dusurmemeli.
+      .catch(() => {});
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  return label;
+}
+
+/**
+ * Kartin hangi kiple cizildigini soyleyen kucuk etiket.
+ *
+ * Cihazda gorulen "efekt tam olmamis" tablosunun uc ayri sebebi olabiliyor:
+ * yanlis kip, isletim sistemi surumu, ya da saydamligi kisitlayan bir
+ * erisilebilirlik ayari. Uc bilgi ayni anda ekranda durursa cihazi tutan kisi
+ * tek bakista soyleyebiliyor; terminal ciktisi icin cihaz basina gecmek gerek.
+ */
+function GlassModeBadge({ mode }: { mode: GlassMode }) {
+  const { colors, radius, spacing } = useTheme();
+  const transparency = useTransparencyLabel();
+  const system = Platform.OS === 'ios' ? 'iOS' : 'Android';
+
+  return (
+    <Text
+      testID="glass-mode-badge"
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={{
+        position: 'absolute',
+        top: spacing.xs,
+        right: spacing.xs,
+        paddingHorizontal: spacing.xs,
+        paddingVertical: 2,
+        borderRadius: radius.sm,
+        overflow: 'hidden',
+        fontSize: 10,
+        color: colors.ink,
+        backgroundColor: withAlpha(colors.scrim, 0.55),
+      }}
+    >
+      {`${MODE_LETTERS[mode]} · ${system} ${Platform.Version} · ${transparency}`}
+    </Text>
+  );
+}
 
 /**
  * Form icerigini tasiyan buzlu kart.
@@ -162,6 +239,10 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
       />
 
       {children}
+
+      {/* Yalniz gelistirme derlemesinde: urun derlemesinde bu dal hic
+          degerlendirilmiyor, paketleyici olu kodu ayikliyor. */}
+      {__DEV__ ? <GlassModeBadge mode={mode} /> : null}
     </View>
   );
 }
