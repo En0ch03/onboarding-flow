@@ -74,13 +74,66 @@ describe('GlassPanel', () => {
 
       const glass = view.getByTestId(GLASS_VIEW_TEST_ID, hidden);
       expect(glass.props.glassEffectStyle).toBe('regular');
-      expect(glass.props.tintColor).toBe(withAlpha(palettes.dark.paper, 0.4));
       // Yerel katman kartin `overflow: hidden` kirpmasini gormuyor, kendi kose
       // yaricapini okuyor: verilmezse cam dort koseli bir dikdortgen kaliyor.
       expect(StyleSheet.flatten(glass.props.style)).toMatchObject({
         borderRadius: radius.lg,
       });
       expect(view.queryByTestId(BLUR_VIEW_TEST_ID, hidden)).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
+  it('cam kipte materyalin uzerine hicbir katman koymuyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeTruthy();
+
+      // Dolgu, ust isigi ve alt golgesi yedek kiplerin isi. Cam kipte hepsi
+      // materyalin kendi davranisinin uzerine binen taklit katmanlar.
+      expect(view.queryByTestId('glass-panel-fill', hidden)).toBeNull();
+      expect(view.queryByTestId('glass-panel-edge-top', hidden)).toBeNull();
+      expect(view.queryByTestId('glass-panel-edge-bottom', hidden)).toBeNull();
+
+      const panel = StyleSheet.flatten(view.getByTestId('glass-panel').props.style) as {
+        borderWidth?: number;
+        borderColor?: string;
+      };
+      expect(panel.borderWidth).toBeUndefined();
+      expect(panel.borderColor).toBeUndefined();
+    } finally {
+      restore();
+    }
+  });
+
+  it('cam kipte tona karismiyor: optik sistemin', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+
+      const glass = view.getByTestId(GLASS_VIEW_TEST_ID, hidden);
+      // Ton verilirse materyal arkadaki parlakliga gore kendi ton
+      // haritasini kuramiyor; kart yeniden elle boyanmis bir yuzeye donuyor.
+      expect(glass.props.tintColor).toBeUndefined();
+      // Sema uygulamanin anahtarindan geliyor: `auto` sistemi okur ve sistem
+      // acik temadayken uygulama koyu temada kalabilir.
+      expect(glass.props.colorScheme).toBe('dark');
     } finally {
       restore();
     }
