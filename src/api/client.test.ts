@@ -5,7 +5,7 @@ import {
   type InternalAxiosRequestConfig,
 } from 'axios';
 
-import { createApiClient, type AuthBridge } from './client';
+import { createApiClient, createRefreshQueueFor, type AuthBridge } from './client';
 import { normalizeApiError } from './errors';
 
 type Reply = { status: number; data?: unknown };
@@ -194,5 +194,66 @@ describe('api client', () => {
 
     await expect(client.get('/profile')).rejects.toBeDefined();
     expect(bridge.onSessionEnded).toHaveBeenCalledTimes(1);
+  });
+});
+
+/**
+ * Sozlesme disi uclarin ayri bir adrese gitmesi ikinci bir istemci ornegi
+ * dogurdu. Yenileme tek bir sey olmak zorunda: hem kime sorulacagi hem kac kez
+ * sorulacagi uygulamanin tamamina ait, tek bir ornege degil.
+ */
+describe('paylasilan yenileme', () => {
+  const CONTRACT = 'https://gercek.example/api/v1';
+  const STANDIN = 'http://192.168.1.24:4000/api/v1';
+
+  function twoClients() {
+    const { bridge } = bridgeWith();
+    const refreshCalls: InternalAxiosRequestConfig[] = [];
+
+    const { adapter, calls } = stubServer((config) => {
+      if (config.url === '/auth/refresh') {
+        refreshCalls.push(config);
+        return { status: 200, data: { access_token: 'access_2' } };
+      }
+      // Ilk deneme suresi dolmus sayiliyor; yenilemeden sonraki tekrar geciyor.
+      const authorization = config.headers?.get?.('Authorization');
+      if (authorization === 'Bearer access_2') return { status: 200, data: {} };
+      return { status: 401, data: { error: 'token_expired' } };
+    });
+
+    const queue = createRefreshQueueFor({ baseURL: CONTRACT, bridge, adapter });
+
+    return {
+      bridge,
+      calls,
+      refreshCalls,
+      contract: createApiClient({ baseURL: CONTRACT, bridge, adapter, refreshQueue: queue }),
+      standIn: createApiClient({ baseURL: STANDIN, bridge, adapter, refreshQueue: queue }),
+    };
+  }
+
+  it('iki ornek ayni anda 401 alsa bile yenileme bir kez soruluyor', async () => {
+    const { contract, standIn, refreshCalls } = twoClients();
+
+    await Promise.all([contract.get('/profile'), standIn.get('/config/options')]);
+
+    expect(refreshCalls).toHaveLength(1);
+  });
+
+  it('yenileme sozlesme adresine gidiyor, tezgah adresine degil', async () => {
+    const { standIn, refreshCalls } = twoClients();
+
+    await standIn.get('/config/options');
+
+    expect(refreshCalls).toHaveLength(1);
+    expect(refreshCalls[0]?.baseURL).toBe(CONTRACT);
+  });
+
+  it('tezgahtan gelen 401 gecerli bir oturumu kapatmiyor', async () => {
+    const { standIn, bridge } = twoClients();
+
+    await standIn.get('/config/options');
+
+    expect(bridge.onSessionEnded).not.toHaveBeenCalled();
   });
 });
