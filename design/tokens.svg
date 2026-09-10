@@ -1,239 +1,253 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="2260" viewBox="0 0 1240 2260" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif">
-<rect width="1240" height="2260" fill="#FBF8F3"/>
-<text x="56" y="76" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="40" fill="#1A1614">Onboarding — tasarım belirteçleri</text>
-<text x="56" y="106" font-size="14" fill="#6B6259">Uygulamada geçerli olan değerler. Altılı renk kodu yalnızca palette.ts içinde bulunur; ekranlar fontSize görmez.</text>
-<line x1="56" y1="128" x2="1184" y2="128" stroke="#E3DCD1" stroke-width="1"/>
-<text x="56" y="176" font-size="19" font-weight="600" fill="#1A1614">Renk rolleri</text>
-<text x="56" y="198" font-size="13" fill="#6B6259">Koyu varyant birincil. İki varyant birlikte kuruldu: tek varyantla başlayıp diğerini türetmek, kontrast kararlarını iki kez almak olurdu.</text>
-<text x="230" y="232" font-size="12" letter-spacing="1.2" fill="#6B6259">AÇIK</text>
-<text x="472" y="232" font-size="12" letter-spacing="1.2" fill="#6B6259">KOYU — BİRİNCİL</text>
-<rect x="452" y="248" width="290" height="644" rx="14" fill="#14110F"/>
-<text x="56" y="272" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">paper</text>
-<rect x="230" y="254" width="60" height="28" rx="7" fill="#FBF8F3" stroke="#E3DCD1"/>
-<text x="300" y="273" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#FBF8F3</text>
-<rect x="472" y="254" width="60" height="28" rx="7" fill="#14110F" stroke="#2E2823"/>
-<text x="544" y="273" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#14110F</text>
-<text x="772" y="273" font-size="13" fill="#6B6259">Ekranın zemini</text>
-<line x1="56" y1="290" x2="440" y2="290" stroke="#E3DCD1"/>
-<line x1="756" y1="290" x2="1184" y2="290" stroke="#E3DCD1"/>
-<text x="56" y="318" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">surface</text>
-<rect x="230" y="300" width="60" height="28" rx="7" fill="#F4EFE7" stroke="#E3DCD1"/>
-<text x="300" y="319" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#F4EFE7</text>
-<rect x="472" y="300" width="60" height="28" rx="7" fill="#1E1A17" stroke="#2E2823"/>
-<text x="544" y="319" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#1E1A17</text>
-<text x="772" y="319" font-size="13" fill="#6B6259">Kart, girdi alanı, seçim yüzeyi</text>
-<line x1="56" y1="336" x2="440" y2="336" stroke="#E3DCD1"/>
-<line x1="756" y1="336" x2="1184" y2="336" stroke="#E3DCD1"/>
-<text x="56" y="364" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">surfaceRaised</text>
-<rect x="230" y="346" width="60" height="28" rx="7" fill="#EFE8DD" stroke="#E3DCD1"/>
-<text x="300" y="365" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#EFE8DD</text>
-<rect x="472" y="346" width="60" height="28" rx="7" fill="#262019" stroke="#2E2823"/>
-<text x="544" y="365" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#262019</text>
-<text x="772" y="365" font-size="13" fill="#6B6259">Yüzeyin üstüne binen ikinci kademe</text>
-<line x1="56" y1="382" x2="440" y2="382" stroke="#E3DCD1"/>
-<line x1="756" y1="382" x2="1184" y2="382" stroke="#E3DCD1"/>
-<text x="56" y="410" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">ink</text>
-<rect x="230" y="392" width="60" height="28" rx="7" fill="#1A1614" stroke="#E3DCD1"/>
-<text x="300" y="411" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#1A1614</text>
-<rect x="472" y="392" width="60" height="28" rx="7" fill="#F2EDE6" stroke="#2E2823"/>
-<text x="544" y="411" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#F2EDE6</text>
-<text x="772" y="411" font-size="13" fill="#6B6259">Ana metin</text>
-<line x1="56" y1="428" x2="440" y2="428" stroke="#E3DCD1"/>
-<line x1="756" y1="428" x2="1184" y2="428" stroke="#E3DCD1"/>
-<text x="56" y="456" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">inkSoft</text>
-<rect x="230" y="438" width="60" height="28" rx="7" fill="#6B6259" stroke="#E3DCD1"/>
-<text x="300" y="457" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#6B6259</text>
-<rect x="472" y="438" width="60" height="28" rx="7" fill="#A69C91" stroke="#2E2823"/>
-<text x="544" y="457" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#A69C91</text>
-<text x="772" y="457" font-size="13" fill="#6B6259">İkincil metin, etiket, açıklama</text>
-<line x1="56" y1="474" x2="440" y2="474" stroke="#E3DCD1"/>
-<line x1="756" y1="474" x2="1184" y2="474" stroke="#E3DCD1"/>
-<text x="56" y="502" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">clay</text>
-<rect x="230" y="484" width="60" height="28" rx="7" fill="#7A4A3A" stroke="#E3DCD1"/>
-<text x="300" y="503" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#7A4A3A</text>
-<rect x="472" y="484" width="60" height="28" rx="7" fill="#C08668" stroke="#2E2823"/>
-<text x="544" y="503" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#C08668</text>
-<text x="772" y="503" font-size="13" fill="#6B6259">Birincil eylem</text>
-<line x1="56" y1="520" x2="440" y2="520" stroke="#E3DCD1"/>
-<line x1="756" y1="520" x2="1184" y2="520" stroke="#E3DCD1"/>
-<text x="56" y="548" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">clayDeep</text>
-<rect x="230" y="530" width="60" height="28" rx="7" fill="#5F3729" stroke="#E3DCD1"/>
-<text x="300" y="549" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#5F3729</text>
-<rect x="472" y="530" width="60" height="28" rx="7" fill="#9B6647" stroke="#2E2823"/>
-<text x="544" y="549" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#9B6647</text>
-<text x="772" y="549" font-size="13" fill="#6B6259">Gradyanın alt ucu ve basılı hâli</text>
-<line x1="56" y1="566" x2="440" y2="566" stroke="#E3DCD1"/>
-<line x1="756" y1="566" x2="1184" y2="566" stroke="#E3DCD1"/>
-<text x="56" y="594" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">clayTint</text>
-<rect x="230" y="576" width="60" height="28" rx="7" fill="rgba(122, 74, 58, 0.08)" stroke="#E3DCD1"/>
-<text x="300" y="595" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">rgba(122, 74, 58, 0.08)</text>
-<rect x="472" y="576" width="60" height="28" rx="7" fill="rgba(192, 134, 104, 0.14)" stroke="#2E2823"/>
-<text x="544" y="595" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">rgba(192, 134, 104, 0.14)</text>
-<text x="772" y="595" font-size="13" fill="#6B6259">Seçili durumun soluk dolgusu</text>
-<line x1="56" y1="612" x2="440" y2="612" stroke="#E3DCD1"/>
-<line x1="756" y1="612" x2="1184" y2="612" stroke="#E3DCD1"/>
-<text x="56" y="640" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">onClay</text>
-<rect x="230" y="622" width="60" height="28" rx="7" fill="#FBF8F3" stroke="#E3DCD1"/>
-<text x="300" y="641" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#FBF8F3</text>
-<rect x="472" y="622" width="60" height="28" rx="7" fill="#14110F" stroke="#2E2823"/>
-<text x="544" y="641" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#14110F</text>
-<text x="772" y="641" font-size="13" fill="#6B6259">Birincil eylemin üzerindeki metin</text>
-<line x1="56" y1="658" x2="440" y2="658" stroke="#E3DCD1"/>
-<line x1="756" y1="658" x2="1184" y2="658" stroke="#E3DCD1"/>
-<text x="56" y="686" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">hairline</text>
-<rect x="230" y="668" width="60" height="28" rx="7" fill="#E3DCD1" stroke="#E3DCD1"/>
-<text x="300" y="687" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#E3DCD1</text>
-<rect x="472" y="668" width="60" height="28" rx="7" fill="#2E2823" stroke="#2E2823"/>
-<text x="544" y="687" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#2E2823</text>
-<text x="772" y="687" font-size="13" fill="#6B6259">Kenarlık ve ayırıcı</text>
-<line x1="56" y1="704" x2="440" y2="704" stroke="#E3DCD1"/>
-<line x1="756" y1="704" x2="1184" y2="704" stroke="#E3DCD1"/>
-<text x="56" y="732" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">success</text>
-<rect x="230" y="714" width="60" height="28" rx="7" fill="#4A6350" stroke="#E3DCD1"/>
-<text x="300" y="733" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#4A6350</text>
-<rect x="472" y="714" width="60" height="28" rx="7" fill="#8FAE97" stroke="#2E2823"/>
-<text x="544" y="733" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#8FAE97</text>
-<text x="772" y="733" font-size="13" fill="#6B6259">Başarı</text>
-<line x1="56" y1="750" x2="440" y2="750" stroke="#E3DCD1"/>
-<line x1="756" y1="750" x2="1184" y2="750" stroke="#E3DCD1"/>
-<text x="56" y="778" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">danger</text>
-<rect x="230" y="760" width="60" height="28" rx="7" fill="#8A4A42" stroke="#E3DCD1"/>
-<text x="300" y="779" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#8A4A42</text>
-<rect x="472" y="760" width="60" height="28" rx="7" fill="#D89A92" stroke="#2E2823"/>
-<text x="544" y="779" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#D89A92</text>
-<text x="772" y="779" font-size="13" fill="#6B6259">Hata — doygun kırmızı değil</text>
-<line x1="56" y1="796" x2="440" y2="796" stroke="#E3DCD1"/>
-<line x1="756" y1="796" x2="1184" y2="796" stroke="#E3DCD1"/>
-<text x="56" y="824" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">dangerTint</text>
-<rect x="230" y="806" width="60" height="28" rx="7" fill="rgba(138, 74, 66, 0.08)" stroke="#E3DCD1"/>
-<text x="300" y="825" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">rgba(138, 74, 66, 0.08)</text>
-<rect x="472" y="806" width="60" height="28" rx="7" fill="rgba(216, 154, 146, 0.12)" stroke="#2E2823"/>
-<text x="544" y="825" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">rgba(216, 154, 146, 0.12)</text>
-<text x="772" y="825" font-size="13" fill="#6B6259">Hatanın soluk dolgusu</text>
-<line x1="56" y1="842" x2="440" y2="842" stroke="#E3DCD1"/>
-<line x1="756" y1="842" x2="1184" y2="842" stroke="#E3DCD1"/>
-<text x="56" y="870" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#1A1614">scrim</text>
-<rect x="230" y="852" width="60" height="28" rx="7" fill="#000000" stroke="#E3DCD1"/>
-<text x="300" y="871" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">#000000</text>
-<rect x="472" y="852" width="60" height="28" rx="7" fill="#000000" stroke="#2E2823"/>
-<text x="544" y="871" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#A69C91">#000000</text>
-<text x="772" y="871" font-size="13" fill="#6B6259">Sayfa altı yüzeyinin perdesi — %45</text>
-<line x1="56" y1="888" x2="440" y2="888" stroke="#E3DCD1"/>
-<line x1="756" y1="888" x2="1184" y2="888" stroke="#E3DCD1"/>
-<text x="56" y="934" font-size="19" font-weight="600" fill="#1A1614">Tipografi ölçeği</text>
-<text x="56" y="956" font-size="13" fill="#6B6259">İki aile: başlıklarda editoryal bir serif, arayüzde bir sans. Ağırlık fontWeight ile değil ayrı kesim dosyalarıyla verilir — statik dosyalarda fontWeight iOS'ta sentetik kalınlık üretir.</text>
-<text x="56" y="974" font-size="13" fill="#6B6259">Ölçek bilerek cesur: bu görsel yönün en büyük riski "şablon" hissi ve küçük başlıklarla uygulandığında o riske düşüyor.</text>
-<text x="56" y="1041" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">display</text>
-<text x="200" y="1041" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">42/44</text>
-<text x="280" y="1051.28" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="42" font-weight="300" fill="#1A1614">Doğru insan</text>
-<text x="1184" y="1041" text-anchor="end" font-size="12" fill="#6B6259">Karşılama ekranının ana cümlesi</text>
-<text x="56" y="1102" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">title</text>
-<text x="200" y="1102" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">32/36</text>
-<text x="280" y="1108.88" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="32" font-weight="300" fill="#1A1614">Doğru insan</text>
-<text x="1184" y="1102" text-anchor="end" font-size="12" fill="#6B6259">Adım ve form başlıkları</text>
-<text x="56" y="1155.5" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">titleCompact</text>
-<text x="200" y="1155.5" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">27/31</text>
-<text x="280" y="1160.68" font-family="'Newsreader','Iowan Old Style',Georgia,serif" font-size="27" font-weight="300" fill="#1A1614">Doğru insan</text>
-<text x="1184" y="1155.5" text-anchor="end" font-size="12" fill="#6B6259">Uzun başlığın sığmadığı yerde</text>
-<text x="56" y="1205" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">heading</text>
-<text x="200" y="1205" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">17/22</text>
-<text x="280" y="1206.78" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="17" font-weight="600" fill="#1A1614">Doğru insan</text>
-<text x="1184" y="1205" text-anchor="end" font-size="12" fill="#6B6259">Bölüm başlığı</text>
-<text x="56" y="1253" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">body</text>
-<text x="200" y="1253" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">16/25</text>
-<text x="280" y="1254.44" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="400" fill="#1A1614">Doğru insan</text>
-<text x="1184" y="1253" text-anchor="end" font-size="12" fill="#6B6259">Gövde metni</text>
-<text x="56" y="1301" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">subhead</text>
-<text x="200" y="1301" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">15/22</text>
-<text x="280" y="1302.1" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="15" font-weight="400" fill="#1A1614">Doğru insan</text>
-<text x="1184" y="1301" text-anchor="end" font-size="12" fill="#6B6259">Başlık altı açıklama</text>
-<text x="56" y="1349" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">control</text>
-<text x="200" y="1349" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">16/21</text>
-<text x="280" y="1350.44" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="400" fill="#1A1614">Doğru insan</text>
-<text x="1184" y="1349" text-anchor="end" font-size="12" fill="#6B6259">Seçim kartı ve girdi metni</text>
-<text x="56" y="1397" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">button</text>
-<text x="200" y="1397" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">16/20</text>
-<text x="280" y="1398.44" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="600" fill="#1A1614">Doğru insan</text>
-<text x="1184" y="1397" text-anchor="end" font-size="12" fill="#6B6259">Buton metni</text>
-<text x="56" y="1445" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">label</text>
-<text x="200" y="1445" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">13/17</text>
-<text x="280" y="1445.42" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="400" fill="#1A1614">Doğru insan</text>
-<text x="1184" y="1445" text-anchor="end" font-size="12" fill="#6B6259">Alan etiketi, adım sayacı</text>
-<text x="56" y="1493" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">caption</text>
-<text x="200" y="1493" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">12/17</text>
-<text x="280" y="1493.08" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="12" font-weight="400" fill="#1A1614">Doğru insan</text>
-<text x="1184" y="1493" text-anchor="end" font-size="12" fill="#6B6259">Hata metni, yasal satır</text>
-<text x="56" y="1545" font-size="19" font-weight="600" fill="#1A1614">Aralık ölçeği</text>
-<text x="56" y="1567" font-size="13" fill="#6B6259">4 katları. Adımlar kullanıma göre değil boyuta göre adlandırıldı; "kart içi boşluk" gibi bir ad aynı değerin başka yerde kullanılmasını engeller. Ekran kenar boşluğu = xl (24).</text>
-<rect x="56" y="1593" width="4" height="34" fill="#7A4A3A" rx="2"/>
-<text x="56" y="1647" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">xs</text>
-<text x="56" y="1663" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">4</text>
-<rect x="128" y="1593" width="8" height="34" fill="#7A4A3A" rx="2"/>
-<text x="128" y="1647" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">sm</text>
-<text x="128" y="1663" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">8</text>
-<rect x="200" y="1593" width="12" height="34" fill="#7A4A3A" rx="2"/>
-<text x="200" y="1647" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">md</text>
-<text x="200" y="1663" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">12</text>
-<rect x="272" y="1593" width="16" height="34" fill="#7A4A3A" rx="2"/>
-<text x="272" y="1647" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">lg</text>
-<text x="272" y="1663" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">16</text>
-<rect x="344" y="1593" width="24" height="34" fill="#7A4A3A" rx="2"/>
-<text x="344" y="1647" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">xl</text>
-<text x="344" y="1663" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">24</text>
-<rect x="416" y="1593" width="32" height="34" fill="#7A4A3A" rx="2"/>
-<text x="416" y="1647" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">xxl</text>
-<text x="416" y="1663" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">32</text>
-<rect x="494" y="1593" width="48" height="34" fill="#7A4A3A" rx="2"/>
-<text x="494" y="1647" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">xxxl</text>
-<text x="494" y="1663" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">48</text>
-<text x="56" y="1701" font-size="19" font-weight="600" fill="#1A1614">Köşe yarıçapı</text>
-<text x="56" y="1723" font-size="13" fill="#6B6259">Yumuşak ve geniş: kâğıt hissi keskin köşeyle bağdaşmıyor. Kapsül dışındaki her yarıçap borderCurve: 'continuous' ile eşleşir.</text>
-<rect x="56" y="1745" width="118" height="54" rx="12" fill="#F4EFE7" stroke="#E3DCD1"/>
-<text x="115" y="1778" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">sm</text>
-<text x="115" y="1821" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">12</text>
-<rect x="206" y="1745" width="118" height="54" rx="18" fill="#F4EFE7" stroke="#E3DCD1"/>
-<text x="265" y="1778" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">md</text>
-<text x="265" y="1821" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">18</text>
-<rect x="356" y="1745" width="118" height="54" rx="26" fill="#F4EFE7" stroke="#E3DCD1"/>
-<text x="415" y="1778" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">lg</text>
-<text x="415" y="1821" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">26</text>
-<rect x="506" y="1745" width="118" height="54" rx="27" fill="#F4EFE7" stroke="#E3DCD1"/>
-<text x="565" y="1778" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">full</text>
-<text x="565" y="1821" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">kapsül</text>
-<text x="56" y="1901" font-size="19" font-weight="600" fill="#1A1614">Gölge</text>
-<text x="56" y="1923" font-size="13" fill="#6B6259">İki kademe, ikisi de çift katmanlı: yakın ve dar olan kenarı ayırıyor, uzak ve geniş olan yüzeyi kaldırıyor. Tek katmanlı gölge kâğıt yerine kesilmiş kenar hissi veriyor.</text>
-<text x="56" y="1941" font-size="13" fill="#6B6259">Koyu varyantta gölge daha derin: açık zeminde gölgeyi görünür kılan şey kontrast, koyu zeminde ise yoğunluk. Tek biçim olarak boxShadow yazılıyor — eski shadow* ve elevation özellikleri iki platformda ayrı davranıyordu.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="2460" viewBox="0 0 1240 2460" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif">
+<rect width="1240" height="2460" fill="#F5F2ED"/>
+<text x="56" y="76" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" font-size="40" fill="#111011">Onboarding — tasarım belirteçleri</text>
+<text x="56" y="106" font-size="14" fill="#5E5652">Uygulamada geçerli olan değerler. Altılı renk kodu yalnızca palette.ts içinde bulunur; ekranlar fontSize görmez.</text>
+<line x1="56" y1="128" x2="1184" y2="128" stroke="#DDD6CE" stroke-width="1"/>
+<text x="56" y="176" font-size="19" font-weight="600" fill="#111011">Renk rolleri</text>
+<text x="56" y="198" font-size="13" fill="#5E5652">Koyu varyant birincil. İki varyant birlikte kuruldu: tek varyantla başlayıp diğerini türetmek, kontrast kararlarını iki kez almak olurdu.</text>
+<text x="230" y="232" font-size="12" letter-spacing="1.2" fill="#5E5652">AÇIK</text>
+<text x="472" y="232" font-size="12" letter-spacing="1.2" fill="#5E5652">KOYU — BİRİNCİL</text>
+<rect x="452" y="248" width="290" height="644" rx="14" fill="#0B0B0B"/>
+<text x="56" y="272" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">paper</text>
+<rect x="230" y="254" width="60" height="28" rx="7" fill="#F5F2ED" stroke="#DDD6CE"/>
+<text x="300" y="273" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#F5F2ED</text>
+<rect x="472" y="254" width="60" height="28" rx="7" fill="#0B0B0B" stroke="#2A2529"/>
+<text x="544" y="273" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#0B0B0B</text>
+<text x="772" y="273" font-size="13" fill="#5E5652">Ekranın zemini</text>
+<line x1="56" y1="290" x2="440" y2="290" stroke="#DDD6CE"/>
+<line x1="756" y1="290" x2="1184" y2="290" stroke="#DDD6CE"/>
+<text x="56" y="318" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">surface</text>
+<rect x="230" y="300" width="60" height="28" rx="7" fill="#EDE8E1" stroke="#DDD6CE"/>
+<text x="300" y="319" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#EDE8E1</text>
+<rect x="472" y="300" width="60" height="28" rx="7" fill="#151316" stroke="#2A2529"/>
+<text x="544" y="319" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#151316</text>
+<text x="772" y="319" font-size="13" fill="#5E5652">Kart, girdi alanı, seçim yüzeyi</text>
+<line x1="56" y1="336" x2="440" y2="336" stroke="#DDD6CE"/>
+<line x1="756" y1="336" x2="1184" y2="336" stroke="#DDD6CE"/>
+<text x="56" y="364" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">surfaceRaised</text>
+<rect x="230" y="346" width="60" height="28" rx="7" fill="#E6E0D8" stroke="#DDD6CE"/>
+<text x="300" y="365" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#E6E0D8</text>
+<rect x="472" y="346" width="60" height="28" rx="7" fill="#1C191D" stroke="#2A2529"/>
+<text x="544" y="365" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#1C191D</text>
+<text x="772" y="365" font-size="13" fill="#5E5652">Yüzeyin üstüne binen ikinci kademe</text>
+<line x1="56" y1="382" x2="440" y2="382" stroke="#DDD6CE"/>
+<line x1="756" y1="382" x2="1184" y2="382" stroke="#DDD6CE"/>
+<text x="56" y="410" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">ink</text>
+<rect x="230" y="392" width="60" height="28" rx="7" fill="#111011" stroke="#DDD6CE"/>
+<text x="300" y="411" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#111011</text>
+<rect x="472" y="392" width="60" height="28" rx="7" fill="#F5F2ED" stroke="#2A2529"/>
+<text x="544" y="411" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#F5F2ED</text>
+<text x="772" y="411" font-size="13" fill="#5E5652">Ana metin</text>
+<line x1="56" y1="428" x2="440" y2="428" stroke="#DDD6CE"/>
+<line x1="756" y1="428" x2="1184" y2="428" stroke="#DDD6CE"/>
+<text x="56" y="456" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">inkSoft</text>
+<rect x="230" y="438" width="60" height="28" rx="7" fill="#5E5652" stroke="#DDD6CE"/>
+<text x="300" y="457" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#5E5652</text>
+<rect x="472" y="438" width="60" height="28" rx="7" fill="#B5ADA8" stroke="#2A2529"/>
+<text x="544" y="457" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#B5ADA8</text>
+<text x="772" y="457" font-size="13" fill="#5E5652">İkincil metin, etiket, açıklama</text>
+<line x1="56" y1="474" x2="440" y2="474" stroke="#DDD6CE"/>
+<line x1="756" y1="474" x2="1184" y2="474" stroke="#DDD6CE"/>
+<text x="56" y="502" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">clay</text>
+<rect x="230" y="484" width="60" height="28" rx="7" fill="#8B0D1A" stroke="#DDD6CE"/>
+<text x="300" y="503" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#8B0D1A</text>
+<rect x="472" y="484" width="60" height="28" rx="7" fill="#C50337" stroke="#2A2529"/>
+<text x="544" y="503" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#C50337</text>
+<text x="772" y="503" font-size="13" fill="#5E5652">Birincil eylem — kızıl, yalnızca eylem ve seçimde</text>
+<line x1="56" y1="520" x2="440" y2="520" stroke="#DDD6CE"/>
+<line x1="756" y1="520" x2="1184" y2="520" stroke="#DDD6CE"/>
+<text x="56" y="548" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">clayDeep</text>
+<rect x="230" y="530" width="60" height="28" rx="7" fill="#63080F" stroke="#DDD6CE"/>
+<text x="300" y="549" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#63080F</text>
+<rect x="472" y="530" width="60" height="28" rx="7" fill="#8B0D1A" stroke="#2A2529"/>
+<text x="544" y="549" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#8B0D1A</text>
+<text x="772" y="549" font-size="13" fill="#5E5652">Gradyanın alt ucu ve basılı hâli</text>
+<line x1="56" y1="566" x2="440" y2="566" stroke="#DDD6CE"/>
+<line x1="756" y1="566" x2="1184" y2="566" stroke="#DDD6CE"/>
+<text x="56" y="594" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">clayTint</text>
+<rect x="230" y="576" width="60" height="28" rx="7" fill="rgba(139, 13, 26, 0.10)" stroke="#DDD6CE"/>
+<text x="300" y="595" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">rgba(139, 13, 26, 0.10)</text>
+<rect x="472" y="576" width="60" height="28" rx="7" fill="rgba(197, 3, 55, 0.16)" stroke="#2A2529"/>
+<text x="544" y="595" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">rgba(197, 3, 55, 0.16)</text>
+<text x="772" y="595" font-size="13" fill="#5E5652">Seçili durumun soluk dolgusu</text>
+<line x1="56" y1="612" x2="440" y2="612" stroke="#DDD6CE"/>
+<line x1="756" y1="612" x2="1184" y2="612" stroke="#DDD6CE"/>
+<text x="56" y="640" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">onClay</text>
+<rect x="230" y="622" width="60" height="28" rx="7" fill="#F5F2ED" stroke="#DDD6CE"/>
+<text x="300" y="641" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#F5F2ED</text>
+<rect x="472" y="622" width="60" height="28" rx="7" fill="#0B0B0B" stroke="#2A2529"/>
+<text x="544" y="641" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#0B0B0B</text>
+<text x="772" y="641" font-size="13" fill="#5E5652">Birincil eylemin üzerindeki metin</text>
+<line x1="56" y1="658" x2="440" y2="658" stroke="#DDD6CE"/>
+<line x1="756" y1="658" x2="1184" y2="658" stroke="#DDD6CE"/>
+<text x="56" y="686" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">hairline</text>
+<rect x="230" y="668" width="60" height="28" rx="7" fill="#DDD6CE" stroke="#DDD6CE"/>
+<text x="300" y="687" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#DDD6CE</text>
+<rect x="472" y="668" width="60" height="28" rx="7" fill="#2A2529" stroke="#2A2529"/>
+<text x="544" y="687" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#2A2529</text>
+<text x="772" y="687" font-size="13" fill="#5E5652">Kenarlık ve ayırıcı</text>
+<line x1="56" y1="704" x2="440" y2="704" stroke="#DDD6CE"/>
+<line x1="756" y1="704" x2="1184" y2="704" stroke="#DDD6CE"/>
+<text x="56" y="732" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">success</text>
+<rect x="230" y="714" width="60" height="28" rx="7" fill="#4A6350" stroke="#DDD6CE"/>
+<text x="300" y="733" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#4A6350</text>
+<rect x="472" y="714" width="60" height="28" rx="7" fill="#8FAE97" stroke="#2A2529"/>
+<text x="544" y="733" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#8FAE97</text>
+<text x="772" y="733" font-size="13" fill="#5E5652">Başarı</text>
+<line x1="56" y1="750" x2="440" y2="750" stroke="#DDD6CE"/>
+<line x1="756" y1="750" x2="1184" y2="750" stroke="#DDD6CE"/>
+<text x="56" y="778" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">danger</text>
+<rect x="230" y="760" width="60" height="28" rx="7" fill="#8A2F2F" stroke="#DDD6CE"/>
+<text x="300" y="779" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#8A2F2F</text>
+<rect x="472" y="760" width="60" height="28" rx="7" fill="#E28B8B" stroke="#2A2529"/>
+<text x="544" y="779" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#E28B8B</text>
+<text x="772" y="779" font-size="13" fill="#5E5652">Hata — eylem kızılıyla karışmasın diye açık</text>
+<line x1="56" y1="796" x2="440" y2="796" stroke="#DDD6CE"/>
+<line x1="756" y1="796" x2="1184" y2="796" stroke="#DDD6CE"/>
+<text x="56" y="824" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">dangerTint</text>
+<rect x="230" y="806" width="60" height="28" rx="7" fill="rgba(138, 47, 47, 0.10)" stroke="#DDD6CE"/>
+<text x="300" y="825" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">rgba(138, 47, 47, 0.10)</text>
+<rect x="472" y="806" width="60" height="28" rx="7" fill="rgba(226, 139, 139, 0.12)" stroke="#2A2529"/>
+<text x="544" y="825" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">rgba(226, 139, 139, 0.12)</text>
+<text x="772" y="825" font-size="13" fill="#5E5652">Hatanın soluk dolgusu</text>
+<line x1="56" y1="842" x2="440" y2="842" stroke="#DDD6CE"/>
+<line x1="756" y1="842" x2="1184" y2="842" stroke="#DDD6CE"/>
+<text x="56" y="870" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">scrim</text>
+<rect x="230" y="852" width="60" height="28" rx="7" fill="#000000" stroke="#DDD6CE"/>
+<text x="300" y="871" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#000000</text>
+<rect x="472" y="852" width="60" height="28" rx="7" fill="#000000" stroke="#2A2529"/>
+<text x="544" y="871" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#B5ADA8">#000000</text>
+<text x="772" y="871" font-size="13" fill="#5E5652">Sayfa altı yüzeyinin perdesi — %45</text>
+<line x1="56" y1="888" x2="440" y2="888" stroke="#DDD6CE"/>
+<line x1="756" y1="888" x2="1184" y2="888" stroke="#DDD6CE"/>
+<text x="56" y="934" font-size="19" font-weight="600" fill="#111011">Görsel perdesi</text>
+<text x="56" y="956" font-size="13" fill="#5E5652">Arka plan görselinin üzerindeki üç rol; iki varyantta da aynı. Metin görselin üstüne çıplak yazılmaz: kontrast görsele göre değil perdeye göre ölçülür.</text>
+<rect x="230" y="972" width="60" height="28" rx="7" fill="#B51F2E" stroke="#DDD6CE"/>
+<text x="56" y="991" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">glowStrong</text>
+<text x="300" y="991" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#B51F2E</text>
+<text x="472" y="991" font-size="13" fill="#5E5652">Kızıl aydınlatmanın sıcak ucu</text>
+<rect x="230" y="1014" width="60" height="28" rx="7" fill="#4A0710" stroke="#DDD6CE"/>
+<text x="56" y="1033" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">glowDeep</text>
+<text x="300" y="1033" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#4A0710</text>
+<text x="472" y="1033" font-size="13" fill="#5E5652">Aynı aydınlatmanın derin ucu</text>
+<rect x="230" y="1056" width="60" height="28" rx="7" fill="#050505" stroke="#DDD6CE"/>
+<text x="56" y="1075" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="13" fill="#111011">veil</text>
+<text x="300" y="1075" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">#050505</text>
+<text x="472" y="1075" font-size="13" fill="#5E5652">Görselin üzerine çekilen karartma — metnin arkasında %86</text>
+<text x="56" y="1134" font-size="19" font-weight="600" fill="#111011">Tipografi ölçeği</text>
+<text x="56" y="1156" font-size="13" fill="#5E5652">İki aile: başlıklarda yüksek kontrastlı bir display serifi, arayüzde bir sans. Ağırlık fontWeight ile değil ayrı kesim dosyalarıyla verilir — statik dosyalarda fontWeight iOS'ta sentetik kalınlık üretir.</text>
+<text x="56" y="1174" font-size="13" fill="#5E5652">Başlıklar ince değil dolgun: "tok" görünmenin yolu boyuttan çok kontrasttan ve ağırlıktan geçiyor. İnce bir serif büyütüldüğünde daha büyük değil daha kırılgan görünüyor.</text>
+<text x="56" y="1241" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">display</text>
+<text x="200" y="1241" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">44/48</text>
+<text x="280" y="1251.28" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" font-size="44" font-weight="600" fill="#111011">Doğru insan</text>
+<text x="1184" y="1241" text-anchor="end" font-size="12" fill="#5E5652">Karşılama ekranının ana cümlesi</text>
+<text x="56" y="1302" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">title</text>
+<text x="200" y="1302" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">34/38</text>
+<text x="280" y="1308.88" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" font-size="34" font-weight="600" fill="#111011">Doğru insan</text>
+<text x="1184" y="1302" text-anchor="end" font-size="12" fill="#5E5652">Adım ve form başlıkları</text>
+<text x="56" y="1355.5" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">titleCompact</text>
+<text x="200" y="1355.5" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">28/32</text>
+<text x="280" y="1360.68" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" font-size="28" font-weight="600" fill="#111011">Doğru insan</text>
+<text x="1184" y="1355.5" text-anchor="end" font-size="12" fill="#5E5652">Uzun başlığın sığmadığı yerde</text>
+<text x="56" y="1405" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">heading</text>
+<text x="200" y="1405" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">18/23</text>
+<text x="280" y="1406.78" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="18" font-weight="600" fill="#111011">Doğru insan</text>
+<text x="1184" y="1405" text-anchor="end" font-size="12" fill="#5E5652">Bölüm başlığı</text>
+<text x="56" y="1453" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">body</text>
+<text x="200" y="1453" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">17/26</text>
+<text x="280" y="1454.44" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="17" font-weight="400" fill="#111011">Doğru insan</text>
+<text x="1184" y="1453" text-anchor="end" font-size="12" fill="#5E5652">Gövde metni</text>
+<text x="56" y="1501" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">subhead</text>
+<text x="200" y="1501" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">16/23</text>
+<text x="280" y="1502.1" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="17" font-weight="400" fill="#111011">Doğru insan</text>
+<text x="1184" y="1501" text-anchor="end" font-size="12" fill="#5E5652">Başlık altı açıklama</text>
+<text x="56" y="1549" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">control</text>
+<text x="200" y="1549" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">17/22</text>
+<text x="280" y="1550.44" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="16" font-weight="400" fill="#111011">Doğru insan</text>
+<text x="1184" y="1549" text-anchor="end" font-size="12" fill="#5E5652">Seçim kartı ve girdi metni</text>
+<text x="56" y="1597" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">button</text>
+<text x="200" y="1597" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">17/21</text>
+<text x="280" y="1598.44" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="17" font-weight="600" fill="#111011">Doğru insan</text>
+<text x="1184" y="1597" text-anchor="end" font-size="12" fill="#5E5652">Buton metni</text>
+<text x="56" y="1645" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">label</text>
+<text x="200" y="1645" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">14/18</text>
+<text x="280" y="1645.42" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="14" font-weight="500" fill="#111011">Doğru insan</text>
+<text x="1184" y="1645" text-anchor="end" font-size="12" fill="#5E5652">Alan etiketi, adım sayacı</text>
+<text x="56" y="1693" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">caption</text>
+<text x="200" y="1693" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">13/18</text>
+<text x="280" y="1693.08" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif" font-size="13" font-weight="400" fill="#111011">Doğru insan</text>
+<text x="1184" y="1693" text-anchor="end" font-size="12" fill="#5E5652">Hata metni, yasal satır</text>
+<text x="56" y="1745" font-size="19" font-weight="600" fill="#111011">Aralık ölçeği</text>
+<text x="56" y="1767" font-size="13" fill="#5E5652">4 katları. Adımlar kullanıma göre değil boyuta göre adlandırıldı; "kart içi boşluk" gibi bir ad aynı değerin başka yerde kullanılmasını engeller. Ekran kenar boşluğu = xl (24).</text>
+<rect x="56" y="1793" width="4" height="34" fill="#8B0D1A" rx="2"/>
+<text x="56" y="1847" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">xs</text>
+<text x="56" y="1863" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">4</text>
+<rect x="128" y="1793" width="8" height="34" fill="#8B0D1A" rx="2"/>
+<text x="128" y="1847" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">sm</text>
+<text x="128" y="1863" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">8</text>
+<rect x="200" y="1793" width="12" height="34" fill="#8B0D1A" rx="2"/>
+<text x="200" y="1847" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">md</text>
+<text x="200" y="1863" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">12</text>
+<rect x="272" y="1793" width="16" height="34" fill="#8B0D1A" rx="2"/>
+<text x="272" y="1847" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">lg</text>
+<text x="272" y="1863" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">16</text>
+<rect x="344" y="1793" width="24" height="34" fill="#8B0D1A" rx="2"/>
+<text x="344" y="1847" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">xl</text>
+<text x="344" y="1863" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">24</text>
+<rect x="416" y="1793" width="32" height="34" fill="#8B0D1A" rx="2"/>
+<text x="416" y="1847" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">xxl</text>
+<text x="416" y="1863" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">32</text>
+<rect x="494" y="1793" width="48" height="34" fill="#8B0D1A" rx="2"/>
+<text x="494" y="1847" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">xxxl</text>
+<text x="494" y="1863" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">48</text>
+<text x="56" y="1901" font-size="19" font-weight="600" fill="#111011">Köşe yarıçapı</text>
+<text x="56" y="1923" font-size="13" fill="#5E5652">Yumuşak ve geniş: kâğıt hissi keskin köşeyle bağdaşmıyor. Kapsül dışındaki her yarıçap borderCurve: 'continuous' ile eşleşir.</text>
+<rect x="56" y="1945" width="118" height="54" rx="12" fill="#EDE8E1" stroke="#DDD6CE"/>
+<text x="115" y="1978" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">sm</text>
+<text x="115" y="2021" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">12</text>
+<rect x="206" y="1945" width="118" height="54" rx="18" fill="#EDE8E1" stroke="#DDD6CE"/>
+<text x="265" y="1978" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">md</text>
+<text x="265" y="2021" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">18</text>
+<rect x="356" y="1945" width="118" height="54" rx="26" fill="#EDE8E1" stroke="#DDD6CE"/>
+<text x="415" y="1978" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">lg</text>
+<text x="415" y="2021" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">26</text>
+<rect x="506" y="1945" width="118" height="54" rx="27" fill="#EDE8E1" stroke="#DDD6CE"/>
+<text x="565" y="1978" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">full</text>
+<text x="565" y="2021" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">kapsül</text>
+<text x="56" y="2101" font-size="19" font-weight="600" fill="#111011">Gölge</text>
+<text x="56" y="2123" font-size="13" fill="#5E5652">İki kademe, ikisi de çift katmanlı: yakın ve dar olan kenarı ayırıyor, uzak ve geniş olan yüzeyi kaldırıyor. Tek katmanlı gölge kâğıt yerine kesilmiş kenar hissi veriyor.</text>
+<text x="56" y="2141" font-size="13" fill="#5E5652">Koyu varyantta gölge daha derin: açık zeminde gölgeyi görünür kılan şey kontrast, koyu zeminde ise yoğunluk. Tek biçim olarak boxShadow yazılıyor — eski shadow* ve elevation özellikleri iki platformda ayrı davranıyordu.</text>
 <defs>
-<filter id="soft-light" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#1A1614" flood-opacity="0.04"/><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#1A1614" flood-opacity="0.07"/></filter>
-<filter id="lift-light" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#1A1614" flood-opacity="0.05"/><feDropShadow dx="0" dy="24" stdDeviation="30" flood-color="#1A1614" flood-opacity="0.12"/></filter>
+<filter id="soft-light" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#111011" flood-opacity="0.04"/><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#111011" flood-opacity="0.07"/></filter>
+<filter id="lift-light" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#111011" flood-opacity="0.05"/><feDropShadow dx="0" dy="24" stdDeviation="30" flood-color="#111011" flood-opacity="0.12"/></filter>
 <filter id="soft-dark" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000000" flood-opacity="0.30"/><feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.35"/></filter>
 <filter id="lift-dark" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.35"/><feDropShadow dx="0" dy="24" stdDeviation="30" flood-color="#000000" flood-opacity="0.50"/></filter>
 </defs>
-<rect x="452" y="1963" width="404" height="150" rx="14" fill="#14110F"/>
-<text x="56" y="1985" font-size="12" letter-spacing="1.2" fill="#6B6259">AÇIK</text>
-<text x="472" y="1985" font-size="12" letter-spacing="1.2" fill="#A69C91">KOYU — BİRİNCİL</text>
-<rect x="56" y="2003" width="150" height="70" rx="18" fill="#FBF8F3" filter="url(#soft-light)"/>
-<text x="131" y="2044" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">soft</text>
-<rect x="246" y="2003" width="150" height="70" rx="18" fill="#FBF8F3" filter="url(#lift-light)"/>
-<text x="321" y="2044" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">lift</text>
-<rect x="472" y="2003" width="150" height="70" rx="18" fill="#1E1A17" filter="url(#soft-dark)"/>
-<text x="547" y="2044" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#F2EDE6">soft</text>
-<rect x="662" y="2003" width="150" height="70" rx="18" fill="#1E1A17" filter="url(#lift-dark)"/>
-<text x="737" y="2044" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#F2EDE6">lift</text>
-<text x="56" y="2097" font-size="13" fill="#6B6259">soft — kart, girdi alanı, sayfa altı yüzeyi</text>
-<text x="56" y="2117" font-size="13" fill="#6B6259">lift — üstte duran ve kapatılabilen yüzeyler</text>
-<text x="56" y="2151" font-size="19" font-weight="600" fill="#1A1614">Hareket</text>
-<text x="56" y="2173" font-size="13" fill="#6B6259">Süreler tek yerde: ekranlar arası hareketin akraba hissetmesi buradan geliyor. Ölçülü tarafta tutuldu — bir kayıt akışında hareket, kullanıcının bir sonraki girdiye ulaşmasını geciktirdiği anda zarar vermeye başlıyor.</text>
-<rect x="56" y="2195" width="70" height="10" rx="5" fill="#7A4A3A"/>
-<text x="56" y="2229" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">fast</text>
-<text x="56" y="2245" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">140 ms</text>
-<text x="140" y="2229" font-size="13" fill="#6B6259">Dokunma geri bildirimi</text>
-<rect x="420" y="2195" width="120" height="10" rx="5" fill="#7A4A3A"/>
-<text x="420" y="2229" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">base</text>
-<text x="420" y="2245" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">240 ms</text>
-<text x="504" y="2229" font-size="13" fill="#6B6259">Öğeler arası geçiş</text>
-<rect x="784" y="2195" width="190" height="10" rx="5" fill="#7A4A3A"/>
-<text x="784" y="2229" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#1A1614">slow</text>
-<text x="784" y="2245" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#6B6259">380 ms</text>
-<text x="868" y="2229" font-size="13" fill="#6B6259">Ekran ve büyük yüzey geçişleri</text>
+<rect x="452" y="2163" width="404" height="150" rx="14" fill="#0B0B0B"/>
+<text x="56" y="2185" font-size="12" letter-spacing="1.2" fill="#5E5652">AÇIK</text>
+<text x="472" y="2185" font-size="12" letter-spacing="1.2" fill="#B5ADA8">KOYU — BİRİNCİL</text>
+<rect x="56" y="2203" width="150" height="70" rx="18" fill="#F5F2ED" filter="url(#soft-light)"/>
+<text x="131" y="2244" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">soft</text>
+<rect x="246" y="2203" width="150" height="70" rx="18" fill="#F5F2ED" filter="url(#lift-light)"/>
+<text x="321" y="2244" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">lift</text>
+<rect x="472" y="2203" width="150" height="70" rx="18" fill="#151316" filter="url(#soft-dark)"/>
+<text x="547" y="2244" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#F5F2ED">soft</text>
+<rect x="662" y="2203" width="150" height="70" rx="18" fill="#151316" filter="url(#lift-dark)"/>
+<text x="737" y="2244" text-anchor="middle" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#F5F2ED">lift</text>
+<text x="56" y="2297" font-size="13" fill="#5E5652">soft — kart, girdi alanı, sayfa altı yüzeyi</text>
+<text x="56" y="2317" font-size="13" fill="#5E5652">lift — üstte duran ve kapatılabilen yüzeyler</text>
+<text x="56" y="2351" font-size="19" font-weight="600" fill="#111011">Hareket</text>
+<text x="56" y="2373" font-size="13" fill="#5E5652">Süreler tek yerde: ekranlar arası hareketin akraba hissetmesi buradan geliyor. Ölçülü tarafta tutuldu — bir kayıt akışında hareket, kullanıcının bir sonraki girdiye ulaşmasını geciktirdiği anda zarar vermeye başlıyor.</text>
+<rect x="56" y="2395" width="70" height="10" rx="5" fill="#8B0D1A"/>
+<text x="56" y="2429" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">fast</text>
+<text x="56" y="2445" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">140 ms</text>
+<text x="140" y="2429" font-size="13" fill="#5E5652">Dokunma geri bildirimi</text>
+<rect x="420" y="2395" width="120" height="10" rx="5" fill="#8B0D1A"/>
+<text x="420" y="2429" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">base</text>
+<text x="420" y="2445" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">240 ms</text>
+<text x="504" y="2429" font-size="13" fill="#5E5652">Öğeler arası geçiş</text>
+<rect x="784" y="2395" width="190" height="10" rx="5" fill="#8B0D1A"/>
+<text x="784" y="2429" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="12" fill="#111011">slow</text>
+<text x="784" y="2445" font-family="'SF Mono',Consolas,'Roboto Mono',monospace" font-size="11" fill="#5E5652">380 ms</text>
+<text x="868" y="2429" font-size="13" fill="#5E5652">Ekran ve büyük yüzey geçişleri</text>
 </svg>
