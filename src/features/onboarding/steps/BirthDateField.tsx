@@ -132,6 +132,10 @@ export function BirthDateField({ value, onChange, today }: BirthDateFieldProps) 
           maximumDate={today}
           minimumDate={earliest}
           onChange={answerFromDialog}
+          // Sistem diyalogu acilamazsa istek kapaniyor. Acik birakmak, alanin
+          // bir daha hicbir sey acmamasi ve kullanicinin adimda mahsur
+          // kalmasi demekti; hata en azindan yeniden denemeye izin vermeli.
+          onError={close}
         />
       ) : null}
     </View>

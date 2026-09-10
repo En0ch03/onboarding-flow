@@ -233,6 +233,28 @@ describe('BirthDateField', () => {
     }
   });
 
+  it('Android: diyalog acilamazsa alan kilitlenmiyor', async () => {
+    const restore = onPlatform('android');
+    try {
+      const { view, onChange } = await mount(empty);
+      await press(field(view));
+
+      await act(async () => {
+        picker(view).props.onError(new Error('picker unavailable'));
+      });
+
+      // Hata sessizce yutulup istek acik kalsaydi alan bir daha hicbir sey
+      // acmazdi: kullanici adimda mahsur kalirdi.
+      expect(view.queryByTestId(PICKER_TEST_ID)).toBeNull();
+      expect(onChange).not.toHaveBeenCalled();
+
+      await press(field(view));
+      expect(picker(view)).toBeTruthy();
+    } finally {
+      restore();
+    }
+  });
+
   it('Android: cark kipinde aciliyor', async () => {
     const restore = onPlatform('android');
     try {
