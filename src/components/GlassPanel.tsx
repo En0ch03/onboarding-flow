@@ -1,5 +1,5 @@
 import { BlurView } from 'expo-blur';
-import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
+import { GlassView, isGlassEffectAPIAvailable, isLiquidGlassAvailable } from 'expo-glass-effect';
 import type { ReactNode } from 'react';
 import { Platform, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
@@ -24,7 +24,12 @@ export type GlassMode = 'liquid' | 'blur' | 'flat';
 
 export function resolveGlassMode(): GlassMode {
   if (Platform.OS !== 'ios') return 'flat';
-  return isLiquidGlassAvailable() ? 'liquid' : 'blur';
+  // Iki ayri soru soruluyor: tasarim dilinin cam olup olmadigi, ve yerel cam
+  // API'sinin cihazda gercekten bulunup bulunmadigi. Bazi iOS 26 derlemeleri
+  // ilkine "evet" ikincisine "hayir" diyor; orada cam katman saydam ciziliyor
+  // ve metnin altinda hicbir zemin kalmiyor. Ikisi birden dogru degilse
+  // bulanikliga dusmek, zemini olmayan bir karttan iyi.
+  return isLiquidGlassAvailable() && isGlassEffectAPIAvailable() ? 'liquid' : 'blur';
 }
 
 /** Bulanik kipte dolgunun opakligi; cam kipte ayni deger tona gidiyor. */
@@ -73,7 +78,10 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           importantForAccessibility="no-hide-descendants"
           glassEffectStyle="regular"
           tintColor={tint}
-          style={StyleSheet.absoluteFill}
+          // Yerel katman kabin `overflow: hidden` kirpmasini gormuyor, kendi
+          // kose yaricapini okuyor: verilmezse cam dort koseli kaliyor ve
+          // kartin yuvarlak kenari ustunde bir dikdortgen olarak duruyor.
+          style={[StyleSheet.absoluteFill, { borderRadius: radius.lg, borderCurve: 'continuous' }]}
         />
       ) : null}
 

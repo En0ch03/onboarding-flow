@@ -13,6 +13,14 @@ export const GLASS_VIEW_TEST_ID = 'glass-view';
 export const isLiquidGlassAvailable = jest.fn(() => false);
 
 /**
+ * Cam gorunumunun tasarim dili olarak acik olmasi, yerel API'nin de orada
+ * oldugu anlamina gelmiyor; ikisi ayri sorular ve testte ayri ayri
+ * cevaplanabilmeli. Varsayilan `true`: bu ikinci soru ayni surumlerin kucuk
+ * bir kisminda "hayir" diyor, birincisi ise cogunlukta.
+ */
+export const isGlassEffectAPIAvailable = jest.fn(() => true);
+
+/**
  * Gercek cam gorunumu yerel bir katman aciyor; testte ne cizilir ne olculur.
  * Taklidin isi prop'lari agacta tutmak: dogrulanan sey modulun kendisi degil,
  * ona hangi degerlerin verildigi.

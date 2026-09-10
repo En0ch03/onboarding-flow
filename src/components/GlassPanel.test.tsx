@@ -3,14 +3,14 @@ import { Platform, StyleSheet } from 'react-native';
 import { BLUR_VIEW_TEST_ID } from '@/test/blurMock';
 import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
-import { palettes, withAlpha } from '@/theme';
+import { palettes, radius, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 import { GlassPanel } from './GlassPanel';
 
-const { isLiquidGlassAvailable } = jest.requireMock('expo-glass-effect');
+const { isLiquidGlassAvailable, isGlassEffectAPIAvailable } = jest.requireMock('expo-glass-effect');
 
-/** Kart ekran okuyucudan gizli; sorgular gizli ogeleri de kapsiyor. */
+/** Arka katmanlar ekran okuyucudan gizli; sorgular gizli ogeleri de kapsiyor. */
 const hidden = { includeHiddenElements: true } as const;
 
 /** Platformu gecici olarak degistirir; test bitince eski tanimi geri koyar. */
@@ -24,6 +24,7 @@ function onPlatform(os: 'ios' | 'android') {
 
 beforeEach(() => {
   isLiquidGlassAvailable.mockReturnValue(false);
+  isGlassEffectAPIAvailable.mockReturnValue(true);
 });
 
 describe('GlassPanel', () => {
@@ -45,6 +46,11 @@ describe('GlassPanel', () => {
       const glass = view.getByTestId(GLASS_VIEW_TEST_ID, hidden);
       expect(glass.props.glassEffectStyle).toBe('regular');
       expect(glass.props.tintColor).toBe(withAlpha(palettes.dark.paper, 0.55));
+      // Yerel katman kartin `overflow: hidden` kirpmasini gormuyor, kendi kose
+      // yaricapini okuyor: verilmezse cam dort koseli bir dikdortgen kaliyor.
+      expect(StyleSheet.flatten(glass.props.style)).toMatchObject({
+        borderRadius: radius.lg,
+      });
       expect(view.queryByTestId(BLUR_VIEW_TEST_ID, hidden)).toBeNull();
     } finally {
       restore();
@@ -109,6 +115,55 @@ describe('GlassPanel', () => {
       };
       // Bulaniklik yoksa dolgu tek basina calisiyor; daha opak olmasi gerek.
       expect(fill.backgroundColor).toBe(withAlpha(palettes.dark.surface, 0.86));
+    } finally {
+      restore();
+    }
+  });
+
+  it('cam gorunumu acik ama yerel API yokken bulanikliga dusuyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      // Bazi iOS 26 derlemelerinde tasarim dili acik ama cam API'si yok;
+      // orada `GlassView` saydam ciziliyor ve metnin zemini hic kalmiyor.
+      isLiquidGlassAvailable.mockReturnValue(true);
+      isGlassEffectAPIAvailable.mockReturnValue(false);
+
+      const view = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+
+      expect(view.queryByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeNull();
+      expect(view.getByTestId(BLUR_VIEW_TEST_ID, hidden)).toBeTruthy();
+    } finally {
+      restore();
+    }
+  });
+
+  it('cam ve bulanik katmanlari ekran okuyucudan gizliyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+      const glassView = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(glassView.getByText('İçerik')).toBeTruthy();
+      // Gizli ogeleri katmayan sorgu: katman dekoratif, ekran okuyucuya
+      // okunacak bir sey vermiyor.
+      expect(glassView.queryByTestId(GLASS_VIEW_TEST_ID)).toBeNull();
+
+      isLiquidGlassAvailable.mockReturnValue(false);
+      const blurView = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(blurView.getByText('İçerik')).toBeTruthy();
+      expect(blurView.queryByTestId(BLUR_VIEW_TEST_ID)).toBeNull();
     } finally {
       restore();
     }

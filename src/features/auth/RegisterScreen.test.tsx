@@ -234,6 +234,25 @@ describe('RegisterScreen cam kart', () => {
     expect(panel.getByLabelText(strings.auth.confirmPasswordLabel)).toBeTruthy();
   });
 
+  it('kartin arkasina bir de perde cekmiyor', async () => {
+    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+    expect(view.getByText(strings.auth.registerTitle)).toBeTruthy();
+
+    // Perde olculmeden cizilmiyor; olcum olayi olmadan "yok" iddiasi hicbir
+    // sey olcmez.
+    await act(async () => {
+      fireEvent(view.getByTestId('content-block', { includeHiddenElements: true }), 'layout', {
+        nativeEvent: { layout: { width: 342, height: 320, x: 0, y: 0 } },
+      });
+    });
+
+    // Metnin zeminini kart tasiyor: ikinci bir karartma katmani gorseli iki
+    // kez karartirdi.
+    expect(view.queryByTestId('content-veil', { includeHiddenElements: true })).toBeNull();
+    // Ust serit kartin disinda; onun perdesi yerinde kaliyor.
+    expect(view.getByTestId('header-veil', { includeHiddenElements: true })).toBeTruthy();
+  });
+
   it('butonu ve yasal satiri kartin disinda birakiyor', async () => {
     const view = await renderWithTheme(<RegisterScreen {...handlers} />);
 
