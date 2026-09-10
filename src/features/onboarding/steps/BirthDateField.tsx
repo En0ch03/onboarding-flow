@@ -39,7 +39,7 @@ type BirthDateFieldProps = {
  * Alan bir dugme, girdi kutusu degil: dokunulunca klavye degil cark aciliyor.
  */
 export function BirthDateField({ value, onChange, today }: BirthDateFieldProps) {
-  const { colors, radius, scheme, spacing, screenPadding } = useTheme();
+  const { colors, radius, spacing, screenPadding } = useTheme();
   const [open, setOpen] = useState(false);
 
   const chosen = useMemo(() => dateFromParts(value), [value]);
@@ -110,7 +110,9 @@ export function BirthDateField({ value, onChange, today }: BirthDateFieldProps) 
               locale="tr-TR"
               maximumDate={today}
               minimumDate={earliest}
-              themeVariant={scheme === 'dark' ? 'dark' : 'light'}
+              // Carkin yazi rengi dogrudan veriliyor: bilesenin tema secme
+              // prop'u kendi belgesinde cark kipinde etkisiz sayiliyor, yani
+              // koyu zeminde okunurlugu tasiyan tek sey bu renk.
               textColor={colors.ink}
               onChange={(_event, date) => {
                 if (date) setSpun(date);
