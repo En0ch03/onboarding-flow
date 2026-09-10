@@ -222,7 +222,12 @@ describe('cam yuzeyler ve ekran ritmi', () => {
     try {
       const view = await renderWithTheme(
         <Screen
-          header={<ScreenHeader onBack={() => {}} skip={{ label: strings.common.skip, onPress: () => {} }} />}
+          header={
+            <ScreenHeader
+              onBack={() => {}}
+              skip={{ label: strings.common.skip, onPress: () => {} }}
+            />
+          }
           journeyProgress={0.5}
           footer={<Button title="Vazgeç" onPress={() => {}} variant="ghost" />}
         >

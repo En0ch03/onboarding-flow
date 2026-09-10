@@ -196,10 +196,7 @@ describe('ScreenHeader', () => {
       const restore = onPlatform('ios');
       try {
         const view = await renderWithTheme(
-          <ScreenHeader
-            onBack={noop}
-            skip={{ label: strings.common.skip, onPress: noop }}
-          />,
+          <ScreenHeader onBack={noop} skip={{ label: strings.common.skip, onPress: noop }} />,
         );
         expect(view.getByLabelText(strings.common.back)).toBeTruthy();
 
@@ -224,10 +221,7 @@ describe('ScreenHeader', () => {
         isLiquidGlassAvailable.mockReturnValue(true);
 
         const view = await renderWithTheme(
-          <ScreenHeader
-            onBack={noop}
-            skip={{ label: strings.common.skip, onPress: noop }}
-          />,
+          <ScreenHeader onBack={noop} skip={{ label: strings.common.skip, onPress: noop }} />,
         );
         expect(view.getByLabelText(strings.common.back)).toBeTruthy();
 

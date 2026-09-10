@@ -95,9 +95,7 @@ describe('Button', () => {
 
       expect(view.queryByTestId('glass-ghost', hidden)).toBeNull();
 
-      expect(
-        StyleSheet.flatten(view.getByTestId('ghost-edge', hidden).props.style),
-      ).toMatchObject({
+      expect(StyleSheet.flatten(view.getByTestId('ghost-edge', hidden).props.style)).toMatchObject({
         borderWidth: 1,
         borderColor: withAlpha(palettes.dark.ink, 0.28),
       });
