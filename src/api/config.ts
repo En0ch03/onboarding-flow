@@ -1,4 +1,4 @@
-import { api } from './client';
+import { standInApi } from './client';
 import { OptionGroupsSchema, type OptionGroups } from './schemas';
 
 /**
@@ -19,7 +19,7 @@ export async function fetchOptionGroups(): Promise<OptionGroups> {
   if (cached) return cached;
   if (inFlight) return inFlight;
 
-  const attempt = api
+  const attempt = standInApi
     .get('/config/options')
     .then((response) => {
       const groups = OptionGroupsSchema.parse(response.data);

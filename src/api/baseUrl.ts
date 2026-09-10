@@ -47,6 +47,24 @@ export function resolveBaseUrl(): string {
 }
 
 /**
+ * Sozlesmede yeri olmayan iki ucun adresi: secenek listeleri ve gorsel
+ * yukleme.
+ *
+ * Sozlesme alti uc nokta tanimliyor ve bu ikisi onlarin arasinda degil;
+ * ikisini de biz istedik. Dolayisiyla sozlesmeyi eksiksiz karsilayan bir
+ * sunucunun bunlari da karsilamasi beklenemez, ve karsilamadiginda uygulamanin
+ * elinde onlari soracak baska bir adres olmali.
+ *
+ * Varsayilan bilerek "ayni adres": hicbir sey soylenmezse uygulama tek bir
+ * sunucu biliyor ve bugunku davranis aynen suruyor. Ikinci adres ancak biri
+ * onu acikca verdiginde doguyor, yani ayrisma kazara olusamiyor ve kurulum
+ * yapan kisi onu bilerek istemis oluyor.
+ */
+export function resolveStandInUrl(): string {
+  return process.env.EXPO_PUBLIC_STANDIN_API_URL?.trim() || resolveBaseUrl();
+}
+
+/**
  * Sunucunun bildirdigi makineyi cihazin ulasabilecegi bir adrese cevirir.
  *
  * Tek duzeltme Android'de loopback icin. Expo varsayilan olarak LAN uzerinden

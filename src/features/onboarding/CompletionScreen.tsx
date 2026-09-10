@@ -15,6 +15,7 @@ import { useAuthStore } from '@/state/authStore';
 import { useOnboardingStore } from '@/state/onboardingStore';
 import { useTheme } from '@/theme';
 
+import { journeyStops } from './artwork/journeyArtwork';
 import { ProfileMark } from './ProfileMark';
 import { ProfileRecap } from './ProfileRecap';
 import { saveStep } from './saveStep';
@@ -129,6 +130,7 @@ export function CompletionScreen({
   return (
     <Screen
       align="center"
+      journeyProgress={journeyStops.completion}
       footer={
         <View>
           <Button

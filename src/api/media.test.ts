@@ -1,6 +1,6 @@
 import { manipulateAsync } from 'expo-image-manipulator';
 
-import { api } from './client';
+import { api, standInApi } from './client';
 import { uploadPhoto } from './media';
 
 jest.mock('expo-image-manipulator', () => ({
@@ -8,15 +8,20 @@ jest.mock('expo-image-manipulator', () => ({
   SaveFormat: { JPEG: 'jpeg' },
 }));
 
-jest.mock('./client', () => ({ api: { post: jest.fn() } }));
+jest.mock('./client', () => ({
+  api: { post: jest.fn() },
+  standInApi: { post: jest.fn() },
+}));
 
 const prepare = jest.mocked(manipulateAsync);
-const post = jest.mocked(api.post);
+const post = jest.mocked(standInApi.post);
+const contractPost = jest.mocked(api.post);
 
 beforeEach(() => {
   jest.useFakeTimers();
   prepare.mockReset();
   post.mockReset();
+  contractPost.mockReset();
 });
 
 afterEach(() => {
@@ -55,5 +60,21 @@ describe('uploadPhoto', () => {
       id: 'https://example.test/p.jpg',
       url: 'https://example.test/p.jpg',
     });
+  });
+
+  /**
+   * Yukleme sozlesmede yok. Sozlesmeyi karsilayan bir sunucunun onu
+   * karsilamasi gerekmiyor, dolayisiyla gonderilecegi adres sozlesme adresi
+   * olmak zorunda degil.
+   */
+  it('yukleme sozlesme adresine degil, tezgah adresine gidiyor', async () => {
+    prepare.mockResolvedValue({ uri: 'file:///hazir.jpg' } as never);
+    post.mockResolvedValue({ data: { url: 'https://example.test/p.jpg' } });
+
+    await uploadPhoto('file:///photo.jpg');
+
+    expect(post).toHaveBeenCalledTimes(1);
+    expect(post).toHaveBeenCalledWith('/upload', expect.anything(), expect.anything());
+    expect(contractPost).not.toHaveBeenCalled();
   });
 });

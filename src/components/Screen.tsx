@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { JourneyBackdrop } from '@/features/onboarding/artwork/JourneyBackdrop';
 import { spacing as scale, useTheme, withAlpha } from '@/theme';
 
 type ScreenProps = {
@@ -22,6 +23,8 @@ type ScreenProps = {
    * ekranda ikisi toplanir ve icerik beklenenden asagi duser.
    */
   align?: ScreenAlign;
+  /** Sifir ile bir arasinda, uzun onboarding sanatinin gorunecek kadraji. */
+  journeyProgress?: number;
 };
 
 export type ScreenAlign = 'top' | 'upper' | 'center';
@@ -62,64 +65,74 @@ const TOP_FADE = scale.xl;
  * bosluk var: cihazin durum cubuguna yaslanan bir dugme dokunulmasi zor bir
  * dugme.
  */
-export function Screen({ header, children, footer, align = 'top' }: ScreenProps) {
-  const { colors, screenPadding, spacing } = useTheme();
+export function Screen({ header, children, footer, align = 'top', journeyProgress }: ScreenProps) {
+  const { colors, scheme, screenPadding, spacing } = useTheme();
   const { height } = useWindowDimensions();
+  const showJourney = journeyProgress !== undefined && scheme === 'dark';
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.paper }} edges={['top', 'bottom']}>
-      {header ? (
-        <View style={{ paddingHorizontal: screenPadding, paddingTop: spacing.lg }}>{header}</View>
-      ) : null}
+    <View style={{ flex: 1, backgroundColor: colors.paper }}>
+      {showJourney ? <JourneyBackdrop progress={journeyProgress} /> : null}
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: showJourney ? 'transparent' : colors.paper }}
+        edges={['top', 'bottom']}
+      >
+        {header ? (
+          <View style={{ paddingHorizontal: screenPadding, paddingTop: spacing.lg }}>{header}</View>
+        ) : null}
 
-      <View style={{ flex: 1 }}>
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={{
-            flexGrow: 1,
-            paddingHorizontal: screenPadding,
-            paddingTop: TOP_FADE,
-            paddingBottom: spacing.xl,
-          }}
-          // Odaklanan alan klavyenin altinda kalmasin diye kaydirma alani
-          // klavye kadar kisaliyor. Butonu tasimiyor, yalnizca icerigi.
-          automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}
-          // Klavye acikken butona ilk dokunusun calismasi icin: aksi halde
-          // ilk dokunus yalnizca klavyeyi kapatiyor, kullanici iki kez basiyor.
-          keyboardShouldPersistTaps="handled"
-          keyboardDismissMode="interactive"
-          showsVerticalScrollIndicator={false}
-        >
-          {/* `flex: 1` degil `flexGrow: 1`. Ilki `flexBasis: 0` demek ve icerik
+        <View style={{ flex: 1 }}>
+          <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={{
+              flexGrow: 1,
+              paddingHorizontal: screenPadding,
+              paddingTop: TOP_FADE,
+              paddingBottom: spacing.xl,
+            }}
+            // Odaklanan alan klavyenin altinda kalmasin diye kaydirma alani
+            // klavye kadar kisaliyor. Butonu tasimiyor, yalnizca icerigi.
+            automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}
+            // Klavye acikken butona ilk dokunusun calismasi icin: aksi halde
+            // ilk dokunus yalnizca klavyeyi kapatiyor, kullanici iki kez basiyor.
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="interactive"
+            showsVerticalScrollIndicator={false}
+          >
+            {/* `flex: 1` degil `flexGrow: 1`. Ilki `flexBasis: 0` demek ve icerik
               kutusunu "gorunur alan eksi footer" boyutuna sabitliyor; o zaman
               icerik kabi hicbir zaman gorunur alandan buyuk olmuyor ve
               ScrollView kaydirmiyor - tasan icerik kirpiliyor. `flexGrow` ile
               kutu kisa icerikte boslugu dolduruyor, uzun icerikte kendi
               yuksekligini aliyor. */}
-          <View
-            style={{
-              flexGrow: 1,
-              ...(align === 'center' ? { justifyContent: 'center' } : null),
-              ...(align === 'upper'
-                ? { paddingTop: Math.round(height * UPPER_INSET_RATIO) }
-                : null),
-            }}
-          >
-            {children}
-          </View>
+            <View
+              style={{
+                flexGrow: 1,
+                ...(align === 'center' ? { justifyContent: 'center' } : null),
+                ...(align === 'upper'
+                  ? { paddingTop: Math.round(height * UPPER_INSET_RATIO) }
+                  : null),
+              }}
+            >
+              {children}
+            </View>
 
-          {footer ? <View style={{ paddingTop: spacing.xl }}>{footer}</View> : null}
-        </ScrollView>
+            {footer ? <View style={{ paddingTop: spacing.xl }}>{footer}</View> : null}
+          </ScrollView>
 
-        {/* Icerik ust seride sert bir cizgiyle carpmasin: kaydirirken metnin
+          {/* Icerik ust seride sert bir cizgiyle carpmasin: kaydirirken metnin
             kesildigi yer, orada bir sey bittigi izlenimi veriyor. Solma
             "yukarida devami var" demenin sessiz yolu. */}
-        <LinearGradient
-          colors={[colors.paper, withAlpha(colors.paper, 0)]}
-          style={{ position: 'absolute', top: 0, left: 0, right: 0, height: TOP_FADE }}
-          pointerEvents="none"
-        />
-      </View>
-    </SafeAreaView>
+          <LinearGradient
+            colors={[
+              showJourney ? withAlpha(colors.paper, 0.82) : colors.paper,
+              withAlpha(colors.paper, 0),
+            ]}
+            style={{ position: 'absolute', top: 0, left: 0, right: 0, height: TOP_FADE }}
+            pointerEvents="none"
+          />
+        </View>
+      </SafeAreaView>
+    </View>
   );
 }

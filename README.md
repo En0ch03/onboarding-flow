@@ -47,6 +47,8 @@ So the app does not ask. It resolves the address in three steps, in this order:
 2. Otherwise the address is derived from the machine the app is already connected to. Expo serves the JavaScript bundle from your machine and the app knows the host it was served from; it reuses that host and swaps in port 4000.
 3. If neither is available — on the web, and in the tests — it falls back to `localhost`.
 
+Two endpoints resolve separately, and only if you ask them to: see [Running against a real backend](#running-against-a-real-backend). By default they use the address above, so the app talks to one server.
+
 Step 2 is the one that removes the configuration, and it lands correctly in all three cases:
 
 | Where the app runs         | What it resolves to                                                                                                                                                                        |
@@ -74,7 +76,37 @@ POST /api/v1/onboarding/complete  200
 
 Two more endpoints exist that the contract does not define. `GET /api/v1/config/options` serves the option lists, and `POST /api/v1/upload` accepts an image. Both are placeholders for mechanisms that have not been specified yet, and on the app side each one sits behind a single function so that there is exactly one file to change when they are. `GET /api/v1/media/:id` serves back what was uploaded, and the `__chaos` pair below belongs to the server alone — the app never calls either.
 
-There is no mock code inside the app. The app knows a base address and nothing else.
+There is no mock code inside the app. By default the app knows one address and nothing else; a second one exists only if you configure it, and the next section is the only reason to.
+
+## Running against a real backend
+
+Point the app at a real server by setting one variable:
+
+```bash
+EXPO_PUBLIC_API_URL=https://your-host/api/v1 npm start
+```
+
+That covers the six endpoints the contract defines, and nothing else has to change — there is no environment switch inside the app.
+
+The two endpoints above that the contract does _not_ define are the catch. A server can implement the contract completely and still not serve them, because they were never part of it. When that happens, keep them here and say so:
+
+```bash
+EXPO_PUBLIC_API_URL=https://your-host/api/v1 EXPO_PUBLIC_STANDIN_API_URL=http://<your machine's LAN IP>:4000/api/v1 npm start
+```
+
+Now the contract endpoints go to the real server and those two stay on the mock, which has to keep running — and in this arrangement it has to be told so:
+
+```bash
+MOCK_STANDIN=1 npm run mock
+```
+
+That flag only affects `POST /upload`: the token now comes from a server the mock cannot check with, so it accepts any bearer token while still refusing a request that carries none. Without the flag nothing is relaxed, and the default single-server setup keeps validating tokens as before.
+
+Uploaded images come back as absolute URLs pointing at the mock, and the real server stores them in `avatar_url` as given — which also means they are only reachable from the same network.
+
+One consequence worth stating plainly: the session token issued by the real server is sent to the mock as well, over plain HTTP on your LAN. Set this up on a network you trust, and not on shared or public Wi-Fi.
+
+Leave `EXPO_PUBLIC_STANDIN_API_URL` unset and both resolve to the same address, so this split cannot happen by accident. Set it only when you know why.
 
 ### Injecting faults
 

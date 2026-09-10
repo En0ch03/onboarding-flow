@@ -14,6 +14,7 @@ import { haptics } from '@/feedback/haptics';
 import { useTheme } from '@/theme';
 
 import { saveStep } from '../saveStep';
+import { stepJourneyProgress } from '../artwork/journeyArtwork';
 import type { StepDefinition } from './types';
 import { useStepEngine } from './useStepEngine';
 
@@ -158,6 +159,7 @@ export function StepScreen({ steps, options, onFinish, onExit, focused = true }:
 
   return (
     <Screen
+      journeyProgress={stepJourneyProgress(engine.progress.current, engine.progress.total)}
       header={
         <View>
           <ScreenHeader
