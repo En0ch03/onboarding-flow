@@ -1,3 +1,4 @@
+import { within } from '@testing-library/react-native';
 import { Platform, StyleSheet } from 'react-native';
 
 import { BLUR_VIEW_TEST_ID } from '@/test/blurMock';
@@ -80,8 +81,11 @@ describe('GlassPanel', () => {
       // Yerel katman kartin `overflow: hidden` kirpmasini gormuyor, kendi kose
       // yaricapini okuyor: verilmezse cam dort koseli bir dikdortgen kaliyor.
       expect(StyleSheet.flatten(glass.props.style)).toMatchObject({
-        borderRadius: radius.xl,
+        borderRadius: radius.glass,
       });
+      // Icerik camin icinde: sistemin materyali cocuklarini kendi icerik
+      // katmanina aliyor, kirilma ve isik onlarin arkasinda kalmiyor.
+      expect(within(glass).getByText('İçerik')).toBeTruthy();
       expect(view.queryByTestId(BLUR_VIEW_TEST_ID, hidden)).toBeNull();
     } finally {
       restore();
@@ -101,9 +105,14 @@ describe('GlassPanel', () => {
       expect(view.getByText('İçerik')).toBeTruthy();
 
       // Cam kirilmayi kenarda gosteriyor: dar bir ic dolguda kenar bandi
-      // icerigin altinda kaliyor ve kart dolu bir panel gibi okunuyor.
+      // icerigin altinda kaliyor ve kart dolu bir panel gibi okunuyor. Dolgu
+      // camin icinde, cunku icerik artik camin cocugu.
       expect(StyleSheet.flatten(view.getByTestId('glass-panel').props.style)).toMatchObject({
-        borderRadius: radius.xl,
+        borderRadius: radius.glass,
+      });
+      expect(
+        StyleSheet.flatten(view.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.style),
+      ).toMatchObject({
         paddingHorizontal: spacing.xxl,
         paddingVertical: spacing.xl,
       });
@@ -187,9 +196,11 @@ describe('GlassPanel', () => {
       // Ton verilirse materyal arkadaki parlakliga gore kendi ton
       // haritasini kuramiyor; kart yeniden elle boyanmis bir yuzeye donuyor.
       expect(glass.props.tintColor).toBeUndefined();
-      // Sema uygulamanin anahtarindan geliyor: `auto` sistemi okur ve sistem
-      // acik temadayken uygulama koyu temada kalabilir.
-      expect(glass.props.colorScheme).toBe('dark');
+      // Sema `auto`: materyal arkadaki iceriğe gore kendi tonunu secer; kart
+      // istedigi zaman prop ile ezebilir.
+      expect(glass.props.colorScheme).toBe('auto');
+      // Etkilesimli degil: kart bir kontrol degil, yuzey.
+      expect(glass.props.isInteractive).toBe(false);
     } finally {
       restore();
     }
@@ -360,9 +371,12 @@ describe('GlassPanel', () => {
         </GlassPanel>,
       );
       expect(glassView.getByText('İçerik')).toBeTruthy();
-      // Gizli ogeleri katmayan sorgu: katman dekoratif, ekran okuyucuya
-      // okunacak bir sey vermiyor.
-      expect(glassView.queryByTestId(GLASS_VIEW_TEST_ID)).toBeNull();
+      // Cam icerigi tasiyor, o yuzden gizli degil; gizli olan arkasindaki
+      // karartma katmani. Gizli ogeleri katmayan sorgu onu bulamamali ve
+      // dokunusu gecirmemeli.
+      expect(glassView.getByTestId(GLASS_VIEW_TEST_ID)).toBeTruthy();
+      expect(glassView.queryByTestId('glass-panel-dimming')).toBeNull();
+      expect(glassView.getByTestId('glass-panel-dimming', hidden).props.pointerEvents).toBe('none');
 
       isLiquidGlassAvailable.mockReturnValue(false);
       const blurView = await renderWithTheme(

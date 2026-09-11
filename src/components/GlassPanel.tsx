@@ -47,6 +47,17 @@ type GlassPanelProps = {
  */
 const TRANSLUCENT_FILL = 0.4;
 
+/**
+ * Camin arkasindaki yerel karartma.
+ *
+ * Saydam materyal arkadaki gorseli oldugu gibi gecirir; koyu bir metnin
+ * degil acik bir metnin zemini oldugu icin gorselin en parlak noktasinda
+ * okunurluk duser. Karartma cama degil arkasina konuyor ve dusuk tutuluyor:
+ * amac karti koyu bir yuzeye cevirmek degil, gorseli korurken metne hacim
+ * vermek. Aralik gorsele gore 0.12-0.28; kizil-siyah gorsel icin ortasi.
+ */
+const LOCAL_DIMMING = 0.2;
+
 /** Bulaniksiz kipte dolgu tek basina calisiyor, o yuzden daha opak. */
 const FLAT_FILL = 0.86;
 
@@ -73,7 +84,7 @@ export function GlassPanel({
   glassStyle = 'regular',
   colorScheme,
 }: GlassPanelProps) {
-  const { colors, radius, scheme, spacing } = useTheme();
+  const { colors, radius, spacing } = useTheme();
   const mode = resolveGlassMode();
   const liquid = mode === 'liquid';
 
@@ -82,7 +93,7 @@ export function GlassPanel({
       testID="glass-panel"
       style={[
         {
-          borderRadius: radius.xl,
+          borderRadius: liquid ? radius.glass : radius.xl,
           borderCurve: 'continuous',
           // Katmanlar kartin kosesinden tasmasin: tasan bir dolgu, yuvarlak
           // kenari dorde donduruyor.
@@ -90,8 +101,8 @@ export function GlassPanel({
           // Yatayda dikeyden genis: cam kirilmayi kenar bandinda gosteriyor ve
           // dar bir dolguda o bant icerigin altinda kaliyor. Dikeyi de ayni
           // olcude buyutmek karti ekranin tasiyabileceginden uzun yapardi.
-          paddingHorizontal: spacing.xxl,
-          paddingVertical: spacing.xl,
+          paddingHorizontal: liquid ? 0 : spacing.xxl,
+          paddingVertical: liquid ? 0 : spacing.xl,
         },
         liquid
           ? null
@@ -105,19 +116,24 @@ export function GlassPanel({
       ]}
     >
       {liquid ? (
-        <GlassView
+        // Katman sirasi: arka plan -> yerel karartma -> sistemin cami -> icerik.
+        // Karartma camin kendi rengi degil, arkasinda duran ayri bir katman:
+        // cami boyamak materyalin arkadaki renge uyumunu bozuyor, arkasina
+        // ince bir karartma koymak ise gorseli korurken ustundeki metne
+        // hacim veriyor.
+        <View
+          testID="glass-panel-dimming"
           pointerEvents="none"
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          glassEffectStyle={glassStyle}
-          // Sema varsayilan olarak uygulamanin kendi anahtarindan geliyor:
-          // materyalin "auto" degeri sistemi okuyor, uygulamayi degil. Kart
-          // bunu bilerek ezebiliyor (bkz. prop yorumu).
-          colorScheme={colorScheme ?? scheme}
-          // Yerel katman kabin `overflow: hidden` kirpmasini gormuyor, kendi
-          // kose yaricapini okuyor: verilmezse cam dort koseli kaliyor ve
-          // kartin yuvarlak kenari ustunde bir dikdortgen olarak duruyor.
-          style={[StyleSheet.absoluteFill, { borderRadius: radius.xl, borderCurve: 'continuous' }]}
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              backgroundColor: withAlpha(colors.scrim, LOCAL_DIMMING),
+              borderRadius: radius.glass,
+              borderCurve: 'continuous',
+            },
+          ]}
         />
       ) : null}
 
@@ -199,7 +215,28 @@ export function GlassPanel({
         />
       )}
 
-      {children}
+      {liquid ? (
+        <GlassView
+          glassEffectStyle={glassStyle}
+          // "auto" sistemin gorunumunu okur: materyal arkadaki iceriğe gore
+          // kendi tonunu secer. Kart bunu istedigi zaman ezebiliyor (prop).
+          colorScheme={colorScheme ?? 'auto'}
+          isInteractive={false}
+          // Yerel katman kabin kirpmasini gormuyor, kendi kose yaricapini
+          // okuyor; verilmezse cam dort koseli kalir.
+          style={{
+            borderRadius: radius.glass,
+            borderCurve: 'continuous',
+            overflow: 'hidden',
+            paddingHorizontal: spacing.xxl,
+            paddingVertical: spacing.xl,
+          }}
+        >
+          {children}
+        </GlassView>
+      ) : (
+        children
+      )}
     </View>
   );
 }
