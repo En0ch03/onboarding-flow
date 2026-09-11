@@ -372,7 +372,7 @@ describe('GlassPanel', () => {
     }
   });
 
-  it('cam ve bulanik katmanlari ekran okuyucudan gizliyor', async () => {
+  it('camin arkasina yerel bir karartma koymuyor', async () => {
     const restore = onPlatform('ios');
     try {
       isLiquidGlassAvailable.mockReturnValue(true);
@@ -382,29 +382,8 @@ describe('GlassPanel', () => {
         </GlassPanel>,
       );
       expect(glassView.getByText('İçerik')).toBeTruthy();
-      // Cam icerigi tasiyor, o yuzden gizli degil; gizli olan arkasindaki
-      // karartma katmani. Gizli ogeleri katmayan sorgu onu bulamamali ve
-      // dokunusu gecirmemeli.
       expect(glassView.getByTestId(GLASS_VIEW_TEST_ID)).toBeTruthy();
-      expect(glassView.queryByTestId('glass-panel-dimming')).toBeNull();
-      expect(glassView.getByTestId('glass-panel-dimming', hidden).props.pointerEvents).toBe('none');
-
-      // Katman sirasi bu duzenin tum gerekcesi: karartma camin ARKASINDA.
-      // Onde olsaydi hem cami hem icerigi orterdi.
-      const panel = glassView.getByTestId('glass-panel');
-      const order = panel.children.map((child) =>
-        typeof child === 'string' ? '' : String(child.props.testID ?? ''),
-      );
-      expect(order.indexOf('glass-panel-dimming')).toBeGreaterThanOrEqual(0);
-      expect(order.indexOf('glass-panel-dimming')).toBeLessThan(order.indexOf(GLASS_VIEW_TEST_ID));
-
-      // Karartma dusuk tutuluyor: amac karti koyu bir yuzeye cevirmek degil.
-      const dimming = StyleSheet.flatten(
-        glassView.getByTestId('glass-panel-dimming', hidden).props.style,
-      ) as { backgroundColor?: string };
-      const alpha = alphaOf(String(dimming.backgroundColor));
-      expect(alpha).toBeGreaterThanOrEqual(0.12);
-      expect(alpha).toBeLessThanOrEqual(0.28);
+      expect(glassView.queryByTestId('glass-panel-dimming', hidden)).toBeNull();
 
       isLiquidGlassAvailable.mockReturnValue(false);
       const blurView = await renderWithTheme(

@@ -1,11 +1,11 @@
-import { act, fireEvent, render } from '@testing-library/react-native';
-import { Dimensions, Platform, processColor, StyleSheet } from 'react-native';
+import { render } from '@testing-library/react-native';
+import { Platform } from 'react-native';
 import { SafeAreaProvider, type Metrics } from 'react-native-safe-area-context';
 
 import { strings } from '@/constants/strings';
 import { opacitiesAbove } from '@/test/opacitiesAbove';
 import { renderWithTheme } from '@/test/renderWithTheme';
-import { palettes, ThemeProvider, withAlpha } from '@/theme';
+import { ThemeProvider } from '@/theme';
 
 import { AppText } from './AppText';
 import { Button } from './Button';
@@ -66,8 +66,8 @@ describe('Screen journey artwork', () => {
   });
 });
 
-describe('Screen ust serit perdesi', () => {
-  it('serit gorselin uzerinde ciplak durmuyor', async () => {
+describe('Screen karartmasiz', () => {
+  it('gorselli bir ekranda ust seride perde koymuyor', async () => {
     const view = await renderWithTheme(
       <Screen journeyProgress={0.5} header={<AppText>Geri</AppText>}>
         <AppText>İçerik</AppText>
@@ -76,108 +76,34 @@ describe('Screen ust serit perdesi', () => {
     // Once agacin cizildigi: bos bir agacta perde sorgusu da patlardi.
     expect(view.getByText('Geri')).toBeTruthy();
 
-    const veil = view.getByTestId('header-veil', hidden);
-    // Perde seridin altinda tamamen kayboluyor; kalan bir opaklik gorselin
-    // uzerinde yatay bir bant birakirdi.
-    expect(veil.props.colors).toEqual([
-      processColor(withAlpha(palettes.dark.paper, 0.8)),
-      processColor(withAlpha(palettes.dark.paper, 0)),
-    ]);
-  });
-
-  it('gorselsiz ekranin seridine perde koymuyor', async () => {
-    const view = await renderWithTheme(
-      <Screen header={<AppText>Geri</AppText>}>
-        <AppText>İçerik</AppText>
-      </Screen>,
-    );
-    expect(view.getByText('Geri')).toBeTruthy();
-
-    // Duz zemin uzerinde zeminden zemine bir gradyan hicbir sey yapmaz.
     expect(view.queryByTestId('header-veil', hidden)).toBeNull();
   });
-});
 
-/** Icerik blogunun olculdugunu bildiren yerlesim olayi. */
-async function layoutContent(view: Awaited<ReturnType<typeof renderWithTheme>>, height: number) {
-  await act(async () => {
-    fireEvent(view.getByTestId('content-block', hidden), 'layout', {
-      nativeEvent: { layout: { width: 342, height, x: 0, y: 0 } },
-    });
-  });
-}
-
-describe('Screen icerik perdesi', () => {
-  it('metnin arkasina zeminden gelen bir perde cekiyor', async () => {
+  it('icerigin arkasina zeminden gelen bir perde cekmiyor', async () => {
     const view = await renderWithTheme(
       <Screen journeyProgress={0.5}>
         <AppText>İçerik</AppText>
       </Screen>,
     );
-    // Agac gercekten cizildi mi: bos bir agacta asagidaki sorgu da patlardi.
     expect(view.getByText('İçerik')).toBeTruthy();
 
-    await layoutContent(view, 200);
-
-    const veil = view.getByTestId('content-veil', hidden);
-    expect(veil.props.colors).toEqual([
-      processColor(withAlpha(palettes.dark.paper, 0)),
-      processColor(withAlpha(palettes.dark.paper, 0.8)),
-      processColor(withAlpha(palettes.dark.paper, 0.86)),
-    ]);
-  });
-
-  it('perde tum ekrani degil yalnizca icerik blogunu kapliyor', async () => {
-    const view = await renderWithTheme(
-      <Screen align="center" journeyProgress={0.5}>
-        <AppText>İçerik</AppText>
-      </Screen>,
-    );
-    expect(view.getByText('İçerik')).toBeTruthy();
-
-    await layoutContent(view, 200);
-
-    // Olculen blok 200; perde onu iki ucundan 24'er tasiyor. Ekranin kendisi
-    // 844: perde tum ekrani kaplasaydi gorsel bogulurdu.
-    const style = StyleSheet.flatten(view.getByTestId('content-veil', hidden).props.style) as {
-      height: number;
-      top: number;
-    };
-    expect(style.height).toBe(248);
-    expect(style.top).toBe(-24);
-    expect(Dimensions.get('window').height).toBeGreaterThan(style.height);
-  });
-
-  it('kendi zeminini getiren ekranda perdeyi birakiyor', async () => {
-    const view = await renderWithTheme(
-      <Screen journeyProgress={0.5} contentVeil={false} header={<AppText>Geri</AppText>}>
-        <AppText>İçerik</AppText>
-      </Screen>,
-    );
-    expect(view.getByText('İçerik')).toBeTruthy();
-
-    await layoutContent(view, 200);
-
-    // Icerigin arkasindaki perde yok: metnin zeminini artik icerik kendisi
-    // tasiyor ve iki katman ust uste binseydi gorsel yine bogulurdu.
     expect(view.queryByTestId('content-veil', hidden)).toBeNull();
-    // Ust serit perdesi yerinde: geri oku ve sayac hala gorselin uzerinde.
-    expect(view.getByTestId('header-veil', hidden)).toBeTruthy();
   });
 
-  it('gorselsiz ekrana perde koymuyor', async () => {
+  it('kaydirma alaninin ustunde solma katmani birakmiyor', async () => {
+    // Kaydirma solmasinin kendi kimligi hic olmadi, o yuzden testID ile
+    // sorgulanamiyor. Bir gradyanin ayirt edici izi `colors` dizisi: agacta
+    // bu prop'u tasiyan hicbir dugum kalmamis olmali. Ust ve icerik perdeleri
+    // zaten yukarida ayri sorgulandi; bu, isimsiz ucuncu katmani yakalıyor.
     const view = await renderWithTheme(
-      <Screen>
+      <Screen journeyProgress={0.5} header={<AppText>Geri</AppText>}>
         <AppText>İçerik</AppText>
       </Screen>,
     );
     expect(view.getByText('İçerik')).toBeTruthy();
 
-    await layoutContent(view, 200);
-
-    // Duz zemin uzerinde zeminden zemine bir gradyan hicbir sey yapmaz; bos
-    // bir katman cizmek yerine hic cizilmiyor.
-    expect(view.queryByTestId('content-veil', hidden)).toBeNull();
+    const gradients = view.container.queryAll((node) => Array.isArray(node.props.colors));
+    expect(gradients).toHaveLength(0);
   });
 });
 

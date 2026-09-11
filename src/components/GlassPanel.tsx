@@ -47,18 +47,6 @@ type GlassPanelProps = {
  */
 const TRANSLUCENT_FILL = 0.4;
 
-/**
- * Camin arkasindaki yerel karartma.
- *
- * Saydam materyal arkadaki gorseli oldugu gibi gecirir; koyu bir metnin
- * degil acik bir metnin zemini oldugu icin gorselin en parlak noktasinda
- * okunurluk duser. Karartma cama degil arkasina konuyor ve dusuk tutuluyor:
- * amac karti koyu bir yuzeye cevirmek degil, gorseli korurken metne hacim
- * vermek. Aralik gorsele gore 0.12-0.28; kizil-siyah gorselde ust uca yakin,
- * cunku gorselin perdesi kartin altinda hafifletilmiyor.
- */
-const LOCAL_DIMMING = 0.26;
-
 /** Bulaniksiz kipte dolgu tek basina calisiyor, o yuzden daha opak. */
 const FLAT_FILL = 0.86;
 
@@ -78,7 +66,7 @@ const FLAT_FILL = 0.86;
  *
  * Cam kipte cam bir icerik kabi: cocuklarini sistemin materyali kendi icerik
  * katmanina aliyor, o yuzden gizli degil. Gizli ve dokunusu gecirmeyen sey
- * camin arkasindaki karartma ile yedek kiplerin dolgu ve kenar katmanlari.
+ * yedek kiplerin dolgu ve kenar katmanlari.
  */
 export function GlassPanel({
   children,
@@ -117,28 +105,6 @@ export function GlassPanel({
         style,
       ]}
     >
-      {liquid ? (
-        // Katman sirasi: arka plan -> yerel karartma -> sistemin cami -> icerik.
-        // Karartma camin kendi rengi degil, arkasinda duran ayri bir katman:
-        // cami boyamak materyalin arkadaki renge uyumunu bozuyor, arkasina
-        // ince bir karartma koymak ise gorseli korurken ustundeki metne
-        // hacim veriyor.
-        <View
-          testID="glass-panel-dimming"
-          pointerEvents="none"
-          accessibilityElementsHidden
-          importantForAccessibility="no-hide-descendants"
-          style={[
-            StyleSheet.absoluteFill,
-            {
-              backgroundColor: withAlpha(colors.scrim, LOCAL_DIMMING),
-              borderRadius: radius.glass,
-              borderCurve: 'continuous',
-            },
-          ]}
-        />
-      ) : null}
-
       {mode === 'blur' ? (
         <BlurView
           pointerEvents="none"

@@ -237,35 +237,12 @@ describe('RegisterScreen cam kart', () => {
     expect(panel.getByLabelText(strings.auth.confirmPasswordLabel)).toBeTruthy();
   });
 
-  it('kartin arkasina bir de perde cekmiyor', async () => {
+  it('ekranda ne ust serit ne de icerik perdesi cekiyor', async () => {
     const view = await renderWithTheme(<RegisterScreen {...handlers} />);
     expect(view.getByText(strings.auth.registerTitle)).toBeTruthy();
 
-    // Perde olculmeden cizilmiyor; olcum olayi olmadan "yok" iddiasi hicbir
-    // sey olcmez.
-    await act(async () => {
-      fireEvent(view.getByTestId('content-block', { includeHiddenElements: true }), 'layout', {
-        nativeEvent: { layout: { width: 342, height: 320, x: 0, y: 0 } },
-      });
-    });
-
-    // Metnin zeminini kart tasiyor: ikinci bir karartma katmani gorseli iki
-    // kez karartirdi.
     expect(view.queryByTestId('content-veil', { includeHiddenElements: true })).toBeNull();
-    // Ust serit kartin disinda; onun perdesi yerinde kaliyor.
-    expect(view.getByTestId('header-veil', { includeHiddenElements: true })).toBeTruthy();
-  });
-
-  it('gorselin perdesini oldugu gibi birakiyor; kartin karartmasi kartin kendi isi', async () => {
-    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
-    // Once agacin cizildigi: bos bir agacta perde sorgusu da patlardi.
-    expect(view.getByText(strings.auth.registerTitle)).toBeTruthy();
-
-    // Karartma cama degil ekrana ait olsaydi kartin disindaki metinler de
-    // zeminini kaybederdi; perde tam kaliyor, kart altina kendi katmanini koyuyor.
-    expect(
-      view.getByTestId('journey-veil', { includeHiddenElements: true }).props.locations,
-    ).toEqual([0.36, 1]);
+    expect(view.queryByTestId('header-veil', { includeHiddenElements: true })).toBeNull();
   });
 
   it('alanlarin arkasindan da cam gorunuyor', async () => {

@@ -1,4 +1,3 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import {
   AccessibilityInfo,
@@ -9,7 +8,7 @@ import {
   View,
 } from 'react-native';
 
-import { useTheme, withAlpha } from '@/theme';
+import { useTheme } from '@/theme';
 
 import { journeyArtworkModule, journeyOffset } from './journeyArtwork';
 
@@ -17,19 +16,6 @@ type JourneyBackdropProps = {
   /** Yolculuktaki konum: 0 baslangic, 1 varis. */
   progress: number;
 };
-
-/**
- * Perdenin metin bolgesindeki en yuksek opakligi: gorselin en acik bolgesinde
- * bile metni tasiyacak kadar yuksek. Cam kart tasiyan ekran da bu perdeyi
- * kullaniyor; kartin altindaki karartmayi kartin kendisi getiriyor.
- */
-const VEIL_PEAK = 0.86;
-
-/** Karartmanin basladigi dikey oran. */
-const VEIL_START = 0.36;
-
-/** Parilti katmaninin opakliklari: sag ustteki isik kaynagi. */
-const GLOW_STRENGTH = { near: 0.34, far: 0.16 } as const;
 
 export function JourneyBackdrop({ progress }: JourneyBackdropProps) {
   const { width: viewportWidth, height: viewportHeight } = useWindowDimensions();
@@ -80,32 +66,6 @@ export function JourneyBackdrop({ progress }: JourneyBackdropProps) {
           height: viewportHeight,
           transform: [{ translateX }],
         }}
-      />
-
-      {/* Aydinlatma ve karartma renkleri paletten geliyor. Burada ham hex
-          tasimak, "altili renk kodu yalnizca tek dosyada" kuralini sessizce
-          delerdi: perde bir efekt degil, temanin bir parcasi. */}
-      <LinearGradient
-        testID="journey-glow"
-        colors={[
-          withAlpha(colors.glowStrong, GLOW_STRENGTH.near),
-          withAlpha(colors.glowDeep, GLOW_STRENGTH.far),
-          withAlpha(colors.veil, 0),
-        ]}
-        locations={[0, 0.44, 1]}
-        start={{ x: 1, y: 0 }}
-        end={{ x: 0.12, y: 0.72 }}
-        style={StyleSheet.absoluteFill}
-      />
-      {/* Karartma daha erken basliyor ve daha derine iniyor: metin blogu
-          ekranin ust yarisinda duruyor ve gorselin en acik bolgesi tam oraya
-          denk gelebiliyor. Kontrast gorsele gore degil, perdeye gore olculur;
-          perde zayifsa olculen sey bir sey ifade etmez. */}
-      <LinearGradient
-        testID="journey-veil"
-        colors={[withAlpha(colors.veil, 0), withAlpha(colors.veil, VEIL_PEAK)]}
-        locations={[VEIL_START, 1]}
-        style={StyleSheet.absoluteFill}
       />
     </View>
   );

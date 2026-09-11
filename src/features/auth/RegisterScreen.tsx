@@ -72,9 +72,6 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
   return (
     <Screen
       journeyProgress={journeyStops.register}
-      // Metnin zeminini kart tasiyor; ustune bir de perde cekmek gorseli iki
-      // kez karartirdi. Ust serit kartin disinda, onun perdesi yerinde kaliyor.
-      contentVeil={false}
       header={<ScreenHeader onBack={onBack} />}
       footer={
         <View>
@@ -102,10 +99,6 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
           alttan acilan sayfa uyum yapan materyalde kaliyor, cunku kucuk bir
           kontrolun uzerindeki isaret arkasindaki her sey degistikce okunamaz
           hale geliyor. */}
-      {/* Kart uygulamanin kendi semasinda kaliyor: acik sema cihazda camin
-          kenarina beyaz bir cerceve gibi duran bir parlama koydu. Bugunun
-          bedeli, koyu semanin cama ekledigi hafif karartma; onu kartin
-          altindaki gorselin karartmasini sifira cekerek dengeliyoruz. */}
       <GlassPanel glassStyle="clear">
         <ScreenIntro title={strings.auth.registerTitle} subtitle={strings.auth.registerSubtitle} />
 
