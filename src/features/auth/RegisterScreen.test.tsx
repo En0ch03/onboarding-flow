@@ -256,16 +256,16 @@ describe('RegisterScreen cam kart', () => {
     expect(view.getByTestId('header-veil', { includeHiddenElements: true })).toBeTruthy();
   });
 
-  it('kartin altindan seridin gecmesine izin veriyor', async () => {
+  it('gorselin perdesini oldugu gibi birakiyor; kartin karartmasi kartin kendi isi', async () => {
     const view = await renderWithTheme(<RegisterScreen {...handlers} />);
     // Once agacin cizildigi: bos bir agacta perde sorgusu da patlardi.
     expect(view.getByText(strings.auth.registerTitle)).toBeTruthy();
 
-    // Tam karartma kartin bolgesini neredeyse siyaha indiriyor ve saydam
-    // yuzeyin kiracak bir goruntusu kalmiyor; kart o zaman duz bir panel.
+    // Karartma cama degil ekrana ait olsaydi kartin disindaki metinler de
+    // zeminini kaybederdi; perde tam kaliyor, kart altina kendi katmanini koyuyor.
     expect(
       view.getByTestId('journey-veil', { includeHiddenElements: true }).props.locations,
-    ).toEqual([0.55, 1]);
+    ).toEqual([0.36, 1]);
   });
 
   it('alanlarin arkasindan da cam gorunuyor', async () => {

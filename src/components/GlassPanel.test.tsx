@@ -201,6 +201,13 @@ describe('GlassPanel', () => {
       expect(glass.props.colorScheme).toBe('auto');
       // Etkilesimli degil: kart bir kontrol degil, yuzey.
       expect(glass.props.isInteractive).toBe(false);
+      // Camin kendisi boyanmaz ve soldurulmaz: dolgu arkadaki ayri katmanin isi.
+      const glassStyle = StyleSheet.flatten(glass.props.style) as {
+        backgroundColor?: string;
+        opacity?: number;
+      };
+      expect(glassStyle.backgroundColor).toBeUndefined();
+      expect(glassStyle.opacity).toBeUndefined();
     } finally {
       restore();
     }
@@ -284,6 +291,10 @@ describe('GlassPanel', () => {
       // arkadaki gorseli bogar ve kart yeniden duz panele doner.
       expect(alphaOf(fill.backgroundColor)).toBeGreaterThanOrEqual(0.4);
       expect(alphaOf(fill.backgroundColor)).toBeLessThanOrEqual(0.5);
+      // Yedek kipte kose kart yaricapi: genis yay yalniz sistemin camina ait.
+      expect(StyleSheet.flatten(view.getByTestId('glass-panel').props.style)).toMatchObject({
+        borderRadius: radius.xl,
+      });
     } finally {
       restore();
     }
@@ -377,6 +388,23 @@ describe('GlassPanel', () => {
       expect(glassView.getByTestId(GLASS_VIEW_TEST_ID)).toBeTruthy();
       expect(glassView.queryByTestId('glass-panel-dimming')).toBeNull();
       expect(glassView.getByTestId('glass-panel-dimming', hidden).props.pointerEvents).toBe('none');
+
+      // Katman sirasi bu duzenin tum gerekcesi: karartma camin ARKASINDA.
+      // Onde olsaydi hem cami hem icerigi orterdi.
+      const panel = glassView.getByTestId('glass-panel');
+      const order = panel.children.map((child) =>
+        typeof child === 'string' ? '' : String(child.props.testID ?? ''),
+      );
+      expect(order.indexOf('glass-panel-dimming')).toBeGreaterThanOrEqual(0);
+      expect(order.indexOf('glass-panel-dimming')).toBeLessThan(order.indexOf(GLASS_VIEW_TEST_ID));
+
+      // Karartma dusuk tutuluyor: amac karti koyu bir yuzeye cevirmek degil.
+      const dimming = StyleSheet.flatten(
+        glassView.getByTestId('glass-panel-dimming', hidden).props.style,
+      ) as { backgroundColor?: string };
+      const alpha = alphaOf(String(dimming.backgroundColor));
+      expect(alpha).toBeGreaterThanOrEqual(0.12);
+      expect(alpha).toBeLessThanOrEqual(0.28);
 
       isLiquidGlassAvailable.mockReturnValue(false);
       const blurView = await renderWithTheme(

@@ -24,11 +24,11 @@ type GlassPanelProps = {
   /**
    * Cam kipinde materyalin gorunum semasi.
    *
-   * Varsayilan uygulamanin kendi temasi. Koyu semada sistem camin altina bir
-   * karartma katmani koyuyor; koyu bir gorselin ustunde bu, saydam camin bile
-   * bugulu gorunmesine yetiyor. Karti acik semaya almak o katmani kaldiriyor
-   * ve arkadaki gorseli oldugu gibi birakiyor; metin zaten koyu gorselin
-   * ustunde okunuyor, camin semasina bagli degil.
+   * Varsayilan `auto`: materyal arkasindaki iceriğe gore kendi tonunu secer.
+   * Acik sema cihazda camin kenarina beyaz bir cerceve gibi duran bir parlama
+   * koydu, koyu sema ise camin altina ek bir karartma; ikisini de sistemin
+   * uyumuna birakmak en dogal sonucu verdi. Prop, bir ekranin bunu bilerek
+   * ezebilmesi icin duruyor.
    */
   colorScheme?: GlassColorScheme;
 };
@@ -54,9 +54,10 @@ const TRANSLUCENT_FILL = 0.4;
  * degil acik bir metnin zemini oldugu icin gorselin en parlak noktasinda
  * okunurluk duser. Karartma cama degil arkasina konuyor ve dusuk tutuluyor:
  * amac karti koyu bir yuzeye cevirmek degil, gorseli korurken metne hacim
- * vermek. Aralik gorsele gore 0.12-0.28; kizil-siyah gorsel icin ortasi.
+ * vermek. Aralik gorsele gore 0.12-0.28; kizil-siyah gorselde ust uca yakin,
+ * cunku gorselin perdesi kartin altinda hafifletilmiyor.
  */
-const LOCAL_DIMMING = 0.2;
+const LOCAL_DIMMING = 0.26;
 
 /** Bulaniksiz kipte dolgu tek basina calisiyor, o yuzden daha opak. */
 const FLAT_FILL = 0.86;
@@ -75,8 +76,9 @@ const FLAT_FILL = 0.86;
  * eden bir katmana donduruyor; taklit, aslinin ustunde durunca aslini bozuyor.
  * Yedek kiplerde ise o katmanlar tek basina calisiyor ve kaliyor.
  *
- * Kart dekoratif: butun katmanlari ekran okuyucudan gizli ve dokunusu
- * gecirmiyor, icerik oldugu gibi erisilebilir kaliyor.
+ * Cam kipte cam bir icerik kabi: cocuklarini sistemin materyali kendi icerik
+ * katmanina aliyor, o yuzden gizli degil. Gizli ve dokunusu gecirmeyen sey
+ * camin arkasindaki karartma ile yedek kiplerin dolgu ve kenar katmanlari.
  */
 export function GlassPanel({
   children,
