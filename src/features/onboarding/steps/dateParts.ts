@@ -6,6 +6,15 @@ export const EARLIEST_YEAR = 1900;
 /** Uc cevabin her biri ayri verilebiliyor; verilmeyeni `null`. */
 export type PartialDate = { day: number | null; month: number | null; year: number | null };
 
+/**
+ * Gece yarisi takvim gununun sinirina bitisik: cihazin saat dilimi tablosuyla
+ * JS motorununki bir-iki saat bile ayrissa (Turkiye 2016'ya kadar yaz saati
+ * uyguladigi icin gecmis bir tarih icin bu beklenmedik degil), gece yarisi
+ * secilen tarihi hemen komsu gune tasir. Ogle vakti bu sinirdan en uzak nokta,
+ * bu yuzden takvime ait her `Date` bu saatte kuruluyor.
+ */
+export const SAFE_HOUR = 12;
+
 function readPart(text: string | undefined): number | null {
   if (!text || text.trim() === '') return null;
   const value = Number(text);
@@ -41,7 +50,7 @@ export function dateFromParts(parts: PartialDate): Date | null {
   const { day, month, year } = parts;
   if (day === null || month === null || year === null) return null;
 
-  const date = new Date(year, month - 1, day);
+  const date = new Date(year, month - 1, day, SAFE_HOUR);
   if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
     return null;
   }
