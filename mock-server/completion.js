@@ -127,12 +127,12 @@ function unlockedKeys(preferences, optionGroups) {
  *
  * Iliski veriden okunuyor, `unlocks` kenarlarindan cikarilmiyor. Cikarim
  * iki sekilde yanlis sonuc veriyordu: birbirini acan iki liste ikisi de
- * varyant sayilip butun zorunluluk denetimi sessizce kapaniyordu, ve
+ * varyant sayilip butun zorunluluk dogrulamasi sessizce kapaniyordu, ve
  * varyantin hangi tabana ait oldugu bilinmedigi icin oradan secilen bir
  * etiket her liste icin gecerli sayiliyordu -- "Kutu oyunlari" gecerli bir
  * cinsiyet cevabi oluyordu.
  *
- * Iliskinin kendisi de dogrulaniyor. Varyant olmak denetimden dusmek
+ * Iliskinin kendisi de dogrulaniyor. Varyant olmak dogrulamadan dusmek
  * demek, yani yanlis yazilmis bir `variantOf` kapiyi **acik** yonde
  * bozardi: kendini gosteren, olmayan bir listeyi gosteren veya karsilikli
  * isaret eden iki liste, zorunlu sorulari sessizce zorunsuz yapardi. Boyle

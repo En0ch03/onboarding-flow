@@ -164,7 +164,7 @@ describe('completionProblems', () => {
     expect(completionProblems(user(unlocked), required, today)).toEqual({});
   });
 
-  it('birbirini acan iki liste denetimden kacamiyor', () => {
+  it('birbirini acan iki liste dogrulamadan kacamiyor', () => {
     // Varyant olmak veriden okunuyor, `unlocks` kenarlarindan cikarilmiyor.
     // Cikarimla, birbirini acan iki liste ikisi de varyant sayilip butun
     // zorunluluk kurallari sessizce kapaniyordu.
@@ -234,7 +234,7 @@ describe('completionProblems', () => {
   });
 
   it('kendini gosteren bir varyant baglantisi soruyu zorunsuz yapmiyor', () => {
-    // Varyant olmak denetimden dusmek demek, yani yanlis yazilmis bir
+    // Varyant olmak dogrulamadan dusmek demek, yani yanlis yazilmis bir
     // baglanti kapiyi acik yonde bozardi.
     const broken = { ...groups, gender: { ...groups.gender, variantOf: 'gender' } };
     const bare = { ...complete, gender: undefined };

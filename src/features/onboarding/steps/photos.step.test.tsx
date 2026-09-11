@@ -143,7 +143,7 @@ function deferred() {
 
 const ids = (seen: Seen) => (seen.answers.photos ?? []).map((item) => item.id);
 
-describe('PhotosStep — kutu duzeni', () => {
+describe('PhotosStep: kutu duzeni', () => {
   it('yalnizca bir bos kutu dokunulabilir; gerisi kilitli', async () => {
     const { view } = await renderStep();
 
@@ -182,7 +182,7 @@ describe('PhotosStep — kutu duzeni', () => {
   });
 });
 
-describe('PhotosStep — kaynak secimi', () => {
+describe('PhotosStep: kaynak secimi', () => {
   it('native secici, kaynak sayfasi ekranda dururken acilmiyor', async () => {
     // Kapanmakta olan bir sayfanin ustune sunulan native denetleyici, sayfa
     // kapaninca altindan cekiliyor: ekranda hicbir sey acilmiyor ve dokunuslar
@@ -322,7 +322,7 @@ describe('PhotosStep — kaynak secimi', () => {
   });
 });
 
-describe('PhotosStep — fotograf nereye yerlesiyor', () => {
+describe('PhotosStep: fotograf nereye yerlesiyor', () => {
   it('bos izgarada eklenen fotograf listenin basina giriyor', async () => {
     const { view, seen } = await renderStep();
     await addPhoto(view);
@@ -441,7 +441,7 @@ describe('PhotosStep — fotograf nereye yerlesiyor', () => {
  * Basarisiz kutunun ustunde yalnizca "Tekrar dene" yaziyor; neyin olmadigi
  * gorunur bir cumleyle soylenmeli ve cikis yolunu gostermeli.
  */
-describe('PhotosStep — yukleme hatasinin nedeni', () => {
+describe('PhotosStep: yukleme hatasinin nedeni', () => {
   const FAILURE_LINE = 'Fotoğraf yüklenemedi. Kutuya dokunup tekrar deneyebilirsin.';
 
   it('yukleme reddedilince izgaranin altinda neden soyleniyor', async () => {
@@ -520,7 +520,7 @@ function StoreBound() {
 
 const storeIds = () => (useOnboardingStore.getState().answers.photos ?? []).map((item) => item.id);
 
-describe('PhotosStep — adim terk edilip donuldugunde', () => {
+describe('PhotosStep: adim terk edilip donuldugunde', () => {
   beforeEach(() => {
     useOnboardingStore.getState().replaceAnswers({});
   });
@@ -572,7 +572,7 @@ describe('PhotosStep — adim terk edilip donuldugunde', () => {
   });
 });
 
-describe('PhotosStep — akis terk edildikten sonra biten yukleme', () => {
+describe('PhotosStep: akis terk edildikten sonra biten yukleme', () => {
   beforeEach(() => {
     useOnboardingStore.getState().replaceAnswers({});
   });
