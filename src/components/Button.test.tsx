@@ -69,6 +69,24 @@ describe('Button', () => {
     }
   });
 
+  it('yuklenen ikincil eylem dokununca deforme olmuyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(
+        <Button title="Vazgeç" onPress={noop} variant="ghost" loading />,
+      );
+      expect(view.getByText('Vazgeç')).toBeTruthy();
+
+      // Buton hala cam -- solmuyor, yerinde duruyor. Ama dokunusu kabul
+      // etmiyor ve dokununca deforme olmasi, olmayan bir tepkiyi vaat ederdi.
+      expect(view.getByTestId('glass-ghost', hidden).props.isInteractive).toBe(false);
+    } finally {
+      restore();
+    }
+  });
+
   it('devre disi ikincil eylem cama alinmiyor', async () => {
     const restore = onPlatform('ios');
     try {

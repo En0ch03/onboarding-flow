@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
 
 import { strings } from '@/constants/strings';
+import { opacitiesAbove } from '@/test/opacitiesAbove';
 import { renderWithTheme } from '@/test/renderWithTheme';
 import { palettes } from '@/theme';
 
@@ -164,6 +165,26 @@ describe('BottomSheet', () => {
           view.getByText('Baslik').parent?.parent?.props.style,
         ) as { backgroundColor?: string };
         expect(surface.backgroundColor).toBe(palettes.dark.surfaceRaised);
+      } finally {
+        restore();
+      }
+    });
+
+    it('cam yuzey solan bir kabin icinde durmuyor', async () => {
+      const restore = onPlatform('ios');
+      try {
+        isLiquidGlassAvailable.mockReturnValue(true);
+
+        const view = await renderWithTheme(<Host visible onClosed={() => {}} />);
+        expect(view.getByText('icerik')).toBeTruthy();
+
+        const glass = view.getByTestId('glass-sheet', hidden);
+        // Perde soluyor ama sayfa kayiyor: solan bir kapta sistem materyali de
+        // soluyor ve yarim uygulanmis bir efekt gibi gorunuyor.
+        expect(opacitiesAbove(glass)).toEqual([]);
+        // Ustlerin gercekten gezildigi: gezinme kirilirsa liste bos doner ve
+        // iddia hicbir sey olcmez.
+        expect(glass.parent).not.toBeNull();
       } finally {
         restore();
       }

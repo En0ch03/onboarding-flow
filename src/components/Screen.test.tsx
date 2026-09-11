@@ -3,6 +3,7 @@ import { Dimensions, Platform, processColor, StyleSheet } from 'react-native';
 import { SafeAreaProvider, type Metrics } from 'react-native-safe-area-context';
 
 import { strings } from '@/constants/strings';
+import { opacitiesAbove } from '@/test/opacitiesAbove';
 import { renderWithTheme } from '@/test/renderWithTheme';
 import { palettes, ThemeProvider, withAlpha } from '@/theme';
 
@@ -191,21 +192,6 @@ describe('cam yuzeyler ve ekran ritmi', () => {
     return () => {
       if (original) Object.defineProperty(Platform, 'OS', original);
     };
-  }
-
-  /**
-   * Bir dugumden koke kadar, tam opak olmayan her saydamlik degeri. Tam opak
-   * bir deger solma degil; solma, birden kucuk ya da animasyonlu bir deger.
-   */
-  function opacitiesAbove(node: { parent: unknown; props: { style?: unknown } } | null) {
-    const values: unknown[] = [];
-    let current = node;
-    while (current) {
-      const style = StyleSheet.flatten(current.props.style) as { opacity?: unknown } | undefined;
-      if (style?.opacity !== undefined && style.opacity !== 1) values.push(style.opacity);
-      current = current.parent as typeof node;
-    }
-    return values;
   }
 
   beforeEach(() => {

@@ -1,3 +1,4 @@
+import { act, fireEvent } from '@testing-library/react-native';
 import { Platform, StyleSheet } from 'react-native';
 
 import { stepCounterLabel, strings } from '@/constants/strings';
@@ -187,6 +188,35 @@ describe('ScreenHeader', () => {
         // Serit uzerindeki cam yuzeyler yalnizca iki dugme; ucuncu bir yuzey
         // sayacin da cama alindigi anlamina gelir.
         expect(view.queryAllByTestId(GLASS_VIEW_TEST_ID, hidden)).toHaveLength(0);
+      } finally {
+        restore();
+      }
+    });
+
+    it('cam katman dokunusu yutmuyor', async () => {
+      const restore = onPlatform('ios');
+      try {
+        isLiquidGlassAvailable.mockReturnValue(true);
+        const onBack = jest.fn();
+        const onSkip = jest.fn();
+
+        const view = await renderWithTheme(
+          <ScreenHeader onBack={onBack} skip={{ label: strings.common.skip, onPress: onSkip }} />,
+        );
+        expect(view.getByTestId('glass-back', hidden)).toBeTruthy();
+
+        // Etkilesim `act` icinde: yarim kalan bir guncelleme, ayni dosyadaki
+        // sonraki testin agacini bos render ediyor.
+        await act(async () => {
+          fireEvent.press(view.getByLabelText(strings.common.back));
+          fireEvent.press(view.getByLabelText(strings.common.skip));
+        });
+
+        // Cam katman dugmenin uzerinde duruyor ve dokunusu kendisi tutsaydi
+        // geri ile gecme cihazda hic calismazdi. Bu iddia yalnizca JS
+        // zincirini kilitliyor; yerel tarafi cihaz turu soyleyecek.
+        expect(onBack).toHaveBeenCalledTimes(1);
+        expect(onSkip).toHaveBeenCalledTimes(1);
       } finally {
         restore();
       }

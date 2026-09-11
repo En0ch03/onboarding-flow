@@ -99,8 +99,10 @@ export function Button({
               // Basili hal icin ayri bir solma yok: dokunusa tepki veren sivi
               // deformasyonu materyalin kendisi tasiyor ve ustune eklenen bir
               // saydamlik animasyonu onun uzerine binen ikinci bir hareket
-              // olurdu.
-              isInteractive
+              // olurdu. Yuklenirken kapaniyor: dokunusu kabul etmeyen bir
+              // butonun dokununca deforme olmasi, olmayan bir tepkiyi vaat
+              // ediyor.
+              isInteractive={!inactive}
               colorScheme={scheme}
               style={[StyleSheet.absoluteFill, { borderRadius: radius.full }]}
             />

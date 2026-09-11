@@ -115,6 +115,35 @@ describe('GlassPanel', () => {
     }
   });
 
+  it('istenirse saydam materyale geciyor, varsayilani uyum yapan', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const clear = await renderWithTheme(
+        <GlassPanel glassStyle="clear">
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(clear.getByText('İçerik')).toBeTruthy();
+      expect(clear.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.glassEffectStyle).toBe('clear');
+
+      const regular = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(regular.getByText('İçerik')).toBeTruthy();
+      // Varsayilan uyum yapan materyal: saydami isteyen yuzey bunu acikca
+      // soyler, cunku kontrasti kendi arka planina gore ustlenmis olur.
+      expect(regular.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.glassEffectStyle).toBe(
+        'regular',
+      );
+    } finally {
+      restore();
+    }
+  });
+
   it('cam kipte tona karismiyor: optik sistemin', async () => {
     const restore = onPlatform('ios');
     try {

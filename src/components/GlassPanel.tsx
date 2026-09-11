@@ -1,5 +1,5 @@
 import { BlurView } from 'expo-blur';
-import { GlassView } from 'expo-glass-effect';
+import { GlassView, type GlassStyle } from 'expo-glass-effect';
 import { useEffect, useState, type ReactNode } from 'react';
 import {
   AccessibilityInfo,
@@ -18,6 +18,17 @@ import { resolveGlassMode, type GlassMode } from './glassMode';
 type GlassPanelProps = {
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
+  /**
+   * Cam kipinde sistemin hangi materyalini kullanacagi.
+   *
+   * `regular` arkasindaki parlakliga gore kendi tonunu ve golgesini
+   * ayarliyor; `clear` bunlari yapmiyor, kalici olarak daha saydam kaliyor ve
+   * arkasindaki icerigin kendisini gosteriyor. Kucuk kontroller icin `clear`
+   * yanlis secim -- uzerlerindeki isaret arkadaki her sey degistikce
+   * okunamaz hale geliyor. Genis bir kartin arkasinda ise zengin bir gorsel
+   * duruyor ve onu tona bogmadan gostermenin yolu bu.
+   */
+  glassStyle?: Extract<GlassStyle, 'regular' | 'clear'>;
 };
 
 /**
@@ -131,7 +142,7 @@ function GlassModeBadge({ mode }: { mode: GlassMode }) {
  * Kart dekoratif: butun katmanlari ekran okuyucudan gizli ve dokunusu
  * gecirmiyor, icerik oldugu gibi erisilebilir kaliyor.
  */
-export function GlassPanel({ children, style }: GlassPanelProps) {
+export function GlassPanel({ children, style, glassStyle = 'regular' }: GlassPanelProps) {
   const { colors, radius, scheme, spacing } = useTheme();
   const mode = resolveGlassMode();
   const liquid = mode === 'liquid';
@@ -164,7 +175,7 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           pointerEvents="none"
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          glassEffectStyle="regular"
+          glassEffectStyle={glassStyle}
           // Sema uygulamanin kendi anahtarindan geliyor: sistem koyu temadayken
           // uygulama acik temada olabiliyor ve materyalin "auto" degeri sistemi
           // okuyor, uygulamayi degil.
