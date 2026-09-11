@@ -17,6 +17,7 @@ import { useTheme } from '@/theme';
 
 import { AppText } from './AppText';
 import { resolveGlassMode } from './glassMode';
+import { useScreenGlassEnabled } from './glassScreenContext';
 
 /** Bu mesafenin altinda birakilan bir surukleme, sayfayi kapatmiyor. */
 const DISMISS_DISTANCE = 96;
@@ -63,7 +64,7 @@ export function BottomSheet({ visible, title, onClose, onClosed, children }: Bot
   // Sayfa yuzeyi cam kipte sistemin materyaliyle, yedeklerde bugunku opak
   // yuzeyle ciziliyor. Perde cam degil: karartmasi gereken sey arkadaki ekran
   // ve saydam bir perde o isi yapmaz.
-  const liquid = resolveGlassMode() === 'liquid';
+  const liquid = useScreenGlassEnabled() && resolveGlassMode() === 'liquid';
   const { height } = useWindowDimensions();
 
   // Kapanis animasyonunun gorunebilmesi icin `Modal` bir sure daha ayakta

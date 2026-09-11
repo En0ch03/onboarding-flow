@@ -1,10 +1,11 @@
 import { cleanup, fireEvent, waitFor } from '@testing-library/react-native';
-import { BackHandler } from 'react-native';
+import { BackHandler, Platform } from 'react-native';
 
 import type { OptionGroups } from '@/api/schemas';
 import { presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
 import { useOnboardingStore, type DraftAnswers } from '@/state/onboardingStore';
+import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { completeOnboarding } from '@/api/endpoints';
@@ -98,7 +99,44 @@ async function mount(draft: DraftAnswers, handlers: Handlers = {}, unsynced: str
   );
 }
 
+const { isLiquidGlassAvailable, isGlassEffectAPIAvailable } = jest.requireMock('expo-glass-effect');
+
+/** Arka katmanlar ekran okuyucudan gizli; sorgular gizli ogeleri de kapsiyor. */
+const hidden = { includeHiddenElements: true } as const;
+
+/** Platformu gecici olarak degistirir; test bitince eski tanimi geri koyar. */
+function onPlatform(os: 'ios' | 'android') {
+  const original = Object.getOwnPropertyDescriptor(Platform, 'OS');
+  Object.defineProperty(Platform, 'OS', { get: () => os, configurable: true });
+  return () => {
+    if (original) Object.defineProperty(Platform, 'OS', original);
+  };
+}
+
 describe('CompletionScreen', () => {
+  beforeEach(() => {
+    isLiquidGlassAvailable.mockReturnValue(false);
+    isGlassEffectAPIAvailable.mockReturnValue(true);
+  });
+
+  it('kapanis duz metne dayanan bir ekran: cam kipi acik olsa bile hayalet dugme cama gecmiyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await mount(answers);
+      // Onay tamamlanip buton devre disi olmaktan cikana kadar bekleniyor:
+      // devre disi bir hayalet dugme zaten cama gecmiyor ve test yanlis
+      // sebeple gecerdi.
+      await waitFor(() => expect(view.getByText(strings.completion.secondary)).toBeTruthy());
+
+      expect(view.queryByTestId('glass-ghost', hidden)).toBeNull();
+      expect(view.queryByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
   it('cevaplari sayiyla degil kendi kelimeleriyle geri okuyor', async () => {
     const view = await mount(answers);
 

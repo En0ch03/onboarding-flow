@@ -35,6 +35,7 @@ export function WelcomeDifferenceScreen({
 
   return (
     <Screen
+      glass={false}
       journeyProgress={journeyStops.difference}
       header={
         <ScreenHeader onBack={onBack} skip={{ label: strings.common.skip, onPress: onSkip }} />

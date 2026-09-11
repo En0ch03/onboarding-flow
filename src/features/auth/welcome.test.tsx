@@ -1,12 +1,27 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import { strings } from '@/constants/strings';
+import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { WelcomeDifferenceScreen } from './WelcomeDifferenceScreen';
 import { WelcomePromiseScreen } from './WelcomePromiseScreen';
 
+const { isLiquidGlassAvailable, isGlassEffectAPIAvailable } = jest.requireMock('expo-glass-effect');
+
 const noop = () => {};
+
+/** Arka katmanlar ekran okuyucudan gizli; sorgular gizli ogeleri de kapsiyor. */
+const hidden = { includeHiddenElements: true } as const;
+
+/** Platformu gecici olarak degistirir; test bitince eski tanimi geri koyar. */
+function onPlatform(os: 'ios' | 'android') {
+  const original = Object.getOwnPropertyDescriptor(Platform, 'OS');
+  Object.defineProperty(Platform, 'OS', { get: () => os, configurable: true });
+  return () => {
+    if (original) Object.defineProperty(Platform, 'OS', original);
+  };
+}
 
 type Node = { props?: { style?: unknown }; children?: unknown } | string | null;
 
@@ -26,6 +41,41 @@ function hasCentredContent(node: Node | Node[]): boolean {
 }
 
 describe('karsilama ekranlari', () => {
+  beforeEach(() => {
+    isLiquidGlassAvailable.mockReturnValue(false);
+    isGlassEffectAPIAvailable.mockReturnValue(true);
+  });
+
+  it('duz metne dayanan ekranlarda cam kipi acik olsa bile hic cizilmiyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const promise = await renderWithTheme(
+        <WelcomePromiseScreen onStart={noop} onSignIn={noop} />,
+      );
+      // Once agacin gercekten cizildigi: bos bir agacta asagidaki sorgular
+      // da "yok" derdi ve kural silinse bile test yesil kalirdi.
+      expect(promise.getByText(strings.welcome.promiseTitle)).toBeTruthy();
+      // Ekranin tek cam adayi hayalet dugme: sahne kuran bu ekranda metnin
+      // disinda okunacak bir zemin kalmamali.
+      expect(promise.queryByTestId('glass-ghost', hidden)).toBeNull();
+      expect(promise.queryByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeNull();
+
+      const difference = await renderWithTheme(
+        <WelcomeDifferenceScreen onContinue={noop} onBack={noop} onSkip={noop} />,
+      );
+      expect(difference.getByText(strings.welcome.differenceTitleFirst)).toBeTruthy();
+      // Bu ekranin iki adayi var: geri dairesi ve gec kapsulu; ikisi de
+      // yedek gorunumunde kalmali.
+      expect(difference.queryByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeNull();
+      expect(difference.queryByTestId('glass-back', hidden)).toBeNull();
+      expect(difference.queryByTestId('glass-skip', hidden)).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
   it('ikinci ekranin cumlesi iki ayri satir', async () => {
     const view = await renderWithTheme(
       <WelcomeDifferenceScreen onContinue={noop} onBack={noop} onSkip={noop} />,

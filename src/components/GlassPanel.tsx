@@ -6,6 +6,7 @@ import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import { useTheme, withAlpha } from '@/theme';
 
 import { resolveGlassMode } from './glassMode';
+import { useScreenGlassEnabled } from './glassScreenContext';
 
 type GlassPanelProps = {
   children: ReactNode;
@@ -75,7 +76,15 @@ export function GlassPanel({
   colorScheme,
 }: GlassPanelProps) {
   const { colors, radius, spacing } = useTheme();
-  const mode = resolveGlassMode();
+  const resolvedMode = resolveGlassMode();
+  // Ekran cami kapattiysa sistem camina hic sorulmuyor, bulanik yedege
+  // dusuluyor: cam varsayimiyla yazilmis bir kart yediginde bosluksuz
+  // kalmasin diye kartin kendi zemini gerekiyor.
+  const mode = useScreenGlassEnabled()
+    ? resolvedMode
+    : resolvedMode === 'liquid'
+      ? 'blur'
+      : resolvedMode;
   const liquid = mode === 'liquid';
 
   return (

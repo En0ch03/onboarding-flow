@@ -1,5 +1,5 @@
 import { act, cleanup, fireEvent, waitFor } from '@testing-library/react-native';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
@@ -7,6 +7,7 @@ import { strings } from '@/constants/strings';
 import { useAuthStore } from '@/state/authStore';
 import { useOnboardingStore } from '@/state/onboardingStore';
 import { storageKeys } from '@/storage/keys';
+import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { journeyOffset, journeyStops } from '@/features/onboarding/artwork/journeyArtwork';
@@ -36,7 +37,43 @@ beforeEach(async () => {
 
 afterEach(cleanup);
 
+const { isLiquidGlassAvailable, isGlassEffectAPIAvailable } = jest.requireMock('expo-glass-effect');
+
+/** Arka katmanlar ekran okuyucudan gizli; sorgular gizli ogeleri de kapsiyor. */
+const hidden = { includeHiddenElements: true } as const;
+
+/** Platformu gecici olarak degistirir; test bitince eski tanimi geri koyar. */
+function onPlatform(os: 'ios' | 'android') {
+  const original = Object.getOwnPropertyDescriptor(Platform, 'OS');
+  Object.defineProperty(Platform, 'OS', { get: () => os, configurable: true });
+  return () => {
+    if (original) Object.defineProperty(Platform, 'OS', original);
+  };
+}
+
 describe('varis ekrani', () => {
+  beforeEach(() => {
+    isLiquidGlassAvailable.mockReturnValue(false);
+    isGlassEffectAPIAvailable.mockReturnValue(true);
+  });
+
+  it('varis duz metne dayanan bir ekran: cam kipi acik olsa bile cikis dugmesi cama gecmiyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const screen = await renderWithTheme(<HomeScreen />);
+      // Once agacin gercekten cizildigi: bos bir agacta asagidaki sorgular
+      // da "yok" derdi ve kural silinse bile test yesil kalirdi.
+      expect(screen.getByText(strings.home.signOut)).toBeTruthy();
+
+      expect(screen.queryByTestId('glass-ghost', hidden)).toBeNull();
+      expect(screen.queryByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
   it('akisin bittigi yer bir cikmaz sokak degil: oturum kapatilabiliyor', async () => {
     await act(async () => {
       await useAuthStore.getState().startSession(session);

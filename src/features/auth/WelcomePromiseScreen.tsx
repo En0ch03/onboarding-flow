@@ -29,6 +29,7 @@ export function WelcomePromiseScreen({ onStart, onSignIn }: WelcomePromiseScreen
   return (
     <Screen
       align="upper"
+      glass={false}
       journeyProgress={journeyStops.welcome}
       footer={
         <View>

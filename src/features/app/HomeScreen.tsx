@@ -21,6 +21,7 @@ export function HomeScreen() {
   return (
     <Screen
       align="center"
+      glass={false}
       // Varis, akisin kesildigi yer degil bittigi yer: arkadaki gorsel
       // yolculuk boyunca kayiyor ve burada son kadrajinda duruyor.
       journeyProgress={journeyStops.completion}
