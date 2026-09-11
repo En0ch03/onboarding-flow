@@ -133,7 +133,14 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
           />
         ) : null}
 
-        <CredentialsFields control={form.control} mode="register" onSubmit={() => void submit()} />
+        <CredentialsFields
+          control={form.control}
+          mode="register"
+          // Alanlar kartin icinde: opak zeminleri camin gosterecek bir seyini
+          // birakmiyordu.
+          surface="glass"
+          onSubmit={() => void submit()}
+        />
       </GlassPanel>
     </Screen>
   );

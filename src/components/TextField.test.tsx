@@ -2,6 +2,7 @@ import { act, type RenderResult } from '@testing-library/react-native';
 import { StyleSheet, type TextStyle } from 'react-native';
 
 import { renderWithTheme } from '@/test/renderWithTheme';
+import { palettes, withAlpha } from '@/theme';
 
 import { TextField } from './TextField';
 
@@ -66,5 +67,30 @@ describe('TextField öneki', () => {
 
     expect(view.getByLabelText(LABEL)).toBeTruthy();
     expect(view.queryByText(PREFIX, { includeHiddenElements: true })).toBeNull();
+  });
+});
+
+describe('TextField yuzeyi', () => {
+  it('varsayilan alanin zemini neredeyse opak kaliyor', async () => {
+    const view = await renderWithTheme(<TextField label={LABEL} />);
+    // Once agacin cizildigi: bos bir agacta stil sorgusu da patlardi.
+    expect(view.getByLabelText(LABEL)).toBeTruthy();
+
+    const style = StyleSheet.flatten(view.getByLabelText(LABEL).props.style) as TextStyle;
+    // Kartsiz ekranlarda yazilan metnin kontrasti bu zemine dayaniyor.
+    expect(style.backgroundColor).toBe(withAlpha(palettes.dark.surface, 0.92));
+  });
+
+  it('cam yuzeyde alan kartin altindaki goruntuyu geciriyor', async () => {
+    const view = await renderWithTheme(<TextField label={LABEL} surface="glass" />);
+    expect(view.getByLabelText(LABEL)).toBeTruthy();
+
+    const input = view.getByLabelText(LABEL);
+    const style = StyleSheet.flatten(input.props.style) as TextStyle;
+    // Opak alanlar kartin icini kaplayinca cam yalnizca ic dolguda gorunuyor
+    // ve kart dolu bir panel gibi okunuyor.
+    expect(style.backgroundColor).toBe(withAlpha(palettes.dark.surface, 0.28));
+    expect(style.borderColor).toBe(withAlpha(palettes.dark.ink, 0.18));
+    expect(input.props.placeholderTextColor).toBe(palettes.dark.inkSoft);
   });
 });

@@ -1,9 +1,11 @@
 import { act, cleanup, fireEvent, waitFor, type RenderResult } from '@testing-library/react-native';
 import { AxiosError, AxiosHeaders } from 'axios';
+import { StyleSheet } from 'react-native';
 
 import { presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
 import { renderWithTheme } from '@/test/renderWithTheme';
+import { palettes, withAlpha } from '@/theme';
 
 import { LoginScreen } from './LoginScreen';
 
@@ -137,5 +139,19 @@ describe('LoginScreen', () => {
     expect(view.getByLabelText(strings.auth.passwordLabel)).toBeTruthy();
 
     expect(view.queryByLabelText(strings.auth.confirmPasswordLabel)).toBeNull();
+  });
+});
+
+describe('LoginScreen alan zemini', () => {
+  it('kartsiz ekranda alanlar kendi zeminini tasiyor', async () => {
+    const view = await renderWithTheme(<LoginScreen {...handlers} />);
+    const email = view.getByLabelText(strings.auth.emailLabel);
+    expect(email).toBeTruthy();
+
+    // Giris ekraninda alanlarin arkasinda kart yok: saydam bir zemin, yazilan
+    // metnin kontrastini dogrudan arka plan gorseline birakirdi.
+    expect(
+      (StyleSheet.flatten(email.props.style) as { backgroundColor?: string }).backgroundColor,
+    ).toBe(withAlpha(palettes.dark.surface, 0.92));
   });
 });

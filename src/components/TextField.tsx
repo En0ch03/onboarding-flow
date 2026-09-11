@@ -50,7 +50,36 @@ type TextFieldProps = Omit<TextInputProps, 'style'> & {
    * ikinci bir serit yalnizca yer kaplardi.
    */
   dismissAccessory?: boolean;
+  /**
+   * Alanin zemini.
+   *
+   * `solid` kendi zeminini getiriyor: kartsiz ekranlarda yazilan metnin
+   * kontrasti arka plan gorseline degil bu zemine dayaniyor. `glass` ise
+   * saydam bir kartin icinde duran alanlar icin -- opak alanlar kartin icini
+   * kaplayinca camin gosterecek bir seyi kalmiyor ve kart dolu bir panele
+   * donuyor. Kontrasti orada kartin kendi materyali tasiyor.
+   */
+  surface?: FieldSurface;
 };
+
+export type FieldSurface = 'solid' | 'glass';
+
+/**
+ * Alan zemininin opakligi.
+ *
+ * `solid` neredeyse opak: altindaki gorsel yalnizca hafifce yasiyor. `glass`
+ * ucte birinden az; asagi inmek alani kartin icinde gorunmez kiliyor, yukari
+ * cikmak camin onundeki perdeye donusturuyor.
+ */
+const FIELD_FILL = { solid: 0.92, glass: 0.28 } as const;
+
+/**
+ * Cam yuzeyde kenarligin opakligi.
+ *
+ * Alanin nerede bittigini soyleyen tek sey kenarlik: zemin saydamlasinca
+ * `hairline` tonu kartin kendi kenar isiginin altinda kayboluyordu.
+ */
+const GLASS_BORDER = 0.18;
 
 /**
  * Etiket, girdi, alan alti hata.
@@ -59,7 +88,15 @@ type TextFieldProps = Omit<TextInputProps, 'style'> & {
  * formun tepesindeki bir liste, hangi alanin kastedildigini aramaya birakiyor.
  */
 export const TextField = forwardRef<TextInput, TextFieldProps>(function TextField(
-  { label, error, secure = false, prefix, dismissAccessory = false, ...inputProps },
+  {
+    label,
+    error,
+    secure = false,
+    prefix,
+    dismissAccessory = false,
+    surface = 'solid',
+    ...inputProps
+  },
   ref,
 ) {
   const { colors, radius, spacing, type } = useTheme();
@@ -71,11 +108,14 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
   const [focused, setFocused] = useState(false);
   const [prefixWidth, setPrefixWidth] = useState(0);
 
-  const borderColor = error ? colors.danger : focused ? colors.clay : colors.hairline;
+  // Dinginlikteki kenarlik yuzeye gore degisiyor; hata ve odak renkleri
+  // degismiyor: ikisi de bir durumu soyluyor ve o durum yuzeye bagli degil.
+  const restingBorder = surface === 'glass' ? withAlpha(colors.ink, GLASS_BORDER) : colors.hairline;
+  const borderColor = error ? colors.danger : focused ? colors.clay : restingBorder;
   // Alan zemini tam opak degil: arka plan gorseli formun altinda hafifce
   // yasamaya devam ediyor, ama yazilan metnin kontrasti gorsele degil bu
   // zemine gore olculuyor.
-  const fieldBackground = withAlpha(colors.surface, 0.92);
+  const fieldBackground = withAlpha(colors.surface, FIELD_FILL[surface]);
 
   return (
     <View style={{ marginBottom: spacing.lg }}>

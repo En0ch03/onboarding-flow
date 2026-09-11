@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Controller, type Control } from 'react-hook-form';
 import type { TextInput } from 'react-native';
 
-import { TextField } from '@/components/TextField';
+import { TextField, type FieldSurface } from '@/components/TextField';
 import { strings } from '@/constants/strings';
 
 import type { CredentialsForm, RegisterForm } from './credentialsForm';
@@ -17,6 +17,15 @@ type CredentialsFieldsProps = {
   mode: 'register' | 'login';
   /** Sifre alanindaki bitirme tusu formu gonderiyor. */
   onSubmit: () => void;
+  /**
+   * Alanlarin zemini.
+   *
+   * Iki ekranin kabugu ayni degil: biri alanlari saydam bir kartin icine
+   * aliyor, digeri dogrudan gorselin uzerine koyuyor. Zemini ekran secmezse
+   * ya kartin ici opak alanlarla doluyor ya da kartsiz ekranda metnin altinda
+   * hicbir sey kalmiyor.
+   */
+  surface?: FieldSurface;
 };
 
 /**
@@ -30,7 +39,12 @@ type CredentialsFieldsProps = {
  * formun ritmi orada kesiliyor. Kayitta ayni devir bir alan daha suruyor:
  * sifreden dogrulama alanina.
  */
-export function CredentialsFields({ control, mode, onSubmit }: CredentialsFieldsProps) {
+export function CredentialsFields({
+  control,
+  mode,
+  onSubmit,
+  surface = 'solid',
+}: CredentialsFieldsProps) {
   const password = useRef<TextInput>(null);
   const confirmPassword = useRef<TextInput>(null);
   const isRegister = mode === 'register';
@@ -45,6 +59,7 @@ export function CredentialsFields({ control, mode, onSubmit }: CredentialsFields
         name="email"
         render={({ field, fieldState }) => (
           <TextField
+            surface={surface}
             label={strings.auth.emailLabel}
             value={field.value}
             onChangeText={field.onChange}
@@ -68,6 +83,7 @@ export function CredentialsFields({ control, mode, onSubmit }: CredentialsFields
         name="password"
         render={({ field, fieldState }) => (
           <TextField
+            surface={surface}
             ref={password}
             label={strings.auth.passwordLabel}
             value={field.value}
@@ -95,6 +111,7 @@ export function CredentialsFields({ control, mode, onSubmit }: CredentialsFields
           name="confirmPassword"
           render={({ field, fieldState }) => (
             <TextField
+              surface={surface}
               ref={confirmPassword}
               label={strings.auth.confirmPasswordLabel}
               value={field.value}
