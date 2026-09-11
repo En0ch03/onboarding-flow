@@ -1,10 +1,9 @@
-import { waitFor } from '@testing-library/react-native';
 import { AccessibilityInfo, Platform, StyleSheet } from 'react-native';
 
 import { BLUR_VIEW_TEST_ID } from '@/test/blurMock';
 import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
-import { palettes, radius, withAlpha } from '@/theme';
+import { palettes, radius, spacing, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 import { GlassPanel } from './GlassPanel';
@@ -77,9 +76,33 @@ describe('GlassPanel', () => {
       // Yerel katman kartin `overflow: hidden` kirpmasini gormuyor, kendi kose
       // yaricapini okuyor: verilmezse cam dort koseli bir dikdortgen kaliyor.
       expect(StyleSheet.flatten(glass.props.style)).toMatchObject({
-        borderRadius: radius.lg,
+        borderRadius: radius.xl,
       });
       expect(view.queryByTestId(BLUR_VIEW_TEST_ID, hidden)).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
+  it('kartin kosesi ve ic dolgusu kirilmaya yer biraktiriyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+
+      // Cam kirilmayi kenarda gosteriyor: dar bir ic dolguda kenar bandi
+      // icerigin altinda kaliyor ve kart dolu bir panel gibi okunuyor.
+      expect(StyleSheet.flatten(view.getByTestId('glass-panel').props.style)).toMatchObject({
+        borderRadius: radius.xl,
+        paddingHorizontal: spacing.xxl,
+        paddingVertical: spacing.xl,
+      });
     } finally {
       restore();
     }
@@ -380,7 +403,7 @@ describe('GlassPanel', () => {
         );
         expect(view.getByText('İçerik')).toBeTruthy();
 
-        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toMatch(/^B · /);
+        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toBe('B');
       } finally {
         restoreDev();
         restore();
@@ -399,7 +422,7 @@ describe('GlassPanel', () => {
         );
         expect(view.getByText('İçerik')).toBeTruthy();
 
-        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toMatch(/^L · /);
+        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toBe('L');
       } finally {
         restoreDev();
         restore();
@@ -417,77 +440,7 @@ describe('GlassPanel', () => {
         );
         expect(view.getByText('İçerik')).toBeTruthy();
 
-        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toMatch(/^F · /);
-      } finally {
-        restoreDev();
-        restore();
-      }
-    });
-
-    it('saydamligin kisitli oldugunu yaziyor', async () => {
-      const restore = onPlatform('ios');
-      const restoreDev = onDevFlag(true);
-      try {
-        jest.spyOn(AccessibilityInfo, 'isReduceTransparencyEnabled').mockResolvedValue(true);
-
-        const view = await renderWithTheme(
-          <GlassPanel>
-            <AppText>İçerik</AppText>
-          </GlassPanel>,
-        );
-        expect(view.getByText('İçerik')).toBeTruthy();
-
-        // Sistem saydamligi kisitliyorsa cam duz bir yuzeye duser; "efekt tam
-        // olmamis" gorunumunun kod disindaki aciklamasi bu.
-        await waitFor(() =>
-          expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toContain(
-            'saydamlık kısıtlı',
-          ),
-        );
-      } finally {
-        restoreDev();
-        restore();
-      }
-    });
-
-    it('saydamlik sorusu cevapsiz kalirsa soru isareti yaziyor', async () => {
-      const restore = onPlatform('ios');
-      const restoreDev = onDevFlag(true);
-      try {
-        jest
-          .spyOn(AccessibilityInfo, 'isReduceTransparencyEnabled')
-          .mockRejectedValue(new Error('yok'));
-
-        const view = await renderWithTheme(
-          <GlassPanel>
-            <AppText>İçerik</AppText>
-          </GlassPanel>,
-        );
-        expect(view.getByText('İçerik')).toBeTruthy();
-
-        await waitFor(() =>
-          expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toContain('saydamlık ?'),
-        );
-      } finally {
-        restoreDev();
-        restore();
-      }
-    });
-
-    it('Android tarafinda cevaplanmayan soruya yer ayirmiyor', async () => {
-      const restore = onPlatform('android');
-      const restoreDev = onDevFlag(true);
-      try {
-        const view = await renderWithTheme(
-          <GlassPanel>
-            <AppText>İçerik</AppText>
-          </GlassPanel>,
-        );
-        expect(view.getByText('İçerik')).toBeTruthy();
-
-        // Saydamlik sorusu yalnizca iOS'ta anlamli; Android'de bos birakilan
-        // yer, orada bir cevap oldugunu ima ediyordu.
-        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).not.toContain('saydamlık');
+        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toBe('F');
       } finally {
         restoreDev();
         restore();

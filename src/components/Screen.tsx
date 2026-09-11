@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { JourneyBackdrop } from '@/features/onboarding/artwork/JourneyBackdrop';
+import { JourneyBackdrop, type VeilWeight } from '@/features/onboarding/artwork/JourneyBackdrop';
 import { spacing as scale, useTheme, withAlpha } from '@/theme';
 
 type ScreenProps = {
@@ -40,6 +40,15 @@ type ScreenProps = {
    * durumda kaliyor, cunku geri oku ve sayac kartin disinda duruyor.
    */
   contentVeil?: boolean;
+  /**
+   * Gorselin uzerindeki karartmanin agirligi.
+   *
+   * Icerigini saydam bir kartin icine alan ekranda karartma hafifler: kart
+   * arkasindaki goruntuyu kirarak yasiyor ve karartilmis bir zeminin kiracak
+   * bir seyi kalmiyor. Kartsiz ekranlarda metnin kontrasti dogrudan bu
+   * karartmaya dayandigi icin varsayilan degismiyor.
+   */
+  backdropVeil?: VeilWeight;
 };
 
 export type ScreenAlign = 'top' | 'upper' | 'center';
@@ -87,6 +96,7 @@ export function Screen({
   align = 'top',
   journeyProgress,
   contentVeil = true,
+  backdropVeil = 'full',
 }: ScreenProps) {
   const { colors, scheme, screenPadding, spacing } = useTheme();
   const { height } = useWindowDimensions();
@@ -103,7 +113,7 @@ export function Screen({
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.paper }}>
-      {showJourney ? <JourneyBackdrop progress={journeyProgress} /> : null}
+      {showJourney ? <JourneyBackdrop progress={journeyProgress} veil={backdropVeil} /> : null}
       <SafeAreaView
         style={{ flex: 1, backgroundColor: showJourney ? 'transparent' : colors.paper }}
         edges={['top', 'bottom']}

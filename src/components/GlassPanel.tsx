@@ -1,15 +1,7 @@
 import { BlurView } from 'expo-blur';
 import { GlassView, type GlassStyle } from 'expo-glass-effect';
-import { useEffect, useState, type ReactNode } from 'react';
-import {
-  AccessibilityInfo,
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  type StyleProp,
-  type ViewStyle,
-} from 'react-native';
+import { type ReactNode } from 'react';
+import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { useTheme, withAlpha } from '@/theme';
 
@@ -52,51 +44,16 @@ const FLAT_FILL = 0.86;
 const MODE_LETTERS: Record<GlassMode, string> = { liquid: 'L', blur: 'B', flat: 'F' };
 
 /**
- * Sistemin saydamligi kisitlayip kisitlamadigi.
- *
- * Ayri bir kanca cunku cevap asenkron geliyor ve yalniz iOS'ta anlamli. Cevap
- * gelmeden veya hic gelmeyecekse soru isareti kaliyor: burada yanlis bir
- * "acik" yazmak, cihazi tutan kisiyi yanlis yone gonderir. Android'de soru
- * hic sorulmuyor ve rozette yeri de bos kalmiyor: cevaplanmayacak bir soru
- * icin ayrilan yer, orada bir cevap oldugunu ima ediyordu.
- */
-function useTransparencyLabel(): string | null {
-  const [label, setLabel] = useState<string | null>(Platform.OS === 'ios' ? 'saydamlık ?' : null);
-
-  useEffect(() => {
-    if (Platform.OS !== 'ios') return;
-
-    let alive = true;
-    AccessibilityInfo.isReduceTransparencyEnabled()
-      .then((limited) => {
-        if (alive) setLabel(limited ? 'saydamlık kısıtlı' : 'saydamlık açık');
-      })
-      // Erisilebilirlik sorusu cevapsiz kalabilir; rozet bir teshis araci,
-      // cevaplayamadigi soru yuzunden ekrani dusurmemeli.
-      .catch(() => {});
-
-    return () => {
-      alive = false;
-    };
-  }, []);
-
-  return label;
-}
-
-/**
  * Kartin hangi kiple cizildigini soyleyen kucuk etiket.
  *
- * Cihazda gorulen "efekt tam olmamis" tablosunun uc ayri sebebi olabiliyor:
- * yanlis kip, isletim sistemi surumu, ya da saydamligi kisitlayan bir
- * erisilebilirlik ayari. Uc bilgi ayni anda ekranda durursa cihazi tutan kisi
- * tek bakista soyleyebiliyor; terminal ciktisi icin cihaz basina gecmek gerek.
+ * Cihazda "efekt tam olmamis" gorunumunun hangi kipten geldigini tek bakista
+ * soyluyor; terminal ciktisi icin cihaz basina gecmek gerek. Yaninda duran
+ * sistem surumu ve saydamlik ayari sorusunu bir kez cevaplandi: artik her
+ * ekranda tasinan iki fazla bilgi, kartin sag ust kosesini kaplayan bir
+ * seride donusuyordu.
  */
 function GlassModeBadge({ mode }: { mode: GlassMode }) {
   const { colors, radius, spacing } = useTheme();
-  const transparency = useTransparencyLabel();
-  const system = Platform.OS === 'ios' ? 'iOS' : 'Android';
-  const parts = [MODE_LETTERS[mode], `${system} ${Platform.Version}`];
-  if (transparency !== null) parts.push(transparency);
 
   return (
     <Text
@@ -120,7 +77,7 @@ function GlassModeBadge({ mode }: { mode: GlassMode }) {
         backgroundColor: withAlpha(colors.scrim, 0.55),
       }}
     >
-      {parts.join(' · ')}
+      {MODE_LETTERS[mode]}
     </Text>
   );
 }
@@ -152,12 +109,16 @@ export function GlassPanel({ children, style, glassStyle = 'regular' }: GlassPan
       testID="glass-panel"
       style={[
         {
-          borderRadius: radius.lg,
+          borderRadius: radius.xl,
           borderCurve: 'continuous',
           // Katmanlar kartin kosesinden tasmasin: tasan bir dolgu, yuvarlak
           // kenari dorde donduruyor.
           overflow: 'hidden',
-          padding: spacing.xl,
+          // Yatayda dikeyden genis: cam kirilmayi kenar bandinda gosteriyor ve
+          // dar bir dolguda o bant icerigin altinda kaliyor. Dikeyi de ayni
+          // olcude buyutmek karti ekranin tasiyabileceginden uzun yapardi.
+          paddingHorizontal: spacing.xxl,
+          paddingVertical: spacing.xl,
         },
         liquid
           ? null
@@ -183,7 +144,7 @@ export function GlassPanel({ children, style, glassStyle = 'regular' }: GlassPan
           // Yerel katman kabin `overflow: hidden` kirpmasini gormuyor, kendi
           // kose yaricapini okuyor: verilmezse cam dort koseli kaliyor ve
           // kartin yuvarlak kenari ustunde bir dikdortgen olarak duruyor.
-          style={[StyleSheet.absoluteFill, { borderRadius: radius.lg, borderCurve: 'continuous' }]}
+          style={[StyleSheet.absoluteFill, { borderRadius: radius.xl, borderCurve: 'continuous' }]}
         />
       ) : null}
 

@@ -6,12 +6,14 @@ import {
   within,
   type RenderResult,
 } from '@testing-library/react-native';
+import { StyleSheet } from 'react-native';
 import { AxiosError, AxiosHeaders } from 'axios';
 
 import { fieldErrorMessage } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
 import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
+import { palettes, withAlpha } from '@/theme';
 
 import { RegisterScreen } from './RegisterScreen';
 
@@ -252,6 +254,30 @@ describe('RegisterScreen cam kart', () => {
     expect(view.queryByTestId('content-veil', { includeHiddenElements: true })).toBeNull();
     // Ust serit kartin disinda; onun perdesi yerinde kaliyor.
     expect(view.getByTestId('header-veil', { includeHiddenElements: true })).toBeTruthy();
+  });
+
+  it('kartin altindan seridin gecmesine izin veriyor', async () => {
+    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+    // Once agacin cizildigi: bos bir agacta perde sorgusu da patlardi.
+    expect(view.getByText(strings.auth.registerTitle)).toBeTruthy();
+
+    // Tam karartma kartin bolgesini neredeyse siyaha indiriyor ve saydam
+    // yuzeyin kiracak bir goruntusu kalmiyor; kart o zaman duz bir panel.
+    expect(
+      view.getByTestId('journey-veil', { includeHiddenElements: true }).props.locations,
+    ).toEqual([0.55, 1]);
+  });
+
+  it('alanlarin arkasindan da cam gorunuyor', async () => {
+    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+    const email = view.getByLabelText(strings.auth.emailLabel);
+    expect(email).toBeTruthy();
+
+    // Opak alanlar kartin icini kaplayinca cam yalnizca ic dolguda kaliyor ve
+    // kart camdan cok dolu bir panel gibi okunuyor.
+    expect(
+      (StyleSheet.flatten(email.props.style) as { backgroundColor?: string }).backgroundColor,
+    ).toBe(withAlpha(palettes.dark.surface, 0.28));
   });
 
   it('butonu ve yasal satiri kartin disinda birakiyor', async () => {

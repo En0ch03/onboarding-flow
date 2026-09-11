@@ -15,9 +15,52 @@ import { journeyArtworkModule, journeyOffset } from './journeyArtwork';
 
 type JourneyBackdropProps = {
   progress: number;
+  /**
+   * Perdenin agirligi.
+   *
+   * `full` metni dogrudan gorselin uzerine koyan ekranlar icin: orada kontrast
+   * perdeden geliyor. `light` ise metnin zeminini kendisi getiren, icerigini
+   * saydam bir kartin icine alan ekranlar icin. Tam karartma kartin altindaki
+   * bolgeyi neredeyse siyaha indiriyor ve saydam bir yuzeyin kiracak bir
+   * goruntusu kalmiyor: kart o zaman camdan cok duz bir panele benziyor.
+   */
+  veil?: VeilWeight;
 };
 
-export function JourneyBackdrop({ progress }: JourneyBackdropProps) {
+export type VeilWeight = 'full' | 'light';
+
+/**
+ * Perdenin metin bolgesindeki en yuksek opakligi.
+ *
+ * `full` degeri gorselin en acik bolgesinde bile metni tasiyacak kadar yuksek.
+ * `light` onun ucte birine yakin: karartmayi tamamen kaldirmak da secenek
+ * degil, cunku kartin disinda kalan buton ve yasal satir hala gorselin uzerinde
+ * duruyor.
+ */
+const VEIL_PEAK = { full: 0.86, light: 0.3 } as const;
+
+/**
+ * Karartmanin basladigi dikey oran.
+ *
+ * Asagi kaydirmak, karartmanin ekranin daha kucuk bir bolumunde toplanmasi
+ * demek: gorselin ust yarisi acik kaliyor ve kartin arkasindan gecen serit
+ * gorunur oluyor.
+ */
+const VEIL_START = { full: 0.36, light: 0.55 } as const;
+
+/**
+ * Parilti katmaninin opakliklari.
+ *
+ * Parilti de bir katman: kartin bolgesinde toplandiginda kirilacak goruntuyu
+ * kendi tonuyla orttuyor. Hafif kipte yariya iniyor -- tamamen kaldirmak
+ * gorselin sag ust kosesindeki isik kaynagini yok ederdi.
+ */
+const GLOW_STRENGTH = {
+  full: { near: 0.34, far: 0.16 },
+  light: { near: 0.17, far: 0.08 },
+} as const;
+
+export function JourneyBackdrop({ progress, veil = 'full' }: JourneyBackdropProps) {
   const { width: viewportWidth, height: viewportHeight } = useWindowDimensions();
   const { colors, motion } = useTheme();
   const target = journeyOffset(progress, viewportWidth, viewportHeight);
@@ -74,8 +117,8 @@ export function JourneyBackdrop({ progress }: JourneyBackdropProps) {
       <LinearGradient
         testID="journey-glow"
         colors={[
-          withAlpha(colors.glowStrong, 0.34),
-          withAlpha(colors.glowDeep, 0.16),
+          withAlpha(colors.glowStrong, GLOW_STRENGTH[veil].near),
+          withAlpha(colors.glowDeep, GLOW_STRENGTH[veil].far),
           withAlpha(colors.veil, 0),
         ]}
         locations={[0, 0.44, 1]}
@@ -89,8 +132,8 @@ export function JourneyBackdrop({ progress }: JourneyBackdropProps) {
           perde zayifsa olculen sey bir sey ifade etmez. */}
       <LinearGradient
         testID="journey-veil"
-        colors={[withAlpha(colors.veil, 0), withAlpha(colors.veil, 0.86)]}
-        locations={[0.36, 1]}
+        colors={[withAlpha(colors.veil, 0), withAlpha(colors.veil, VEIL_PEAK[veil])]}
+        locations={[VEIL_START[veil], 1]}
         style={StyleSheet.absoluteFill}
       />
     </View>

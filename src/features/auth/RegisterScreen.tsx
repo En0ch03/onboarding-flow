@@ -75,6 +75,9 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
       // Metnin zeminini kart tasiyor; ustune bir de perde cekmek gorseli iki
       // kez karartirdi. Ust serit kartin disinda, onun perdesi yerinde kaliyor.
       contentVeil={false}
+      // Kart arkasindaki goruntuyu kirarak yasiyor: karartilmis bir zeminin
+      // kiracak bir seyi olmuyor ve kart camdan cok duz bir panele benziyor.
+      backdropVeil="light"
       header={<ScreenHeader onBack={onBack} />}
       footer={
         <View>
@@ -130,7 +133,14 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
           />
         ) : null}
 
-        <CredentialsFields control={form.control} mode="register" onSubmit={() => void submit()} />
+        <CredentialsFields
+          control={form.control}
+          mode="register"
+          // Alanlar kartin icinde: opak zeminleri camin gosterecek bir seyini
+          // birakmiyordu.
+          surface="glass"
+          onSubmit={() => void submit()}
+        />
       </GlassPanel>
     </Screen>
   );
