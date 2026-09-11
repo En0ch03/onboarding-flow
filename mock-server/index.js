@@ -272,5 +272,11 @@ app.use((_req, res) => res.status(404).json({ error: 'not_found' }));
 app.listen(port, () => {
   console.log(`Mock API listening on http://localhost:${port}/api/v1`);
   console.log(`Access token lifetime: ${state.ACCESS_TTL_SECONDS}s`);
+  // Bayrak kapaliyken de soyleniyor: sozlesme baska bir sunucudayken bayragi
+  // unutmak yuklemeyi 401 ile dusuruyor ve belirti uygulamada, sebep burada.
   if (standInMode) console.log('Stand-in mode: uploads accept a token issued elsewhere');
+  else
+    console.log(
+      'Stand-in mode off: uploads only accept tokens this mock issued; set MOCK_STANDIN=1 when the contract endpoints run on another server',
+    );
 });

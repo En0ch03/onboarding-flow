@@ -94,11 +94,25 @@ The two endpoints above that the contract does _not_ define are the catch. A ser
 EXPO_PUBLIC_API_URL=https://your-host/api/v1 EXPO_PUBLIC_STANDIN_API_URL=http://<your machine's LAN IP>:4000/api/v1 npm start
 ```
 
+On Windows PowerShell:
+
+```powershell
+$env:EXPO_PUBLIC_API_URL='https://your-host/api/v1'; $env:EXPO_PUBLIC_STANDIN_API_URL='http://<your machine''s LAN IP>:4000/api/v1'; npm start
+```
+
 Now the contract endpoints go to the real server and those two stay on the mock, which has to keep running — and in this arrangement it has to be told so:
 
 ```bash
 MOCK_STANDIN=1 npm run mock
 ```
+
+On Windows PowerShell:
+
+```powershell
+$env:MOCK_STANDIN='1'; npm run mock
+```
+
+If you forget the flag, uploads fail with 401 and the photo step shows an error.
 
 That flag only affects `POST /upload`: the token now comes from a server the mock cannot check with, so it accepts any bearer token while still refusing a request that carries none. Without the flag nothing is relaxed, and the default single-server setup keeps validating tokens as before.
 
