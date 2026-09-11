@@ -40,11 +40,11 @@
 <text x="56" y="142" font-size="15" fill="#111011" font-weight="600">Açılış</text>
 <text x="56" y="159" font-size="11.5" fill="#5E5652">ilk görülen ekran</text>
 <rect x="56" y="168" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
-<text x="78" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="300" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="78" y="194" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="300" y="186" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <text x="204" y="468" font-size="32" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif" text-anchor="middle">Onboarding</text>
-<text x="204" y="500" font-size="12" fill="#B5ADA8" text-anchor="middle">Hazırlanıyor</text>
-<text x="204" y="520" font-size="10" fill="#B5ADA8" text-anchor="middle">Senin için her şeyi yoluna koyuyoruz.</text>
+<text x="204" y="500" font-size="12" fill="#D5D0CB" text-anchor="middle">Hazırlanıyor</text>
+<text x="204" y="520" font-size="10" fill="#D5D0CB" text-anchor="middle">Senin için her şeyi yoluna koyuyoruz.</text>
 <rect x="78" y="720" width="252" height="3" rx="1.5" fill="#2A2529"/>
 <rect x="140" y="720" width="81" height="3" rx="1.5" fill="#C50337"/>
 <text x="56" y="802" font-size="11" fill="#5E5652">Yazı tipleri ve arka plan görseli burada bekleniyor.</text>
@@ -59,15 +59,15 @@
 <path d="M 96 638 C 336 568, 486 418, 776 188 L 816 248 C 536 478, 386 628, 96 698 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="418" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="640" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="418" y="194" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="640" y="186" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <text x="418" y="540" font-size="30" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Doğru zamanda</text>
 <text x="418" y="576" font-size="30" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">doğru yerde.</text>
-<text x="418" y="612" font-size="12" fill="#B5ADA8">O karşılaşmayı şansa</text>
-<text x="418" y="630" font-size="12" fill="#B5ADA8">bırakmamak için.</text>
+<text x="418" y="612" font-size="12" fill="#D5D0CB">O karşılaşmayı şansa</text>
+<text x="418" y="630" font-size="12" fill="#D5D0CB">bırakmamak için.</text>
 <rect x="418" y="664" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="544" y="690" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Başlayalım</text>
-<rect x="418" y="713" width="252" height="41" rx="20.5" fill="none" stroke="#F5F2ED" stroke-opacity="0.28"/>
+<rect x="418" y="713" width="252" height="41" rx="20.5" fill="none" stroke="#F5F2ED" stroke-opacity="0.4"/>
 <text x="544" y="739" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Zaten hesabım var</text>
 <text x="396" y="802" font-size="11" fill="#5E5652">Tek cümlelik söz, iki eylem. İkincil eylem doğrudan</text>
 <text x="396" y="817" font-size="11" fill="#5E5652">girişe gider; hesabı olan kayıt formunu hiç görmüyor.</text>
@@ -80,8 +80,8 @@
 <path d="M 406 638 C 646 568, 796 418, 1086 188 L 1126 248 C 846 478, 696 628, 406 698 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="758" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="980" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="758" y="194" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="980" y="186" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="776" cy="242" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 780 234 L 772 242 L 780 250" fill="none" stroke="#F5F2ED" stroke-width="2"/>
 <rect x="961.12" y="226" width="48.879999999999995" height="32" rx="16" fill="#F5F2ED" fill-opacity="0.08"/>
@@ -90,9 +90,9 @@
 <text x="758" y="534" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">aramıyordunuz.</text>
 <text x="758" y="570" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Sadece henüz</text>
 <text x="758" y="598" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">karşılaşmamıştınız.</text>
-<text x="758" y="638" font-size="12" fill="#B5ADA8">Her gün yalnızca birkaç kişi.</text>
-<text x="758" y="656" font-size="12" fill="#B5ADA8">Her biri ne aradığını söylemiş.</text>
-<text x="758" y="674" font-size="12" fill="#B5ADA8">Gerisi sana kalmış.</text>
+<text x="758" y="638" font-size="12" fill="#D5D0CB">Her gün yalnızca birkaç kişi.</text>
+<text x="758" y="656" font-size="12" fill="#D5D0CB">Her biri ne aradığını söylemiş.</text>
+<text x="758" y="674" font-size="12" fill="#D5D0CB">Gerisi sana kalmış.</text>
 <rect x="758" y="708" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="884" y="734" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
 <text x="736" y="802" font-size="11" fill="#5E5652">Ürünün farkı burada anlatılıyor; kayıt ekranı bunu</text>
@@ -109,32 +109,32 @@
 </g>
 <rect x="1090" y="292" width="268" height="344" rx="20" fill="#0B0B0B" fill-opacity="0.4" stroke="#F5F2ED" stroke-opacity="0.12"/>
 <path d="M 1110 292.5 H 1338" stroke="#F5F2ED" stroke-opacity="0.22" stroke-width="1"/>
-<text x="1098" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="1320" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="1098" y="194" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="1320" y="186" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="1116" cy="242" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 1120 234 L 1112 242 L 1120 250" fill="none" stroke="#F5F2ED" stroke-width="2"/>
 <text x="1098" y="316" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Hesabını oluştur</text>
-<text x="1098" y="348" font-size="12" fill="#B5ADA8">Bir e-posta ve bir şifre yeter.</text>
-<text x="1098" y="366" font-size="12" fill="#B5ADA8">E-postan profilinde görünmez.</text>
-<text x="1098" y="396" font-size="10.5" fill="#B5ADA8" font-weight="500">E-posta</text>
+<text x="1098" y="348" font-size="12" fill="#D5D0CB">Bir e-posta ve bir şifre yeter.</text>
+<text x="1098" y="366" font-size="12" fill="#D5D0CB">E-postan profilinde görünmez.</text>
+<text x="1098" y="396" font-size="10.5" fill="#D5D0CB" font-weight="500">E-posta</text>
 <rect x="1098" y="405" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
 <text x="1110" y="431" font-size="12.5" fill="#F5F2ED">deniz@ornek.com</text>
-<text x="1098" y="474" font-size="10.5" fill="#B5ADA8" font-weight="500">Şifre</text>
+<text x="1098" y="474" font-size="10.5" fill="#D5D0CB" font-weight="500">Şifre</text>
 <rect x="1098" y="483" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
 <text x="1110" y="509" font-size="12.5" fill="#F5F2ED">••••••••••</text>
-<path d="M 1313 504 Q 1324 495, 1335 504 Q 1324 513, 1313 504 Z" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
-<circle cx="1324" cy="504" r="3.2" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
-<text x="1098" y="552" font-size="10.5" fill="#B5ADA8" font-weight="500">Şifreyi doğrula</text>
+<path d="M 1313 504 Q 1324 495, 1335 504 Q 1324 513, 1313 504 Z" fill="none" stroke="#D5D0CB" stroke-width="1.2"/>
+<circle cx="1324" cy="504" r="3.2" fill="none" stroke="#D5D0CB" stroke-width="1.2"/>
+<text x="1098" y="552" font-size="10.5" fill="#D5D0CB" font-weight="500">Şifreyi doğrula</text>
 <rect x="1098" y="561" width="252" height="41" rx="13" fill="#151316" stroke="#E28B8B"/>
 <text x="1110" y="587" font-size="12.5" fill="#F5F2ED">••••••••</text>
-<path d="M 1313 582 Q 1324 573, 1335 582 Q 1324 591, 1313 582 Z" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
-<circle cx="1324" cy="582" r="3.2" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
+<path d="M 1313 582 Q 1324 573, 1335 582 Q 1324 591, 1313 582 Z" fill="none" stroke="#D5D0CB" stroke-width="1.2"/>
+<circle cx="1324" cy="582" r="3.2" fill="none" stroke="#D5D0CB" stroke-width="1.2"/>
 <text x="1098" y="618" font-size="10" fill="#E28B8B">Şifreler birbiriyle aynı değil.</text>
 <rect x="1098" y="638" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="1224" y="664" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Hesap oluştur</text>
-<text x="1098" y="700" font-size="10" fill="#B5ADA8">Devam ederek Kullanım Şartları’nı ve</text>
-<text x="1098" y="714" font-size="10" fill="#B5ADA8">Gizlilik Politikası’nı kabul etmiş</text>
-<text x="1098" y="728" font-size="10" fill="#B5ADA8">olursun.</text>
+<text x="1098" y="700" font-size="10" fill="#D5D0CB">Devam ederek Kullanım Şartları’nı ve</text>
+<text x="1098" y="714" font-size="10" fill="#D5D0CB">Gizlilik Politikası’nı kabul etmiş</text>
+<text x="1098" y="728" font-size="10" fill="#D5D0CB">olursun.</text>
 <text x="1076" y="802" font-size="11" fill="#5E5652">Şifre iki kez alınıyor. Bu sürümde şifre sıfırlama yolu</text>
 <text x="1076" y="817" font-size="11" fill="#5E5652">yok; yanlış yazılmış bir şifre hesabı kilitler. Hata hangi</text>
 <text x="1076" y="832" font-size="11" fill="#5E5652">alanın yanlış olduğunu iddia etmiyor.</text>
@@ -147,20 +147,20 @@
 <path d="M -304 1418 C -64 1348, 86 1198, 376 968 L 416 1028 C 136 1258, -14 1408, -304 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="78" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="300" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="78" y="974" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="300" y="966" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="96" cy="1022" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 100 1014 L 92 1022 L 100 1030" fill="none" stroke="#F5F2ED" stroke-width="2"/>
 <text x="78" y="1096" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Tekrar hoş geldin</text>
-<text x="78" y="1128" font-size="12" fill="#B5ADA8">Giriş yap, kaldığın yerden devam et.</text>
-<text x="78" y="1168" font-size="10.5" fill="#B5ADA8" font-weight="500">E-posta</text>
+<text x="78" y="1128" font-size="12" fill="#D5D0CB">Giriş yap, kaldığın yerden devam et.</text>
+<text x="78" y="1168" font-size="10.5" fill="#D5D0CB" font-weight="500">E-posta</text>
 <rect x="78" y="1177" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
 <text x="90" y="1203" font-size="12.5" fill="#F5F2ED">deniz@ornek.com</text>
-<text x="78" y="1246" font-size="10.5" fill="#B5ADA8" font-weight="500">Şifre</text>
+<text x="78" y="1246" font-size="10.5" fill="#D5D0CB" font-weight="500">Şifre</text>
 <rect x="78" y="1255" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
 <text x="90" y="1281" font-size="12.5" fill="#F5F2ED">••••••••••</text>
-<path d="M 293 1276 Q 304 1267, 315 1276 Q 304 1285, 293 1276 Z" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
-<circle cx="304" cy="1276" r="3.2" fill="none" stroke="#B5ADA8" stroke-width="1.2"/>
+<path d="M 293 1276 Q 304 1267, 315 1276 Q 304 1285, 293 1276 Z" fill="none" stroke="#D5D0CB" stroke-width="1.2"/>
+<circle cx="304" cy="1276" r="3.2" fill="none" stroke="#D5D0CB" stroke-width="1.2"/>
 <rect x="78" y="1488" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="204" y="1514" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Giriş yap</text>
 <text x="56" y="1582" font-size="11" fill="#5E5652">Kayıt ekranıyla aynı alanlar ve aynı doğrulama.</text>
@@ -175,20 +175,20 @@
 <path d="M 11 1418 C 251 1348, 401 1198, 691 968 L 731 1028 C 451 1258, 301 1408, 11 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="418" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="640" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="418" y="974" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="640" y="966" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="436" cy="1022" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 440 1014 L 432 1022 L 440 1030" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="544" y="1026" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">01 / 06</text>
+<text x="544" y="1026" font-size="10.5" fill="#D5D0CB" font-weight="500" text-anchor="middle">01 / 06</text>
 <rect x="418" y="1054" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="418" y="1054" width="42" height="3" rx="1.5" fill="#C50337"/>
 <text x="418" y="1114" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Telefon numaran</text>
-<text x="418" y="1146" font-size="12" fill="#B5ADA8">Yalnızca hesabını korumak için.</text>
-<text x="418" y="1164" font-size="12" fill="#B5ADA8">Profilinde görünmez.</text>
-<text x="418" y="1198" font-size="10.5" fill="#B5ADA8" font-weight="500">Cep telefonu</text>
+<text x="418" y="1146" font-size="12" fill="#D5D0CB">Yalnızca hesabını korumak için.</text>
+<text x="418" y="1164" font-size="12" fill="#D5D0CB">Profilinde görünmez.</text>
+<text x="418" y="1198" font-size="10.5" fill="#D5D0CB" font-weight="500">Cep telefonu</text>
 <rect x="418" y="1207" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
-<text x="430" y="1233" font-size="12.5" fill="#B5ADA8">+90</text>
-<text x="458.875" y="1233" font-size="12.5" fill="#B5ADA8">5XX XXX XX XX</text>
+<text x="430" y="1233" font-size="12.5" fill="#D5D0CB">+90</text>
+<text x="458.875" y="1233" font-size="12.5" fill="#D5D0CB">5XX XXX XX XX</text>
 <rect x="418" y="1488" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="544" y="1514" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
 <text x="396" y="1582" font-size="11" fill="#5E5652">Ülke kodu alanda sabit ve yazılamıyor: bir ülke listesi</text>
@@ -203,23 +203,23 @@
 <path d="M 323.5 1418 C 563.5 1348, 713.5 1198, 1003.5 968 L 1043.5 1028 C 763.5 1258, 613.5 1408, 323.5 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="758" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="980" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="758" y="974" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="980" y="966" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="776" cy="1022" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 780 1014 L 772 1022 L 780 1030" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="884" y="1026" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">02 / 06</text>
+<text x="884" y="1026" font-size="10.5" fill="#D5D0CB" font-weight="500" text-anchor="middle">02 / 06</text>
 <rect x="758" y="1054" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="758" y="1054" width="84" height="3" rx="1.5" fill="#C50337"/>
 <text x="758" y="1114" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Sana nasıl</text>
 <text x="758" y="1142" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">seslenelim?</text>
-<text x="758" y="1174" font-size="12" fill="#B5ADA8">Adın profilinde görünür. Doğum</text>
-<text x="758" y="1192" font-size="12" fill="#B5ADA8">tarihinden yalnızca yaşın görünür.</text>
-<text x="758" y="1226" font-size="10.5" fill="#B5ADA8" font-weight="500">Adın</text>
+<text x="758" y="1174" font-size="12" fill="#D5D0CB">Adın profilinde görünür. Doğum</text>
+<text x="758" y="1192" font-size="12" fill="#D5D0CB">tarihinden yalnızca yaşın görünür.</text>
+<text x="758" y="1226" font-size="10.5" fill="#D5D0CB" font-weight="500">Adın</text>
 <rect x="758" y="1235" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
 <text x="770" y="1261" font-size="12.5" fill="#F5F2ED">Deniz</text>
-<text x="758" y="1304" font-size="10.5" fill="#B5ADA8" font-weight="500">Doğum tarihin</text>
+<text x="758" y="1304" font-size="10.5" fill="#D5D0CB" font-weight="500">Doğum tarihin</text>
 <rect x="758" y="1313" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
-<text x="770" y="1339" font-size="12.5" fill="#B5ADA8">Gün Ay Yıl</text>
+<text x="770" y="1339" font-size="12.5" fill="#D5D0CB">Gün Ay Yıl</text>
 <rect x="758" y="1488" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="884" y="1514" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
 <text x="736" y="1582" font-size="11" fill="#5E5652">Tek alan, tek dokunuş. Alan bir düğme: dokunulunca</text>
@@ -234,21 +234,21 @@
 <path d="M 663.5 1418 C 903.5 1348, 1053.5 1198, 1343.5 968 L 1383.5 1028 C 1103.5 1258, 953.5 1408, 663.5 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="1098" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="1320" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="1098" y="974" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="1320" y="966" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="1116" cy="1022" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 1120 1014 L 1112 1022 L 1120 1030" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="1224" y="1026" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">02 / 06</text>
+<text x="1224" y="1026" font-size="10.5" fill="#D5D0CB" font-weight="500" text-anchor="middle">02 / 06</text>
 <rect x="1098" y="1054" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="1098" y="1054" width="84" height="3" rx="1.5" fill="#C50337"/>
 <text x="1098" y="1114" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Sana nasıl</text>
 <text x="1098" y="1142" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">seslenelim?</text>
-<text x="1098" y="1174" font-size="10.5" fill="#B5ADA8" font-weight="500">Adın</text>
+<text x="1098" y="1174" font-size="10.5" fill="#D5D0CB" font-weight="500">Adın</text>
 <rect x="1098" y="1183" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
 <text x="1110" y="1209" font-size="12.5" fill="#F5F2ED">Deniz</text>
-<text x="1098" y="1240" font-size="10.5" fill="#B5ADA8" font-weight="500">Doğum tarihin</text>
+<text x="1098" y="1240" font-size="10.5" fill="#D5D0CB" font-weight="500">Doğum tarihin</text>
 <rect x="1098" y="1249" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
-<text x="1110" y="1275" font-size="12.5" fill="#B5ADA8">Gün Ay Yıl</text>
+<text x="1110" y="1275" font-size="12.5" fill="#D5D0CB">Gün Ay Yıl</text>
 <g clip-path="url(#clip-1-3)">
 <rect x="1076" y="948" width="296" height="610" fill="#000000" fill-opacity="0.45"/>
 <rect x="1076" y="1296" width="296" height="292" rx="26" fill="#1C191D"/>
@@ -256,15 +256,15 @@
 <rect x="1206" y="1310" width="36" height="4" rx="2" fill="#F5F2ED" fill-opacity="0.22"/>
 <text x="1098" y="1342" font-size="13" fill="#F5F2ED" font-weight="600">Doğum tarihin</text>
 <rect x="1098" y="1392" width="252" height="34" rx="9" fill="#F5F2ED" fill-opacity="0.06"/>
-<text x="1140" y="1378" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">13</text>
-<text x="1224" y="1378" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">Şubat</text>
-<text x="1308" y="1378" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">1997</text>
+<text x="1140" y="1378" font-size="13" fill="#D5D0CB" text-anchor="middle" fill-opacity="0.5">13</text>
+<text x="1224" y="1378" font-size="13" fill="#D5D0CB" text-anchor="middle" fill-opacity="0.5">Şubat</text>
+<text x="1308" y="1378" font-size="13" fill="#D5D0CB" text-anchor="middle" fill-opacity="0.5">1997</text>
 <text x="1140" y="1412" font-size="13" fill="#F5F2ED" text-anchor="middle">14</text>
 <text x="1224" y="1412" font-size="13" fill="#F5F2ED" text-anchor="middle">Mart</text>
 <text x="1308" y="1412" font-size="13" fill="#F5F2ED" text-anchor="middle">1998</text>
-<text x="1140" y="1446" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">15</text>
-<text x="1224" y="1446" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">Nisan</text>
-<text x="1308" y="1446" font-size="13" fill="#B5ADA8" text-anchor="middle" fill-opacity="0.5">1999</text>
+<text x="1140" y="1446" font-size="13" fill="#D5D0CB" text-anchor="middle" fill-opacity="0.5">15</text>
+<text x="1224" y="1446" font-size="13" fill="#D5D0CB" text-anchor="middle" fill-opacity="0.5">Nisan</text>
+<text x="1308" y="1446" font-size="13" fill="#D5D0CB" text-anchor="middle" fill-opacity="0.5">1999</text>
 <rect x="1098" y="1488" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="1224" y="1514" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Seç</text>
 <text x="1076" y="1582" font-size="11" fill="#5E5652">Çark çevrilirken değer sürekli değişiyor; onaysız her</text>
@@ -279,18 +279,18 @@
 <path d="M -384 2198 C -144 2128, 6 1978, 296 1748 L 336 1808 C 56 2038, -94 2188, -384 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="78" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="300" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="78" y="1754" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="300" y="1746" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="96" cy="1802" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 100 1794 L 92 1802 L 100 1810" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="204" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">03 / 06</text>
+<text x="204" y="1806" font-size="10.5" fill="#D5D0CB" font-weight="500" text-anchor="middle">03 / 06</text>
 <rect x="78" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="78" y="1834" width="126" height="3" rx="1.5" fill="#C50337"/>
 <text x="78" y="1894" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Kimi görmek</text>
 <text x="78" y="1922" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">istersin?</text>
-<text x="78" y="1952" font-size="12" fill="#B5ADA8">İkisini de sonra değiştirebilirsin.</text>
+<text x="78" y="1952" font-size="12" fill="#D5D0CB">İkisini de sonra değiştirebilirsin.</text>
 <text x="78" y="1984" font-size="13" fill="#F5F2ED" font-weight="600">Cinsiyetin</text>
-<text x="78" y="2000" font-size="10" fill="#B5ADA8">Bir tane seç.</text>
+<text x="78" y="2000" font-size="10" fill="#D5D0CB">Bir tane seç.</text>
 <g>
 <rect x="78" y="2010" width="252" height="36" rx="13" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
 <text x="92" y="2033" font-size="12.5" fill="#F5F2ED">Kadın</text>
@@ -302,10 +302,10 @@
 <g>
 <rect x="78" y="2094" width="252" height="48" rx="13" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
 <text x="92" y="2115" font-size="12.5" fill="#F5F2ED">Non-binary</text>
-<text x="92" y="2131" font-size="10" fill="#B5ADA8">Kadın ve erkek ikiliğinin dışında</text>
+<text x="92" y="2131" font-size="10" fill="#D5D0CB">Kadın ve erkek ikiliğinin dışında</text>
 </g>
 <text x="78" y="2168" font-size="13" fill="#F5F2ED" font-weight="600">Kimleri göstereyim</text>
-<text x="78" y="2184" font-size="10" fill="#B5ADA8">Birden fazla seçebilirsin.</text>
+<text x="78" y="2184" font-size="10" fill="#D5D0CB">Birden fazla seçebilirsin.</text>
 <rect x="78" y="2194" width="73" height="34" rx="17" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
 <text x="114.5" y="2216" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Kadınlar</text>
 <rect x="157" y="2194" width="73" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
@@ -328,41 +328,41 @@
 <path d="M -71.5 2198 C 168.5 2128, 318.5 1978, 608.5 1748 L 648.5 1808 C 368.5 2038, 218.5 2188, -71.5 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="418" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="640" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="418" y="1754" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="640" y="1746" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="436" cy="1802" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 440 1794 L 432 1802 L 440 1810" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="544" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">04 / 06</text>
+<text x="544" y="1806" font-size="10.5" fill="#D5D0CB" font-weight="500" text-anchor="middle">04 / 06</text>
 <rect x="418" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="418" y="1834" width="168" height="3" rx="1.5" fill="#C50337"/>
 <text x="418" y="1894" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Ne arıyorsun?</text>
-<text x="418" y="1926" font-size="12" fill="#B5ADA8">Dürüst ol. Önerilerin buna göre gelir.</text>
+<text x="418" y="1926" font-size="12" fill="#D5D0CB">Dürüst ol. Önerilerin buna göre gelir.</text>
 <g>
 <rect x="418" y="1944" width="252" height="48" rx="13" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
 <text x="432" y="1965" font-size="12.5" fill="#F5F2ED">Uzun süreli ilişki</text>
-<text x="432" y="1981" font-size="10" fill="#B5ADA8">Ciddi bir bağ arıyorum</text>
+<text x="432" y="1981" font-size="10" fill="#D5D0CB">Ciddi bir bağ arıyorum</text>
 </g>
 <g>
 <rect x="418" y="2001" width="252" height="48" rx="13" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
 <text x="432" y="2022" font-size="12.5" fill="#F5F2ED">Uzun süreli, kısaya açık</text>
-<text x="432" y="2038" font-size="10" fill="#B5ADA8">Önceliğim kalıcı olan</text>
+<text x="432" y="2038" font-size="10" fill="#D5D0CB">Önceliğim kalıcı olan</text>
 </g>
 <g opacity="0.45">
 <rect x="418" y="2058" width="252" height="48" rx="13" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
 <text x="432" y="2079" font-size="12.5" fill="#F5F2ED">Kısa süreli, uzuna açık</text>
-<text x="432" y="2095" font-size="10" fill="#B5ADA8">Akışına bırakıyorum</text>
+<text x="432" y="2095" font-size="10" fill="#D5D0CB">Akışına bırakıyorum</text>
 </g>
 <g opacity="0.45">
 <rect x="418" y="2115" width="252" height="48" rx="13" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
 <text x="432" y="2136" font-size="12.5" fill="#F5F2ED">Kısa süreli ilişki</text>
-<text x="432" y="2152" font-size="10" fill="#B5ADA8">Şimdilik ciddi bir bağ aramıyorum</text>
+<text x="432" y="2152" font-size="10" fill="#D5D0CB">Şimdilik ciddi bir bağ aramıyorum</text>
 </g>
 <g opacity="0.45">
 <rect x="418" y="2172" width="252" height="48" rx="13" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
 <text x="432" y="2193" font-size="12.5" fill="#F5F2ED">Yeni arkadaşlar</text>
-<text x="432" y="2209" font-size="10" fill="#B5ADA8">Önce tanışalım</text>
+<text x="432" y="2209" font-size="10" fill="#D5D0CB">Önce tanışalım</text>
 </g>
-<text x="418" y="2240" font-size="10" fill="#B5ADA8">En fazla 2 seçebilirsin · 2 seçili</text>
+<text x="418" y="2240" font-size="10" fill="#D5D0CB">En fazla 2 seçebilirsin · 2 seçili</text>
 <rect x="418" y="2268" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="544" y="2294" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
 <text x="396" y="2362" font-size="11" fill="#5E5652">Altı seçenekten beşi çizildi. Sınır dolunca kalanlar sönüyor</text>
@@ -377,16 +377,16 @@
 <path d="M 241 2198 C 481 2128, 631 1978, 921 1748 L 961 1808 C 681 2038, 531 2188, 241 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="758" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="980" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="758" y="1754" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="980" y="1746" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="776" cy="1802" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 780 1794 L 772 1802 L 780 1810" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="884" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">05 / 06</text>
+<text x="884" y="1806" font-size="10.5" fill="#D5D0CB" font-weight="500" text-anchor="middle">05 / 06</text>
 <rect x="758" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="758" y="1834" width="210" height="3" rx="1.5" fill="#C50337"/>
 <text x="758" y="1894" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Fotoğraflarını ekle</text>
-<text x="758" y="1926" font-size="12" fill="#B5ADA8">En az iki fotoğraf. İlki kapak olur;</text>
-<text x="758" y="1944" font-size="12" fill="#B5ADA8">yüzünün net göründüğü bir tane seç.</text>
+<text x="758" y="1926" font-size="12" fill="#D5D0CB">En az iki fotoğraf. İlki kapak olur;</text>
+<text x="758" y="1944" font-size="12" fill="#D5D0CB">yüzünün net göründüğü bir tane seç.</text>
 <g>
 <rect x="758" y="1964" width="80" height="100" rx="9" fill="url(#photo)" stroke="#2A2529"/>
 <rect x="764" y="1970" width="40" height="17" rx="8.5" fill="#0B0B0B" fill-opacity="0.7"/>
@@ -401,21 +401,21 @@
 </g>
 <g>
 <rect x="930" y="1964" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
-<text x="970" y="2023" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+<text x="970" y="2023" font-size="24" fill="#D5D0CB" text-anchor="middle">+</text>
 </g>
 <g opacity="0.4">
 <rect x="758" y="2070" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
-<text x="798" y="2129" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+<text x="798" y="2129" font-size="24" fill="#D5D0CB" text-anchor="middle">+</text>
 </g>
 <g opacity="0.4">
 <rect x="844" y="2070" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
-<text x="884" y="2129" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+<text x="884" y="2129" font-size="24" fill="#D5D0CB" text-anchor="middle">+</text>
 </g>
 <g opacity="0.4">
 <rect x="930" y="2070" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
-<text x="970" y="2129" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+<text x="970" y="2129" font-size="24" fill="#D5D0CB" text-anchor="middle">+</text>
 </g>
-<text x="758" y="2190" font-size="10" fill="#B5ADA8">2 / 6 eklendi</text>
+<text x="758" y="2190" font-size="10" fill="#D5D0CB">2 / 6 eklendi</text>
 <rect x="758" y="2268" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="884" y="2294" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
 <text x="736" y="2362" font-size="11" fill="#5E5652">İlk kutu kapak. Dolu kutunun çıkışı kaldırma düğmesi;</text>
@@ -430,18 +430,18 @@
 <path d="M 556 2198 C 796 2128, 946 1978, 1236 1748 L 1276 1808 C 996 2038, 846 2188, 556 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="1098" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="1320" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="1098" y="1754" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="1320" y="1746" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="1116" cy="1802" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 1120 1794 L 1112 1802 L 1120 1810" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="1224" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">06 / 06</text>
+<text x="1224" y="1806" font-size="10.5" fill="#D5D0CB" font-weight="500" text-anchor="middle">06 / 06</text>
 <rect x="1246.91" y="1786" width="103.08999999999999" height="32" rx="16" fill="#F5F2ED" fill-opacity="0.08"/>
 <text x="1298.455" y="1807" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Şimdilik geç</text>
 <rect x="1098" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="1098" y="1834" width="252" height="3" rx="1.5" fill="#C50337"/>
 <text x="1098" y="1894" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Neye vakit</text>
 <text x="1098" y="1922" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">ayırıyorsun?</text>
-<text x="1098" y="1952" font-size="12" fill="#B5ADA8">Ortak noktalar sohbeti başlatır.</text>
+<text x="1098" y="1952" font-size="12" fill="#D5D0CB">Ortak noktalar sohbeti başlatır.</text>
 <rect x="1098" y="1968" width="71" height="34" rx="17" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
 <text x="1133.5" y="1990" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Yürüyüş</text>
 <rect x="1175" y="1968" width="68" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
@@ -466,11 +466,11 @@
 <text x="1284" y="2110" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Tiyatro</text>
 <rect x="1098" y="2128" width="57" height="34" rx="17" fill="none" stroke="#F5F2ED" stroke-width="1" stroke-opacity="0.22"/>
 <text x="1126.5" y="2150" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Kamp</text>
-<text x="1098" y="2182" font-size="10" fill="#B5ADA8">En fazla 8 seçebilirsin · 2 seçili</text>
+<text x="1098" y="2182" font-size="10" fill="#D5D0CB">En fazla 8 seçebilirsin · 2 seçili</text>
 <rect x="1098" y="2240" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="1224" y="2266" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Bitir</text>
-<text x="1224" y="2298" font-size="10" fill="#B5ADA8" text-anchor="middle">Ortak ilgi alanı, ilk mesajı yazmayı</text>
-<text x="1224" y="2312" font-size="10" fill="#B5ADA8" text-anchor="middle">kolaylaştırıyor.</text>
+<text x="1224" y="2298" font-size="10" fill="#D5D0CB" text-anchor="middle">Ortak ilgi alanı, ilk mesajı yazmayı</text>
+<text x="1224" y="2312" font-size="10" fill="#D5D0CB" text-anchor="middle">kolaylaştırıyor.</text>
 <text x="1076" y="2362" font-size="11" fill="#5E5652">On altı etiketten on ikisi çizildi. Çipler etiketleri kadar</text>
 <text x="1076" y="2377" font-size="11" fill="#5E5652">geniş: eşit sütun uzun etiketi alt alta kırıyordu.</text>
 <text x="1076" y="2392" font-size="11" fill="#5E5652">Son adımda butonun etiketi Bitir oluyor.</text>
@@ -483,27 +483,27 @@
 <path d="M -494 2978 C -254 2908, -104 2758, 186 2528 L 226 2588 C -54 2818, -204 2968, -494 3038 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="78" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="300" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="78" y="2534" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="300" y="2526" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="110" cy="2676" r="32" fill="url(#photo)"/>
 <text x="78" y="2756" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Hazırsın, Deniz.</text>
-<text x="78" y="2788" font-size="12" fill="#B5ADA8">Profilin hazır. İlk önerilerin</text>
-<text x="78" y="2806" font-size="12" fill="#B5ADA8">yarın sabah burada.</text>
+<text x="78" y="2788" font-size="12" fill="#D5D0CB">Profilin hazır. İlk önerilerin</text>
+<text x="78" y="2806" font-size="12" fill="#D5D0CB">yarın sabah burada.</text>
 <rect x="78" y="2826" width="252" height="152" rx="13" fill="#151316" stroke="#2A2529"/>
 <text x="92" y="2852" font-size="13" fill="#F5F2ED" font-weight="600">Deniz, 27</text>
-<text x="92" y="2880" font-size="10.5" fill="#B5ADA8" font-weight="500">Telefon</text>
+<text x="92" y="2880" font-size="10.5" fill="#D5D0CB" font-weight="500">Telefon</text>
 <text x="316" y="2880" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">+90 555 123 45 67</text>
-<text x="92" y="2902" font-size="10.5" fill="#B5ADA8" font-weight="500">Kimler görecek</text>
+<text x="92" y="2902" font-size="10.5" fill="#D5D0CB" font-weight="500">Kimler görecek</text>
 <text x="316" y="2902" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">Kadınlar</text>
-<text x="92" y="2924" font-size="10.5" fill="#B5ADA8" font-weight="500">Ne aradığın</text>
+<text x="92" y="2924" font-size="10.5" fill="#D5D0CB" font-weight="500">Ne aradığın</text>
 <text x="316" y="2924" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">Uzun süreli ilişki</text>
-<text x="92" y="2946" font-size="10.5" fill="#B5ADA8" font-weight="500">İlgi alanları</text>
+<text x="92" y="2946" font-size="10.5" fill="#D5D0CB" font-weight="500">İlgi alanları</text>
 <text x="316" y="2946" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">Yürüyüş, Konser</text>
-<text x="92" y="2968" font-size="10.5" fill="#B5ADA8" font-weight="500">Fotoğraf</text>
+<text x="92" y="2968" font-size="10.5" fill="#D5D0CB" font-weight="500">Fotoğraf</text>
 <text x="316" y="2968" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">2 fotoğraf</text>
 <rect x="78" y="3004" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="204" y="3030" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Onboarding’a gir</text>
-<rect x="78" y="3053" width="252" height="41" rx="20.5" fill="none" stroke="#F5F2ED" stroke-opacity="0.28"/>
+<rect x="78" y="3053" width="252" height="41" rx="20.5" fill="none" stroke="#F5F2ED" stroke-opacity="0.4"/>
 <text x="204" y="3079" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Profilimi düzenle</text>
 <text x="56" y="3142" font-size="11" fill="#5E5652">Kapanış kullanıcıya ne kurduğunu gösteriyor: kapak</text>
 <text x="56" y="3157" font-size="11" fill="#5E5652">fotoğrafı, ad ve yaş, cevapların özeti. Kapak yoksa</text>
@@ -517,19 +517,19 @@
 <path d="M 11 2978 C 251 2908, 401 2758, 691 2528 L 731 2588 C 451 2818, 301 2968, 11 3038 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="418" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="640" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="418" y="2534" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="640" y="2526" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="436" cy="2582" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 440 2574 L 432 2582 L 440 2590" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="544" y="2586" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">01 / 06</text>
+<text x="544" y="2586" font-size="10.5" fill="#D5D0CB" font-weight="500" text-anchor="middle">01 / 06</text>
 <rect x="418" y="2614" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="418" y="2614" width="42" height="3" rx="1.5" fill="#C50337"/>
 <text x="418" y="2674" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Telefon numaran</text>
-<text x="418" y="2706" font-size="12" fill="#B5ADA8">Yalnızca hesabını korumak için.</text>
-<text x="418" y="2724" font-size="12" fill="#B5ADA8">Profilinde görünmez.</text>
-<text x="418" y="2758" font-size="10.5" fill="#B5ADA8" font-weight="500">Cep telefonu</text>
+<text x="418" y="2706" font-size="12" fill="#D5D0CB">Yalnızca hesabını korumak için.</text>
+<text x="418" y="2724" font-size="12" fill="#D5D0CB">Profilinde görünmez.</text>
+<text x="418" y="2758" font-size="10.5" fill="#D5D0CB" font-weight="500">Cep telefonu</text>
 <rect x="418" y="2767" width="252" height="41" rx="13" fill="#151316" stroke="#C50337"/>
-<text x="430" y="2793" font-size="12.5" fill="#B5ADA8">+90</text>
+<text x="430" y="2793" font-size="12.5" fill="#D5D0CB">+90</text>
 <text x="458.875" y="2793" font-size="12.5" fill="#F5F2ED">532 145 67 89</text>
 <g clip-path="url(#clip-3-1)">
 <rect x="396" y="2894" width="296" height="34" fill="#1C191D"/>
@@ -565,12 +565,12 @@
 <text x="736" y="2482" font-size="15" fill="#111011" font-weight="600">Durum · Sunucu hatası</text>
 <text x="736" y="2499" font-size="11.5" fill="#5E5652">seçenek listeleri gelmedi</text>
 <rect x="736" y="2508" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
-<text x="758" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="980" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="758" y="2534" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="980" y="2526" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <text x="758" y="2796" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Seçenekleri</text>
 <text x="758" y="2824" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">getiremedik</text>
-<text x="758" y="2858" font-size="12" fill="#B5ADA8">Sunucuya ulaşamadık. Bağlantını</text>
-<text x="758" y="2876" font-size="12" fill="#B5ADA8">kontrol edip tekrar dene.</text>
+<text x="758" y="2858" font-size="12" fill="#D5D0CB">Sunucuya ulaşamadık. Bağlantını</text>
+<text x="758" y="2876" font-size="12" fill="#D5D0CB">kontrol edip tekrar dene.</text>
 <rect x="758" y="3048" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="884" y="3074" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Tekrar dene</text>
 <text x="736" y="3142" font-size="11" fill="#5E5652">Boş bir seçim ekranı gösterilmiyor. Hata teknik olmayan</text>
@@ -585,16 +585,16 @@
 <path d="M 581 2978 C 821 2908, 971 2758, 1261 2528 L 1301 2588 C 1021 2818, 871 2968, 581 3038 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
 </g>
-<text x="1098" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
-<rect x="1320" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
+<text x="1098" y="2534" font-size="10.5" fill="#D5D0CB">9:41</text>
+<rect x="1320" y="2526" width="30" height="10" rx="3" fill="#D5D0CB"/>
 <circle cx="1116" cy="2582" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 1120 2574 L 1112 2582 L 1120 2590" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="1224" y="2586" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">05 / 06</text>
+<text x="1224" y="2586" font-size="10.5" fill="#D5D0CB" font-weight="500" text-anchor="middle">05 / 06</text>
 <rect x="1098" y="2614" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="1098" y="2614" width="210" height="3" rx="1.5" fill="#C50337"/>
 <text x="1098" y="2674" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Fotoğraflarını ekle</text>
-<text x="1098" y="2706" font-size="12" fill="#B5ADA8">En az iki fotoğraf. İlki kapak olur;</text>
-<text x="1098" y="2724" font-size="12" fill="#B5ADA8">yüzünün net göründüğü bir tane seç.</text>
+<text x="1098" y="2706" font-size="12" fill="#D5D0CB">En az iki fotoğraf. İlki kapak olur;</text>
+<text x="1098" y="2724" font-size="12" fill="#D5D0CB">yüzünün net göründüğü bir tane seç.</text>
 <g>
 <rect x="1098" y="2744" width="80" height="100" rx="9" fill="url(#photo)" stroke="#2A2529"/>
 <rect x="1104" y="2750" width="40" height="17" rx="8.5" fill="#0B0B0B" fill-opacity="0.7"/>
@@ -612,17 +612,17 @@
 </g>
 <g>
 <rect x="1098" y="2850" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
-<text x="1138" y="2909" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+<text x="1138" y="2909" font-size="24" fill="#D5D0CB" text-anchor="middle">+</text>
 </g>
 <g opacity="0.4">
 <rect x="1184" y="2850" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
-<text x="1224" y="2909" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+<text x="1224" y="2909" font-size="24" fill="#D5D0CB" text-anchor="middle">+</text>
 </g>
 <g opacity="0.4">
 <rect x="1270" y="2850" width="80" height="100" rx="9" fill="#151316" stroke="#2A2529" stroke-dasharray="5 4"/>
-<text x="1310" y="2909" font-size="24" fill="#B5ADA8" text-anchor="middle">+</text>
+<text x="1310" y="2909" font-size="24" fill="#D5D0CB" text-anchor="middle">+</text>
 </g>
-<text x="1098" y="2970" font-size="10" fill="#B5ADA8">1 / 6 eklendi</text>
+<text x="1098" y="2970" font-size="10" fill="#D5D0CB">1 / 6 eklendi</text>
 <rect x="1098" y="3048" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="1224" y="3074" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
 <text x="1076" y="3142" font-size="11" fill="#5E5652">Yükleme sürerken kutu meşgul ve yeri korunuyor.</text>
