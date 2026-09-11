@@ -7,6 +7,7 @@ import {
 } from 'axios';
 
 import { resolveBaseUrl, resolveStandInUrl } from './baseUrl';
+import type { ApiError } from './errors';
 import { createRefreshQueue, type RefreshQueue } from './refresh';
 import { RefreshResponseSchema } from './schemas';
 
@@ -119,19 +120,21 @@ export function createApiClient(options: {
       const shouldRefresh =
         failure?.response?.status === 401 &&
         config !== undefined &&
-        // Bir istek yalnizca bir kez yenilenip tekrarlanir; ikinci 401
-        // gercekten yetkisiz demektir ve kullaniciya ulasmali.
+        // Bir istek yalnizca bir kez yenilenip tekrarlanir; tekrarin 401'i
+        // bir daha yenileme baslatmaz, asagida ayri ele aliniyor. Ikinci bir
+        // tur sonsuz donguye kapi acardi.
         config.retriedAfterRefresh !== true;
 
       if (!shouldRefresh) throw error;
 
       config.retriedAfterRefresh = true;
 
+      let accessToken: string;
       try {
-        const accessToken = await queue.refresh();
-        config.headers.set('Authorization', `Bearer ${accessToken}`);
-        return await client.request(config);
+        accessToken = await queue.refresh();
       } catch {
+        // Oturumu kapatabilen tek yer burasi: yenileme sunucusu hayir dedi.
+        //
         // Kuyruk burada **iptal edilmiyor.** Kuyruk paylasilan bir sey ve
         // buradaki basarisizlik bu istege ait: iptal etmek, baska bir istegin
         // o anda ucusta olan yenilemesini kuyruktan silerdi ve bir sonraki 401
@@ -142,6 +145,31 @@ export function createApiClient(options: {
         // Ozgun hata firlatiliyor: 401 govdesi zaten "oturum bitti" olarak
         // normallesiyor ve yenileme hatasinin detayi kullaniciyi ilgilendirmiyor.
         throw error;
+      }
+
+      config.headers.set('Authorization', `Bearer ${accessToken}`);
+
+      try {
+        return await client.request(config);
+      } catch (retryError: unknown) {
+        // Yenileme basarili oldugu icin oturum gecerli; tekrarin hatasi bu
+        // istege ait ve oturumu kapatmiyor. Kullanici akisin ortasinda
+        // oturumdan dusmemeli -- tek bir ucun hatasi yuzunden hic.
+        //
+        // Tekrarin 401'i ham birakilmiyor: ham 401 "oturum bitti" olarak
+        // normallesiyor ve acilis bunu gorunce kullaniciyi token'lar diskte
+        // dururken karsilamaya gonderirdi. Oturumun gecerli olduguna yenileme
+        // sunucusu karar verdi; ardindan gelen 401 bir sunucu sapmasi.
+        if (isAxiosError(retryError) && retryError.response?.status === 401) {
+          const drift: ApiError = {
+            kind: 'unexpected_response',
+            detail: 'unauthorised after refresh',
+          };
+          throw drift;
+        }
+        // Diger hatalar (sunucu hatasi, zaman asimi, ag) tekrarin kendi
+        // hatasi olarak iletiliyor; ilk 401 degil.
+        throw retryError;
       }
     },
   );
@@ -202,7 +230,10 @@ export const api = createApiClient({ baseURL, bridge: delegatingBridge, refreshQ
  *
  * Bu, tezgahtan gelen bir 401'in oturumu asla kapatamayacagi anlamina gelmiyor:
  * sozlesme sunucusuna sorulan yenileme de basarisiz olursa oturum gercekten
- * bitmistir ve kapanir. Degisen sey, kararin dogru sunucuya sorulmasi.
+ * bitmistir ve kapanir. Degisen sey, kararin dogru sunucuya sorulmasi. Yenileme
+ * basarili olup tezgah yeni token'i da reddederse (ornegin tezgah sozlesme
+ * sunucusunun token'ini tanimiyorsa) oturum kapanmaz: o istek bir sunucu
+ * sapmasi olarak duser ve yalnizca o ekran hata gosterir.
  *
  * Adres verilmediginde `baseURL` ile ayni cikiyor, yani uygulama tek bir
  * sunucu biliyor. Ayrildiklarinda bunu kuran kisi bilerek yapmis oluyor ve

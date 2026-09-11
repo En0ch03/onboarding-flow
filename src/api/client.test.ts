@@ -195,6 +195,106 @@ describe('api client', () => {
     await expect(client.get('/profile')).rejects.toBeDefined();
     expect(bridge.onSessionEnded).toHaveBeenCalledTimes(1);
   });
+
+  it('ends the session exactly once and reports it when a single refresh fails', async () => {
+    const { bridge } = bridgeWith();
+
+    const server = stubServer((config) =>
+      config.url === '/auth/refresh'
+        ? { status: 401, data: { error: 'refresh_expired' } }
+        : { status: 401, data: { error: 'token_expired' } },
+    );
+
+    const client = createApiClient({ baseURL, bridge, adapter: server.adapter });
+
+    const reason = await client.get('/profile').then(
+      () => null,
+      (thrown: unknown) => thrown,
+    );
+
+    expect(normalizeApiError(reason).kind).toBe('refresh_expired');
+    expect(bridge.onSessionEnded).toHaveBeenCalledTimes(1);
+  });
+});
+
+/**
+ * Yenileme basarili oldu ama tekrarlanan istek dustu. Oturumun gecerli
+ * oldugunu yenileme sunucusu soyledi; tekrarin hatasi o istege ait ve
+ * kullaniciyi akisin ortasinda oturumdan dusurmemeli.
+ */
+describe('yenileme basarili, tekrar dusuyor', () => {
+  type RetryFailure = { status: number } | 'network';
+
+  /** Ilk deneme 401, yenileme basarili, tekrar verilen sekilde dusuyor. */
+  function retryFailsWith(failure: RetryFailure) {
+    const { bridge } = bridgeWith();
+    let profileCalls = 0;
+
+    const adapter: AxiosAdapter = async (config) => {
+      const respond = (status: number, data: unknown) => {
+        const response = {
+          status,
+          data,
+          statusText: '',
+          headers: new AxiosHeaders(),
+          config,
+        };
+        if (status >= 200 && status < 300) return response;
+        throw new AxiosError('request failed', String(status), config, {}, response);
+      };
+
+      if (config.url === '/auth/refresh') return respond(200, { access_token: 'access_2' });
+
+      profileCalls += 1;
+      if (profileCalls === 1) return respond(401, { error: 'token_expired' });
+
+      // Yanitsiz bir hata: zaman asimi ya da ag kopmasi boyle gorunuyor.
+      if (failure === 'network') throw new AxiosError('timeout', 'ECONNABORTED', config);
+      return respond(failure.status, { error: 'whatever' });
+    };
+
+    const client = createApiClient({ baseURL, bridge, adapter });
+    const settle = () =>
+      client.get('/profile').then(
+        () => {
+          throw new Error('request should have failed');
+        },
+        (thrown: unknown) => thrown,
+      );
+
+    return { bridge, settle, profileCalls: () => profileCalls };
+  }
+
+  it('tekrar 401 alirsa oturum kapanmiyor ve hata oturum sonu sayilmiyor', async () => {
+    const { bridge, settle, profileCalls } = retryFailsWith({ status: 401 });
+
+    const reason = await settle();
+
+    expect(normalizeApiError(reason)).toEqual({
+      kind: 'unexpected_response',
+      detail: 'unauthorised after refresh',
+    });
+    expect(bridge.onSessionEnded).not.toHaveBeenCalled();
+    expect(profileCalls()).toBe(2);
+  });
+
+  it('tekrar 500 alirsa oturum kapanmiyor ve hata sunucu hatasi', async () => {
+    const { bridge, settle } = retryFailsWith({ status: 500 });
+
+    const reason = await settle();
+
+    expect(normalizeApiError(reason).kind).toBe('server_error');
+    expect(bridge.onSessionEnded).not.toHaveBeenCalled();
+  });
+
+  it('tekrar zaman asimina ugrarsa oturum kapanmiyor ve hata ag hatasi', async () => {
+    const { bridge, settle } = retryFailsWith('network');
+
+    const reason = await settle();
+
+    expect(normalizeApiError(reason).kind).toBe('network');
+    expect(bridge.onSessionEnded).not.toHaveBeenCalled();
+  });
 });
 
 /**
@@ -272,5 +372,37 @@ describe('paylasilan yenileme', () => {
     await standIn.get('/config/options');
 
     expect(bridge.onSessionEnded).not.toHaveBeenCalled();
+  });
+
+  /**
+   * Tezgah bayraksiz acildiginda yasanan ariza: tezgah sozlesme sunucusunun
+   * token'ini tanimiyor, yenileme sozlesme adresinde basariyor ve tezgah
+   * yeni token'i da reddediyor. Fotograf adiminda kullanici karsilama
+   * ekranina dusuyordu.
+   */
+  it('tezgah yenilemeden sonra da 401 donerse oturum kapanmiyor', async () => {
+    const { bridge } = bridgeWith();
+    const refreshCalls: InternalAxiosRequestConfig[] = [];
+
+    const { adapter } = stubServer((config) => {
+      if (config.url === '/auth/refresh') {
+        refreshCalls.push(config);
+        return { status: 200, data: { access_token: 'access_2' } };
+      }
+      return { status: 401, data: { error: 'token_expired' } };
+    });
+
+    const queue = createRefreshQueueFor({ baseURL: CONTRACT, bridge, adapter });
+    const standIn = createApiClient({ baseURL: STANDIN, bridge, adapter, refreshQueue: queue });
+
+    const reason = await standIn.post('/upload', {}).then(
+      () => null,
+      (thrown: unknown) => thrown,
+    );
+
+    expect(refreshCalls).toHaveLength(1);
+    expect(refreshCalls[0]?.baseURL).toBe(CONTRACT);
+    expect(bridge.onSessionEnded).toHaveBeenCalledTimes(0);
+    expect(normalizeApiError(reason).kind).toBe('unexpected_response');
   });
 });
