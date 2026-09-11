@@ -33,11 +33,12 @@ export type VeilWeight = 'full' | 'light';
  * Perdenin metin bolgesindeki en yuksek opakligi.
  *
  * `full` degeri gorselin en acik bolgesinde bile metni tasiyacak kadar yuksek.
- * `light` onun ucte birine yakin: karartmayi tamamen kaldirmak da secenek
- * degil, cunku kartin disinda kalan buton ve yasal satir hala gorselin uzerinde
- * duruyor.
+ * `light` neredeyse sifir: cam kipte sistemin kendi karartmasi zaten var ve
+ * ikisi ust uste binince kartin altindaki serit bugulu gorunuyordu. Tamamen
+ * sifir degil, cunku kartin disinda kalan yasal satir hala gorselin uzerinde
+ * duruyor ve en alt bantta ince bir karartma ona zemin veriyor.
  */
-const VEIL_PEAK = { full: 0.86, light: 0.3 } as const;
+const VEIL_PEAK = { full: 0.86, light: 0.12 } as const;
 
 /**
  * Karartmanin basladigi dikey oran.

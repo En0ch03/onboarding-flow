@@ -69,7 +69,7 @@ describe('JourneyBackdrop hafif perde', () => {
     // indiriyor ve cam hicbir sey kirmiyor.
     expect(veil.props.colors).toEqual([
       processColor(withAlpha(palettes.dark.veil, 0)),
-      processColor(withAlpha(palettes.dark.veil, 0.3)),
+      processColor(withAlpha(palettes.dark.veil, 0.12)),
     ]);
     expect(veil.props.locations).toEqual([0.55, 1]);
   });
