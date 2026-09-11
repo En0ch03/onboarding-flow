@@ -26,7 +26,8 @@ type ScreenProps = {
    *
    * `top` icerigi ust seridin hemen altina koyar. `upper` onu asagi dogru
    * biraz iter ama ortalamaz: metin ust sol bolgede, kosede degil, iceriden
-   * bir bosluk birakarak duruyor. `center` dikeyde ortalar.
+   * bir bosluk birakarak duruyor. `center` dikeyde ortalar. `bottom` icerigi
+   * footer'in hemen ustune yaslar.
    *
    * `upper` boslugu ust seridin uzerine biniyor, yerine gecmiyor: seritli bir
    * ekranda ikisi toplanir ve icerik beklenenden asagi duser.
@@ -36,7 +37,7 @@ type ScreenProps = {
   journeyProgress?: number;
 };
 
-export type ScreenAlign = 'top' | 'upper' | 'center';
+export type ScreenAlign = 'top' | 'upper' | 'center' | 'bottom';
 
 /**
  * `upper` boslugu sabit degil oranli: sabit bir deger kucuk ekranda icerigi
@@ -120,6 +121,11 @@ export function Screen({
                 style={{
                   flexGrow: 1,
                   ...(align === 'center' ? { justifyContent: 'center' } : null),
+                  // Kayma miktari piksel olarak degil, yerlesim yoluyla
+                  // tanimli: icerik footer'a "flex-end" ile yaslaniyor, sabit
+                  // bir bosluk eklenmiyor. Ekran boyu degisse de blok her
+                  // zaman dugmelerin hemen ustunde kaliyor.
+                  ...(align === 'bottom' ? { justifyContent: 'flex-end' } : null),
                   ...(align === 'upper'
                     ? { paddingTop: Math.round(height * UPPER_INSET_RATIO) }
                     : null),

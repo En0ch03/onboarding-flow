@@ -95,7 +95,11 @@ export const palettes: Record<ColorScheme, Palette> = {
     surface: '#151316',
     surfaceRaised: '#1C191D',
     ink: '#F5F2ED',
-    inkSoft: '#B5ADA8',
+    // Perdeler kalkinca ikincil metin dogrudan gorselin uzerinde kaliyor;
+    // eski ton (#B5ADA8) kurdelenin parlak bolgelerinde AA esiginin altina
+    // dusuyordu. Bu ton, hiyerarsiyi ink'e gore hala koruyarak butun
+    // konumlarda esigin uzerinde kaliyor.
+    inkSoft: '#D5D0CB',
     clay: '#C50337',
     clayDeep: '#8B0D1A',
     clayTint: 'rgba(197, 3, 55, 0.16)',

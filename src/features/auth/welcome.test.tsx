@@ -40,6 +40,20 @@ function hasCentredContent(node: Node | Node[]): boolean {
   return hasCentredContent((node.children ?? []) as Node[]);
 }
 
+/**
+ * Ayni agac yapisi, bu kez `flex-end` iceren kutuyu ariyor: metin blogunun
+ * footer'a yaslandigini gosteren sey bu.
+ */
+function hasBottomAlignedContent(node: Node | Node[]): boolean {
+  if (node === null || typeof node === 'string') return false;
+  if (Array.isArray(node)) return node.some(hasBottomAlignedContent);
+
+  const style = StyleSheet.flatten(node.props?.style) as Record<string, unknown> | undefined;
+  if (style?.flexGrow === 1 && style?.justifyContent === 'flex-end') return true;
+
+  return hasBottomAlignedContent((node.children ?? []) as Node[]);
+}
+
 describe('karsilama ekranlari', () => {
   beforeEach(() => {
     isLiquidGlassAvailable.mockReturnValue(false);
@@ -113,5 +127,19 @@ describe('karsilama ekranlari', () => {
 
     expect(hasCentredContent(promise.toJSON())).toBe(false);
     expect(hasCentredContent(difference.toJSON())).toBe(false);
+  });
+
+  it('her iki karsilama ekraninda metin blogu dugmelerin hemen ustune yaslaniyor', async () => {
+    const promise = await renderWithTheme(<WelcomePromiseScreen onStart={noop} onSignIn={noop} />);
+    const difference = await renderWithTheme(
+      <WelcomeDifferenceScreen onContinue={noop} onBack={noop} onSkip={noop} />,
+    );
+
+    // Yokluk iddiasi once varligi kanitliyor.
+    expect(promise.getByText(strings.welcome.promiseTitle)).toBeTruthy();
+    expect(difference.getByText(strings.welcome.differenceTitleFirst)).toBeTruthy();
+
+    expect(hasBottomAlignedContent(promise.toJSON())).toBe(true);
+    expect(hasBottomAlignedContent(difference.toJSON())).toBe(true);
   });
 });

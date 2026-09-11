@@ -23,8 +23,9 @@ type WelcomeDifferenceScreenProps = {
  * altindaki satir urunun nasil calistigini soyluyor, duygudan sonra somut
  * bilgi.
  *
- * Metin ust seridin hemen altinda. Ortalandiginda geri ve gec dugmeleriyle
- * arasinda hicbir sey olmayan buyuk bir bosluk kaliyordu.
+ * Metin footer'in hemen ustunde: gorselin alt bandi her durakta koyu, blok
+ * oraya yaslaninca perde gerekmeden okunuyor. Ustte kalan bosluk basligi
+ * ortalarken olusan bosluktan farkli -- burada kurdele tek basina bir sahne.
  */
 export function WelcomeDifferenceScreen({
   onContinue,
@@ -35,6 +36,7 @@ export function WelcomeDifferenceScreen({
 
   return (
     <Screen
+      align="bottom"
       glass={false}
       journeyProgress={journeyStops.difference}
       header={

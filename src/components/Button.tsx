@@ -118,8 +118,11 @@ export function Button({
                   // Kil payi bir cizgi, kizil zeminli bir ekranda ikincil
                   // eylemi neredeyse gorunmez birakiyordu; kenarlik artik
                   // metnin kendi renginden turuyor ve ayni ailede kaliyor.
+                  // Perdeler kalkinca dugme dogrudan gorselin uzerinde
+                  // kaliyor; %28 zeminle 2,18:1 veriyordu, %40 3,41:1'e
+                  // cikariyor ve WCAG'nin dokunma hedefi esigini geciyor.
                   borderWidth: 1,
-                  borderColor: pressed ? colors.clay : withAlpha(colors.ink, 0.28),
+                  borderColor: pressed ? colors.clay : withAlpha(colors.ink, 0.4),
                   borderRadius: radius.full,
                   borderCurve: 'continuous',
                 },

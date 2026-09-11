@@ -115,7 +115,7 @@ describe('Button', () => {
 
       expect(StyleSheet.flatten(view.getByTestId('ghost-edge', hidden).props.style)).toMatchObject({
         borderWidth: 1,
-        borderColor: withAlpha(palettes.dark.ink, 0.28),
+        borderColor: withAlpha(palettes.dark.ink, 0.4),
       });
     } finally {
       restore();
