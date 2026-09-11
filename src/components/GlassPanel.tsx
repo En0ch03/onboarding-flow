@@ -1,11 +1,11 @@
 import { BlurView } from 'expo-blur';
 import { GlassView, type GlassColorScheme, type GlassStyle } from 'expo-glass-effect';
 import { type ReactNode } from 'react';
-import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { useTheme, withAlpha } from '@/theme';
 
-import { resolveGlassMode, type GlassMode } from './glassMode';
+import { resolveGlassMode } from './glassMode';
 
 type GlassPanelProps = {
   children: ReactNode;
@@ -49,48 +49,6 @@ const TRANSLUCENT_FILL = 0.4;
 
 /** Bulaniksiz kipte dolgu tek basina calisiyor, o yuzden daha opak. */
 const FLAT_FILL = 0.86;
-
-/** Rozette kipin yerini tutan harf. */
-const MODE_LETTERS: Record<GlassMode, string> = { liquid: 'L', blur: 'B', flat: 'F' };
-
-/**
- * Kartin hangi kiple cizildigini soyleyen kucuk etiket.
- *
- * Cihazda "efekt tam olmamis" gorunumunun hangi kipten geldigini tek bakista
- * soyluyor; terminal ciktisi icin cihaz basina gecmek gerek. Yaninda duran
- * sistem surumu ve saydamlik ayari sorusunu bir kez cevaplandi: artik her
- * ekranda tasinan iki fazla bilgi, kartin sag ust kosesini kaplayan bir
- * seride donusuyordu.
- */
-function GlassModeBadge({ mode }: { mode: GlassMode }) {
-  const { colors, radius, spacing } = useTheme();
-
-  return (
-    <Text
-      testID="glass-mode-badge"
-      // Rozet kartin sag ust kosesinde duruyor ve orasi bir alanin ustune denk
-      // gelebiliyor: dokunusu gecirmezse teshis araci, formun bir parcasini
-      // kullanilamaz hale getirir.
-      pointerEvents="none"
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
-      style={{
-        position: 'absolute',
-        top: spacing.xs,
-        right: spacing.xs,
-        paddingHorizontal: spacing.xs,
-        paddingVertical: 2,
-        borderRadius: radius.sm,
-        overflow: 'hidden',
-        fontSize: 10,
-        color: colors.ink,
-        backgroundColor: withAlpha(colors.scrim, 0.55),
-      }}
-    >
-      {MODE_LETTERS[mode]}
-    </Text>
-  );
-}
 
 /**
  * Form icerigini tasiyan buzlu kart.
@@ -242,10 +200,6 @@ export function GlassPanel({
       )}
 
       {children}
-
-      {/* Yalniz gelistirme derlemesinde: urun derlemesinde bu dal hic
-          degerlendirilmiyor, paketleyici olu kodu ayikliyor. */}
-      {__DEV__ ? <GlassModeBadge mode={mode} /> : null}
     </View>
   );
 }
