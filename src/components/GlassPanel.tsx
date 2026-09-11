@@ -1,5 +1,5 @@
 import { BlurView } from 'expo-blur';
-import { GlassView, isGlassEffectAPIAvailable, isLiquidGlassAvailable } from 'expo-glass-effect';
+import { GlassView, type GlassStyle } from 'expo-glass-effect';
 import { useEffect, useState, type ReactNode } from 'react';
 import {
   AccessibilityInfo,
@@ -13,40 +13,35 @@ import {
 
 import { useTheme, withAlpha } from '@/theme';
 
+import { resolveGlassMode, type GlassMode } from './glassMode';
+
 type GlassPanelProps = {
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
+  /**
+   * Cam kipinde sistemin hangi materyalini kullanacagi.
+   *
+   * `regular` arkasindaki parlakliga gore kendi tonunu ve golgesini
+   * ayarliyor; `clear` bunlari yapmiyor, kalici olarak daha saydam kaliyor ve
+   * arkasindaki icerigin kendisini gosteriyor. Kucuk kontroller icin `clear`
+   * yanlis secim -- uzerlerindeki isaret arkadaki her sey degistikce
+   * okunamaz hale geliyor. Genis bir kartin arkasinda ise zengin bir gorsel
+   * duruyor ve onu tona bogmadan gostermenin yolu bu.
+   */
+  glassStyle?: Extract<GlassStyle, 'regular' | 'clear'>;
 };
 
 /**
- * Kartin arkasinin nasil cizildigi.
- *
- * Uc kip var cunku bulaniklik uc ayri gerceklige denk geliyor. Sistemin cam
- * efekti yalnizca yeni iOS surumlerinde var; onun altindaki surumlerde ayni
- * hissi veren sey genel bulaniklik. Android'de bulaniklik deneysel ve her
- * karede yeniden hesaplaniyor -- kaydirma sirasinda odenen bedel, kazanilan
- * gorunumden buyuk. Orada kart bulaniksiz ama daha opak bir dolguyla duruyor:
- * metnin zemini her kipte ayni guvende.
- */
-export type GlassMode = 'liquid' | 'blur' | 'flat';
-
-export function resolveGlassMode(): GlassMode {
-  if (Platform.OS !== 'ios') return 'flat';
-  // Iki ayri soru soruluyor: tasarim dilinin cam olup olmadigi, ve yerel cam
-  // API'sinin cihazda gercekten bulunup bulunmadigi. Bazi iOS 26 derlemeleri
-  // ilkine "evet" ikincisine "hayir" diyor; orada cam katman saydam ciziliyor
-  // ve metnin altinda hicbir zemin kalmiyor. Ikisi birden dogru degilse
-  // bulanikliga dusmek, zemini olmayan bir karttan iyi.
-  return isLiquidGlassAvailable() && isGlassEffectAPIAvailable() ? 'liquid' : 'blur';
-}
-
-/**
- * Bulanik kipte dolgunun opakligi; cam kipte ayni deger tona gidiyor.
+ * Bulanik kipte dolgunun opakligi.
  *
  * Deger bir denge noktasi: asagi inince metnin zemini zayifliyor, yukari
  * cikinca arkadaki gorsel kayboluyor ve kart yeniden duz bir panele donuyor.
  * Kontrast bilerek bu dolguya bagli, bulanikliga degil -- bulanikligin sonucu
  * arkadaki goruntuye gore degisir, dolgunun opakligi degismez.
+ *
+ * Cam kipte boyle bir dolgu yok: orada kontrasti da optigi de sistemin kendi
+ * materyali tasiyor ve uzerine eklenen her katman onun uyum davranisini
+ * bozuyor.
  */
 const TRANSLUCENT_FILL = 0.4;
 
@@ -61,10 +56,12 @@ const MODE_LETTERS: Record<GlassMode, string> = { liquid: 'L', blur: 'B', flat: 
  *
  * Ayri bir kanca cunku cevap asenkron geliyor ve yalniz iOS'ta anlamli. Cevap
  * gelmeden veya hic gelmeyecekse soru isareti kaliyor: burada yanlis bir
- * "acik" yazmak, cihazi tutan kisiyi yanlis yone gonderir.
+ * "acik" yazmak, cihazi tutan kisiyi yanlis yone gonderir. Android'de soru
+ * hic sorulmuyor ve rozette yeri de bos kalmiyor: cevaplanmayacak bir soru
+ * icin ayrilan yer, orada bir cevap oldugunu ima ediyordu.
  */
-function useTransparencyLabel() {
-  const [label, setLabel] = useState('saydamlık ?');
+function useTransparencyLabel(): string | null {
+  const [label, setLabel] = useState<string | null>(Platform.OS === 'ios' ? 'saydamlık ?' : null);
 
   useEffect(() => {
     if (Platform.OS !== 'ios') return;
@@ -98,10 +95,16 @@ function GlassModeBadge({ mode }: { mode: GlassMode }) {
   const { colors, radius, spacing } = useTheme();
   const transparency = useTransparencyLabel();
   const system = Platform.OS === 'ios' ? 'iOS' : 'Android';
+  const parts = [MODE_LETTERS[mode], `${system} ${Platform.Version}`];
+  if (transparency !== null) parts.push(transparency);
 
   return (
     <Text
       testID="glass-mode-badge"
+      // Rozet kartin sag ust kosesinde duruyor ve orasi bir alanin ustune denk
+      // gelebiliyor: dokunusu gecirmezse teshis araci, formun bir parcasini
+      // kullanilamaz hale getirir.
+      pointerEvents="none"
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
       style={{
@@ -117,7 +120,7 @@ function GlassModeBadge({ mode }: { mode: GlassMode }) {
         backgroundColor: withAlpha(colors.scrim, 0.55),
       }}
     >
-      {`${MODE_LETTERS[mode]} · ${system} ${Platform.Version} · ${transparency}`}
+      {parts.join(' · ')}
     </Text>
   );
 }
@@ -129,13 +132,20 @@ function GlassModeBadge({ mode }: { mode: GlassMode }) {
  * karartma gorseli de yok ediyordu, kart onu kenarlardan sizdirmaya devam
  * ediyor.
  *
+ * Cam kipte kartin uzerinde sistemin materyalinden baska hicbir katman yok.
+ * Kirilma, isigin kenarda toplanmasi, arkadaki parlakliga gore ton ve icerige
+ * gore koyulasan golge -- hepsi materyalin kendi davranisi. Elle eklenen bir
+ * dolgu ya da kenar cizgisi bunlarin uzerine biniyor ve materyali taklit
+ * eden bir katmana donduruyor; taklit, aslinin ustunde durunca aslini bozuyor.
+ * Yedek kiplerde ise o katmanlar tek basina calisiyor ve kaliyor.
+ *
  * Kart dekoratif: butun katmanlari ekran okuyucudan gizli ve dokunusu
  * gecirmiyor, icerik oldugu gibi erisilebilir kaliyor.
  */
-export function GlassPanel({ children, style }: GlassPanelProps) {
-  const { colors, radius, spacing } = useTheme();
+export function GlassPanel({ children, style, glassStyle = 'regular' }: GlassPanelProps) {
+  const { colors, radius, scheme, spacing } = useTheme();
   const mode = resolveGlassMode();
-  const tint = withAlpha(colors.paper, TRANSLUCENT_FILL);
+  const liquid = mode === 'liquid';
 
   return (
     <View
@@ -147,22 +157,29 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           // Katmanlar kartin kosesinden tasmasin: tasan bir dolgu, yuvarlak
           // kenari dorde donduruyor.
           overflow: 'hidden',
-          borderWidth: 1,
-          // Kenarlik ust isigiyla alt golgenin arasinda kalmali; kendi tonu
-          // one cikinca kart yuzeyden cok cerceveye benziyordu.
-          borderColor: withAlpha(colors.ink, 0.12),
           padding: spacing.xl,
         },
+        liquid
+          ? null
+          : {
+              borderWidth: 1,
+              // Kenarlik ust isigiyla alt golgenin arasinda kalmali; kendi
+              // tonu one cikinca kart yuzeyden cok cerceveye benziyordu.
+              borderColor: withAlpha(colors.ink, 0.12),
+            },
         style,
       ]}
     >
-      {mode === 'liquid' ? (
+      {liquid ? (
         <GlassView
           pointerEvents="none"
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
-          glassEffectStyle="regular"
-          tintColor={tint}
+          glassEffectStyle={glassStyle}
+          // Sema uygulamanin kendi anahtarindan geliyor: sistem koyu temadayken
+          // uygulama acik temada olabiliyor ve materyalin "auto" degeri sistemi
+          // okuyor, uygulamayi degil.
+          colorScheme={scheme}
           // Yerel katman kabin `overflow: hidden` kirpmasini gormuyor, kendi
           // kose yaricapini okuyor: verilmezse cam dort koseli kaliyor ve
           // kartin yuvarlak kenari ustunde bir dikdortgen olarak duruyor.
@@ -189,7 +206,7 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
         />
       ) : null}
 
-      {mode === 'liquid' ? null : (
+      {liquid ? null : (
         <View
           testID="glass-panel-fill"
           pointerEvents="none"
@@ -197,46 +214,56 @@ export function GlassPanel({ children, style }: GlassPanelProps) {
           importantForAccessibility="no-hide-descendants"
           style={[
             StyleSheet.absoluteFill,
-            { backgroundColor: mode === 'flat' ? withAlpha(colors.surface, FLAT_FILL) : tint },
+            {
+              backgroundColor:
+                mode === 'flat'
+                  ? withAlpha(colors.surface, FLAT_FILL)
+                  : withAlpha(colors.paper, TRANSLUCENT_FILL),
+            },
           ]}
         />
       )}
 
       {/* Ust kenardaki bir tik daha acik cizgi: cam hissini veren sey isigin
           kartin ust kenarinda toplanmasi. Kenarligin tek tonu, karti yuzeyden
-          cok cerceveye benzetiyordu. */}
-      <View
-        testID="glass-panel-edge-top"
-        pointerEvents="none"
-        accessibilityElementsHidden
-        importantForAccessibility="no-hide-descendants"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          backgroundColor: withAlpha(colors.ink, 0.3),
-        }}
-      />
+          cok cerceveye benzetiyordu. Cam kipte bu isik zaten materyalin
+          icinde; elle cizilen ikinci bir cizgi onun uzerine biniyor. */}
+      {liquid ? null : (
+        <View
+          testID="glass-panel-edge-top"
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 1,
+            backgroundColor: withAlpha(colors.ink, 0.3),
+          }}
+        />
+      )}
 
       {/* Alt kenarda ust cizginin esi, ters yonde: isik yukaridan gelirse
           govde asagida kalinlasir. Iki cizgi olmadan kart bir yuzey degil,
           zemine yapisik bir dikdortgen gibi duruyordu. */}
-      <View
-        testID="glass-panel-edge-bottom"
-        pointerEvents="none"
-        accessibilityElementsHidden
-        importantForAccessibility="no-hide-descendants"
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          backgroundColor: withAlpha(colors.veil, 0.35),
-        }}
-      />
+      {liquid ? null : (
+        <View
+          testID="glass-panel-edge-bottom"
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 1,
+            backgroundColor: withAlpha(colors.veil, 0.35),
+          }}
+        />
+      )}
 
       {children}
 

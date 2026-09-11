@@ -10,6 +10,7 @@ import { AxiosError, AxiosHeaders } from 'axios';
 
 import { fieldErrorMessage } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
+import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
 
 import { RegisterScreen } from './RegisterScreen';
@@ -262,5 +263,34 @@ describe('RegisterScreen cam kart', () => {
     const panel = within(view.getByTestId('glass-panel'));
     expect(panel.queryByText(strings.auth.registerSubmit)).toBeNull();
     expect(panel.queryByText(strings.auth.legal)).toBeNull();
+  });
+
+  describe('cam kipi', () => {
+    const { isLiquidGlassAvailable } = jest.requireMock('expo-glass-effect');
+
+    /** Arka katmanlar ekran okuyucudan gizli; sorgular gizli ogeleri de kapsiyor. */
+    const hidden = { includeHiddenElements: true } as const;
+
+    afterEach(() => {
+      isLiquidGlassAvailable.mockReturnValue(false);
+    });
+
+    it('kart saydam materyali kullaniyor, kucuk kontroller uyum yapani', async () => {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+      // Once agacin gercekten cizildigi: bos bir agacta asagidaki sorgular da
+      // "yok" derdi ve kural silinse bile test yesil kalirdi.
+      expect(view.getByText(strings.auth.registerSubmit)).toBeTruthy();
+
+      // Kartin arkasinda akisin gorseli duruyor; uyum yapan materyal onu bir
+      // ton katmaninin altinda birakiyordu.
+      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.glassEffectStyle).toBe('clear');
+
+      // Kucuk bir kontrolun uzerindeki isaret, saydam materyalde arkasindaki
+      // her sey degistikce okunamaz hale geliyor: seritteki geri dairesi uyum
+      // yapan materyalde kaliyor. (Bu ekranda gecme kapsulu yok.)
+      expect(view.getByTestId('glass-back', hidden).props.glassEffectStyle).toBe('regular');
+    });
   });
 });

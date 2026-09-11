@@ -95,7 +95,14 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
     >
       {/* Kart yalnizca formu tasiyor: buton ve yasal satir disarida kaliyor,
           cunku sayfanin dibindeki eylem kartin bir parcasi degil. */}
-      <GlassPanel>
+      {/* Kartin arkasinda akisin kizil gorseli duruyor ve genis bir yuzeyin
+          isi onu gostermek, tona bogmak degil: uyum yapan materyal arkadaki
+          parlakliga gore kendi tonunu kuruyor ve gorseli bir renk katmaninin
+          altinda birakiyor. Bu secim yalnizca karta ait; seritteki dugmeler ve
+          alttan acilan sayfa uyum yapan materyalde kaliyor, cunku kucuk bir
+          kontrolun uzerindeki isaret arkasindaki her sey degistikce okunamaz
+          hale geliyor. */}
+      <GlassPanel glassStyle="clear">
         <ScreenIntro title={strings.auth.registerTitle} subtitle={strings.auth.registerSubtitle} />
 
         {/* Bandin eylemi hatanin turune gore degisiyor: alinmis bir e-posta

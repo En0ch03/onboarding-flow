@@ -74,13 +74,95 @@ describe('GlassPanel', () => {
 
       const glass = view.getByTestId(GLASS_VIEW_TEST_ID, hidden);
       expect(glass.props.glassEffectStyle).toBe('regular');
-      expect(glass.props.tintColor).toBe(withAlpha(palettes.dark.paper, 0.4));
       // Yerel katman kartin `overflow: hidden` kirpmasini gormuyor, kendi kose
       // yaricapini okuyor: verilmezse cam dort koseli bir dikdortgen kaliyor.
       expect(StyleSheet.flatten(glass.props.style)).toMatchObject({
         borderRadius: radius.lg,
       });
       expect(view.queryByTestId(BLUR_VIEW_TEST_ID, hidden)).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
+  it('cam kipte materyalin uzerine hicbir katman koymuyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeTruthy();
+
+      // Dolgu, ust isigi ve alt golgesi yedek kiplerin isi. Cam kipte hepsi
+      // materyalin kendi davranisinin uzerine binen taklit katmanlar.
+      expect(view.queryByTestId('glass-panel-fill', hidden)).toBeNull();
+      expect(view.queryByTestId('glass-panel-edge-top', hidden)).toBeNull();
+      expect(view.queryByTestId('glass-panel-edge-bottom', hidden)).toBeNull();
+
+      const panel = StyleSheet.flatten(view.getByTestId('glass-panel').props.style) as {
+        borderWidth?: number;
+        borderColor?: string;
+      };
+      expect(panel.borderWidth).toBeUndefined();
+      expect(panel.borderColor).toBeUndefined();
+    } finally {
+      restore();
+    }
+  });
+
+  it('istenirse saydam materyale geciyor, varsayilani uyum yapan', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const clear = await renderWithTheme(
+        <GlassPanel glassStyle="clear">
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(clear.getByText('İçerik')).toBeTruthy();
+      expect(clear.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.glassEffectStyle).toBe('clear');
+
+      const regular = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(regular.getByText('İçerik')).toBeTruthy();
+      // Varsayilan uyum yapan materyal: saydami isteyen yuzey bunu acikca
+      // soyler, cunku kontrasti kendi arka planina gore ustlenmis olur.
+      expect(regular.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.glassEffectStyle).toBe(
+        'regular',
+      );
+    } finally {
+      restore();
+    }
+  });
+
+  it('cam kipte tona karismiyor: optik sistemin', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+
+      const glass = view.getByTestId(GLASS_VIEW_TEST_ID, hidden);
+      // Ton verilirse materyal arkadaki parlakliga gore kendi ton
+      // haritasini kuramiyor; kart yeniden elle boyanmis bir yuzeye donuyor.
+      expect(glass.props.tintColor).toBeUndefined();
+      // Sema uygulamanin anahtarindan geliyor: `auto` sistemi okur ve sistem
+      // acik temadayken uygulama koyu temada kalabilir.
+      expect(glass.props.colorScheme).toBe('dark');
     } finally {
       restore();
     }
@@ -386,6 +468,46 @@ describe('GlassPanel', () => {
         await waitFor(() =>
           expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).toContain('saydamlık ?'),
         );
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
+
+    it('Android tarafinda cevaplanmayan soruya yer ayirmiyor', async () => {
+      const restore = onPlatform('android');
+      const restoreDev = onDevFlag(true);
+      try {
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        // Saydamlik sorusu yalnizca iOS'ta anlamli; Android'de bos birakilan
+        // yer, orada bir cevap oldugunu ima ediyordu.
+        expect(badgeText(view.getByTestId('glass-mode-badge', hidden))).not.toContain('saydamlık');
+      } finally {
+        restoreDev();
+        restore();
+      }
+    });
+
+    it('rozet dokunusu gecirmiyor', async () => {
+      const restore = onPlatform('ios');
+      const restoreDev = onDevFlag(true);
+      try {
+        const view = await renderWithTheme(
+          <GlassPanel>
+            <AppText>İçerik</AppText>
+          </GlassPanel>,
+        );
+        expect(view.getByText('İçerik')).toBeTruthy();
+
+        // Rozet kartin sag ust kosesinde ve orasi bir alanin ustune denk
+        // gelebiliyor: dokunusu tutarsa teshis araci formu kullanilamaz kilar.
+        expect(view.getByTestId('glass-mode-badge', hidden).props.pointerEvents).toBe('none');
       } finally {
         restoreDev();
         restore();
