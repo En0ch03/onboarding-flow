@@ -56,3 +56,43 @@ describe('JourneyBackdrop perdeleri', () => {
     expect(veil.props.locations).toEqual([0.36, 1]);
   });
 });
+
+describe('JourneyBackdrop hafif perde', () => {
+  it('kart tasiyan ekranda karartmayi geri cekiyor', async () => {
+    const screen = await renderWithTheme(<JourneyBackdrop progress={0.5} veil="light" />);
+    // Once agacin gercekten cizildigi: bos bir agacta asagidaki sorgu da
+    // patlardi ama sebebini yanlis yere yazardik.
+    expect(screen.getByTestId('journey-artwork', { includeHiddenElements: true })).toBeTruthy();
+
+    const veil = screen.getByTestId('journey-veil', { includeHiddenElements: true });
+    // Kartin altinda kirilacak bir goruntu kalmali: tam karartma orayi siyaha
+    // indiriyor ve cam hicbir sey kirmiyor.
+    expect(veil.props.colors).toEqual([
+      processColor(withAlpha(palettes.dark.veil, 0)),
+      processColor(withAlpha(palettes.dark.veil, 0.3)),
+    ]);
+    expect(veil.props.locations).toEqual([0.55, 1]);
+  });
+
+  it('hafif kipte parilti da yariya iniyor', async () => {
+    const screen = await renderWithTheme(<JourneyBackdrop progress={0.5} veil="light" />);
+    expect(screen.getByTestId('journey-artwork', { includeHiddenElements: true })).toBeTruthy();
+
+    const glow = screen.getByTestId('journey-glow', { includeHiddenElements: true });
+    expect(glow.props.colors).toEqual([
+      processColor(withAlpha(palettes.dark.glowStrong, 0.17)),
+      processColor(withAlpha(palettes.dark.glowDeep, 0.08)),
+      processColor(withAlpha(palettes.dark.veil, 0)),
+    ]);
+  });
+
+  it('perde kipi verilmeyen ekranda tam karartma kaliyor', async () => {
+    const screen = await renderWithTheme(<JourneyBackdrop progress={0.5} />);
+    expect(screen.getByTestId('journey-artwork', { includeHiddenElements: true })).toBeTruthy();
+
+    const veil = screen.getByTestId('journey-veil', { includeHiddenElements: true });
+    // Varsayilan degisirse kartsiz ekranlarda metin gorselin uzerine ciplak
+    // yazilmis olur.
+    expect(veil.props.locations).toEqual([0.36, 1]);
+  });
+});

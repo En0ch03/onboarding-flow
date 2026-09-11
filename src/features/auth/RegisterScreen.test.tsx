@@ -254,6 +254,18 @@ describe('RegisterScreen cam kart', () => {
     expect(view.getByTestId('header-veil', { includeHiddenElements: true })).toBeTruthy();
   });
 
+  it('kartin altindan seridin gecmesine izin veriyor', async () => {
+    const view = await renderWithTheme(<RegisterScreen {...handlers} />);
+    // Once agacin cizildigi: bos bir agacta perde sorgusu da patlardi.
+    expect(view.getByText(strings.auth.registerTitle)).toBeTruthy();
+
+    // Tam karartma kartin bolgesini neredeyse siyaha indiriyor ve saydam
+    // yuzeyin kiracak bir goruntusu kalmiyor; kart o zaman duz bir panel.
+    expect(
+      view.getByTestId('journey-veil', { includeHiddenElements: true }).props.locations,
+    ).toEqual([0.55, 1]);
+  });
+
   it('butonu ve yasal satiri kartin disinda birakiyor', async () => {
     const view = await renderWithTheme(<RegisterScreen {...handlers} />);
 

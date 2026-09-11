@@ -66,6 +66,46 @@ describe('Screen journey artwork', () => {
   });
 });
 
+describe('Screen arka plan perdesi', () => {
+  it('kartli ekranda gorsel perdesini hafifletiyor', async () => {
+    const view = await renderWithTheme(
+      <Screen journeyProgress={0.5} backdropVeil="light" header={<AppText>Geri</AppText>}>
+        <AppText>İçerik</AppText>
+      </Screen>,
+    );
+    // Once agacin cizildigi: bos bir agacta asagidaki sorgu da patlardi.
+    expect(view.getByText('İçerik')).toBeTruthy();
+
+    const veil = view.getByTestId('journey-veil', hidden);
+    // Kartin altinda kirilacak goruntu kalmali; tam karartma orayi siyaha
+    // indiriyor ve saydam yuzey duz bir panele donuyor.
+    expect(veil.props.locations).toEqual([0.55, 1]);
+  });
+
+  it('kipi verilmeyen ekranda tam perde kaliyor', async () => {
+    const view = await renderWithTheme(
+      <Screen journeyProgress={0.5} header={<AppText>Geri</AppText>}>
+        <AppText>İçerik</AppText>
+      </Screen>,
+    );
+    expect(view.getByText('İçerik')).toBeTruthy();
+
+    expect(view.getByTestId('journey-veil', hidden).props.locations).toEqual([0.36, 1]);
+  });
+
+  it('hafif perde ust serit perdesini kaldirmiyor', async () => {
+    const view = await renderWithTheme(
+      <Screen journeyProgress={0.5} backdropVeil="light" header={<AppText>Geri</AppText>}>
+        <AppText>İçerik</AppText>
+      </Screen>,
+    );
+    expect(view.getByText('Geri')).toBeTruthy();
+
+    // Geri oku ve sayac kartin disinda: onlarin zemini hala perdeden geliyor.
+    expect(view.getByTestId('header-veil', hidden)).toBeTruthy();
+  });
+});
+
 describe('Screen ust serit perdesi', () => {
   it('serit gorselin uzerinde ciplak durmuyor', async () => {
     const view = await renderWithTheme(
