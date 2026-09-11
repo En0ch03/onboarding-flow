@@ -37,6 +37,29 @@ afterEach(() => {
 });
 
 describe('GlassPanel', () => {
+  it('yedek kipte dekoratif katmanlar dokunusu gecirmiyor ve ekran okuyucudan gizli', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(false);
+      const view = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+
+      // Katmanlar kartin tamamini kapliyor: dokunusu gecirmeseler formun
+      // hicbir alanina basilamaz, gizli olmasalar ekran okuyucu bos ogeler
+      // okur. Sorgu gizli ogeleri katmiyor; katman bulunursa gizli degildir.
+      for (const id of ['glass-panel-fill', 'glass-panel-edge-top', 'glass-panel-edge-bottom']) {
+        expect(view.getByTestId(id, hidden).props.pointerEvents).toBe('none');
+        expect(view.queryByTestId(id)).toBeNull();
+      }
+    } finally {
+      restore();
+    }
+  });
+
   it('sistemin cam efekti varken gercek cami ciziyor', async () => {
     const restore = onPlatform('ios');
     try {
