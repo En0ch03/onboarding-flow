@@ -6,6 +6,12 @@ export const radius = {
   sm: 12,
   md: 18,
   lg: 26,
+  /**
+   * Genis kartlar icin. `lg`'den buyuk olmasi bir suslemenin degil, cam
+   * yuzeyin geregi: kirilma kose yayinda topluyor ve dar bir yay onu keskin
+   * bir kenar cizgisine indiriyor.
+   */
+  xl: 32,
   /** Kapsul: buton ve cip. */
   full: 9999,
 } as const;

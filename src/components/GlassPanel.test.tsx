@@ -1,10 +1,9 @@
-import { waitFor } from '@testing-library/react-native';
 import { AccessibilityInfo, Platform, StyleSheet } from 'react-native';
 
 import { BLUR_VIEW_TEST_ID } from '@/test/blurMock';
 import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
-import { palettes, radius, withAlpha } from '@/theme';
+import { palettes, radius, spacing, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 import { GlassPanel } from './GlassPanel';
@@ -77,9 +76,33 @@ describe('GlassPanel', () => {
       // Yerel katman kartin `overflow: hidden` kirpmasini gormuyor, kendi kose
       // yaricapini okuyor: verilmezse cam dort koseli bir dikdortgen kaliyor.
       expect(StyleSheet.flatten(glass.props.style)).toMatchObject({
-        borderRadius: radius.lg,
+        borderRadius: radius.xl,
       });
       expect(view.queryByTestId(BLUR_VIEW_TEST_ID, hidden)).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
+  it('kartin kosesi ve ic dolgusu kirilmaya yer biraktiriyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(
+        <GlassPanel>
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+
+      // Cam kirilmayi kenarda gosteriyor: dar bir ic dolguda kenar bandi
+      // icerigin altinda kaliyor ve kart dolu bir panel gibi okunuyor.
+      expect(StyleSheet.flatten(view.getByTestId('glass-panel').props.style)).toMatchObject({
+        borderRadius: radius.xl,
+        paddingHorizontal: spacing.xxl,
+        paddingVertical: spacing.xl,
+      });
     } finally {
       restore();
     }

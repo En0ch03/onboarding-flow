@@ -109,12 +109,16 @@ export function GlassPanel({ children, style, glassStyle = 'regular' }: GlassPan
       testID="glass-panel"
       style={[
         {
-          borderRadius: radius.lg,
+          borderRadius: radius.xl,
           borderCurve: 'continuous',
           // Katmanlar kartin kosesinden tasmasin: tasan bir dolgu, yuvarlak
           // kenari dorde donduruyor.
           overflow: 'hidden',
-          padding: spacing.xl,
+          // Yatayda dikeyden genis: cam kirilmayi kenar bandinda gosteriyor ve
+          // dar bir dolguda o bant icerigin altinda kaliyor. Dikeyi de ayni
+          // olcude buyutmek karti ekranin tasiyabileceginden uzun yapardi.
+          paddingHorizontal: spacing.xxl,
+          paddingVertical: spacing.xl,
         },
         liquid
           ? null
@@ -140,7 +144,7 @@ export function GlassPanel({ children, style, glassStyle = 'regular' }: GlassPan
           // Yerel katman kabin `overflow: hidden` kirpmasini gormuyor, kendi
           // kose yaricapini okuyor: verilmezse cam dort koseli kaliyor ve
           // kartin yuvarlak kenari ustunde bir dikdortgen olarak duruyor.
-          style={[StyleSheet.absoluteFill, { borderRadius: radius.lg, borderCurve: 'continuous' }]}
+          style={[StyleSheet.absoluteFill, { borderRadius: radius.xl, borderCurve: 'continuous' }]}
         />
       ) : null}
 
