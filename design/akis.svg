@@ -11,7 +11,7 @@
 </marker>
 </defs>
 <rect width="1500" height="2320" fill="#F5F2ED"/>
-<text x="56" y="72" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" font-size="40" fill="#111011">Onboarding kayıt akışı</text>
+<text x="56" y="72" font-family="'Fraunces','Iowan Old Style',Georgia,serif" font-size="40" fill="#111011">Onboarding kayıt akışı</text>
 <text x="56" y="102" font-size="14" fill="#5E5652">İnşa edilen akış. Dallar dâhil: atlama, yaş kapısı, kesinti-devam, kayıt başarısızlığı ve oturum sonu.</text>
 <line x1="56" y1="124" x2="1444" y2="124" stroke="#DDD6CE"/>
 <text x="56" y="172" font-size="13" letter-spacing="1.4" fill="#8B0D1A">1 · AÇILIŞ SEKANSI</text>
@@ -54,11 +54,11 @@
 <text x="1220" y="396.5" text-anchor="middle" font-size="13" font-weight="600" fill="#63080F">tamam mı?</text>
 <text x="56" y="368" font-size="13" letter-spacing="1.4" fill="#8B0D1A">2 · KARŞILAMA VE HESAP</text>
 <rect x="56" y="386" width="190" height="68" rx="16" fill="#EDE8E1" stroke="#DDD6CE" stroke-width="1"/>
-<text x="151" y="414" text-anchor="middle" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" font-size="18" font-weight="400" fill="#111011">Karşılama 1</text>
+<text x="151" y="414" text-anchor="middle" font-family="'Fraunces','Iowan Old Style',Georgia,serif" font-size="18" font-weight="400" fill="#111011">Karşılama 1</text>
 <text x="151" y="434" text-anchor="middle" font-size="12" fill="#5E5652">Söz</text>
 <path d="M 246 420 L 296 420" fill="none" stroke="#5E5652" stroke-width="1.6" marker-end="url(#arrow)"/>
 <rect x="296" y="386" width="190" height="68" rx="16" fill="#EDE8E1" stroke="#DDD6CE" stroke-width="1"/>
-<text x="391" y="414" text-anchor="middle" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" font-size="18" font-weight="400" fill="#111011">Karşılama 2</text>
+<text x="391" y="414" text-anchor="middle" font-family="'Fraunces','Iowan Old Style',Georgia,serif" font-size="18" font-weight="400" fill="#111011">Karşılama 2</text>
 <text x="391" y="434" text-anchor="middle" font-size="12" fill="#5E5652">Fark</text>
 <path d="M 486 420 L 536 420" fill="none" stroke="#5E5652" stroke-width="1.6" marker-end="url(#arrow)"/>
 <path d="M 630 366 L 724 420 L 630 474 L 536 420 Z" fill="#E6E0D8" stroke="#8B0D1A"/>
@@ -182,7 +182,7 @@
 <text x="725" y="1382" text-anchor="middle" font-size="12" fill="#5E5652">Sunucuya bildirilir</text>
 <path d="M 840 1365 L 900 1365" fill="none" stroke="#5E5652" stroke-width="1.6" marker-end="url(#arrow)"/>
 <rect x="900" y="1334" width="200" height="62" rx="16" fill="#EDE8E1" stroke="#DDD6CE" stroke-width="2"/>
-<text x="1000" y="1362" text-anchor="middle" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" font-size="18" font-weight="400" fill="#111011">Ana ekran</text>
+<text x="1000" y="1362" text-anchor="middle" font-family="'Fraunces','Iowan Old Style',Georgia,serif" font-size="18" font-weight="400" fill="#111011">Ana ekran</text>
 <text x="1000" y="1382" text-anchor="middle" font-size="12" fill="#5E5652">Taslak silinir</text>
 <path d="M 450 1415 L 450 1452" fill="none" stroke="#8A2F2F" stroke-width="1.6" marker-end="url(#arrowRed)"/>
 <rect x="456.75" y="1423" width="50.5" height="19" rx="9" fill="#F5F2ED"/>

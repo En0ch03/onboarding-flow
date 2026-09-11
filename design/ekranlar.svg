@@ -1,14 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1428" height="3230" viewBox="0 0 1428 3230" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif">
 <defs>
-<linearGradient id="veilTop" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0" stop-color="#0B0B0B" stop-opacity="0.94"/>
-<stop offset="1" stop-color="#0B0B0B" stop-opacity="0"/>
-</linearGradient>
-<linearGradient id="veilBody" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0" stop-color="#0B0B0B" stop-opacity="0"/>
-<stop offset="0.3" stop-color="#0B0B0B" stop-opacity="0.86"/>
-<stop offset="1" stop-color="#0B0B0B" stop-opacity="0.96"/>
-</linearGradient>
 <linearGradient id="brush" x1="0" y1="0" x2="1" y2="1">
 <stop offset="0" stop-color="#4A0710"/>
 <stop offset="0.55" stop-color="#B51F2E"/>
@@ -42,7 +33,7 @@
 <clipPath id="clip-3-3"><rect x="1076" y="2508" width="296" height="610" rx="30"/></clipPath>
 </defs>
 <rect x="0" y="0" width="1428" height="3230" fill="#F5F2ED"/>
-<text x="56" y="76" font-size="40" fill="#111011" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Onboarding ekran eskizleri</text>
+<text x="56" y="76" font-size="40" fill="#111011" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Onboarding ekran eskizleri</text>
 <text x="56" y="106" font-size="14" fill="#5E5652">On altı ekran ve kolay atlanan üç durum: klavye açık, sunucu hatası, yükleme sürüyor. Koyu varyant birincil.</text>
 <text x="56" y="126" font-size="13" fill="#5E5652">Metinler uygulamanın kendi metinleri. Ölçüler göstergesel: birincil eylem 56 piksel, sayaç 01 / 06, seçili durum kızıl kenarlık ve soluk dolgu.</text>
 <line x1="56" y1="142" x2="1372" y2="142" stroke="#DDD6CE"/>
@@ -51,7 +42,7 @@
 <rect x="56" y="168" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
 <text x="78" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="300" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
-<text x="204" y="468" font-size="32" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif" text-anchor="middle">Onboarding</text>
+<text x="204" y="468" font-size="32" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif" text-anchor="middle">Onboarding</text>
 <text x="204" y="500" font-size="12" fill="#B5ADA8" text-anchor="middle">Hazırlanıyor</text>
 <text x="204" y="520" font-size="10" fill="#B5ADA8" text-anchor="middle">Senin için her şeyi yoluna koyuyoruz.</text>
 <rect x="78" y="720" width="252" height="3" rx="1.5" fill="#2A2529"/>
@@ -67,16 +58,13 @@
 <path d="M 76 768 C 336 668, 516 488, 826 208 L 916 318 C 616 568, 456 738, 106 848 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M 96 638 C 336 568, 486 418, 776 188 L 816 248 C 536 478, 386 628, 96 698 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="396" y="168" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="396" y="168" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="396" y="288" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="418" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="640" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
-<text x="418" y="498" font-size="30" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Doğru zamanda</text>
-<text x="418" y="534" font-size="30" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">doğru yerde.</text>
-<text x="418" y="570" font-size="12" fill="#B5ADA8">O karşılaşmayı şansa</text>
-<text x="418" y="588" font-size="12" fill="#B5ADA8">bırakmamak için.</text>
+<text x="418" y="540" font-size="30" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Doğru zamanda</text>
+<text x="418" y="576" font-size="30" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">doğru yerde.</text>
+<text x="418" y="612" font-size="12" fill="#B5ADA8">O karşılaşmayı şansa</text>
+<text x="418" y="630" font-size="12" fill="#B5ADA8">bırakmamak için.</text>
 <rect x="418" y="664" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="544" y="690" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Başlayalım</text>
 <rect x="418" y="713" width="252" height="41" rx="20.5" fill="none" stroke="#F5F2ED" stroke-opacity="0.28"/>
@@ -91,9 +79,6 @@
 <path d="M 386 768 C 646 668, 826 488, 1136 208 L 1226 318 C 926 568, 766 738, 416 848 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M 406 638 C 646 568, 796 418, 1086 188 L 1126 248 C 846 478, 696 628, 406 698 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="736" y="168" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="736" y="168" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="736" y="288" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="758" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="980" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
@@ -101,13 +86,13 @@
 <path d="M 780 234 L 772 242 L 780 250" fill="none" stroke="#F5F2ED" stroke-width="2"/>
 <rect x="961.12" y="226" width="48.879999999999995" height="32" rx="16" fill="#F5F2ED" fill-opacity="0.08"/>
 <text x="985.56" y="247" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Geç</text>
-<text x="758" y="352" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Belki de birbirinizi</text>
-<text x="758" y="380" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">aramıyordunuz.</text>
-<text x="758" y="416" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Sadece henüz</text>
-<text x="758" y="444" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">karşılaşmamıştınız.</text>
-<text x="758" y="484" font-size="12" fill="#B5ADA8">Her gün yalnızca birkaç kişi.</text>
-<text x="758" y="502" font-size="12" fill="#B5ADA8">Her biri ne aradığını söylemiş.</text>
-<text x="758" y="520" font-size="12" fill="#B5ADA8">Gerisi sana kalmış.</text>
+<text x="758" y="506" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Belki de birbirinizi</text>
+<text x="758" y="534" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">aramıyordunuz.</text>
+<text x="758" y="570" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Sadece henüz</text>
+<text x="758" y="598" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">karşılaşmamıştınız.</text>
+<text x="758" y="638" font-size="12" fill="#B5ADA8">Her gün yalnızca birkaç kişi.</text>
+<text x="758" y="656" font-size="12" fill="#B5ADA8">Her biri ne aradığını söylemiş.</text>
+<text x="758" y="674" font-size="12" fill="#B5ADA8">Gerisi sana kalmış.</text>
 <rect x="758" y="708" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
 <text x="884" y="734" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Devam</text>
 <text x="736" y="802" font-size="11" fill="#5E5652">Ürünün farkı burada anlatılıyor; kayıt ekranı bunu</text>
@@ -121,16 +106,14 @@
 <path d="M 696 768 C 956 668, 1136 488, 1446 208 L 1536 318 C 1236 568, 1076 738, 726 848 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M 716 638 C 956 568, 1106 418, 1396 188 L 1436 248 C 1156 478, 1006 628, 716 698 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="1076" y="168" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="1076" y="168" width="296" height="130" fill="url(#veilTop)"/>
 </g>
-<rect x="1090" y="292" width="268" height="344" rx="20" fill="#050505" fill-opacity="0.55" stroke="#F5F2ED" stroke-opacity="0.14"/>
+<rect x="1090" y="292" width="268" height="344" rx="20" fill="#0B0B0B" fill-opacity="0.4" stroke="#F5F2ED" stroke-opacity="0.12"/>
 <path d="M 1110 292.5 H 1338" stroke="#F5F2ED" stroke-opacity="0.22" stroke-width="1"/>
 <text x="1098" y="194" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="1320" y="186" width="30" height="10" rx="3" fill="#B5ADA8"/>
 <circle cx="1116" cy="242" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 1120 234 L 1112 242 L 1120 250" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="1098" y="316" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Hesabını oluştur</text>
+<text x="1098" y="316" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Hesabını oluştur</text>
 <text x="1098" y="348" font-size="12" fill="#B5ADA8">Bir e-posta ve bir şifre yeter.</text>
 <text x="1098" y="366" font-size="12" fill="#B5ADA8">E-postan profilinde görünmez.</text>
 <text x="1098" y="396" font-size="10.5" fill="#B5ADA8" font-weight="500">E-posta</text>
@@ -163,15 +146,12 @@
 <path d="M -324 1548 C -64 1448, 116 1268, 426 988 L 516 1098 C 216 1348, 56 1518, -294 1628 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M -304 1418 C -64 1348, 86 1198, 376 968 L 416 1028 C 136 1258, -14 1408, -304 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="56" y="948" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="56" y="948" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="56" y="1068" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="78" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="300" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
 <circle cx="96" cy="1022" r="18" fill="#151316" stroke="#2A2529"/>
 <path d="M 100 1014 L 92 1022 L 100 1030" fill="none" stroke="#F5F2ED" stroke-width="2"/>
-<text x="78" y="1096" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Tekrar hoş geldin</text>
+<text x="78" y="1096" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Tekrar hoş geldin</text>
 <text x="78" y="1128" font-size="12" fill="#B5ADA8">Giriş yap, kaldığın yerden devam et.</text>
 <text x="78" y="1168" font-size="10.5" fill="#B5ADA8" font-weight="500">E-posta</text>
 <rect x="78" y="1177" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
@@ -194,9 +174,6 @@
 <path d="M -9 1548 C 251 1448, 431 1268, 741 988 L 831 1098 C 531 1348, 371 1518, 21 1628 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M 11 1418 C 251 1348, 401 1198, 691 968 L 731 1028 C 451 1258, 301 1408, 11 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="396" y="948" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="396" y="948" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="396" y="1068" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="418" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="640" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
@@ -205,7 +182,7 @@
 <text x="544" y="1026" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">01 / 06</text>
 <rect x="418" y="1054" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="418" y="1054" width="42" height="3" rx="1.5" fill="#C50337"/>
-<text x="418" y="1114" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Telefon numaran</text>
+<text x="418" y="1114" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Telefon numaran</text>
 <text x="418" y="1146" font-size="12" fill="#B5ADA8">Yalnızca hesabını korumak için.</text>
 <text x="418" y="1164" font-size="12" fill="#B5ADA8">Profilinde görünmez.</text>
 <text x="418" y="1198" font-size="10.5" fill="#B5ADA8" font-weight="500">Cep telefonu</text>
@@ -225,9 +202,6 @@
 <path d="M 303.5 1548 C 563.5 1448, 743.5 1268, 1053.5 988 L 1143.5 1098 C 843.5 1348, 683.5 1518, 333.5 1628 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M 323.5 1418 C 563.5 1348, 713.5 1198, 1003.5 968 L 1043.5 1028 C 763.5 1258, 613.5 1408, 323.5 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="736" y="948" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="736" y="948" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="736" y="1068" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="758" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="980" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
@@ -236,8 +210,8 @@
 <text x="884" y="1026" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">02 / 06</text>
 <rect x="758" y="1054" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="758" y="1054" width="84" height="3" rx="1.5" fill="#C50337"/>
-<text x="758" y="1114" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Sana nasıl</text>
-<text x="758" y="1142" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">seslenelim?</text>
+<text x="758" y="1114" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Sana nasıl</text>
+<text x="758" y="1142" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">seslenelim?</text>
 <text x="758" y="1174" font-size="12" fill="#B5ADA8">Adın profilinde görünür. Doğum</text>
 <text x="758" y="1192" font-size="12" fill="#B5ADA8">tarihinden yalnızca yaşın görünür.</text>
 <text x="758" y="1226" font-size="10.5" fill="#B5ADA8" font-weight="500">Adın</text>
@@ -259,9 +233,6 @@
 <path d="M 643.5 1548 C 903.5 1448, 1083.5 1268, 1393.5 988 L 1483.5 1098 C 1183.5 1348, 1023.5 1518, 673.5 1628 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M 663.5 1418 C 903.5 1348, 1053.5 1198, 1343.5 968 L 1383.5 1028 C 1103.5 1258, 953.5 1408, 663.5 1478 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="1076" y="948" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="1076" y="948" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="1076" y="1068" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="1098" y="974" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="1320" y="966" width="30" height="10" rx="3" fill="#B5ADA8"/>
@@ -270,8 +241,8 @@
 <text x="1224" y="1026" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">02 / 06</text>
 <rect x="1098" y="1054" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="1098" y="1054" width="84" height="3" rx="1.5" fill="#C50337"/>
-<text x="1098" y="1114" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Sana nasıl</text>
-<text x="1098" y="1142" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">seslenelim?</text>
+<text x="1098" y="1114" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Sana nasıl</text>
+<text x="1098" y="1142" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">seslenelim?</text>
 <text x="1098" y="1174" font-size="10.5" fill="#B5ADA8" font-weight="500">Adın</text>
 <rect x="1098" y="1183" width="252" height="41" rx="13" fill="#151316" stroke="#2A2529"/>
 <text x="1110" y="1209" font-size="12.5" fill="#F5F2ED">Deniz</text>
@@ -307,9 +278,6 @@
 <path d="M -404 2328 C -144 2228, 36 2048, 346 1768 L 436 1878 C 136 2128, -24 2298, -374 2408 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M -384 2198 C -144 2128, 6 1978, 296 1748 L 336 1808 C 56 2038, -94 2188, -384 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="56" y="1728" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="56" y="1728" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="56" y="1848" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="78" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="300" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
@@ -318,8 +286,8 @@
 <text x="204" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">03 / 06</text>
 <rect x="78" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="78" y="1834" width="126" height="3" rx="1.5" fill="#C50337"/>
-<text x="78" y="1894" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Kimi görmek</text>
-<text x="78" y="1922" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">istersin?</text>
+<text x="78" y="1894" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Kimi görmek</text>
+<text x="78" y="1922" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">istersin?</text>
 <text x="78" y="1952" font-size="12" fill="#B5ADA8">İkisini de sonra değiştirebilirsin.</text>
 <text x="78" y="1984" font-size="13" fill="#F5F2ED" font-weight="600">Cinsiyetin</text>
 <text x="78" y="2000" font-size="10" fill="#B5ADA8">Bir tane seç.</text>
@@ -359,9 +327,6 @@
 <path d="M -91.5 2328 C 168.5 2228, 348.5 2048, 658.5 1768 L 748.5 1878 C 448.5 2128, 288.5 2298, -61.5 2408 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M -71.5 2198 C 168.5 2128, 318.5 1978, 608.5 1748 L 648.5 1808 C 368.5 2038, 218.5 2188, -71.5 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="396" y="1728" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="396" y="1728" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="396" y="1848" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="418" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="640" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
@@ -370,7 +335,7 @@
 <text x="544" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">04 / 06</text>
 <rect x="418" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="418" y="1834" width="168" height="3" rx="1.5" fill="#C50337"/>
-<text x="418" y="1894" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Ne arıyorsun?</text>
+<text x="418" y="1894" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Ne arıyorsun?</text>
 <text x="418" y="1926" font-size="12" fill="#B5ADA8">Dürüst ol. Önerilerin buna göre gelir.</text>
 <g>
 <rect x="418" y="1944" width="252" height="48" rx="13" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
@@ -411,9 +376,6 @@
 <path d="M 221 2328 C 481 2228, 661 2048, 971 1768 L 1061 1878 C 761 2128, 601 2298, 251 2408 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M 241 2198 C 481 2128, 631 1978, 921 1748 L 961 1808 C 681 2038, 531 2188, 241 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="736" y="1728" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="736" y="1728" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="736" y="1848" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="758" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="980" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
@@ -422,7 +384,7 @@
 <text x="884" y="1806" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">05 / 06</text>
 <rect x="758" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="758" y="1834" width="210" height="3" rx="1.5" fill="#C50337"/>
-<text x="758" y="1894" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Fotoğraflarını ekle</text>
+<text x="758" y="1894" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Fotoğraflarını ekle</text>
 <text x="758" y="1926" font-size="12" fill="#B5ADA8">En az iki fotoğraf. İlki kapak olur;</text>
 <text x="758" y="1944" font-size="12" fill="#B5ADA8">yüzünün net göründüğü bir tane seç.</text>
 <g>
@@ -467,9 +429,6 @@
 <path d="M 536 2328 C 796 2228, 976 2048, 1286 1768 L 1376 1878 C 1076 2128, 916 2298, 566 2408 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M 556 2198 C 796 2128, 946 1978, 1236 1748 L 1276 1808 C 996 2038, 846 2188, 556 2258 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="1076" y="1728" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="1076" y="1728" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="1076" y="1848" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="1098" y="1754" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="1320" y="1746" width="30" height="10" rx="3" fill="#B5ADA8"/>
@@ -480,8 +439,8 @@
 <text x="1298.455" y="1807" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Şimdilik geç</text>
 <rect x="1098" y="1834" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="1098" y="1834" width="252" height="3" rx="1.5" fill="#C50337"/>
-<text x="1098" y="1894" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Neye vakit</text>
-<text x="1098" y="1922" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">ayırıyorsun?</text>
+<text x="1098" y="1894" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Neye vakit</text>
+<text x="1098" y="1922" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">ayırıyorsun?</text>
 <text x="1098" y="1952" font-size="12" fill="#B5ADA8">Ortak noktalar sohbeti başlatır.</text>
 <rect x="1098" y="1968" width="71" height="34" rx="17" fill="rgba(197, 3, 55, 0.16)" stroke="#C50337" stroke-width="2" stroke-opacity="1"/>
 <text x="1133.5" y="1990" font-size="12.5" fill="#F5F2ED" text-anchor="middle">Yürüyüş</text>
@@ -523,14 +482,11 @@
 <path d="M -514 3108 C -254 3008, -74 2828, 236 2548 L 326 2658 C 26 2908, -134 3078, -484 3188 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M -494 2978 C -254 2908, -104 2758, 186 2528 L 226 2588 C -54 2818, -204 2968, -494 3038 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="56" y="2508" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="56" y="2508" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="56" y="2628" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="78" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="300" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
 <circle cx="110" cy="2676" r="32" fill="url(#photo)"/>
-<text x="78" y="2756" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Hazırsın, Deniz.</text>
+<text x="78" y="2756" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Hazırsın, Deniz.</text>
 <text x="78" y="2788" font-size="12" fill="#B5ADA8">Profilin hazır. İlk önerilerin</text>
 <text x="78" y="2806" font-size="12" fill="#B5ADA8">yarın sabah burada.</text>
 <rect x="78" y="2826" width="252" height="152" rx="13" fill="#151316" stroke="#2A2529"/>
@@ -560,9 +516,6 @@
 <path d="M -9 3108 C 251 3008, 431 2828, 741 2548 L 831 2658 C 531 2908, 371 3078, 21 3188 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M 11 2978 C 251 2908, 401 2758, 691 2528 L 731 2588 C 451 2818, 301 2968, 11 3038 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="396" y="2508" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="396" y="2508" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="396" y="2628" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="418" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="640" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
@@ -571,7 +524,7 @@
 <text x="544" y="2586" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">01 / 06</text>
 <rect x="418" y="2614" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="418" y="2614" width="42" height="3" rx="1.5" fill="#C50337"/>
-<text x="418" y="2674" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Telefon numaran</text>
+<text x="418" y="2674" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Telefon numaran</text>
 <text x="418" y="2706" font-size="12" fill="#B5ADA8">Yalnızca hesabını korumak için.</text>
 <text x="418" y="2724" font-size="12" fill="#B5ADA8">Profilinde görünmez.</text>
 <text x="418" y="2758" font-size="10.5" fill="#B5ADA8" font-weight="500">Cep telefonu</text>
@@ -614,8 +567,8 @@
 <rect x="736" y="2508" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
 <text x="758" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="980" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
-<text x="758" y="2796" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Seçenekleri</text>
-<text x="758" y="2824" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">getiremedik</text>
+<text x="758" y="2796" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Seçenekleri</text>
+<text x="758" y="2824" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">getiremedik</text>
 <text x="758" y="2858" font-size="12" fill="#B5ADA8">Sunucuya ulaşamadık. Bağlantını</text>
 <text x="758" y="2876" font-size="12" fill="#B5ADA8">kontrol edip tekrar dene.</text>
 <rect x="758" y="3048" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
@@ -631,9 +584,6 @@
 <path d="M 561 3108 C 821 3008, 1001 2828, 1311 2548 L 1401 2658 C 1101 2908, 941 3078, 591 3188 Z" fill="url(#brush)" fill-opacity="0.9"/>
 <path d="M 581 2978 C 821 2908, 971 2758, 1261 2528 L 1301 2588 C 1021 2818, 871 2968, 581 3038 Z" fill="#B51F2E" fill-opacity="0.5"/>
 </g>
-<rect x="1076" y="2508" width="296" height="610" fill="#050505" fill-opacity="0.34"/>
-<rect x="1076" y="2508" width="296" height="130" fill="url(#veilTop)"/>
-<rect x="1076" y="2628" width="296" height="490" fill="url(#veilBody)"/>
 </g>
 <text x="1098" y="2534" font-size="10.5" fill="#B5ADA8">9:41</text>
 <rect x="1320" y="2526" width="30" height="10" rx="3" fill="#B5ADA8"/>
@@ -642,7 +592,7 @@
 <text x="1224" y="2586" font-size="10.5" fill="#B5ADA8" font-weight="500" text-anchor="middle">05 / 06</text>
 <rect x="1098" y="2614" width="252" height="3" rx="1.5" fill="#F5F2ED" fill-opacity="0.14"/>
 <rect x="1098" y="2614" width="210" height="3" rx="1.5" fill="#C50337"/>
-<text x="1098" y="2674" font-size="24" fill="#F5F2ED" font-family="'Playfair Display','Iowan Old Style',Georgia,serif">Fotoğraflarını ekle</text>
+<text x="1098" y="2674" font-size="24" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Fotoğraflarını ekle</text>
 <text x="1098" y="2706" font-size="12" fill="#B5ADA8">En az iki fotoğraf. İlki kapak olur;</text>
 <text x="1098" y="2724" font-size="12" fill="#B5ADA8">yüzünün net göründüğü bir tane seç.</text>
 <g>
