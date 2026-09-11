@@ -12,6 +12,13 @@ export const radius = {
    * bir kenar cizgisine indiriyor.
    */
   xl: 32,
+  /**
+   * Cam kart. Sistemin cam materyali kirilmayi kose yayinda topluyor; yay
+   * buyudukce kenar bir cizgi degil bir mercek olarak okunuyor. Kartin
+   * yuksekligine gore oran korunur: 46, ekranin ucte birini kaplayan bir
+   * kartta yumusak, daha kucuk yuzeylerde fazla gelir.
+   */
+  glass: 46,
   /** Kapsul: buton ve cip. */
   full: 9999,
 } as const;

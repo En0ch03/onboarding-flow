@@ -7,6 +7,7 @@ describe('kose yaricaplari', () => {
     // topluyor ve yay `lg` kadar darsa kirilma keskin bir kenar cizgisine
     // iniyor; kart o zaman camdan cok cerceveli bir panel gibi okunuyor.
     expect(radius.xl).toBe(32);
+    expect(radius.glass).toBe(46);
     expect(radius.xl).toBeGreaterThan(radius.lg);
   });
 });

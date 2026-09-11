@@ -256,16 +256,16 @@ describe('RegisterScreen cam kart', () => {
     expect(view.getByTestId('header-veil', { includeHiddenElements: true })).toBeTruthy();
   });
 
-  it('kartin altindan seridin gecmesine izin veriyor', async () => {
+  it('gorselin perdesini oldugu gibi birakiyor; kartin karartmasi kartin kendi isi', async () => {
     const view = await renderWithTheme(<RegisterScreen {...handlers} />);
     // Once agacin cizildigi: bos bir agacta perde sorgusu da patlardi.
     expect(view.getByText(strings.auth.registerTitle)).toBeTruthy();
 
-    // Tam karartma kartin bolgesini neredeyse siyaha indiriyor ve saydam
-    // yuzeyin kiracak bir goruntusu kalmiyor; kart o zaman duz bir panel.
+    // Karartma cama degil ekrana ait olsaydi kartin disindaki metinler de
+    // zeminini kaybederdi; perde tam kaliyor, kart altina kendi katmanini koyuyor.
     expect(
       view.getByTestId('journey-veil', { includeHiddenElements: true }).props.locations,
-    ).toEqual([0.55, 1]);
+    ).toEqual([0.36, 1]);
   });
 
   it('alanlarin arkasindan da cam gorunuyor', async () => {
@@ -312,9 +312,9 @@ describe('RegisterScreen cam kart', () => {
       // Kartin arkasinda akisin gorseli duruyor; uyum yapan materyal onu bir
       // ton katmaninin altinda birakiyordu.
       expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.glassEffectStyle).toBe('clear');
-      // Kart da kontroller de uygulamanin semasinda: acik sema cihazda camin
-      // kenarina beyaz bir cerceve gibi duran bir parlama koyuyordu.
-      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.colorScheme).toBe('dark');
+      // Kart `auto`: materyal arkadaki gorsele gore uyum yapar. Kontroller
+      // uygulamanin semasinda kalir.
+      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.colorScheme).toBe('auto');
       expect(view.getByTestId('glass-back', hidden).props.colorScheme).toBe('dark');
 
       // Kucuk bir kontrolun uzerindeki isaret, saydam materyalde arkasindaki
