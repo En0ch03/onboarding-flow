@@ -312,6 +312,10 @@ describe('RegisterScreen cam kart', () => {
       // Kartin arkasinda akisin gorseli duruyor; uyum yapan materyal onu bir
       // ton katmaninin altinda birakiyordu.
       expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.glassEffectStyle).toBe('clear');
+      // Kart acik semada: koyu semada sistemin cama koydugu karartma, altindaki
+      // gorseli bugulu gosteriyordu. Kontroller uygulamanin semasinda kalir.
+      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.colorScheme).toBe('light');
+      expect(view.getByTestId('glass-back', hidden).props.colorScheme).toBe('dark');
 
       // Kucuk bir kontrolun uzerindeki isaret, saydam materyalde arkasindaki
       // her sey degistikce okunamaz hale geliyor: seritteki geri dairesi uyum

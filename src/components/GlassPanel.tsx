@@ -1,5 +1,5 @@
 import { BlurView } from 'expo-blur';
-import { GlassView, type GlassStyle } from 'expo-glass-effect';
+import { GlassView, type GlassColorScheme, type GlassStyle } from 'expo-glass-effect';
 import { type ReactNode } from 'react';
 import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
@@ -21,6 +21,16 @@ type GlassPanelProps = {
    * duruyor ve onu tona bogmadan gostermenin yolu bu.
    */
   glassStyle?: Extract<GlassStyle, 'regular' | 'clear'>;
+  /**
+   * Cam kipinde materyalin gorunum semasi.
+   *
+   * Varsayilan uygulamanin kendi temasi. Koyu semada sistem camin altina bir
+   * karartma katmani koyuyor; koyu bir gorselin ustunde bu, saydam camin bile
+   * bugulu gorunmesine yetiyor. Karti acik semaya almak o katmani kaldiriyor
+   * ve arkadaki gorseli oldugu gibi birakiyor; metin zaten koyu gorselin
+   * ustunde okunuyor, camin semasina bagli degil.
+   */
+  colorScheme?: GlassColorScheme;
 };
 
 /**
@@ -99,7 +109,12 @@ function GlassModeBadge({ mode }: { mode: GlassMode }) {
  * Kart dekoratif: butun katmanlari ekran okuyucudan gizli ve dokunusu
  * gecirmiyor, icerik oldugu gibi erisilebilir kaliyor.
  */
-export function GlassPanel({ children, style, glassStyle = 'regular' }: GlassPanelProps) {
+export function GlassPanel({
+  children,
+  style,
+  glassStyle = 'regular',
+  colorScheme,
+}: GlassPanelProps) {
   const { colors, radius, scheme, spacing } = useTheme();
   const mode = resolveGlassMode();
   const liquid = mode === 'liquid';
@@ -137,10 +152,10 @@ export function GlassPanel({ children, style, glassStyle = 'regular' }: GlassPan
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
           glassEffectStyle={glassStyle}
-          // Sema uygulamanin kendi anahtarindan geliyor: sistem koyu temadayken
-          // uygulama acik temada olabiliyor ve materyalin "auto" degeri sistemi
-          // okuyor, uygulamayi degil.
-          colorScheme={scheme}
+          // Sema varsayilan olarak uygulamanin kendi anahtarindan geliyor:
+          // materyalin "auto" degeri sistemi okuyor, uygulamayi degil. Kart
+          // bunu bilerek ezebiliyor (bkz. prop yorumu).
+          colorScheme={colorScheme ?? scheme}
           // Yerel katman kabin `overflow: hidden` kirpmasini gormuyor, kendi
           // kose yaricapini okuyor: verilmezse cam dort koseli kaliyor ve
           // kartin yuvarlak kenari ustunde bir dikdortgen olarak duruyor.

@@ -105,7 +105,10 @@ export function RegisterScreen({ onBack, onRegistered, onSignInInstead }: Regist
           alttan acilan sayfa uyum yapan materyalde kaliyor, cunku kucuk bir
           kontrolun uzerindeki isaret arkasindaki her sey degistikce okunamaz
           hale geliyor. */}
-      <GlassPanel glassStyle="clear">
+      {/* Acik sema: koyu semada sistemin cama koydugu karartma, arkadaki
+          gorseli bugulu gosteriyordu; kartin altinda zaten koyu bir gorsel
+          var, karartmaya gerek yok. */}
+      <GlassPanel glassStyle="clear" colorScheme="light">
         <ScreenIntro title={strings.auth.registerTitle} subtitle={strings.auth.registerSubtitle} />
 
         {/* Bandin eylemi hatanin turune gore degisiyor: alinmis bir e-posta

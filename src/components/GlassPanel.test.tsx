@@ -191,6 +191,23 @@ describe('GlassPanel', () => {
     }
   });
 
+  it('istenirse materyalin semasini uygulamanin temasindan ayri verebiliyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(
+        <GlassPanel colorScheme="light">
+          <AppText>İçerik</AppText>
+        </GlassPanel>,
+      );
+      expect(view.getByText('İçerik')).toBeTruthy();
+      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.colorScheme).toBe('light');
+    } finally {
+      restore();
+    }
+  });
+
   it('cam efekti olmayan surumde sistemin kendi materyaline dusuyor', async () => {
     const restore = onPlatform('ios');
     try {
