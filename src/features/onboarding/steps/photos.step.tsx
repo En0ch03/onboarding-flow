@@ -184,6 +184,21 @@ export function PhotosStep({ values, onChange }: StepProps) {
         ))}
       </View>
 
+      {/* Kac kutu duserse dussun tek satir: neden ayni, cikis yolu da ayni.
+          Zeminli bir bant degil ciplak bir satir; bozulan sey formun tamami
+          degil, tek bir kutu. Canli bolge, satir belirdiginde ekran
+          okuyucunun kutuyu aramadan haberdar olmasi icin. */}
+      {slots.some((slot) => slot.kind === 'failed') ? (
+        <AppText
+          variant="caption"
+          tone="danger"
+          accessibilityLiveRegion="polite"
+          style={{ marginTop: spacing.md }}
+        >
+          {strings.steps.photosUploadFailed}
+        </AppText>
+      ) : null}
+
       <AppText variant="caption" tone="inkSoft" style={{ marginTop: spacing.lg }}>
         {photoCount(photos.length, PHOTO_SLOTS)}
       </AppText>
