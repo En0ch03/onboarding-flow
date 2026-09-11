@@ -6,6 +6,7 @@ import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 import { resolveGlassMode } from './glassMode';
+import { useScreenGlassEnabled } from './glassScreenContext';
 
 type ScreenHeaderProps = {
   onBack?: () => void;
@@ -59,7 +60,7 @@ const SKIP_MIN_HEIGHT = 44;
  */
 export function ScreenHeader({ onBack, step, skip }: ScreenHeaderProps) {
   const { colors, radius, scheme, spacing } = useTheme();
-  const liquid = resolveGlassMode() === 'liquid';
+  const liquid = useScreenGlassEnabled() && resolveGlassMode() === 'liquid';
 
   const rowStyle = {
     flexDirection: 'row',

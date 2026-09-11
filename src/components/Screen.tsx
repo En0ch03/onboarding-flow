@@ -1,16 +1,11 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import { useState, type ReactNode } from 'react';
-import {
-  Platform,
-  ScrollView,
-  useWindowDimensions,
-  View,
-  type LayoutChangeEvent,
-} from 'react-native';
+import { type ReactNode } from 'react';
+import { Platform, ScrollView, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { JourneyBackdrop } from '@/features/onboarding/artwork/JourneyBackdrop';
-import { spacing as scale, useTheme, withAlpha } from '@/theme';
+import { spacing as scale, useTheme } from '@/theme';
+
+import { GlassScreenProvider } from './glassScreenContext';
 
 type ScreenProps = {
   /** Ust serit: geri, adim sayaci, atlama. Kaydirilmaz, yerinde durur. */
@@ -19,11 +14,20 @@ type ScreenProps = {
   /** Birincil eylem. Icerigin sonunda, sayfanin dibinde. */
   footer?: ReactNode;
   /**
+   * Ekranin cam yuzey cizip cizmeyecegi.
+   *
+   * Varsayilan acik: form ve secim ekranlari hicbir sey vermeden bugunku
+   * davranisi koruyor. Yalnizca duz metne dayanan ekranlar `false` verip
+   * kendi baslik dugmelerini ve hayalet dugmesini yedek gorunumde birakiyor.
+   */
+  glass?: boolean;
+  /**
    * Icerigin dikey yeri.
    *
    * `top` icerigi ust seridin hemen altina koyar. `upper` onu asagi dogru
    * biraz iter ama ortalamaz: metin ust sol bolgede, kosede degil, iceriden
-   * bir bosluk birakarak duruyor. `center` dikeyde ortalar.
+   * bir bosluk birakarak duruyor. `center` dikeyde ortalar. `bottom` icerigi
+   * footer'in hemen ustune yaslar.
    *
    * `upper` boslugu ust seridin uzerine biniyor, yerine gecmiyor: seritli bir
    * ekranda ikisi toplanir ve icerik beklenenden asagi duser.
@@ -31,18 +35,9 @@ type ScreenProps = {
   align?: ScreenAlign;
   /** Sifir ile bir arasinda, uzun onboarding sanatinin gorunecek kadraji. */
   journeyProgress?: number;
-  /**
-   * Icerigin arkasindaki perde.
-   *
-   * Metnin zeminini kendisi getiren bir ekranda -- icerigini bir kartin icine
-   * alan ekranlar gibi -- perde ikinci bir karartma katmani oluyor ve gorsel
-   * iki kez karariyor. O ekranlar perdeyi kapatir; ust serit perdesi ise her
-   * durumda kaliyor, cunku geri oku ve sayac kartin disinda duruyor.
-   */
-  contentVeil?: boolean;
 };
 
-export type ScreenAlign = 'top' | 'upper' | 'center';
+export type ScreenAlign = 'top' | 'upper' | 'center' | 'bottom';
 
 /**
  * `upper` boslugu sabit degil oranli: sabit bir deger kucuk ekranda icerigi
@@ -50,16 +45,8 @@ export type ScreenAlign = 'top' | 'upper' | 'center';
  */
 const UPPER_INSET_RATIO = 0.12;
 
-/**
- * Ust solmanin yuksekligi, ve ayni zamanda icerigin ust boslugu.
- *
- * Ikisi ayni degerden okunuyor cunku aralari acilirsa baslik solmanin altinda
- * kaliyor: perde `paper`'dan saydama giderken hala yariya yakin opak oldugu
- * bolgede metnin tepesi baslarsa, duran bir ekranda basligin ustu soluk
- * gorunuyor. Icerik tam olarak perdenin bittigi yerde basliyor; kaydirildiginda
- * ise perdenin altina girip soluyor, ki isi zaten bu.
- */
-const TOP_FADE = scale.xl;
+/** Icerigin ust boslugu: baslik seridiyle metnin ilk satiri arasindaki nefes. */
+const CONTENT_TOP_INSET = scale.xl;
 
 /**
  * Akistaki her ekranin kabugu.
@@ -86,141 +73,72 @@ export function Screen({
   footer,
   align = 'top',
   journeyProgress,
-  contentVeil = true,
+  glass = true,
 }: ScreenProps) {
   const { colors, scheme, screenPadding, spacing } = useTheme();
   const { height } = useWindowDimensions();
-  const [contentHeight, setContentHeight] = useState(0);
   const showJourney = journeyProgress !== undefined && scheme === 'dark';
-  // Olculmeden once perde cizilmiyor: yuksekligi bilinmeyen bir perde ya tum
-  // ekrani kaplar ya da hic gorunmez, ikisi de yanlis.
-  const showVeil = showJourney && contentVeil && contentHeight > 0;
-
-  const measureContent = (event: LayoutChangeEvent) => {
-    const next = event.nativeEvent.layout.height;
-    if (next !== contentHeight) setContentHeight(next);
-  };
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.paper }}>
-      {showJourney ? <JourneyBackdrop progress={journeyProgress} /> : null}
-      <SafeAreaView
-        style={{ flex: 1, backgroundColor: showJourney ? 'transparent' : colors.paper }}
-        edges={['top', 'bottom']}
-      >
-        {header ? (
-          <View style={{ paddingHorizontal: screenPadding, paddingTop: spacing.lg }}>
-            {/* Serit gorselin uzerinde ciplak duruyordu: geri oku ve sayac,
-                arkalarindaki parlak bir bolgeye denk geldiginde okunmuyor.
-                Perde icerigin perdesiyle ayni aileden ve seridin altinda
-                bitiyor, boylece gorselin ustunde ikinci bir kenar cizgisi
-                olusmuyor. */}
-            {showJourney ? (
-              <LinearGradient
-                testID="header-veil"
-                pointerEvents="none"
-                accessibilityElementsHidden
-                importantForAccessibility="no-hide-descendants"
-                colors={[withAlpha(colors.paper, 0.8), withAlpha(colors.paper, 0)]}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  bottom: 0,
-                  // Yatayda ekran kenarina kadar: kenar boslugu kadar dar
-                  // kalsaydi iki yanda seritler kalirdi.
-                  left: -screenPadding,
-                  right: -screenPadding,
-                }}
-              />
-            ) : null}
-            {header}
-          </View>
-        ) : null}
+    <GlassScreenProvider value={glass}>
+      <View style={{ flex: 1, backgroundColor: colors.paper }}>
+        {showJourney ? <JourneyBackdrop progress={journeyProgress} /> : null}
+        <SafeAreaView
+          style={{ flex: 1, backgroundColor: showJourney ? 'transparent' : colors.paper }}
+          edges={['top', 'bottom']}
+        >
+          {header ? (
+            <View style={{ paddingHorizontal: screenPadding, paddingTop: spacing.lg }}>
+              {header}
+            </View>
+          ) : null}
 
-        <View style={{ flex: 1 }}>
-          <ScrollView
-            style={{ flex: 1 }}
-            contentContainerStyle={{
-              flexGrow: 1,
-              paddingHorizontal: screenPadding,
-              paddingTop: TOP_FADE,
-              paddingBottom: spacing.xl,
-            }}
-            // Odaklanan alan klavyenin altinda kalmasin diye kaydirma alani
-            // klavye kadar kisaliyor. Butonu tasimiyor, yalnizca icerigi.
-            automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}
-            // Klavye acikken butona ilk dokunusun calismasi icin: aksi halde
-            // ilk dokunus yalnizca klavyeyi kapatiyor, kullanici iki kez basiyor.
-            keyboardShouldPersistTaps="handled"
-            keyboardDismissMode="interactive"
-            showsVerticalScrollIndicator={false}
-          >
-            {/* `flex: 1` degil `flexGrow: 1`. Ilki `flexBasis: 0` demek ve icerik
+          <View style={{ flex: 1 }}>
+            <ScrollView
+              style={{ flex: 1 }}
+              contentContainerStyle={{
+                flexGrow: 1,
+                paddingHorizontal: screenPadding,
+                paddingTop: CONTENT_TOP_INSET,
+                paddingBottom: spacing.xl,
+              }}
+              // Odaklanan alan klavyenin altinda kalmasin diye kaydirma alani
+              // klavye kadar kisaliyor. Butonu tasimiyor, yalnizca icerigi.
+              automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}
+              // Klavye acikken butona ilk dokunusun calismasi icin: aksi halde
+              // ilk dokunus yalnizca klavyeyi kapatiyor, kullanici iki kez basiyor.
+              keyboardShouldPersistTaps="handled"
+              keyboardDismissMode="interactive"
+              showsVerticalScrollIndicator={false}
+            >
+              {/* `flex: 1` degil `flexGrow: 1`. Ilki `flexBasis: 0` demek ve icerik
               kutusunu "gorunur alan eksi footer" boyutuna sabitliyor; o zaman
               icerik kabi hicbir zaman gorunur alandan buyuk olmuyor ve
               ScrollView kaydirmiyor - tasan icerik kirpiliyor. `flexGrow` ile
               kutu kisa icerikte boslugu dolduruyor, uzun icerikte kendi
               yuksekligini aliyor. */}
-            <View
-              style={{
-                flexGrow: 1,
-                ...(align === 'center' ? { justifyContent: 'center' } : null),
-                ...(align === 'upper'
-                  ? { paddingTop: Math.round(height * UPPER_INSET_RATIO) }
-                  : null),
-              }}
-            >
-              {/* Blok kendi boyunu aliyor, ebeveyni gibi buyumuyor: perde
-                  yalnizca metnin arkasini kapatmali. Tum ekrani kaplayan bir
-                  perde okunabilirligi cozer ama arka plan gorselini de yok
-                  eder ve o zaman gorseli cizmenin bir anlami kalmaz. */}
-              <View testID="content-block" onLayout={measureContent}>
-                {showVeil ? (
-                  <LinearGradient
-                    testID="content-veil"
-                    pointerEvents="none"
-                    accessibilityElementsHidden
-                    importantForAccessibility="no-hide-descendants"
-                    colors={[
-                      withAlpha(colors.paper, 0),
-                      withAlpha(colors.paper, 0.8),
-                      withAlpha(colors.paper, 0.86),
-                    ]}
-                    // Perde tam opakliga metnin bastigi yerde ulasiyor; ustteki
-                    // yumusama payi solma seridiyle ayni yukseklikte, yoksa
-                    // perdenin ust kenari gorselin uzerinde bir cizgi olarak
-                    // okunuyor. Yatayda ekran kenarina kadar tasiyor: kenar
-                    // boslugu kadar dar kalsaydi iki yanda seritler kalirdi.
-                    locations={[0, TOP_FADE / (contentHeight + TOP_FADE * 2), 1]}
-                    style={{
-                      position: 'absolute',
-                      top: -TOP_FADE,
-                      left: -screenPadding,
-                      right: -screenPadding,
-                      height: contentHeight + TOP_FADE * 2,
-                    }}
-                  />
-                ) : null}
+              <View
+                style={{
+                  flexGrow: 1,
+                  ...(align === 'center' ? { justifyContent: 'center' } : null),
+                  // Kayma miktari piksel olarak degil, yerlesim yoluyla
+                  // tanimli: icerik footer'a "flex-end" ile yaslaniyor, sabit
+                  // bir bosluk eklenmiyor. Ekran boyu degisse de blok her
+                  // zaman dugmelerin hemen ustunde kaliyor.
+                  ...(align === 'bottom' ? { justifyContent: 'flex-end' } : null),
+                  ...(align === 'upper'
+                    ? { paddingTop: Math.round(height * UPPER_INSET_RATIO) }
+                    : null),
+                }}
+              >
                 {children}
               </View>
-            </View>
 
-            {footer ? <View style={{ paddingTop: spacing.xl }}>{footer}</View> : null}
-          </ScrollView>
-
-          {/* Icerik ust seride sert bir cizgiyle carpmasin: kaydirirken metnin
-            kesildigi yer, orada bir sey bittigi izlenimi veriyor. Solma
-            "yukarida devami var" demenin sessiz yolu. */}
-          <LinearGradient
-            colors={[
-              showJourney ? withAlpha(colors.paper, 0.82) : colors.paper,
-              withAlpha(colors.paper, 0),
-            ]}
-            style={{ position: 'absolute', top: 0, left: 0, right: 0, height: TOP_FADE }}
-            pointerEvents="none"
-          />
-        </View>
-      </SafeAreaView>
-    </View>
+              {footer ? <View style={{ paddingTop: spacing.xl }}>{footer}</View> : null}
+            </ScrollView>
+          </View>
+        </SafeAreaView>
+      </View>
+    </GlassScreenProvider>
   );
 }

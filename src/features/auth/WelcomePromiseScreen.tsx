@@ -19,16 +19,17 @@ type WelcomePromiseScreenProps = {
  * kucuk basliklarla uygulandiginda dusuluyor. Boslugun kendisi de bir arac;
  * algilanan kalite renkten once yogunluktan geliyor.
  *
- * Cumle dikeyde ortalanmiyor. Ortalanmis bir baslik afis gibi duruyor ve
- * okuma dogal olarak ust sol kosede basliyor; metin oraya dogru cekildi ama
- * koseye yaslanmadi, iceriden bir bosluk birakildi.
+ * Cumle dikeyde ortalanmiyor, footer'in hemen ustune yaslaniyor: gorselin alt
+ * bandi her durakta koyu, bu yuzden metin orada perde gerekmeden okunuyor.
+ * Ustte kalan alan gorselin kendisine, tek basina bir sahne olarak kaliyor.
  */
 export function WelcomePromiseScreen({ onStart, onSignIn }: WelcomePromiseScreenProps) {
   const { spacing } = useTheme();
 
   return (
     <Screen
-      align="upper"
+      align="bottom"
+      glass={false}
       journeyProgress={journeyStops.welcome}
       footer={
         <View>

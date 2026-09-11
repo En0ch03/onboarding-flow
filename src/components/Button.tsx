@@ -6,6 +6,7 @@ import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 import { resolveGlassMode } from './glassMode';
+import { useScreenGlassEnabled } from './glassScreenContext';
 
 type ButtonVariant = 'primary' | 'ghost';
 
@@ -49,6 +50,7 @@ export function Button({
   accessibilityHint,
 }: ButtonProps) {
   const { colors, radius, scheme, spacing, shadows } = useTheme();
+  const glassScreenEnabled = useScreenGlassEnabled();
   const inactive = disabled || loading;
 
   // Birincil eylem kizil kaliyor: marka rengi kimligin tasiyicisi ve cama
@@ -59,7 +61,8 @@ export function Button({
   // solan bir kapta sistem materyali de soluyor -- cam, yarim uygulanmis bir
   // efekte donuyor. Orada bugunku kenarlikli cizim, solmasiyla birlikte
   // oldugu gibi kaliyor.
-  const glassGhost = variant === 'ghost' && !disabled && resolveGlassMode() === 'liquid';
+  const glassGhost =
+    variant === 'ghost' && !disabled && glassScreenEnabled && resolveGlassMode() === 'liquid';
 
   return (
     <Pressable
@@ -115,8 +118,11 @@ export function Button({
                   // Kil payi bir cizgi, kizil zeminli bir ekranda ikincil
                   // eylemi neredeyse gorunmez birakiyordu; kenarlik artik
                   // metnin kendi renginden turuyor ve ayni ailede kaliyor.
+                  // Perdeler kalkinca dugme dogrudan gorselin uzerinde
+                  // kaliyor; %28 zeminle 2,18:1 veriyordu, %40 3,41:1'e
+                  // cikariyor ve WCAG'nin dokunma hedefi esigini geciyor.
                   borderWidth: 1,
-                  borderColor: pressed ? colors.clay : withAlpha(colors.ink, 0.28),
+                  borderColor: pressed ? colors.clay : withAlpha(colors.ink, 0.4),
                   borderRadius: radius.full,
                   borderCurve: 'continuous',
                 },

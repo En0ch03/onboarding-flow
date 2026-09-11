@@ -130,6 +130,7 @@ export function CompletionScreen({
   return (
     <Screen
       align="center"
+      glass={false}
       journeyProgress={journeyStops.completion}
       footer={
         <View>

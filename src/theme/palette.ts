@@ -56,15 +56,13 @@ export type Palette = {
    * ayirmasi gereken sey zaten koyu.
    */
   scrim: string;
-  /** Arka plan gorselinin uzerindeki kizil aydinlatmanin sicak ucu. */
+  /** Kizil aydinlatmanin sicak ucu. */
   glowStrong: string;
   /** Ayni aydinlatmanin derin ucu. */
   glowDeep: string;
   /**
-   * Gorselin uzerine cekilen karartma perdesi.
-   *
-   * Zeminden bir tik daha koyu: perde zeminle ayni olsaydi gorselin bittigi
-   * yerle ekranin bittigi yer ayni tonda birlesir ve karartma is gormezdi.
+   * Zeminden bir tik daha koyu ton: cam kartin kenar cizgisi gibi ince
+   * katmanlarda kullaniliyor.
    */
   veil: string;
 };
@@ -85,10 +83,9 @@ export const palettes: Record<ColorScheme, Palette> = {
     danger: '#8A2F2F',
     dangerTint: 'rgba(138, 47, 47, 0.10)',
     scrim: '#000000',
-    // Uc perde rolu iki varyantta ayni. Acik varyantta arka plan gorseli
+    // Uc renk iki varyantta ayni. Acik varyantta arka plan gorseli
     // cizilmiyor; degerleri bos birakmak yerine koyu varyanttakiyle esitlemek,
-    // gorsel bir gun acik varyanta acilirsa perdenin gorselle ayni aileden
-    // kalmasini sagliyor.
+    // gorsel bir gun acik varyanta acilirsa ayni aileden kalmasini sagliyor.
     glowStrong: '#B51F2E',
     glowDeep: '#4A0710',
     veil: '#050505',
@@ -98,7 +95,11 @@ export const palettes: Record<ColorScheme, Palette> = {
     surface: '#151316',
     surfaceRaised: '#1C191D',
     ink: '#F5F2ED',
-    inkSoft: '#B5ADA8',
+    // Perdeler kalkinca ikincil metin dogrudan gorselin uzerinde kaliyor;
+    // eski ton (#B5ADA8) kurdelenin parlak bolgelerinde AA esiginin altina
+    // dusuyordu. Bu ton, hiyerarsiyi ink'e gore hala koruyarak butun
+    // konumlarda esigin uzerinde kaliyor.
+    inkSoft: '#D5D0CB',
     clay: '#C50337',
     clayDeep: '#8B0D1A',
     clayTint: 'rgba(197, 3, 55, 0.16)',

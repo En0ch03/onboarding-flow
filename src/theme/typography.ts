@@ -12,8 +12,7 @@ import type { TextStyle } from 'react-native';
  * eder; yazi tipi bir engel degil.
  */
 export const fonts = {
-  serifSemiBold: 'PlayfairDisplay_600SemiBold',
-  sansRegular: 'Figtree_400Regular',
+  serifSemiBold: 'Fraunces_600SemiBold',
   sansMedium: 'Figtree_500Medium',
   sansSemiBold: 'Figtree_600SemiBold',
 } as const;
@@ -58,19 +57,19 @@ export const type = {
   },
   /** Govde metni. */
   body: {
-    fontFamily: fonts.sansRegular,
+    fontFamily: fonts.sansMedium,
     fontSize: 17,
     lineHeight: 26,
   },
   /** Baslik altindaki aciklama satiri. */
   subhead: {
-    fontFamily: fonts.sansRegular,
+    fontFamily: fonts.sansMedium,
     fontSize: 16,
     lineHeight: 23,
   },
   /** Secim karti, cip ve girdi metni. */
   control: {
-    fontFamily: fonts.sansRegular,
+    fontFamily: fonts.sansMedium,
     fontSize: 17,
     lineHeight: 22,
   },
@@ -88,7 +87,7 @@ export const type = {
   },
   /** Hata metni, sinir aciklamasi, yasal satir. */
   caption: {
-    fontFamily: fonts.sansRegular,
+    fontFamily: fonts.sansMedium,
     fontSize: 13,
     lineHeight: 18,
   },
