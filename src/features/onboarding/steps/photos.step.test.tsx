@@ -438,6 +438,76 @@ describe('PhotosStep — fotograf nereye yerlesiyor', () => {
 });
 
 /**
+ * Basarisiz kutunun ustunde yalnizca "Tekrar dene" yaziyor; neyin olmadigi
+ * gorunur bir cumleyle soylenmeli ve cikis yolunu gostermeli.
+ */
+describe('PhotosStep — yukleme hatasinin nedeni', () => {
+  const FAILURE_LINE = 'Fotoğraf yüklenemedi. Kutuya dokunup tekrar deneyebilirsin.';
+
+  it('yukleme reddedilince izgaranin altinda neden soyleniyor', async () => {
+    upload.mockRejectedValueOnce(new Error('down'));
+
+    const { view } = await renderStep();
+    await addPhoto(view);
+
+    expect(view.getByText(FAILURE_LINE)).toBeTruthy();
+  });
+
+  it('satir gorundugunde ekran okuyucuya duyuruluyor', async () => {
+    upload.mockRejectedValueOnce(new Error('down'));
+
+    const { view } = await renderStep();
+    await addPhoto(view);
+
+    expect(view.getByText(FAILURE_LINE).props.accessibilityLiveRegion).toBe('polite');
+  });
+
+  it('bos izgarada satir yok', async () => {
+    const { view } = await renderStep();
+
+    expect(view.queryByText(FAILURE_LINE)).toBeNull();
+  });
+
+  it('basarili yuklemede satir yok', async () => {
+    const { view, seen } = await renderStep();
+    await addPhoto(view);
+
+    expect(ids(seen)).toEqual(['a']);
+    expect(view.queryByText(FAILURE_LINE)).toBeNull();
+  });
+
+  it('yukleme surerken satir yok', async () => {
+    const pending = deferred();
+    upload.mockReturnValueOnce(pending.promise);
+
+    const { view } = await renderStep();
+    await addPhoto(view);
+
+    expect(view.getByLabelText(strings.photoSlot.uploading)).toBeTruthy();
+    expect(view.queryByText(FAILURE_LINE)).toBeNull();
+
+    await act(async () => pending.resolve(photo('a')));
+  });
+
+  it('basarisiz kutu yeniden denenip yuklenince satir kalkiyor', async () => {
+    upload.mockRejectedValueOnce(new Error('down'));
+
+    const { view, seen } = await renderStep();
+    await addPhoto(view);
+    expect(view.getByText(FAILURE_LINE)).toBeTruthy();
+
+    upload.mockResolvedValueOnce(photo('r'));
+    await act(async () => {
+      fireEvent.press(view.getByLabelText(strings.photoSlot.failed));
+    });
+    await chooseSource(view, 'library');
+
+    expect(ids(seen)).toEqual(['r']);
+    expect(view.queryByText(FAILURE_LINE)).toBeNull();
+  });
+});
+
+/**
  * Gercek depoyla: adim terk edilip donuldugunde bilesen sokulup yeniden
  * kuruluyor, ama yukleme ve depo yerinde duruyor. Sarmalayici burada ise
  * yaramaz -- onun durumu da bilesenle birlikte gider.

@@ -124,6 +124,9 @@ export const strings = {
     photosCover: 'Kapak',
     photosHint: 'Devam etmek için en az iki fotoğraf gerekiyor.',
     photosSkipCost: 'Fotoğrafsız profiller çok daha az görüntüleniyor.',
+    // Kutunun ustundeki "Tekrar dene" neyin olmadigini soylemiyor; bu satir
+    // hem nedeni hem cikis yolunu soyluyor.
+    photosUploadFailed: 'Fotoğraf yüklenemedi. Kutuya dokunup tekrar deneyebilirsin.',
 
     interestsTitle: 'Neye vakit ayırıyorsun?',
     interestsSubtitle: 'Ortak noktalar sohbeti başlatır.',
