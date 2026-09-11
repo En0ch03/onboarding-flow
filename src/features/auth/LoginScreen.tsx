@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { login } from '@/api/endpoints';
 import { Button } from '@/components/Button';
 import { ErrorBanner } from '@/components/ErrorBanner';
+import { GlassPanel } from '@/components/GlassPanel';
 import { Screen } from '@/components/Screen';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { ScreenIntro } from '@/components/ScreenIntro';
@@ -56,29 +57,40 @@ export function LoginScreen({ onBack, onSignedIn, initialEmail = '' }: LoginScre
         />
       }
     >
-      <ScreenIntro title={strings.auth.loginTitle} subtitle={strings.auth.loginSubtitle} />
+      {/* Kayit ekranindaki ayni kart: iki form ekrani ayni kabukta duruyor,
+          biri digerinden daha kisa icerik tasiyor diye camsiz kalmiyor. */}
+      <GlassPanel glassStyle="clear">
+        <ScreenIntro title={strings.auth.loginTitle} subtitle={strings.auth.loginSubtitle} />
 
-      {/* Hatali giriste alanlar bosaltilmiyor: kullanici genellikle tek bir
-          karakteri duzeltecek, hepsini yeniden yazmayacak.
+        {/* Hatali giriste alanlar bosaltilmiyor: kullanici genellikle tek bir
+            karakteri duzeltecek, hepsini yeniden yazmayacak.
 
-          Bandin eylem etiketi sozlukten geliyor: hangi hatanin ne dedigini
-          tek bir yer biliyor. Davranis ekranin kaliyor, cunku "tekrar dene"
-          her ekranda baska bir sey deniyor. */}
-      {failure ? (
-        <ErrorBanner
-          message={presentError(failure).message}
-          {...(isRetryable(failure)
-            ? {
-                action: {
-                  label: presentError(failure).action ?? strings.common.retry,
-                  onPress: () => void submit(),
-                },
-              }
-            : {})}
+            Bandin eylem etiketi sozlukten geliyor: hangi hatanin ne dedigini
+            tek bir yer biliyor. Davranis ekranin kaliyor, cunku "tekrar dene"
+            her ekranda baska bir sey deniyor. */}
+        {failure ? (
+          <ErrorBanner
+            message={presentError(failure).message}
+            {...(isRetryable(failure)
+              ? {
+                  action: {
+                    label: presentError(failure).action ?? strings.common.retry,
+                    onPress: () => void submit(),
+                  },
+                }
+              : {})}
+          />
+        ) : null}
+
+        <CredentialsFields
+          control={form.control}
+          mode="login"
+          // Alanlar kartin icinde: opak zeminleri camin gosterecek bir seyini
+          // birakmiyordu.
+          surface="glass"
+          onSubmit={() => void submit()}
         />
-      ) : null}
-
-      <CredentialsFields control={form.control} mode="login" onSubmit={() => void submit()} />
+      </GlassPanel>
     </Screen>
   );
 }

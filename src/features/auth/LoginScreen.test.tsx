@@ -1,4 +1,11 @@
-import { act, cleanup, fireEvent, waitFor, type RenderResult } from '@testing-library/react-native';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  waitFor,
+  within,
+  type RenderResult,
+} from '@testing-library/react-native';
 import { AxiosError, AxiosHeaders } from 'axios';
 import { StyleSheet } from 'react-native';
 
@@ -143,15 +150,44 @@ describe('LoginScreen', () => {
 });
 
 describe('LoginScreen alan zemini', () => {
-  it('kartsiz ekranda alanlar kendi zeminini tasiyor', async () => {
+  it('kartin icindeki alanlar cam zemini tasiyor', async () => {
     const view = await renderWithTheme(<LoginScreen {...handlers} />);
     const email = view.getByLabelText(strings.auth.emailLabel);
     expect(email).toBeTruthy();
 
-    // Giris ekraninda alanlarin arkasinda kart yok: saydam bir zemin, yazilan
-    // metnin kontrastini dogrudan arka plan gorseline birakirdi.
+    // Giris ekraninda alanlar artik kayit ekranindaki gibi kartin icinde:
+    // opak bir zemin camin gosterecek bir seyini birakmazdi.
     expect(
       (StyleSheet.flatten(email.props.style) as { backgroundColor?: string }).backgroundColor,
-    ).toBe(withAlpha(palettes.dark.surface, 0.92));
+    ).toBe(withAlpha(palettes.dark.surface, 0.5));
+  });
+});
+
+describe('LoginScreen cam kart', () => {
+  it('basligi ve alanlari kartin icine aliyor', async () => {
+    const view = await renderWithTheme(<LoginScreen {...handlers} />);
+
+    const panel = within(view.getByTestId('glass-panel'));
+    expect(panel.getByText(strings.auth.loginTitle)).toBeTruthy();
+    expect(panel.getByLabelText(strings.auth.emailLabel)).toBeTruthy();
+    expect(panel.getByLabelText(strings.auth.passwordLabel)).toBeTruthy();
+  });
+
+  it('butonu kartin disinda birakiyor', async () => {
+    const view = await renderWithTheme(<LoginScreen {...handlers} />);
+
+    // Buton kartin degil sayfanin dibine ait: klavye acildiginda kartla
+    // birlikte yukari cikan bir buton, hedefi elin altinda oynatiyor.
+    expect(view.getByText(strings.auth.loginSubmit)).toBeTruthy();
+    const panel = within(view.getByTestId('glass-panel'));
+    expect(panel.queryByText(strings.auth.loginSubmit)).toBeNull();
+  });
+
+  it('giris ekrani camin kalktigi dort yazi ekranindan biri degil', async () => {
+    // Karsilama, tamamlanma ve varis ekranlarinda kart hic cizilmiyor; giris
+    // bir form ekrani oldugu icin kart burada duruyor.
+    const view = await renderWithTheme(<LoginScreen {...handlers} />);
+
+    expect(view.getByTestId('glass-panel')).toBeTruthy();
   });
 });
