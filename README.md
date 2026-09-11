@@ -45,17 +45,17 @@ So the app does not ask. It resolves the address in three steps, in this order:
 
 1. If `EXPO_PUBLIC_API_URL` is set, that wins, always. Pointing the app at a staging host or a real backend is nothing more than this, and `.env.example` shows the shape.
 2. Otherwise the address is derived from the machine the app is already connected to. Expo serves the JavaScript bundle from your machine and the app knows the host it was served from; it reuses that host and swaps in port 4000.
-3. If neither is available — on the web, and in the tests — it falls back to `localhost`.
+3. If neither is available (on the web, and in the tests), it falls back to `localhost`.
 
 Two endpoints resolve separately, and only if you ask them to: see [Running against a real backend](#running-against-a-real-backend). By default they use the address above, so the app talks to one server.
 
 Step 2 is the one that removes the configuration, and it lands correctly in all three cases:
 
-| Where the app runs         | What it resolves to                                                                                                                                                                        |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| iOS Simulator              | the host Expo reports, used as-is — the LAN address by default, or `127.0.0.1` when Expo is started with `--localhost`. The simulator shares the host's loopback, so both reach the server |
-| Android Emulator           | the host Expo reports; if that comes back as loopback, `10.0.2.2`, which is how an emulator reaches its host                                                                               |
-| Physical phone, same Wi-Fi | `http://<your machine's LAN IP>:4000/api/v1`                                                                                                                                               |
+| Where the app runs         | What it resolves to                                                                                                                                                                       |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| iOS Simulator              | the host Expo reports, used as-is: the LAN address by default, or `127.0.0.1` when Expo is started with `--localhost`. The simulator shares the host's loopback, so both reach the server |
+| Android Emulator           | the host Expo reports; if that comes back as loopback, `10.0.2.2`, which is how an emulator reaches its host                                                                              |
+| Physical phone, same Wi-Fi | `http://<your machine's LAN IP>:4000/api/v1`                                                                                                                                              |
 
 Nothing in the app branches on the environment: there is no development path and no production path, only these three steps. The one platform difference is the Android correction in the table above, and it exists because the same address means something different inside an emulator.
 
@@ -74,7 +74,7 @@ PATCH /api/v1/profile             200; preferences are merged, not replaced
 POST /api/v1/onboarding/complete  200
 ```
 
-Two more endpoints exist that the contract does not define. `GET /api/v1/config/options` serves the option lists, and `POST /api/v1/upload` accepts an image. Both are placeholders for mechanisms that have not been specified yet, and on the app side each one sits behind a single function so that there is exactly one file to change when they are. `GET /api/v1/media/:id` serves back what was uploaded, and the `__chaos` pair below belongs to the server alone — the app never calls either.
+Two more endpoints exist that the contract does not define. `GET /api/v1/config/options` serves the option lists, and `POST /api/v1/upload` accepts an image. Both are placeholders for mechanisms that have not been specified yet, and on the app side each one sits behind a single function so that there is exactly one file to change when they are. `GET /api/v1/media/:id` serves back what was uploaded, and the `__chaos` pair below belongs to the server alone. The app never calls either.
 
 There is no mock code inside the app. By default the app knows one address and nothing else; a second one exists only if you configure it, and the next section is the only reason to.
 
@@ -86,7 +86,7 @@ Point the app at a real server by setting one variable:
 EXPO_PUBLIC_API_URL=https://your-host/api/v1 npm start
 ```
 
-That covers the six endpoints the contract defines, and nothing else has to change — there is no environment switch inside the app.
+That covers the six endpoints the contract defines, and nothing else has to change: there is no environment switch inside the app.
 
 The two endpoints above that the contract does _not_ define are the catch. A server can implement the contract completely and still not serve them, because they were never part of it. When that happens, keep them here and say so:
 
@@ -100,7 +100,7 @@ On Windows PowerShell:
 $env:EXPO_PUBLIC_API_URL='https://your-host/api/v1'; $env:EXPO_PUBLIC_STANDIN_API_URL='http://<your machine''s LAN IP>:4000/api/v1'; npm start
 ```
 
-Now the contract endpoints go to the real server and those two stay on the mock, which has to keep running — and in this arrangement it has to be told so:
+Now the contract endpoints go to the real server and those two stay on the mock, which has to keep running. In this arrangement it has to be told so:
 
 ```bash
 MOCK_STANDIN=1 npm run mock
@@ -116,7 +116,7 @@ If you forget the flag, uploads fail with 401 and the photo step shows an error.
 
 That flag only affects `POST /upload`: the token now comes from a server the mock cannot check with, so it accepts any bearer token while still refusing a request that carries none. Without the flag nothing is relaxed, and the default single-server setup keeps validating tokens as before.
 
-Uploaded images come back as absolute URLs pointing at the mock, and the real server stores them in `avatar_url` as given — which also means they are only reachable from the same network.
+Uploaded images come back as absolute URLs pointing at the mock, and the real server stores them in `avatar_url` as given, which also means they are only reachable from the same network.
 
 One consequence worth stating plainly: the session token issued by the real server is sent to the mock as well, over plain HTTP on your LAN. Set this up on a network you trust, and not on shared or public Wi-Fi.
 
@@ -194,7 +194,7 @@ Text is never written straight onto the picture. Every block of copy has a veil 
 
 The image itself is carried as WebP at quality 95. Measured against twenty other candidates, that is the point where the file stops getting meaningfully smaller and starts showing blocking in exactly the dark gradients the design leans on: about seven times smaller than the PNG master with nothing the eye can find, while every setting below it puts visible blocks into those gradients and every setting above it only adds bytes. The format changes what is downloaded, not what is decoded, and the decoded bitmap is the same size whichever one wins. The file in the repository is still the PNG master the measurement was run against; replacing it is one file and one path.
 
-**Nothing that can change is hardcoded.** The option lists come from the server, and so do their rules: whether a list must be answered, how many answers it takes, and which answer unlocks a further list. What stays in the app is the shape of the flow itself — which steps exist and what each one counts as answered. Gender, intent and interest taxonomies shift over time and by region, and a change to one of them should not require a new app release. The numeric limits that are not taxonomy stay in the app: the photo minimum, the age gate and the password length each sit next to the rule they serve, with the reason written beside them.
+**Nothing that can change is hardcoded.** The option lists come from the server, and so do their rules: whether a list must be answered, how many answers it takes, and which answer unlocks a further list. What stays in the app is the shape of the flow itself: which steps exist and what each one counts as answered. Gender, intent and interest taxonomies shift over time and by region, and a change to one of them should not require a new app release. The numeric limits that are not taxonomy stay in the app: the photo minimum, the age gate and the password length each sit next to the rule they serve, with the reason written beside them.
 
 That holds in both directions. No option id appears anywhere in the app: an option carries which conditional list it unlocks and whether its group must be answered, so adding one, renaming one or removing one is a change to the data alone. When an answer the user gave is no longer offered, the app drops it and asks that step again rather than carrying a value nothing on screen can show.
 
