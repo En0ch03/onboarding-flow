@@ -144,7 +144,7 @@ describe('OnboardingNavigator', () => {
   });
 });
 
-describe('OnboardingNavigator — akisin omru', () => {
+describe('OnboardingNavigator: akisin omru', () => {
   it('yigin sokulunce devam eden yukleme isaretleri gidiyor', async () => {
     // Cikis, oturumun bitmesi ya da uygulamaya giris: ucu de bu yigini
     // sokuyor. Isaretler kalsaydi bir sonraki kullanici onceki kullanicinin

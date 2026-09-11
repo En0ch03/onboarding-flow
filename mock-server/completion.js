@@ -127,17 +127,17 @@ function unlockedKeys(preferences, optionGroups) {
  *
  * Iliski veriden okunuyor, `unlocks` kenarlarindan cikarilmiyor. Cikarim
  * iki sekilde yanlis sonuc veriyordu: birbirini acan iki liste ikisi de
- * varyant sayilip butun zorunluluk denetimi sessizce kapaniyordu, ve
+ * varyant sayilip butun zorunluluk dogrulamasi sessizce kapaniyordu, ve
  * varyantin hangi tabana ait oldugu bilinmedigi icin oradan secilen bir
  * etiket her liste icin gecerli sayiliyordu -- "Kutu oyunlari" gecerli bir
  * cinsiyet cevabi oluyordu.
  *
- * Iliskinin kendisi de dogrulaniyor. Varyant olmak denetimden dusmek
+ * Iliskinin kendisi de dogrulaniyor. Varyant olmak dogrulamadan dusmek
  * demek, yani yanlis yazilmis bir `variantOf` kapiyi **acik** yonde
  * bozardi: kendini gosteren, olmayan bir listeyi gosteren veya karsilikli
  * isaret eden iki liste, zorunlu sorulari sessizce zorunsuz yapardi. Boyle
  * bir baglantı yok sayiliyor ve liste sıradan, zorunlu bir soru gibi
- * denetleniyor -- yapilandirma hatasinda kapi sıkı tarafa bozuluyor.
+ * dogrulaniyor -- yapilandirma hatasinda kapi sıkı tarafa bozuluyor.
  */
 function variantBase(key, optionGroups) {
   if (!owns(optionGroups, key)) return null;
@@ -149,7 +149,7 @@ function variantBase(key, optionGroups) {
   if (base === key || !owns(optionGroups, base)) return null;
 
   // Tabanin kendisi varyantsa zincir var demektir; varyantlar tek duzeyli
-  // ve karsilikli isaret eden iki liste boylece ikisi de denetleniyor.
+  // ve karsilikli isaret eden iki liste boylece ikisi de dogrulaniyor.
   if (typeof optionGroups[base].variantOf === 'string') return null;
 
   return base;
@@ -227,7 +227,7 @@ function completionProblems(user, optionGroups, today = new Date()) {
 
   for (const [key, group] of Object.entries(optionGroups)) {
     // Varyant listeler kendi anahtarlariyla saklanmiyor; cevaplari tabanin
-    // altinda duruyor ve orada denetleniyor.
+    // altinda duruyor ve orada dogrulaniyor.
     if (variantBase(key, optionGroups) !== null) continue;
 
     const problem = inspectAnswer(key, group, preferences, optionGroups, unlocked);
