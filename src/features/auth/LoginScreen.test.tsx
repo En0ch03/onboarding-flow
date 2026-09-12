@@ -1,9 +1,17 @@
-import { act, cleanup, fireEvent, waitFor, type RenderResult } from '@testing-library/react-native';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  waitFor,
+  within,
+  type RenderResult,
+} from '@testing-library/react-native';
 import { AxiosError, AxiosHeaders } from 'axios';
 import { StyleSheet } from 'react-native';
 
 import { presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
+import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
 import { palettes, withAlpha } from '@/theme';
 
@@ -143,15 +151,72 @@ describe('LoginScreen', () => {
 });
 
 describe('LoginScreen alan zemini', () => {
-  it('kartsiz ekranda alanlar kendi zeminini tasiyor', async () => {
+  it('kartin icindeki alanlar cam zemini tasiyor', async () => {
     const view = await renderWithTheme(<LoginScreen {...handlers} />);
     const email = view.getByLabelText(strings.auth.emailLabel);
     expect(email).toBeTruthy();
 
-    // Giris ekraninda alanlarin arkasinda kart yok: saydam bir zemin, yazilan
-    // metnin kontrastini dogrudan arka plan gorseline birakirdi.
+    // Giris ekraninda alanlar artik kayit ekranindaki gibi kartin icinde:
+    // opak bir zemin camin gosterecek bir seyini birakmazdi.
     expect(
       (StyleSheet.flatten(email.props.style) as { backgroundColor?: string }).backgroundColor,
-    ).toBe(withAlpha(palettes.dark.surface, 0.92));
+    ).toBe(withAlpha(palettes.dark.surface, 0.5));
+  });
+});
+
+describe('LoginScreen cam kart', () => {
+  it('basligi ve alanlari kartin icine aliyor', async () => {
+    const view = await renderWithTheme(<LoginScreen {...handlers} />);
+
+    const panel = within(view.getByTestId('glass-panel'));
+    expect(panel.getByText(strings.auth.loginTitle)).toBeTruthy();
+    expect(panel.getByLabelText(strings.auth.emailLabel)).toBeTruthy();
+    expect(panel.getByLabelText(strings.auth.passwordLabel)).toBeTruthy();
+  });
+
+  it('butonu kartin disinda birakiyor', async () => {
+    const view = await renderWithTheme(<LoginScreen {...handlers} />);
+
+    // Buton kartin degil sayfanin dibine ait: klavye acildiginda kartla
+    // birlikte yukari cikan bir buton, hedefi elin altinda oynatiyor.
+    expect(view.getByText(strings.auth.loginSubmit)).toBeTruthy();
+    const panel = within(view.getByTestId('glass-panel'));
+    expect(panel.queryByText(strings.auth.loginSubmit)).toBeNull();
+  });
+
+  describe('cam kipi', () => {
+    const { isLiquidGlassAvailable } = jest.requireMock('expo-glass-effect');
+
+    /** Arka katmanlar ekran okuyucudan gizli; sorgular gizli ogeleri de kapsiyor. */
+    const hidden = { includeHiddenElements: true } as const;
+
+    afterEach(() => {
+      isLiquidGlassAvailable.mockReturnValue(false);
+    });
+
+    it('giris ekrani camin kalktigi dort yazi ekranindan biri degil', async () => {
+      // Karsilama, tamamlanma ve varis ekranlarinda ekran cami kapatiyor
+      // (`glass={false}`); kart bu durumda bulanik yedege duser ve sistemin
+      // cam katmani hic acilmaz. Giris ekrani bir form ekrani oldugu icin bu
+      // kapatmayi yapmiyor: sistem cami mevcutsa kart onu kullanmali.
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(<LoginScreen {...handlers} />);
+
+      // `getByTestId('glass-panel')` bu ayrimi gormez: o sarmalayici View her
+      // kipte ayni testID'yle ciziliyor. Sistemin cam katmani gercekten
+      // acildiysa gorulen sey `GlassView`'in kendisi.
+      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeTruthy();
+    });
+
+    it('kartin cam materyali saydam kaliyor, kucuk kontroller uyum yapanken', async () => {
+      // Kartin arkasinda akisin gorseli duruyor; uyum yapan materyal onu bir
+      // ton katmaninin altinda birakirdi.
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(<LoginScreen {...handlers} />);
+
+      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.glassEffectStyle).toBe('clear');
+    });
   });
 });

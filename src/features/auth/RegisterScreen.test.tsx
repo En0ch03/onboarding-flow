@@ -250,11 +250,11 @@ describe('RegisterScreen cam kart', () => {
     const email = view.getByLabelText(strings.auth.emailLabel);
     expect(email).toBeTruthy();
 
-    // Opak alanlar kartin icini kaplayinca cam yalnizca ic dolguda kaliyor ve
-    // kart camdan cok dolu bir panel gibi okunuyor.
+    // Alanin zemini kartin yuzeyinden ayrisacak kadar koyu, ama kartin
+    // tamami degil: yalnizca alanin kendi dolgusu.
     expect(
       (StyleSheet.flatten(email.props.style) as { backgroundColor?: string }).backgroundColor,
-    ).toBe(withAlpha(palettes.dark.surface, 0.28));
+    ).toBe(withAlpha(palettes.dark.surface, 0.5));
   });
 
   it('butonu ve yasal satiri kartin disinda birakiyor', async () => {

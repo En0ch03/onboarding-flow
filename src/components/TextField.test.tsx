@@ -87,9 +87,9 @@ describe('TextField yuzeyi', () => {
 
     const input = view.getByLabelText(LABEL);
     const style = StyleSheet.flatten(input.props.style) as TextStyle;
-    // Opak alanlar kartin icini kaplayinca cam yalnizca ic dolguda gorunuyor
-    // ve kart dolu bir panel gibi okunuyor.
-    expect(style.backgroundColor).toBe(withAlpha(palettes.dark.surface, 0.28));
+    // Alanin zemini kartin yuzeyinden ayrisacak kadar koyu, ama kartin
+    // tamami degil: yalnizca alanin kendi dolgusu.
+    expect(style.backgroundColor).toBe(withAlpha(palettes.dark.surface, 0.5));
     expect(style.borderColor).toBe(withAlpha(palettes.dark.ink, 0.18));
     expect(input.props.placeholderTextColor).toBe(palettes.dark.inkSoft);
   });

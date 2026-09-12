@@ -68,10 +68,10 @@ export type FieldSurface = 'solid' | 'glass';
  * Alan zemininin opakligi.
  *
  * `solid` neredeyse opak: altindaki gorsel yalnizca hafifce yasiyor. `glass`
- * ucte birinden az; asagi inmek alani kartin icinde gorunmez kiliyor, yukari
- * cikmak camin onundeki perdeye donusturuyor.
+ * kartin yuzeyinden ayrisacak kadar koyu: dusuk degerde alanin kenarligi
+ * kartin kendi zemininden ayrismiyor ve alan kartla kaynasip kayboluyordu.
  */
-const FIELD_FILL = { solid: 0.92, glass: 0.28 } as const;
+const FIELD_FILL = { solid: 0.92, glass: 0.5 } as const;
 
 /**
  * Cam yuzeyde kenarligin opakligi.
