@@ -8,7 +8,13 @@ import { Button } from '@/components/Button';
 import { monthNames, strings } from '@/constants/strings';
 import { useTheme } from '@/theme';
 
-import { dateFromParts, EARLIEST_YEAR, partsFromDate, type PartialDate } from './dateParts';
+import {
+  dateFromParts,
+  EARLIEST_YEAR,
+  partsFromDate,
+  SAFE_HOUR,
+  type PartialDate,
+} from './dateParts';
 
 /** Cark bos taslakta burada aciliyor; bir varsayim, secim degil. */
 const OPENING_AGE = 18;
@@ -44,7 +50,7 @@ export function BirthDateField({ value, onChange, today }: BirthDateFieldProps) 
 
   const chosen = useMemo(() => dateFromParts(value), [value]);
   const opening = useMemo(() => chosen ?? yearsBefore(today, OPENING_AGE), [chosen, today]);
-  const earliest = useMemo(() => new Date(EARLIEST_YEAR, 0, 1), []);
+  const earliest = useMemo(() => new Date(EARLIEST_YEAR, 0, 1, SAFE_HOUR), []);
 
   // Carkin uzerinde durdugu tarih. Taslaktan ayri tutuluyor: onaylanmamis bir
   // donus cevap degil, bu yuzden taslaga yazilmiyor.
@@ -152,7 +158,12 @@ function formatDate(date: Date): string {
   return `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-/** Verilen tarihten bu kadar yil once. */
+/**
+ * Verilen tarihten bu kadar yil once.
+ *
+ * Ogleye sabitleniyor: bu, cark acilirken kullanicinin gordugu ilk deger ve
+ * gece yarisinda kurulsaydi ayni saat dilimi kaymasina acik olurdu.
+ */
 function yearsBefore(date: Date, years: number): Date {
-  return new Date(date.getFullYear() - years, date.getMonth(), date.getDate());
+  return new Date(date.getFullYear() - years, date.getMonth(), date.getDate(), SAFE_HOUR);
 }

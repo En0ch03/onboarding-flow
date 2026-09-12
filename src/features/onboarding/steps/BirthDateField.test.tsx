@@ -113,7 +113,7 @@ describe('BirthDateField', () => {
       const { view } = await mount({ day: 14, month: 3, year: 1998 });
       await press(field(view));
 
-      expect(picker(view).props.value).toEqual(new Date(1998, 2, 14));
+      expect(picker(view).props.value).toEqual(new Date(1998, 2, 14, 12));
     } finally {
       restore();
     }
@@ -125,7 +125,7 @@ describe('BirthDateField', () => {
       const { view, onChange } = await mount(empty);
       await press(field(view));
 
-      expect(picker(view).props.value).toEqual(new Date(2008, 8, 4));
+      expect(picker(view).props.value).toEqual(new Date(2008, 8, 4, 12));
       // Acilis konumu bir varsayim, secim degil: taslaga hicbir sey yazilmadi.
       expect(onChange).not.toHaveBeenCalled();
     } finally {
@@ -140,7 +140,7 @@ describe('BirthDateField', () => {
       await press(field(view));
 
       expect(picker(view).props.maximumDate).toEqual(today);
-      expect(picker(view).props.minimumDate).toEqual(new Date(1900, 0, 1));
+      expect(picker(view).props.minimumDate).toEqual(new Date(1900, 0, 1, 12));
     } finally {
       restore();
     }
@@ -205,7 +205,7 @@ describe('BirthDateField', () => {
       // Onaylanmamis donus atiliyor: sayfa yeniden acildiginda cark, taslagin
       // acilis yerinde duruyor, birakildigi yerde degil.
       await press(field(view));
-      expect(picker(view).props.value).toEqual(new Date(2008, 8, 4));
+      expect(picker(view).props.value).toEqual(new Date(2008, 8, 4, 12));
     } finally {
       restore();
     }
