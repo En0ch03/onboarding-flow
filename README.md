@@ -1,6 +1,6 @@
 # Onboarding
 
-A dating app for people who would rather meet the right person than meet a lot of people. This repository holds the onboarding experience: everything a new user sees between opening the app for the first time and reaching their finished profile.
+A dating app for people who would rather meet the right person than meet a lot of people. This repository holds the onboarding experience: everything a new user sees between opening the app for the first time and the end of that flow. The six profile steps here set up a starting profile, not a complete one.
 
 The interface language is Turkish. Turkey is the first market.
 
