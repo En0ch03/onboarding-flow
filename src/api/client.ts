@@ -201,7 +201,8 @@ const delegatingBridge: AuthBridge = {
  * Sozlesmedeki alti uc noktanin adresi.
  *
  * Uygulamanin icinde sahte veri, sahte dal veya ortama gore degisen bir kod
- * yolu yok; gercek sunucuya gecis tek bir ortam degiskeni. Adresin nasil
+ * yolu yok; gercek sunucu zaten varsayilan ve ortam degiskenleri yalnizca
+ * baska bir sunucuya ya da depoyla gelen sunucuya gecmek icin. Adresin nasil
  * bulundugu `baseUrl.ts` icinde.
  */
 export const baseURL = resolveBaseUrl();
