@@ -13,17 +13,36 @@ That is the whole list. No Xcode project, no Android Studio, no CocoaPods, no na
 
 ## Running it
 
-Two terminals. In the first:
-
 ```bash
 npm install
-npm run mock
 ```
 
-The committed lockfile is npm's, and npm is the install that was rehearsed
-from a clean clone. pnpm is not: its stricter layout does not give React
-Native the flat `node_modules` the Metro bundler expects, so the install
-finishes and then nothing runs.
+Then one of two paths. Which one applies depends on a single question: do you
+have the address of a backend to talk to?
+
+**If you have one**, that address is the whole configuration:
+
+```bash
+EXPO_PUBLIC_API_URL=<the backend's base URL, ending in /api/v1> npm start
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:EXPO_PUBLIC_API_URL='<the backend base URL>'; npm start
+```
+
+This is the path the app is built for: it talks to the real API, and there is
+no environment switch and no second code path inside it.
+
+**If you do not have one**, run it with no address at all. A standalone server
+ships with this repository, so the project starts on a machine that has
+nothing else and needs no account, no key and no `.env` file. Two terminals.
+In the first:
+
+```bash
+npm run mock
+```
 
 In the second:
 
@@ -31,9 +50,31 @@ In the second:
 npx expo start
 ```
 
-Then press `i` for the iOS Simulator, `a` for the Android Emulator, or scan the QR code with Expo Go on a phone.
+The app finds that server by itself, and the section below explains why that
+is worth a paragraph. Use this path to run the flow offline, and to break
+requests on purpose: it can inject every failure the app is written to
+survive, which a real server will not do for you.
 
-That is all. The app finds the mock server by itself; the next section explains why that matters. On a clean checkout `npm install` takes about a minute, and the first bundle another twenty seconds or so.
+Either way, open the app by pressing `i` for the iOS Simulator, `a` for the
+Android Emulator, or by scanning the QR code with Expo Go on a phone. On a
+clean checkout `npm install` takes about a minute and the first bundle another
+twenty seconds or so.
+
+The committed lockfile is npm's, and npm is the install that was rehearsed
+from a clean clone. pnpm is not: its stricter layout does not give React
+Native the flat `node_modules` the Metro bundler expects, so the install
+finishes and then nothing runs.
+
+### Checking it came up, without a device
+
+No simulator and no phone needed, so this also works on a machine with no
+screen. The checks under [Checking it](#checking-it) run anywhere, and with
+the standalone server running this answers from it, which is the quickest
+proof that the API side is alive:
+
+```bash
+curl http://localhost:4000/api/v1/config/options
+```
 
 ### The address, and why you do not have to configure it
 
@@ -47,7 +88,7 @@ So the app does not ask. It resolves the address in three steps, in this order:
 2. Otherwise the address is derived from the machine the app is already connected to. Expo serves the JavaScript bundle from your machine and the app knows the host it was served from; it reuses that host and swaps in port 4000.
 3. If neither is available (on the web, and in the tests), it falls back to `localhost`.
 
-Two endpoints resolve separately, and only if you ask them to: see [Running against a real backend](#running-against-a-real-backend). By default they use the address above, so the app talks to one server.
+Two endpoints resolve separately, and only if you ask them to: see [When a real backend serves only part of this](#when-a-real-backend-serves-only-part-of-this). By default they use the address above, so the app talks to one server.
 
 Step 2 is the one that removes the configuration, and it lands correctly in all three cases:
 
@@ -78,17 +119,18 @@ Two more endpoints exist that the contract does not define. `GET /api/v1/config/
 
 There is no mock code inside the app. By default the app knows one address and nothing else; a second one exists only if you configure it, and the next section is the only reason to.
 
-## Running against a real backend
+## When a real backend serves only part of this
 
-Point the app at a real server by setting one variable:
+The address at the top covers the six endpoints the contract defines, and for
+a server that also serves the two below it covers everything: one address, and
+the flow runs end to end.
 
-```bash
-EXPO_PUBLIC_API_URL=https://your-host/api/v1 npm start
-```
-
-That covers the six endpoints the contract defines, and nothing else has to change: there is no environment switch inside the app.
-
-The two endpoints above that the contract does _not_ define are the catch. A server can implement the contract completely and still not serve them, because they were never part of it. When that happens, keep them here and say so:
+Those two endpoints are the catch, because the contract does _not_ define
+them. A server can implement the contract completely and still not serve
+them, since they were never part of it. That is not a fault on either side,
+so the app does not assume either way: when a server does serve them they
+need no configuration at all, and when it does not, they can stay on the
+local server while everything else goes to the real one:
 
 ```bash
 EXPO_PUBLIC_API_URL=https://your-host/api/v1 EXPO_PUBLIC_STANDIN_API_URL=http://<your machine's LAN IP>:4000/api/v1 npm start
@@ -165,6 +207,8 @@ $env:MOCK_TOKEN_TTL_SECONDS = "20"; npm run mock
 ```
 
 ## Checking it
+
+Neither of these needs a device, a server or a network:
 
 ```bash
 npm run typecheck   # tsc --noEmit
