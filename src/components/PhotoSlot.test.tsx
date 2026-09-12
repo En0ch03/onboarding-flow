@@ -58,8 +58,10 @@ describe('PhotoSlot', () => {
       unknown
     >;
 
-    // K-042'nin kalbi: dokunulabilen tek bos kutu siradaki olan. Zemin tonu
-    // ayni ama saydamlik farki -- kilitli kutunun dokunulamazligi -- duruyor.
+    // Zemin tonu kilit durumuna gore degismemeli; kullanicinin hangi kutuya
+    // dokunabilecegini renk degil saydamlik anlatir, boylece tek bir ipucu
+    // kanali kirilinca (renk korumasi, tema degisimi vb.) dokunulabilirlik
+    // bilgisi kaybolmaz.
     expect(openStyle.backgroundColor).toBe(lockedStyle.backgroundColor);
     expect(openStyle.opacity).toBe(1);
     expect(lockedStyle.opacity).toBe(0.4);

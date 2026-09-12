@@ -154,8 +154,12 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
       <View
         style={[
           { justifyContent: 'center' },
-          // Katman alanin disina tasarsa yuvarlak kenari dorde donduruyor.
-          liquidField ? { borderRadius: radius.md, overflow: 'hidden' } : null,
+          // Katman alanin disina tasarsa yuvarlak kenari dorde donduruyor;
+          // kesim egrisi alanin kendi kenarligiyla (asagida) ayni olmali,
+          // yoksa cam kose ile kenarlik kosesi farkli egride durur.
+          liquidField
+            ? { borderRadius: radius.md, borderCurve: 'continuous', overflow: 'hidden' }
+            : null,
         ]}
       >
         {liquidField ? (

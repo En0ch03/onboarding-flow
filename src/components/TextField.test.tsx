@@ -126,6 +126,23 @@ describe('TextField "field" yuzeyi', () => {
     expect(glass.props.isInteractive).toBe(true);
   });
 
+  it('cami saran katman alanin kendi kenarligiyla ayni kose egrisini kullaniyor', async () => {
+    // Kesim ile kenarlik farkli egride olursa cam kose alanin gorunen
+    // kenarligindan tasar ya da geri kalir; ikisi ayni yaricapta olsa bile
+    // "continuous" ile dairesel egri gozle ayirt edilebilir bir uyumsuzluk
+    // birakiyor.
+    isLiquidGlassAvailable.mockReturnValue(true);
+    const view = await renderWithTheme(<TextField label={LABEL} surface="field" />);
+
+    const inputStyle = StyleSheet.flatten(view.getByLabelText(LABEL).props.style) as TextStyle;
+    const wrapperStyle = StyleSheet.flatten(
+      view.getByTestId('glass-field', hidden).parent?.props.style,
+    ) as TextStyle;
+
+    expect(wrapperStyle.borderRadius).toBe(inputStyle.borderRadius);
+    expect(wrapperStyle.borderCurve).toBe(inputStyle.borderCurve);
+  });
+
   it('cam kapali baglamda "field" yuzeyi de cam cizmiyor', async () => {
     isLiquidGlassAvailable.mockReturnValue(true);
     const view = await renderWithTheme(
