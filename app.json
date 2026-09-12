@@ -22,6 +22,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "extra": {
+      "apiUrl": "https://api.example.com/api/v1"
+    },
     "scheme": "onboarding",
     "plugins": [
       "expo-secure-store",
