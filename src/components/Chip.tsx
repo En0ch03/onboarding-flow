@@ -1,10 +1,13 @@
+import { GlassView } from 'expo-glass-effect';
 import { useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, Animated, Easing, Pressable } from 'react-native';
+import { AccessibilityInfo, Animated, Easing, Pressable, StyleSheet, View } from 'react-native';
 
 import type { Option } from '@/api/schemas';
 import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
+import { resolveGlassMode } from './glassMode';
+import { useScreenGlassEnabled } from './glassScreenContext';
 
 /**
  * Secim anindaki nabzin tepesi.
@@ -44,9 +47,15 @@ type ChipProps = {
  * Secili hal yalnizca renkle anlatilmiyor: kalinlasan kenarlik, rengi ayirt
  * edemeyen kullanici icin ikinci kanal; ekran okuyucu ise durumu zaten
  * kelimeyle aliyor.
+ *
+ * Yuzey "Simdilik gec" kapsuluyle ayni cam recetesini kullaniyor: cam kipte
+ * sistemin materyali disinda hicbir katman yok, yedek kipte tek katman ince
+ * bir murekkep dolgusu. Secim isareti bu katmanin ustune biniyor, camin
+ * yerini almiyor.
  */
 export function Chip({ option, selected, onPress, blocked = false, blockedHint }: ChipProps) {
-  const { colors, radius, spacing, motion } = useTheme();
+  const { colors, radius, scheme, spacing, motion } = useTheme();
+  const liquid = useScreenGlassEnabled() && resolveGlassMode() === 'liquid';
   const hint = blocked ? blockedHint : option.hint;
 
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -100,18 +109,44 @@ export function Chip({ option, selected, onPress, blocked = false, blockedHint }
         accessibilityLabel={option.label}
         {...(hint ? { accessibilityHint: hint } : {})}
         onPress={onPress}
-        style={({ pressed }) => ({
-          // Secilmemis cipin dolgusu yok: arka plan gorseli ciplerin arasindan
-          // gorunmeye devam ediyor, secili olan ise zeminden ayriliyor.
-          backgroundColor: selected ? colors.clayTint : 'transparent',
-          borderWidth: border,
-          borderColor: selected || pressed ? colors.clay : withAlpha(colors.ink, 0.22),
-          borderRadius: radius.full,
-          paddingVertical: spacing.md + pad,
-          paddingHorizontal: spacing.lg + pad,
-          opacity: blocked ? 0.45 : 1,
-        })}
+        style={({ pressed }) => [
+          {
+            borderWidth: border,
+            borderColor: selected || pressed ? colors.clay : withAlpha(colors.ink, 0.22),
+            borderRadius: radius.full,
+            paddingVertical: spacing.md + pad,
+            paddingHorizontal: spacing.lg + pad,
+            opacity: blocked ? 0.45 : 1,
+            // Cam kipte katman cipin disina tasarsa kapsulu dorde donduruyor.
+            overflow: 'hidden',
+          },
+          // Cam kipte ekstra bir dolgu materyalin uzerine biniyor ve onu
+          // taklit eden bir katmana donduruyor; "Simdilik gec" ile ayni kural.
+          liquid ? null : { backgroundColor: withAlpha(colors.ink, pressed ? 0.16 : 0.08) },
+        ]}
       >
+        {liquid ? (
+          <GlassView
+            testID="glass-chip"
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            glassEffectStyle="regular"
+            isInteractive
+            colorScheme={scheme}
+            style={[StyleSheet.absoluteFill, { borderRadius: radius.full }]}
+          />
+        ) : null}
+
+        {selected ? (
+          <View
+            testID="chip-selected-tint"
+            pointerEvents="none"
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            style={[StyleSheet.absoluteFill, { backgroundColor: colors.clayTint }]}
+          />
+        ) : null}
+
         {/* Etiket tek satirda kaliyor. Buyuk sistem yazisinda bu, etiketin
             kuyrugunun kirpilmasi demek; bu bedel, satir kirmanin cipi
             yukseltip parmagin altindaki hedefi kaydirmasina tercih
