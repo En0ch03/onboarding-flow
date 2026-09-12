@@ -1,10 +1,11 @@
 import { act, cleanup, fireEvent } from '@testing-library/react-native';
 import { useState } from 'react';
-import { Keyboard, Platform } from 'react-native';
+import { Keyboard, Platform, StyleSheet } from 'react-native';
 
 import { strings } from '@/constants/strings';
 import { useOnboardingStore, type AnswersUpdate, type DraftAnswers } from '@/state/onboardingStore';
 import { renderWithTheme } from '@/test/renderWithTheme';
+import { palettes, withAlpha } from '@/theme';
 
 import { PhoneStep } from './phone.step';
 import { MAX_INPUT_LENGTH } from './phoneNumber';
@@ -82,6 +83,18 @@ describe('PhoneStep', () => {
 
     // Harf klavyesi bu alanda yalnizca yer kaplar; numara rakamdan ibaret.
     expect(view.getByLabelText(fieldLabel).props.keyboardType).toBe('phone-pad');
+  });
+
+  it('alan kendi cam yuzeyini tasiyor, kartsiz ekranin opak zeminini degil', async () => {
+    const { view } = await renderStep();
+
+    const style = StyleSheet.flatten(view.getByLabelText(fieldLabel).props.style) as Record<
+      string,
+      unknown
+    >;
+    // `field` yuzeyi cam kipi kapaliyken "Simdilik gec" ile ayni murekkep
+    // dolgusunu kullaniyor; varsayilan `solid` zemininden (surface, %92) ayri.
+    expect(style.backgroundColor).toBe(withAlpha(palettes.dark.ink, 0.08));
   });
 
   it('yapistirilan uzun yazim alana sigiyor', async () => {

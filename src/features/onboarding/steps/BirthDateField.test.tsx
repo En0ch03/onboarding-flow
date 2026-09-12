@@ -1,6 +1,7 @@
 import { act, cleanup, fireEvent, type RenderResult } from '@testing-library/react-native';
-import { Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
+import { GlassScreenProvider } from '@/components/glassScreenContext';
 import { strings } from '@/constants/strings';
 import { PICKER_TEST_ID } from '@/test/dateTimePickerMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
@@ -8,10 +9,18 @@ import { renderWithTheme } from '@/test/renderWithTheme';
 import { BirthDateField } from './BirthDateField';
 import type { PartialDate } from './dateParts';
 
+const { isLiquidGlassAvailable, isGlassEffectAPIAvailable } = jest.requireMock('expo-glass-effect');
+const hidden = { includeHiddenElements: true } as const;
+
 const today = new Date(2026, 8, 4);
 const empty: PartialDate = { day: null, month: null, year: null };
 
 afterEach(cleanup);
+
+beforeEach(() => {
+  isLiquidGlassAvailable.mockReturnValue(false);
+  isGlassEffectAPIAvailable.mockReturnValue(true);
+});
 
 /** Platformu gecici olarak degistirir; test bitince eski tanimi geri koyar. */
 function onPlatform(os: 'ios' | 'android') {
@@ -282,5 +291,38 @@ describe('BirthDateField', () => {
     } finally {
       restore();
     }
+  });
+
+  describe('cam yuzeyi', () => {
+    it('cam kipi kapaliyken "Simdilik gec" ile ayni murekkep dolgusunu kullaniyor', async () => {
+      const { view } = await mount(empty);
+      const style = StyleSheet.flatten(field(view).props.style) as Record<string, unknown>;
+
+      expect(style.backgroundColor).toBe('rgba(245, 242, 237, 0.08)');
+      expect(view.queryByTestId('glass-birthdate-field', hidden)).toBeNull();
+    });
+
+    it('cam kipinde alanin kendi dolgusu yok, sistemin materyali cizmez', async () => {
+      isLiquidGlassAvailable.mockReturnValue(true);
+      const { view } = await mount(empty);
+
+      const style = StyleSheet.flatten(field(view).props.style) as Record<string, unknown>;
+      expect(style.backgroundColor).toBeUndefined();
+
+      const glass = view.getByTestId('glass-birthdate-field', hidden);
+      expect(glass.props.glassEffectStyle).toBe('regular');
+      expect(glass.props.isInteractive).toBe(true);
+    });
+
+    it('yazi ekranlari gibi cam kapali bir baglamda cam cizmiyor', async () => {
+      isLiquidGlassAvailable.mockReturnValue(true);
+      const onChange = jest.fn();
+      const view = await renderWithTheme(
+        <GlassScreenProvider value={false}>
+          <BirthDateField value={empty} onChange={onChange} today={today} />
+        </GlassScreenProvider>,
+      );
+      expect(view.queryByTestId('glass-birthdate-field', hidden)).toBeNull();
+    });
   });
 });
