@@ -148,6 +148,22 @@ describe('resolveBaseUrl', () => {
     expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
   });
 
+  it('accepts that request in any casing', () => {
+    shippedWith('https://api.example.com/api/v1');
+    process.env.EXPO_PUBLIC_USE_LOCAL_API = 'TRUE';
+
+    expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
+  });
+
+  it('accepts that request with padding around it', () => {
+    // Kabuktan gecen bir deger bosluk tasiyabilir; kimse bayragi yazimi
+    // yuzunden kaybetmemeli.
+    shippedWith('https://api.example.com/api/v1');
+    process.env.EXPO_PUBLIC_USE_LOCAL_API = ' 1 ';
+
+    expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
+  });
+
   it('reads a switched-off flag as off, not as merely present', () => {
     // `=0` yazan biri tam tersini istiyor; varligi dogru saymak sessiz bir
     // yonlendirme olurdu.
@@ -200,6 +216,12 @@ describe('resolveStandInUrl', () => {
     process.env.EXPO_PUBLIC_STANDIN_API_URL = '  http://192.168.1.24:4000/api/v1  ';
 
     expect(resolveStandInUrl()).toBe('http://192.168.1.24:4000/api/v1');
+  });
+
+  it('treats a blank stand-in as no stand-in, rather than as an empty address', () => {
+    process.env.EXPO_PUBLIC_STANDIN_API_URL = '   ';
+
+    expect(resolveStandInUrl()).toBe(resolveBaseUrl());
   });
 
   it('follows the shipped address too, so one server stays one server', () => {

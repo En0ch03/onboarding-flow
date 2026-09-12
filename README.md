@@ -74,13 +74,22 @@ finishes and then nothing runs.
 ### Checking it came up, without a device
 
 No simulator and no phone needed, so this also works on a machine with no
-screen. The checks under [Checking it](#checking-it) run anywhere, and with
-the standalone server running this answers from it, which is the quickest
-proof that the API side is alive:
+screen. The checks under [Checking it](#checking-it) run anywhere, and one
+request is the quickest proof that the API side is alive. On the default path
+it is the address the app ships with, the same one written in `app.json`:
+
+```bash
+curl https://api.example.com/api/v1/config/options
+```
+
+On the local path, with the standalone server running:
 
 ```bash
 curl http://localhost:4000/api/v1/config/options
 ```
+
+Both answer with the option lists. If the first one does not, the default path
+is down and the local path is the one to use.
 
 ### The address, and why you do not have to configure it
 
@@ -89,7 +98,7 @@ This is where local setups usually break, so it is worth a paragraph.
 The app resolves its address in four steps, in this order:
 
 1. If `EXPO_PUBLIC_API_URL` is set, that wins, always. Pointing the app at another backend is nothing more than this, and `.env.example` shows the shape.
-2. Otherwise, if `EXPO_PUBLIC_USE_LOCAL_API` is on, the address is derived from the machine the app is already connected to. Expo serves the JavaScript bundle from your machine and the app knows the host it was served from; it reuses that host and swaps in port 4000.
+2. Otherwise, if `EXPO_PUBLIC_USE_LOCAL_API` is on — `1` or `true`, in any casing; anything else, including `0`, is off — the address is derived from the machine the app is already connected to. Expo serves the JavaScript bundle from your machine and the app knows the host it was served from; it reuses that host and swaps in port 4000.
 3. Otherwise the address in `app.json` under `extra.apiUrl` is used. This is the real API, and it is why a fresh clone runs with no configuration at all. The value sits in the app's configuration rather than in code, so there is exactly one place to change it.
 4. If that field is missing or blank, step 2's derivation is used anyway. A fork that empties the field still runs, rather than becoming a client with no address that sends no requests and shows no reason.
 

@@ -4,14 +4,6 @@ import { Platform } from 'react-native';
 /** Gelistirme sunucusunun dinledigi kapi. */
 export const DEV_API_PORT = 4000;
 
-/**
- * Yerel sunucuya donmek isteyen kisinin actigi anahtar.
- *
- * Adres degil bir istek: adresi yazdirmak yerine bayrak sormanin sebebi
- * `hostFor` altinda anlatiliyor.
- */
-const USE_LOCAL_API = 'EXPO_PUBLIC_USE_LOCAL_API';
-
 /** Bayragin acik sayildigi yazimlar. Geri kalan her sey kapali. */
 const TRUTHY = new Set(['1', 'true']);
 
@@ -95,12 +87,21 @@ function shippedApiUrl(): string | null {
 }
 
 /**
+ * Yerel sunucuya donme istegi. Adres degil bir istek; sebebi `hostFor`
+ * altinda anlatiliyor.
+ *
+ * Degisken **adiyla, dogrudan** okunuyor: `process.env[birDegisken]`
+ * bicimindeki okuma paketleyici tarafindan goruilmez ve yalnizca
+ * gelistirmede calisir, paketlenmis uygulamada sessizce bos doner. Ayni
+ * dosyadaki diger iki degisken de bu yuzden dogrudan okunuyor.
+ *
  * Bayragin varligi degil degeri okunuyor: `=0` yazan biri tam tersini
  * istiyor ve bunu varlik sayan bir kontrol onu sessizce yerel sunucuya
- * gonderirdi.
+ * gonderirdi. Bosluk ve buyuk harf tolere ediliyor; kimse bir bayragi
+ * yazimi yuzunden kaybetmemeli.
  */
 function wantsLocalApi(): boolean {
-  const value = process.env[USE_LOCAL_API]?.trim().toLowerCase();
+  const value = process.env.EXPO_PUBLIC_USE_LOCAL_API?.trim().toLowerCase();
   return value !== undefined && TRUTHY.has(value);
 }
 
