@@ -4,6 +4,7 @@ import { StyleSheet, type TextStyle } from 'react-native';
 import { renderWithTheme } from '@/test/renderWithTheme';
 import { palettes, withAlpha } from '@/theme';
 
+import { GlassScreenProvider } from './glassScreenContext';
 import { TextField } from './TextField';
 
 const LABEL = 'Telefon numarası';
@@ -92,5 +93,74 @@ describe('TextField yuzeyi', () => {
     expect(style.backgroundColor).toBe(withAlpha(palettes.dark.surface, 0.5));
     expect(style.borderColor).toBe(withAlpha(palettes.dark.ink, 0.18));
     expect(input.props.placeholderTextColor).toBe(palettes.dark.inkSoft);
+  });
+});
+
+describe('TextField "field" yuzeyi', () => {
+  const { isLiquidGlassAvailable, isGlassEffectAPIAvailable } =
+    jest.requireMock('expo-glass-effect');
+  const hidden = { includeHiddenElements: true } as const;
+
+  beforeEach(() => {
+    isLiquidGlassAvailable.mockReturnValue(false);
+    isGlassEffectAPIAvailable.mockReturnValue(true);
+  });
+
+  it('cam kipi kapaliyken "Simdilik gec" ile ayni murekkep dolgusunu kullaniyor', async () => {
+    const view = await renderWithTheme(<TextField label={LABEL} surface="field" />);
+    const style = StyleSheet.flatten(view.getByLabelText(LABEL).props.style) as TextStyle;
+
+    expect(style.backgroundColor).toBe(withAlpha(palettes.dark.ink, 0.08));
+    expect(view.queryByTestId('glass-field', hidden)).toBeNull();
+  });
+
+  it('cam kipinde alanin kendi dolgusu yok, sistemin materyali cizmez', async () => {
+    isLiquidGlassAvailable.mockReturnValue(true);
+    const view = await renderWithTheme(<TextField label={LABEL} surface="field" />);
+
+    const style = StyleSheet.flatten(view.getByLabelText(LABEL).props.style) as TextStyle;
+    expect(style.backgroundColor).toBe('transparent');
+
+    const glass = view.getByTestId('glass-field', hidden);
+    expect(glass.props.glassEffectStyle).toBe('regular');
+    expect(glass.props.isInteractive).toBe(true);
+  });
+
+  it('cami saran katman alanin kendi kenarligiyla ayni kose egrisini kullaniyor', async () => {
+    // Kesim ile kenarlik farkli egride olursa cam kose alanin gorunen
+    // kenarligindan tasar ya da geri kalir; ikisi ayni yaricapta olsa bile
+    // "continuous" ile dairesel egri gozle ayirt edilebilir bir uyumsuzluk
+    // birakiyor.
+    isLiquidGlassAvailable.mockReturnValue(true);
+    const view = await renderWithTheme(<TextField label={LABEL} surface="field" />);
+
+    const inputStyle = StyleSheet.flatten(view.getByLabelText(LABEL).props.style) as TextStyle;
+    const wrapperStyle = StyleSheet.flatten(
+      view.getByTestId('glass-field', hidden).parent?.props.style,
+    ) as TextStyle;
+
+    expect(wrapperStyle.borderRadius).toBe(inputStyle.borderRadius);
+    expect(wrapperStyle.borderCurve).toBe(inputStyle.borderCurve);
+  });
+
+  it('cam kapali baglamda "field" yuzeyi de cam cizmiyor', async () => {
+    isLiquidGlassAvailable.mockReturnValue(true);
+    const view = await renderWithTheme(
+      <GlassScreenProvider value={false}>
+        <TextField label={LABEL} surface="field" />
+      </GlassScreenProvider>,
+    );
+    expect(view.queryByTestId('glass-field', hidden)).toBeNull();
+  });
+
+  it('kayit ve giris kartindaki alan kendi yolunu koruyor: "field" kipine kaymiyor', async () => {
+    isLiquidGlassAvailable.mockReturnValue(true);
+    const view = await renderWithTheme(<TextField label={LABEL} surface="glass" />);
+
+    // "glass" hala kendi opak dolgusunu tasiyor; sistemin materyaline
+    // gecmiyor. Kayit ve giris ekranlarindaki alanlar bu pakette degismiyor.
+    expect(view.queryByTestId('glass-field', hidden)).toBeNull();
+    const style = StyleSheet.flatten(view.getByLabelText(LABEL).props.style) as TextStyle;
+    expect(style.backgroundColor).toBe(withAlpha(palettes.dark.surface, 0.5));
   });
 });

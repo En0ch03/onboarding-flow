@@ -29,6 +29,7 @@ export function IdentityStep({ values, onChange }: StepProps) {
   return (
     <View>
       <TextField
+        surface="field"
         label={strings.steps.nameLabel}
         value={values.name ?? ''}
         onChangeText={(name) => onChange({ name })}

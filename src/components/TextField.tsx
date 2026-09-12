@@ -1,3 +1,4 @@
+import { GlassView } from 'expo-glass-effect';
 import { LinearGradient } from 'expo-linear-gradient';
 import { forwardRef, useId, useState } from 'react';
 import {
@@ -5,6 +6,7 @@ import {
   Keyboard,
   Platform,
   Pressable,
+  StyleSheet,
   TextInput,
   View,
   type TextInputProps,
@@ -15,6 +17,8 @@ import { useTheme, withAlpha } from '@/theme';
 
 import { AppText } from './AppText';
 import { EyeIcon } from './EyeIcon';
+import { resolveGlassMode } from './glassMode';
+import { useScreenGlassEnabled } from './glassScreenContext';
 
 /**
  * Gorunurluk anahtarinin dokunma hedefi. iOS'un asgarisi 44, Android'in 48;
@@ -57,12 +61,15 @@ type TextFieldProps = Omit<TextInputProps, 'style'> & {
    * kontrasti arka plan gorseline degil bu zemine dayaniyor. `glass` ise
    * saydam bir kartin icinde duran alanlar icin -- opak alanlar kartin icini
    * kaplayinca camin gosterecek bir seyi kalmiyor ve kart dolu bir panele
-   * donuyor. Kontrasti orada kartin kendi materyali tasiyor.
+   * donuyor. Kontrasti orada kartin kendi materyali tasiyor. `field` ise
+   * kartsiz ekranlarda alanin **kendisinin** cam yuzey oldugu durum: etrafina
+   * kart sarilmiyor, "Simdilik gec" kapsuluyle ayni receteyi alanin kendisi
+   * tasiyor.
    */
   surface?: FieldSurface;
 };
 
-export type FieldSurface = 'solid' | 'glass';
+export type FieldSurface = 'solid' | 'glass' | 'field';
 
 /**
  * Alan zemininin opakligi.
@@ -70,6 +77,8 @@ export type FieldSurface = 'solid' | 'glass';
  * `solid` neredeyse opak: altindaki gorsel yalnizca hafifce yasiyor. `glass`
  * kartin yuzeyinden ayrisacak kadar koyu: dusuk degerde alanin kenarligi
  * kartin kendi zemininden ayrismiyor ve alan kartla kaynasip kayboluyordu.
+ * `field` burada yok cunku o kendi dolgusunu tasimiyor -- cam kipte sistemin
+ * materyali, yedek kipte "Simdilik gec" ile ayni murekkep dolgusu.
  */
 const FIELD_FILL = { solid: 0.92, glass: 0.5 } as const;
 
@@ -77,9 +86,17 @@ const FIELD_FILL = { solid: 0.92, glass: 0.5 } as const;
  * Cam yuzeyde kenarligin opakligi.
  *
  * Alanin nerede bittigini soyleyen tek sey kenarlik: zemin saydamlasinca
- * `hairline` tonu kartin kendi kenar isiginin altinda kayboluyordu.
+ * `hairline` tonu kartin kendi kenar isiginin altinda kayboluyordu. `field`
+ * de ayni kenarligi kullaniyor: cam kipte bu kenarlik materyalin bir taklidi
+ * degil, odak ve hata durumunun tasiyicisi -- ikisi de karttaki alanlarla
+ * ayni kanaldan konusuyor.
+ *
+ * Disa aciliyor: dogum tarihi alani (`BirthDateField.tsx`) bir `TextInput`
+ * degil ama ayni kartsiz baglamda ayni cam receteyi kullaniyor ve ayni
+ * kenarlik degerini paylasmali -- iki komsu alan farkli kalinlikta kenarlikla
+ * durmasin.
  */
-const GLASS_BORDER = 0.18;
+export const GLASS_BORDER = 0.18;
 
 /**
  * Etiket, girdi, alan alti hata.
@@ -99,7 +116,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
   },
   ref,
 ) {
-  const { colors, radius, spacing, type } = useTheme();
+  const { colors, radius, scheme, spacing, type } = useTheme();
   // Kimlik alan basina benzersiz: ayni ekranda iki serit olursa klavye
   // hangisini cizecegini kimlikten okuyor.
   const accessoryId = useId();
@@ -108,14 +125,25 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
   const [focused, setFocused] = useState(false);
   const [prefixWidth, setPrefixWidth] = useState(0);
 
+  // `field` yalnizca ekran cami actiysa ve sistemin gercek cam materyali
+  // varsa kendi katmanini aciyor; aksi halde asagidaki yedek dolguya duser.
+  const screenGlassEnabled = useScreenGlassEnabled();
+  const liquidField = surface === 'field' && screenGlassEnabled && resolveGlassMode() === 'liquid';
+
   // Dinginlikteki kenarlik yuzeye gore degisiyor; hata ve odak renkleri
   // degismiyor: ikisi de bir durumu soyluyor ve o durum yuzeye bagli degil.
-  const restingBorder = surface === 'glass' ? withAlpha(colors.ink, GLASS_BORDER) : colors.hairline;
+  const restingBorder = surface === 'solid' ? colors.hairline : withAlpha(colors.ink, GLASS_BORDER);
   const borderColor = error ? colors.danger : focused ? colors.clay : restingBorder;
   // Alan zemini tam opak degil: arka plan gorseli formun altinda hafifce
   // yasamaya devam ediyor, ama yazilan metnin kontrasti gorsele degil bu
-  // zemine gore olculuyor.
-  const fieldBackground = withAlpha(colors.surface, FIELD_FILL[surface]);
+  // zemine gore olculuyor. `field` ayri: kendi dolgusu yok, cam kipte
+  // materyal gosteriyor, yedek kipte "Simdilik gec" ile ayni murekkep dolgusu.
+  const fieldBackground =
+    surface === 'field'
+      ? liquidField
+        ? 'transparent'
+        : withAlpha(colors.ink, 0.08)
+      : withAlpha(colors.surface, FIELD_FILL[surface]);
 
   return (
     <View style={{ marginBottom: spacing.lg }}>
@@ -123,7 +151,29 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(function TextFiel
         {label}
       </AppText>
 
-      <View style={{ justifyContent: 'center' }}>
+      <View
+        style={[
+          { justifyContent: 'center' },
+          // Katman alanin disina tasarsa yuvarlak kenari dorde donduruyor;
+          // kesim egrisi alanin kendi kenarligiyla (asagida) ayni olmali,
+          // yoksa cam kose ile kenarlik kosesi farkli egride durur.
+          liquidField
+            ? { borderRadius: radius.md, borderCurve: 'continuous', overflow: 'hidden' }
+            : null,
+        ]}
+      >
+        {liquidField ? (
+          <GlassView
+            testID="glass-field"
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            glassEffectStyle="regular"
+            isInteractive
+            colorScheme={scheme}
+            style={StyleSheet.absoluteFill}
+          />
+        ) : null}
+
         <TextInput
           ref={ref}
           placeholderTextColor={colors.inkSoft}

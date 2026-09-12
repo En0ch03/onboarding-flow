@@ -63,7 +63,13 @@ export function PhotoSlot({ state, cover = false, onPress, onRemove }: PhotoSlot
         borderStyle: state.status === 'empty' || state.status === 'locked' ? 'dashed' : 'solid',
         borderColor:
           state.status === 'failed' ? colors.danger : pressed ? colors.clay : colors.hairline,
-        backgroundColor: colors.surface,
+        // Yalniz doldurulmamis kutular (siradaki ve kilitli) coker: dolu bir
+        // kutu ve devam eden bir is zaten fotograf ya da gostergesiyle
+        // ayirt ediliyor, onlarin zemini degismiyor.
+        backgroundColor:
+          state.status === 'empty' || state.status === 'locked'
+            ? colors.surfaceSunken
+            : colors.surface,
         // Solgunluk tek isaret: kilitli kutu duruyor ama siraya isaret ediyor.
         opacity: state.status === 'locked' ? 0.4 : 1,
         alignItems: 'center',

@@ -1,12 +1,16 @@
 import DateTimePicker, { type DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { GlassView } from 'expo-glass-effect';
 import { useMemo, useState } from 'react';
-import { Platform, Pressable, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
+import { resolveGlassMode } from '@/components/glassMode';
+import { useScreenGlassEnabled } from '@/components/glassScreenContext';
+import { GLASS_BORDER } from '@/components/TextField';
 import { monthNames, strings } from '@/constants/strings';
-import { useTheme } from '@/theme';
+import { useTheme, withAlpha } from '@/theme';
 
 import {
   dateFromParts,
@@ -43,9 +47,14 @@ type BirthDateFieldProps = {
  * olmaktan cikarip sessiz bir engele cevirirdi.
  *
  * Alan bir dugme, girdi kutusu degil: dokunulunca klavye degil cark aciliyor.
+ *
+ * Yuzey `TextField`'in `field` yuzeyiyle ayni receteyi paylasiyor: kartsiz bu
+ * ekranda alanin kendisi cam, "Simdilik gec" kapsuluyle birebir ayni kip
+ * zinciri ve yedek dolgu.
  */
 export function BirthDateField({ value, onChange, today }: BirthDateFieldProps) {
   const { colors, radius, scheme, spacing, screenPadding } = useTheme();
+  const liquid = useScreenGlassEnabled() && resolveGlassMode() === 'liquid';
   const [open, setOpen] = useState(false);
 
   const chosen = useMemo(() => dateFromParts(value), [value]);
@@ -93,16 +102,34 @@ export function BirthDateField({ value, onChange, today }: BirthDateFieldProps) 
         // okunuyordu ama ekran okuyucuya alan degersiz duruyordu.
         accessibilityValue={{ text: text ?? placeholder }}
         onPress={start}
-        style={({ pressed }) => ({
-          backgroundColor: colors.surface,
-          borderWidth: 1,
-          borderColor: pressed ? colors.clay : colors.hairline,
-          borderRadius: radius.md,
-          borderCurve: 'continuous',
-          paddingVertical: spacing.lg,
-          paddingHorizontal: spacing.md,
-        })}
+        style={({ pressed }) => [
+          {
+            borderWidth: 1,
+            borderColor: pressed ? colors.clay : withAlpha(colors.ink, GLASS_BORDER),
+            borderRadius: radius.md,
+            borderCurve: 'continuous',
+            paddingVertical: spacing.lg,
+            paddingHorizontal: spacing.md,
+            // Katman alanin disina tasarsa yuvarlak kenari dorde donduruyor.
+            overflow: 'hidden',
+          },
+          // Cam kipte alanin kendi dolgusu yok; yedek kipte "Simdilik gec"
+          // ile ayni murekkep dolgusu.
+          liquid ? null : { backgroundColor: withAlpha(colors.ink, pressed ? 0.16 : 0.08) },
+        ]}
       >
+        {liquid ? (
+          <GlassView
+            testID="glass-birthdate-field"
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            glassEffectStyle="regular"
+            isInteractive
+            colorScheme={scheme}
+            style={StyleSheet.absoluteFill}
+          />
+        ) : null}
+
         <AppText variant="control" tone={text ? 'ink' : 'inkSoft'} numberOfLines={1}>
           {text ?? placeholder}
         </AppText>

@@ -21,6 +21,7 @@ export function PhoneStep({ values, onChange }: StepProps) {
   return (
     <View>
       <TextField
+        surface="field"
         label={strings.steps.phoneLabel}
         prefix={strings.steps.phonePrefix}
         placeholder={strings.steps.phonePlaceholder}
