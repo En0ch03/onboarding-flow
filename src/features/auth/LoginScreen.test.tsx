@@ -11,6 +11,7 @@ import { StyleSheet } from 'react-native';
 
 import { presentError } from '@/constants/errorMessages';
 import { strings } from '@/constants/strings';
+import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
 import { palettes, withAlpha } from '@/theme';
 
@@ -183,11 +184,39 @@ describe('LoginScreen cam kart', () => {
     expect(panel.queryByText(strings.auth.loginSubmit)).toBeNull();
   });
 
-  it('giris ekrani camin kalktigi dort yazi ekranindan biri degil', async () => {
-    // Karsilama, tamamlanma ve varis ekranlarinda kart hic cizilmiyor; giris
-    // bir form ekrani oldugu icin kart burada duruyor.
-    const view = await renderWithTheme(<LoginScreen {...handlers} />);
+  describe('cam kipi', () => {
+    const { isLiquidGlassAvailable } = jest.requireMock('expo-glass-effect');
 
-    expect(view.getByTestId('glass-panel')).toBeTruthy();
+    /** Arka katmanlar ekran okuyucudan gizli; sorgular gizli ogeleri de kapsiyor. */
+    const hidden = { includeHiddenElements: true } as const;
+
+    afterEach(() => {
+      isLiquidGlassAvailable.mockReturnValue(false);
+    });
+
+    it('giris ekrani camin kalktigi dort yazi ekranindan biri degil', async () => {
+      // Karsilama, tamamlanma ve varis ekranlarinda ekran cami kapatiyor
+      // (`glass={false}`); kart bu durumda bulanik yedege duser ve sistemin
+      // cam katmani hic acilmaz. Giris ekrani bir form ekrani oldugu icin bu
+      // kapatmayi yapmiyor: sistem cami mevcutsa kart onu kullanmali.
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(<LoginScreen {...handlers} />);
+
+      // `getByTestId('glass-panel')` bu ayrimi gormez: o sarmalayici View her
+      // kipte ayni testID'yle ciziliyor. Sistemin cam katmani gercekten
+      // acildiysa gorulen sey `GlassView`'in kendisi.
+      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeTruthy();
+    });
+
+    it('kartin cam materyali saydam kaliyor, kucuk kontroller uyum yapanken', async () => {
+      // Kartin arkasinda akisin gorseli duruyor; uyum yapan materyal onu bir
+      // ton katmaninin altinda birakirdi.
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(<LoginScreen {...handlers} />);
+
+      expect(view.getByTestId(GLASS_VIEW_TEST_ID, hidden).props.glassEffectStyle).toBe('clear');
+    });
   });
 });
