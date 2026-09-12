@@ -19,6 +19,15 @@ export type Palette = {
   surface: string;
   /** Yuzeyin uzerine binen ikinci kademe (klavye, sayfa alti seritleri). */
   surfaceRaised: string;
+  /**
+   * Yuzeyin bir tik icine cokmus hali: henuz doldurulmamis, "bos" kutular.
+   *
+   * `surfaceRaised` yukari kademeyken bu asagi kademe; ikisi ayni eksende
+   * ters yonde. Bos bir fotograf kutusu doldurulmus komsularindan biraz daha
+   * koyu durunca "burasi henuz bos" hissi renge de tasiniyor, yalniz kenarlik
+   * ve artiya kalmiyor.
+   */
+  surfaceSunken: string;
   /** Ana metin. */
   ink: string;
   /** Ikincil metin, etiket, aciklama. */
@@ -72,6 +81,7 @@ export const palettes: Record<ColorScheme, Palette> = {
     paper: '#F5F2ED',
     surface: '#EDE8E1',
     surfaceRaised: '#E6E0D8',
+    surfaceSunken: '#C5C1BC',
     ink: '#111011',
     inkSoft: '#5E5652',
     clay: '#8B0D1A',
@@ -94,6 +104,7 @@ export const palettes: Record<ColorScheme, Palette> = {
     paper: '#0B0B0B',
     surface: '#151316',
     surfaceRaised: '#1C191D',
+    surfaceSunken: '#0F0E0F',
     ink: '#F5F2ED',
     // Perdeler kalkinca ikincil metin dogrudan gorselin uzerinde kaliyor;
     // eski ton (#B5ADA8) kurdelenin parlak bolgelerinde AA esiginin altina
