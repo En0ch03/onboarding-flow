@@ -91,9 +91,10 @@ function shippedApiUrl(): string | null {
  * altinda anlatiliyor.
  *
  * Degisken **adiyla, dogrudan** okunuyor: `process.env[birDegisken]`
- * bicimindeki okuma paketleyici tarafindan goruilmez ve yalnizca
- * gelistirmede calisir, paketlenmis uygulamada sessizce bos doner. Ayni
- * dosyadaki diger iki degisken de bu yuzden dogrudan okunuyor.
+ * bicimindeki okuma paketleyici tarafindan gorulmez ve yalnizca gelistirmede
+ * calisir, paketlenmis uygulamada sessizce bos doner. Ayni dosyadaki diger
+ * iki degisken de bu yuzden dogrudan okunuyor; kural lint tarafindan
+ * korunuyor.
  *
  * Bayragin varligi degil degeri okunuyor: `=0` yazan biri tam tersini
  * istiyor ve bunu varlik sayan bir kontrol onu sessizce yerel sunucuya
@@ -102,7 +103,7 @@ function shippedApiUrl(): string | null {
  */
 function wantsLocalApi(): boolean {
   const value = process.env.EXPO_PUBLIC_USE_LOCAL_API?.trim().toLowerCase();
-  return value !== undefined && TRUTHY.has(value);
+  return TRUTHY.has(value ?? '');
 }
 
 /** Depoyla gelen sunucunun adresi, bagli olunan makineden turetilerek. */
