@@ -53,14 +53,22 @@ export function Button({
   const glassScreenEnabled = useScreenGlassEnabled();
   const inactive = disabled || loading;
 
-  // Birincil eylem kizil kaliyor: marka rengi kimligin tasiyicisi ve cama
-  // cevrilirse ekranda tutunacak tek renk kalmiyor. Cam yalnizca ikincil
-  // eylemde.
+  // Birincil eylem kizil kaliyor ama artik cam olabiliyor: renk cama boya
+  // olarak degil, malzemenin kendi tonu olarak veriliyor. Ikincil eylemden
+  // farkli olarak ekranin genel cam bayragini sormuyor -- o bayrak bir
+  // yuzeyin (kart, seffaf zemin) cam olup olmayacagini soruyor, birincil
+  // eylem ise bir yuzey degil bir kontrol ve bu ekranda ozellikle kontrolun
+  // cam olmasi isteniyor, yuzeyin degil.
   //
-  // Devre disi hal disarida cunku o hali anlatan sey butun butonun solmasi ve
-  // solan bir kapta sistem materyali de soluyor -- cam, yarim uygulanmis bir
-  // efekte donuyor. Orada bugunku kenarlikli cizim, solmasiyla birlikte
-  // oldugu gibi kaliyor.
+  // Devre disi ya da yukleniyor hali disarida cunku o hali anlatan sey butun
+  // butonun solmasi ve solan bir kapta sistem materyali de soluyor -- cam,
+  // yarim uygulanmis bir efekte donuyor. Orada bugunku gradyan, solmasiyla
+  // birlikte oldugu gibi kaliyor.
+  const glassPrimary = variant === 'primary' && !inactive && resolveGlassMode() === 'liquid';
+
+  // Ikincil eylem ise bir kart degil ama ekranin yuzeyle ayni dilde
+  // konusmasi gerekiyor: yalnizca duz metne dayanan bir ekran genel cam
+  // bayragini kapatinca kenarlikli yedek gorunumde kaliyor.
   const glassGhost =
     variant === 'ghost' && !disabled && glassScreenEnabled && resolveGlassMode() === 'liquid';
 
@@ -80,13 +88,24 @@ export function Button({
           opacity: disabled ? 0.45 : 1,
           transform: [{ translateY: pressed && !inactive ? 1 : 0 }],
         },
-        variant === 'primary' && !inactive ? { boxShadow: shadows.soft } : null,
+        variant === 'primary' && !inactive && !glassPrimary ? { boxShadow: shadows.soft } : null,
         style,
       ]}
     >
       {({ pressed }) => (
         <>
-          {variant === 'primary' ? (
+          {variant === 'primary' && glassPrimary ? (
+            <GlassView
+              testID="glass-primary"
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+              glassEffectStyle="regular"
+              tintColor={colors.clay}
+              isInteractive={!inactive}
+              colorScheme={scheme}
+              style={[StyleSheet.absoluteFill, { borderRadius: radius.full }]}
+            />
+          ) : variant === 'primary' ? (
             <LinearGradient
               colors={[pressed ? colors.clayDeep : colors.clay, colors.clayDeep]}
               start={{ x: 0.5, y: 0 }}
