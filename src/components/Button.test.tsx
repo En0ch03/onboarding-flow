@@ -2,7 +2,7 @@ import { Platform, StyleSheet } from 'react-native';
 
 import { GLASS_VIEW_TEST_ID } from '@/test/glassEffectMock';
 import { renderWithTheme } from '@/test/renderWithTheme';
-import { palettes, radius, withAlpha } from '@/theme';
+import { palettes, radius, shadows, withAlpha } from '@/theme';
 
 import { Button } from './Button';
 
@@ -52,7 +52,27 @@ describe('Button', () => {
     }
   });
 
-  it('birincil eylem kizil kaliyor, cama cevrilmiyor', async () => {
+  it('birincil eylem yedek kipte kizil gradyanla kaliyor, cama cevrilmiyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(false);
+
+      const view = await renderWithTheme(<Button title="Devam" onPress={noop} />);
+      expect(view.getByText('Devam')).toBeTruthy();
+
+      // Yerel cam yoksa (blur kipi) bugunku gradyan ve golge oldugu gibi
+      // kaliyor.
+      expect(view.queryByTestId('glass-primary', hidden)).toBeNull();
+      expect(view.queryByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeNull();
+      expect(StyleSheet.flatten(view.getByRole('button').props.style)).toMatchObject({
+        boxShadow: shadows.dark.soft,
+      });
+    } finally {
+      restore();
+    }
+  });
+
+  it('birincil eylem liquid kipte kizil tonuyla cama ciziliyor, gradyan ve golge kalkiyor', async () => {
     const restore = onPlatform('ios');
     try {
       isLiquidGlassAvailable.mockReturnValue(true);
@@ -60,10 +80,63 @@ describe('Button', () => {
       const view = await renderWithTheme(<Button title="Devam" onPress={noop} />);
       expect(view.getByText('Devam')).toBeTruthy();
 
-      // Marka rengi kimligin tasiyicisi; cama cevrilirse ekranda tutunacak
-      // tek renk kalmiyor.
-      expect(view.queryByTestId('glass-ghost', hidden)).toBeNull();
-      expect(view.queryByTestId(GLASS_VIEW_TEST_ID, hidden)).toBeNull();
+      const glass = view.getByTestId('glass-primary', hidden);
+      expect(glass.props.glassEffectStyle).toBe('regular');
+      // Renk camin ustune boyanmiyor, malzemenin kendi tonu olarak veriliyor.
+      expect(glass.props.tintColor).toBe(palettes.dark.clay);
+      expect(glass.props.isInteractive).toBe(true);
+      expect(glass.props.colorScheme).toBe('dark');
+      expect(StyleSheet.flatten(glass.props.style)).toMatchObject({
+        borderRadius: radius.full,
+      });
+
+      // Cam kendi derinligini tasiyor; altina golge eklemek malzemenin
+      // optigini bozardi.
+      expect(StyleSheet.flatten(view.getByRole('button').props.style)).not.toMatchObject({
+        boxShadow: shadows.dark.soft,
+      });
+    } finally {
+      restore();
+    }
+  });
+
+  it('yukleyen birincil eylem liquid kipte cama girmiyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(<Button title="Devam" onPress={noop} loading />);
+
+      // Yukleniyor hali butun butonun solmasiyla anlatiliyor; solan bir kapta
+      // sistem materyali de soluyor ve yarim uygulanmis bir efekte donerdi.
+      expect(view.queryByTestId('glass-primary', hidden)).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
+  it('devre disi birincil eylem liquid kipte cama girmiyor', async () => {
+    const restore = onPlatform('ios');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(<Button title="Devam" onPress={noop} disabled />);
+
+      expect(view.queryByTestId('glass-primary', hidden)).toBeNull();
+    } finally {
+      restore();
+    }
+  });
+
+  it('birincil eylem Android tarafinda cama girmiyor', async () => {
+    const restore = onPlatform('android');
+    try {
+      isLiquidGlassAvailable.mockReturnValue(true);
+
+      const view = await renderWithTheme(<Button title="Devam" onPress={noop} />);
+      expect(view.getByText('Devam')).toBeTruthy();
+
+      expect(view.queryByTestId('glass-primary', hidden)).toBeNull();
     } finally {
       restore();
     }
