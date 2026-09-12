@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { AccessibilityInfo, Animated, Easing, View, type LayoutChangeEvent } from 'react-native';
+import {
+  AccessibilityInfo,
+  Animated,
+  Easing,
+  StyleSheet,
+  View,
+  type LayoutChangeEvent,
+} from 'react-native';
 
 import { AppText } from '@/components/AppText';
 import { strings } from '@/constants/strings';
@@ -78,12 +85,28 @@ export function LaunchScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.paper }}>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <AppText variant="display">{strings.launch.title}</AppText>
-        <AppText variant="subhead" tone="inkSoft" style={{ marginTop: spacing.lg }}>
+      {/* Bu ekran yazi tipleri yuklenmeden ciziliyor -- zaten onlari beklemek
+          icin var. Yedek yazi tipiyle olculen bir cerceve, gercek yazi tipi
+          gelince oldugu gibi kaliyor ve daha genis harfler cerceveyi sagdan
+          tasip kesiliyordu. Bu yuzden satirlar kendi genisliklerine
+          yapismiyor: cerceve satir boyunca uzuyor, ortalamayi metnin kendisi
+          yapiyor. Boylece hicbir olcum cerceveyi metinden dar birakamiyor. */}
+      <View style={{ flex: 1, alignSelf: 'stretch', justifyContent: 'center' }}>
+        <AppText variant="display" style={styles.centered}>
+          {strings.launch.title}
+        </AppText>
+        <AppText
+          variant="subhead"
+          tone="inkSoft"
+          style={[styles.centered, { marginTop: spacing.lg }]}
+        >
           {strings.launch.status}
         </AppText>
-        <AppText variant="caption" tone="inkSoft" style={{ marginTop: spacing.xs }}>
+        <AppText
+          variant="caption"
+          tone="inkSoft"
+          style={[styles.centered, { marginTop: spacing.xs }]}
+        >
           {strings.launch.hint}
         </AppText>
       </View>
@@ -128,3 +151,7 @@ export function LaunchScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  centered: { alignSelf: 'stretch', textAlign: 'center' },
+});

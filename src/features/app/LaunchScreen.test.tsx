@@ -78,3 +78,26 @@ describe('LaunchScreen', () => {
     expect(loop).toHaveBeenCalled();
   });
 });
+
+describe('LaunchScreen: yazi tipi gelmeden cizilen satirlar', () => {
+  /**
+   * Bu ekran yazi tipleri yuklenirken gorunuyor, yani satirlar yedek yazi
+   * tipiyle olculuyor. Olculen cerceve gercek yazi tipi gelince buyumuyor;
+   * satirlar kendi genisliklerine yapisirsa genisleyen harfler kesiliyor.
+   * Uc satirin da satir boyunca uzamasi bu yuzden bir gorunum tercihi degil,
+   * kesilmeye karsi tek yapisal onlem.
+   */
+  it.each([
+    ['marka adi', () => strings.launch.title],
+    ['durum satiri', () => strings.launch.status],
+    ['aciklama satiri', () => strings.launch.hint],
+  ])('%s cercevesi metnin olcusune yapismiyor', async (_label, read) => {
+    setReduceMotion(true);
+    const view = await renderWithTheme(<LaunchScreen />);
+
+    expect(view.getByText(read())).toHaveStyle({
+      alignSelf: 'stretch',
+      textAlign: 'center',
+    });
+  });
+});
