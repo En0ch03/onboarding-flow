@@ -4,6 +4,23 @@ A dating app for people who would rather meet the right person than meet a lot o
 
 The interface language is Turkish. Turkey is the first market.
 
+## What it looks like
+
+Screenshots from a device, in the order a new user meets them. The flow is six
+steps; what comes before them is the account, and what comes after is the
+profile summary.
+
+|                              Welcome                              |                            Sign up                            |                            Sign in                            |                              Phone                              |                            Name and birth date                             |
+| :---------------------------------------------------------------: | :-----------------------------------------------------------: | :-----------------------------------------------------------: | :-------------------------------------------------------------: | :------------------------------------------------------------------------: |
+| <img src="design/ekran-goruntuleri/01-karsilama.jpg" width="170"> | <img src="design/ekran-goruntuleri/02-kayit.jpg" width="170"> | <img src="design/ekran-goruntuleri/03-giris.jpg" width="170"> | <img src="design/ekran-goruntuleri/04-telefon.jpg" width="170"> | <img src="design/ekran-goruntuleri/05-ad-ve-dogum-tarihi.jpg" width="170"> |
+
+|                                 Date wheel                                 |                             Who you want to see                              |                       What you are looking for                       |                               Photos                                |                               Interests                               |
+| :------------------------------------------------------------------------: | :--------------------------------------------------------------------------: | :------------------------------------------------------------------: | :-----------------------------------------------------------------: | :-------------------------------------------------------------------: |
+| <img src="design/ekran-goruntuleri/06-dogum-tarihi-carki.jpg" width="170"> | <img src="design/ekran-goruntuleri/07-kimi-gormek-istersin.jpg" width="170"> | <img src="design/ekran-goruntuleri/08-ne-ariyorsun.jpg" width="170"> | <img src="design/ekran-goruntuleri/09-fotograflar.jpg" width="170"> | <img src="design/ekran-goruntuleri/10-ilgi-alanlari.jpg" width="170"> |
+
+The gear in the corner of each shot is the development menu, not part of the
+app.
+
 ## What you need
 
 - **Node.js 20 or newer.** Developed on 24.18.0.
