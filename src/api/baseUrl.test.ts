@@ -4,7 +4,6 @@ import { DEV_API_PORT, resolveBaseUrl, resolveStandInUrl } from './baseUrl';
 
 type FakeConfig = {
   hostUri?: string | undefined;
-  extra?: { apiUrl?: unknown } | undefined;
 };
 
 jest.mock('expo-constants', () => ({
@@ -18,14 +17,7 @@ const Constants = jest.requireMock('expo-constants').default as {
 
 /** Sunucunun bildirdigi makine. `null` = uretim paketi, hic bildirilmiyor. */
 function servedFrom(hostUri: string | null) {
-  const extra = Constants.expoConfig?.extra;
-  Constants.expoConfig = hostUri === null ? { extra } : { hostUri, extra };
-}
-
-/** Depoda derlenmis varsayilan adres. `undefined` = alan hic yok. */
-function shippedWith(apiUrl: unknown) {
-  const hostUri = Constants.expoConfig?.hostUri;
-  Constants.expoConfig = { hostUri, extra: apiUrl === undefined ? {} : { apiUrl } };
+  Constants.expoConfig = hostUri === null ? {} : { hostUri };
 }
 
 function runningOn(os: 'ios' | 'android' | 'web') {
@@ -35,12 +27,10 @@ function runningOn(os: 'ios' | 'android' | 'web') {
 const originalOS = Platform.OS;
 const originalEnv = process.env.EXPO_PUBLIC_API_URL;
 const originalStandInEnv = process.env.EXPO_PUBLIC_STANDIN_API_URL;
-const originalLocalEnv = process.env.EXPO_PUBLIC_USE_LOCAL_API;
 
 beforeEach(() => {
   delete process.env.EXPO_PUBLIC_API_URL;
   delete process.env.EXPO_PUBLIC_STANDIN_API_URL;
-  delete process.env.EXPO_PUBLIC_USE_LOCAL_API;
   Constants.expoConfig = {};
   servedFrom('192.168.1.24:8081');
   runningOn('ios');
@@ -52,8 +42,6 @@ afterAll(() => {
   else process.env.EXPO_PUBLIC_API_URL = originalEnv;
   if (originalStandInEnv === undefined) delete process.env.EXPO_PUBLIC_STANDIN_API_URL;
   else process.env.EXPO_PUBLIC_STANDIN_API_URL = originalStandInEnv;
-  if (originalLocalEnv === undefined) delete process.env.EXPO_PUBLIC_USE_LOCAL_API;
-  else process.env.EXPO_PUBLIC_USE_LOCAL_API = originalLocalEnv;
 });
 
 describe('resolveBaseUrl', () => {
@@ -103,83 +91,6 @@ describe('resolveBaseUrl', () => {
     expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
   });
 
-  it('uses the address the repository ships with, so a fresh clone needs no setup', () => {
-    shippedWith('https://api.example.com/api/v1');
-
-    expect(resolveBaseUrl()).toBe('https://api.example.com/api/v1');
-  });
-
-  it('still lets an explicit address win over the shipped one', () => {
-    shippedWith('https://api.example.com/api/v1');
-    process.env.EXPO_PUBLIC_API_URL = 'https://staging.example.com/api/v1';
-
-    expect(resolveBaseUrl()).toBe('https://staging.example.com/api/v1');
-  });
-
-  it('trims the shipped address rather than producing a broken url', () => {
-    shippedWith('  https://api.example.com/api/v1  ');
-
-    expect(resolveBaseUrl()).toBe('https://api.example.com/api/v1');
-  });
-
-  it('ignores a shipped address that is blank, as if the field were absent', () => {
-    shippedWith('   ');
-
-    expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
-  });
-
-  it('ignores a shipped address that is not a string', () => {
-    shippedWith(42);
-
-    expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
-  });
-
-  it('turns to the local server when asked, without anyone typing a machine address', () => {
-    shippedWith('https://api.example.com/api/v1');
-    process.env.EXPO_PUBLIC_USE_LOCAL_API = '1';
-
-    expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
-  });
-
-  it('accepts true as the spelling of that request', () => {
-    shippedWith('https://api.example.com/api/v1');
-    process.env.EXPO_PUBLIC_USE_LOCAL_API = 'true';
-
-    expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
-  });
-
-  it('accepts that request in any casing', () => {
-    shippedWith('https://api.example.com/api/v1');
-    process.env.EXPO_PUBLIC_USE_LOCAL_API = 'TRUE';
-
-    expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
-  });
-
-  it('accepts that request with padding around it', () => {
-    // Kabuktan gecen bir deger bosluk tasiyabilir; kimse bayragi yazimi
-    // yuzunden kaybetmemeli.
-    shippedWith('https://api.example.com/api/v1');
-    process.env.EXPO_PUBLIC_USE_LOCAL_API = ' 1 ';
-
-    expect(resolveBaseUrl()).toBe(`http://192.168.1.24:${DEV_API_PORT}/api/v1`);
-  });
-
-  it('reads a switched-off flag as off, not as merely present', () => {
-    // `=0` yazan biri tam tersini istiyor; varligi dogru saymak sessiz bir
-    // yonlendirme olurdu.
-    shippedWith('https://api.example.com/api/v1');
-    process.env.EXPO_PUBLIC_USE_LOCAL_API = '0';
-
-    expect(resolveBaseUrl()).toBe('https://api.example.com/api/v1');
-  });
-
-  it('keeps an explicit address above the local-server request', () => {
-    process.env.EXPO_PUBLIC_API_URL = 'https://staging.example.com/api/v1';
-    process.env.EXPO_PUBLIC_USE_LOCAL_API = '1';
-
-    expect(resolveBaseUrl()).toBe('https://staging.example.com/api/v1');
-  });
-
   it('falls back to localhost when nothing is serving the bundle', () => {
     servedFrom(null);
     runningOn('web');
@@ -222,12 +133,6 @@ describe('resolveStandInUrl', () => {
     process.env.EXPO_PUBLIC_STANDIN_API_URL = '   ';
 
     expect(resolveStandInUrl()).toBe(resolveBaseUrl());
-  });
-
-  it('follows the shipped address too, so one server stays one server', () => {
-    shippedWith('https://api.example.com/api/v1');
-
-    expect(resolveStandInUrl()).toBe('https://api.example.com/api/v1');
   });
 
   it('can be named on its own, while the contract address is still derived', () => {
