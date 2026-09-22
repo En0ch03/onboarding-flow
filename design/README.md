@@ -1,6 +1,6 @@
 # Design
 
-Three files, drawn from the flow as it is actually built rather than from an early sketch that has since drifted. Where a decision was reversed on a device, the sketch was redrawn to match the reversal rather than left showing the version that lost.
+Three sketch files, drawn from the flow as it is actually built rather than from an early sketch that has since drifted. Where a decision was reversed on a device, the sketch was redrawn to match the reversal rather than left showing the version that lost.
 
 They are sketches, so they abbreviate: a list that has sixteen options may be drawn with twelve, and spacing is indicative. What they do not do is show a behaviour the app does not have.
 
@@ -15,5 +15,7 @@ The sketches are annotated in Turkish because the product is in Turkish, and the
 Dark is drawn as the primary variant, which is how the app ships. The light variant is fully defined in the token sheet, and both sheets themselves are set on the light variant's paper so the phone frames read as objects on a page.
 
 The crimson sweep behind the phone frames stands in for the journey artwork; the artwork itself is not embedded. It carries one thing the screens depend on: the band moves across the frame as the flow advances.
+
+`ekran-goruntuleri/` holds ten screenshots taken on a device, in flow order. Where a sketch and a screenshot disagree, the screenshot is the app.
 
 The flow diagram is worth reading before the screens. Most of the interesting decisions are in the branches, not in the happy path: where the flow refuses to continue, where it continues anyway despite a failure, and where it hands control back to the user.
