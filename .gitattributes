@@ -1,0 +1,9 @@
+# The repository is stored with LF endings and Prettier checks for LF, so a
+# clone on Windows has to get LF too - otherwise every file looks modified.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ttf binary
+*.otf binary
