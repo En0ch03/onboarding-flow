@@ -20,7 +20,7 @@ describe('JourneyBackdrop', () => {
 
     expect(
       screen.getByTestId('journey-artwork', { includeHiddenElements: true }).props.source,
-    ).toEqual(require('../../../../assets/onboarding/onboarding-crimson-journey-master-v2.png'));
+    ).toEqual(require('../../../../assets/onboarding/journey-crimson-master-v2.png'));
   });
 });
 

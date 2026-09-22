@@ -11,7 +11,7 @@
 </marker>
 </defs>
 <rect width="1500" height="2320" fill="#F5F2ED"/>
-<text x="56" y="72" font-family="'Fraunces','Iowan Old Style',Georgia,serif" font-size="40" fill="#111011">Onboarding kayıt akışı</text>
+<text x="56" y="72" font-family="'Fraunces','Iowan Old Style',Georgia,serif" font-size="40" fill="#111011">Kayıt akışı</text>
 <text x="56" y="102" font-size="14" fill="#5E5652">İnşa edilen akış. Dallar dâhil: atlama, yaş kapısı, kesinti-devam, kayıt başarısızlığı ve oturum sonu.</text>
 <line x1="56" y1="124" x2="1444" y2="124" stroke="#DDD6CE"/>
 <text x="56" y="172" font-size="13" letter-spacing="1.4" fill="#8B0D1A">1 · AÇILIŞ SEKANSI</text>

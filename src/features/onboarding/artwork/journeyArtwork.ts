@@ -7,7 +7,7 @@ import { Asset } from 'expo-asset';
  * geride kalmasi demek: acilista bir goruntu on yuklenip ekranda baskasi
  * cizilirdi ve bekleme hicbir ise yaramazdi.
  */
-export const journeyArtworkModule = require('../../../../assets/onboarding/onboarding-crimson-journey-master-v2.png');
+export const journeyArtworkModule = require('../../../../assets/onboarding/journey-crimson-master-v2.png');
 
 /**
  * Acilista gorselin beklenecegi en uzun sure.

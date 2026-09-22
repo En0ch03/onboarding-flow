@@ -13,20 +13,28 @@ That is the whole list. No Xcode project, no Android Studio, no CocoaPods, no na
 
 ## Running it
 
+Two terminals. In the first:
+
 ```bash
 npm install
+npm run mock
+```
+
+In the second:
+
+```bash
 npm start
 ```
 
-That is the whole setup. The app talks to the real API, whose address ships
-with the repository in `app.json` under `extra.apiUrl`, so there is nothing to
-fill in and nothing to look up. There is no environment switch and no second
-code path inside the app: it knows one address.
+That is the whole setup: no `.env` file to write, no account, no API key and
+no address to look up. The repository carries no server address, so what the
+app talks to by default is the server in the first terminal — it runs offline,
+holds everything in memory, and can break requests on purpose in ways a real
+server will not do for you. The app finds it by itself, with no machine
+address typed by hand; the section below explains why that matters.
 
-Two variations exist, and both are one line.
-
-**To point it somewhere else** — a staging host, a branch deployment, a
-backend you are writing yourself:
+**To point it at a real backend** — a staging host, a branch deployment, a
+backend you are writing yourself — one line, and it always wins:
 
 ```bash
 EXPO_PUBLIC_API_URL=<that backend's base URL, ending in /api/v1> npm start
@@ -38,28 +46,8 @@ On Windows PowerShell:
 $env:EXPO_PUBLIC_API_URL='<that backend base URL>'; npm start
 ```
 
-**To run against the server that ships with this repository** — offline, with
-no account, and able to break requests on purpose in ways a real server will
-not do for you. Two terminals. In the first:
-
-```bash
-npm run mock
-```
-
-In the second:
-
-```bash
-EXPO_PUBLIC_USE_LOCAL_API=1 npm start
-```
-
-On Windows PowerShell:
-
-```powershell
-$env:EXPO_PUBLIC_USE_LOCAL_API='1'; npm start
-```
-
-The app finds that server by itself — no machine address to type, which the
-section below explains is the whole reason the flag exists.
+There is no environment switch and no second code path inside the app: it
+knows one address, and either it was given one or it derived one.
 
 Either way, open the app by pressing `i` for the iOS Simulator, `a` for the
 Android Emulator, or by scanning the QR code with Expo Go on a phone. On a
@@ -75,36 +63,30 @@ finishes and then nothing runs.
 
 No simulator and no phone needed, so this also works on a machine with no
 screen. The checks under [Checking it](#checking-it) run anywhere, and one
-request is the quickest proof that the API side is alive. On the default path
-it is the address the app ships with, the same one written in `app.json`:
-
-```bash
-curl https://api.example.com/api/v1/config/options
-```
-
-On the local path, with the standalone server running:
+request is the quickest proof that the API side is alive. With the server from
+the first terminal running:
 
 ```bash
 curl http://localhost:4000/api/v1/config/options
 ```
 
-Both answer with the option lists. If the first one does not, the default path
-is down and the local path is the one to use.
+It answers with the option lists. Against a real backend, the same path on
+that host answers the same way.
 
 ### The address, and why you do not have to configure it
 
 This is where local setups usually break, so it is worth a paragraph.
 
-The app resolves its address in four steps, in this order:
+The app resolves its address in two steps, in this order:
 
 1. If `EXPO_PUBLIC_API_URL` is set, that wins, always. Pointing the app at another backend is nothing more than this, and `.env.example` shows the shape.
-2. Otherwise, if `EXPO_PUBLIC_USE_LOCAL_API` is on — `1` or `true`, in any casing; anything else, including `0`, is off — the address is derived from the machine the app is already connected to. Expo serves the JavaScript bundle from your machine and the app knows the host it was served from; it reuses that host and swaps in port 4000.
-3. Otherwise the address in `app.json` under `extra.apiUrl` is used. This is the real API, and it is why a fresh clone runs with no configuration at all. The value sits in the app's configuration rather than in code, so there is exactly one place to change it.
-4. If that field is missing or blank, step 2's derivation is used anyway. A fork that empties the field still runs, rather than becoming a client with no address that sends no requests and shows no reason.
+2. Otherwise the address is derived from the machine the app is already connected to. Expo serves the JavaScript bundle from your machine and the app knows the host it was served from; it reuses that host and swaps in port 4000, which is where `npm run mock` is listening.
+
+No address is stored in the repository, and that is deliberate twice over: a committed address would either publish a server that was never meant to be public, or hand whoever clones this an address that answers nothing. Deriving one costs a clone nothing — there is still no value to fill in.
 
 Two endpoints resolve separately, and only if you ask them to: see [When a real backend serves only part of this](#when-a-real-backend-serves-only-part-of-this). By default they use the address above, so the app talks to one server.
 
-Step 2 is the reason the local server is reached with a flag rather than an address. The mock server runs on your development machine, on port 4000; the app runs somewhere else: in a simulator, in an emulator, or on a phone. `localhost` means a different machine in each of those three cases. On a phone it means the phone, and inside an Android emulator it means the emulator, so any address you write down by hand is wrong in at least two of the three. Asking for a flag instead of an address lands correctly in all three:
+Step 2 is the reason the local server is reached without an address. The mock server runs on your development machine, on port 4000; the app runs somewhere else: in a simulator, in an emulator, or on a phone. `localhost` means a different machine in each of those three cases. On a phone it means the phone, and inside an Android emulator it means the emulator, so any address you write down by hand is wrong in at least two of the three. Asking for a flag instead of an address lands correctly in all three:
 
 | Where the app runs         | What it resolves to                                                                                                                                                                       |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -160,8 +142,8 @@ This is the only command here that needs a machine address typed by hand, and
 the reason is in the arrangement itself: the two addresses have to differ, so
 neither can be derived from the other. Expo prints the address it is serving
 from when it starts, and the host part of it is the one to use. Add
-`EXPO_PUBLIC_API_URL` in front if the contract endpoints should go somewhere
-other than the address the repository ships with.
+`EXPO_PUBLIC_API_URL` in front if the contract endpoints should go to a real
+backend rather than the derived one.
 
 Now the contract endpoints go to the real server and those two stay on the mock, which has to keep running. In this arrangement it has to be told so:
 

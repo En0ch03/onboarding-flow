@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1240" height="2260" viewBox="0 0 1240 2260" font-family="'Figtree','Segoe UI',system-ui,-apple-system,sans-serif">
 <rect width="1240" height="2260" fill="#F5F2ED"/>
-<text x="56" y="76" font-family="'Fraunces','Iowan Old Style',Georgia,serif" font-size="40" fill="#111011">Onboarding tasarım belirteçleri</text>
+<text x="56" y="76" font-family="'Fraunces','Iowan Old Style',Georgia,serif" font-size="40" fill="#111011">Tasarım belirteçleri</text>
 <text x="56" y="106" font-size="14" fill="#5E5652">Uygulamada geçerli olan değerler. Altılı renk kodu yalnızca palette.ts içinde bulunur; ekranlar fontSize görmez.</text>
 <line x1="56" y1="128" x2="1184" y2="128" stroke="#DDD6CE" stroke-width="1"/>
 <text x="56" y="176" font-size="19" font-weight="600" fill="#111011">Renk rolleri</text>

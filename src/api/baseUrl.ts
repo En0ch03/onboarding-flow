@@ -4,9 +4,6 @@ import { Platform } from 'react-native';
 /** Gelistirme sunucusunun dinledigi kapi. */
 export const DEV_API_PORT = 4000;
 
-/** Bayragin acik sayildigi yazimlar. Geri kalan her sey kapali. */
-const TRUTHY = new Set(['1', 'true']);
-
 /**
  * Android emulatorunun ana makineye verdigi takma ad.
  *
@@ -20,34 +17,21 @@ const LOOPBACK = new Set(['localhost', '127.0.0.1', '::1', '0.0.0.0']);
 /**
  * Uygulamanin sunucu hakkinda bildigi tek sey.
  *
- * Dort kademe, bu sirayla:
+ * Iki kademe, bu sirayla:
  *
  * 1. `EXPO_PUBLIC_API_URL` verilmisse o kullanilir. Baska bir backend'e
  *    gecis bundan ibaret; uygulamanin icinde ortama gore dallanan bir kod
  *    yolu yok.
  *
- * 2. Yerel sunucu bayragi aciksa adres, uygulamanin **zaten bagli oldugu**
- *    gelistirme makinesinden turetilir. Depoyla birlikte gelen sunucuyu
- *    kullanmak isteyen kisinin yapmasi gereken tek sey bu; makinesinin
- *    adresini bilmek zorunda degil.
- *
- * 3. Ikisi de yoksa uygulamanin **kendi yapilandirmasindaki** adres
- *    kullanilir. Bu, depoyu klonlayan birinin hicbir sey ayarlamadan gercek
- *    API'ye baglanmasini sagliyor: calistirmanin bedeli okunacak bir yer
- *    tutucu degil, tek bir komut.
- *
- * 4. Yapilandirmada da adres yoksa ikinci kademenin turetmesine dusuluyor.
- *    Depoyu catallayip o alani bosaltan biri icin uygulama calisir kaliyor;
- *    adressiz bir istemci hicbir istek gondermez ve sebebini de gostermez.
+ * 2. Verilmemisse adres, uygulamanin **zaten bagli oldugu** gelistirme
+ *    makinesinden turetilir: depoyla gelen sunucu orada calisiyor. Klonlayan
+ *    kisinin makinesinin adresini bilmesi gerekmiyor ve depo hicbir sunucu
+ *    adresi tasimiyor - tasisaydi ya ozel bir sunucuyu herkese acardi ya da
+ *    klonlayana cevap vermeyen bir adres verirdi.
  */
 export function resolveBaseUrl(): string {
   const configured = process.env.EXPO_PUBLIC_API_URL?.trim();
   if (configured) return configured;
-
-  if (!wantsLocalApi()) {
-    const shipped = shippedApiUrl();
-    if (shipped) return shipped;
-  }
 
   return localApiUrl();
 }
@@ -71,45 +55,17 @@ export function resolveStandInUrl(): string {
 }
 
 /**
- * Uygulamanin kendi yapilandirmasinda duran adres.
- *
- * Deger koda gomulmuyor, yapilandirma alaninda duruyor: degistirmek isteyen
- * kisinin okumasi gereken tek bir yer olmali ve bu yer kod olmamali.
- *
- * Tur kontrolu ihmal degil sinir: burada duran deger bir JSON dosyasindan
- * geliyor ve yanlis yazilmis bir alan yuzunden uygulamanin `undefined`
- * iceren bir adrese istek atmasi, sebebi gorunmeyen bir ariza olur.
- */
-function shippedApiUrl(): string | null {
-  const value = Constants.expoConfig?.extra?.apiUrl;
-  if (typeof value !== 'string') return null;
-  return value.trim() || null;
-}
-
-/**
- * Yerel sunucuya donme istegi. Adres degil bir istek; sebebi `hostFor`
- * altinda anlatiliyor.
+ * Depoyla gelen sunucunun adresi, bagli olunan makineden turetilerek.
  *
  * Degisken **adiyla, dogrudan** okunuyor: `process.env[birDegisken]`
  * bicimindeki okuma paketleyici tarafindan gorulmez ve yalnizca gelistirmede
  * calisir, paketlenmis uygulamada sessizce bos doner. Ayni dosyadaki diger
- * iki degisken de bu yuzden dogrudan okunuyor; kural lint tarafindan
- * korunuyor.
- *
- * Bayragin varligi degil degeri okunuyor: `=0` yazan biri tam tersini
- * istiyor ve bunu varlik sayan bir kontrol onu sessizce yerel sunucuya
- * gonderirdi. Bosluk ve buyuk harf tolere ediliyor; kimse bir bayragi
- * yazimi yuzunden kaybetmemeli.
+ * degisken de bu yuzden dogrudan okunuyor; kural lint tarafindan korunuyor.
  */
-function wantsLocalApi(): boolean {
-  const value = process.env.EXPO_PUBLIC_USE_LOCAL_API?.trim().toLowerCase();
-  return TRUTHY.has(value ?? '');
-}
-
-/** Depoyla gelen sunucunun adresi, bagli olunan makineden turetilerek. */
 function localApiUrl(): string {
   // "192.168.1.24:8081" veya "127.0.0.1:8081" bicimindedir; yalnizca uretim
-  // paketlerinde tanimsiz olur ve orada zaten yukaridaki adres beklenir.
+  // paketlerinde tanimsiz olur ve orada zaten acikca verilmis bir adres
+  // beklenir.
   const hostUri = Constants.expoConfig?.hostUri;
   const host = hostUri?.split(':')[0];
 

@@ -38,7 +38,7 @@ describe('LaunchScreen', () => {
     // Metinler sozlukten degil harfi harfine sinaniyor: sozluk uzerinden
     // yazilan bir iddia, girdi bosaltildiginda kendisi de bosalir ve test
     // hicbir sey soylemeden gecer.
-    expect(screen.getByText('Onboarding')).toBeTruthy();
+    expect(screen.getByText('Hoş geldin')).toBeTruthy();
     expect(screen.getByText('Hazırlanıyor')).toBeTruthy();
     expect(screen.getByText('Senin için her şeyi yoluna koyuyoruz.')).toBeTruthy();
   });
