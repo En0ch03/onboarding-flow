@@ -17,13 +17,11 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "softwareKeyboardLayoutMode": "resize"
+      "softwareKeyboardLayoutMode": "resize",
+      "package": "com.en0ch.onboarding"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "apiUrl": "https://api.example.com/api/v1"
     },
     "scheme": "onboarding",
     "plugins": [

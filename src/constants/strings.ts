@@ -18,10 +18,10 @@ export const strings = {
     dismissKeyboard: 'Bitti',
   },
 
-  // Acilis ekrani: kullanicinin gordugu ilk metin. Marka adi yalin duruyor,
+  // Acilis ekrani: kullanicinin gordugu ilk metin. Ilk satir selam veriyor,
   // altindaki iki satir bekletmenin sebebini soyluyor.
   launch: {
-    title: 'Onboarding',
+    title: 'Hoş geldin',
     status: 'Hazırlanıyor',
     hint: 'Senin için her şeyi yoluna koyuyoruz.',
   },
@@ -182,7 +182,7 @@ export const strings = {
   },
 
   home: {
-    title: 'Onboarding',
+    title: 'Ana sayfa',
     subtitle: 'İlk önerilerin yarın sabah burada.',
     signOut: 'Çıkış yap',
   },
@@ -195,7 +195,7 @@ export const strings = {
     recapPhone: 'Telefon',
     recapPhotos: 'Fotoğraf',
     recapInterests: 'İlgi alanları',
-    primary: 'Onboarding’a gir',
+    primary: 'Uygulamaya gir',
     secondary: 'Profilimi düzenle',
     // Sunucu profili eksik buldugunda: sebep degil cikis yolu soyleniyor,
     // cunku eksigin ne oldugunu adimin kendisi zaten gosterecek.

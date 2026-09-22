@@ -33,7 +33,7 @@
 <clipPath id="clip-3-3"><rect x="1076" y="2508" width="296" height="610" rx="30"/></clipPath>
 </defs>
 <rect x="0" y="0" width="1428" height="3230" fill="#F5F2ED"/>
-<text x="56" y="76" font-size="40" fill="#111011" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Onboarding ekran eskizleri</text>
+<text x="56" y="76" font-size="40" fill="#111011" font-family="'Fraunces','Iowan Old Style',Georgia,serif">Ekran eskizleri</text>
 <text x="56" y="106" font-size="14" fill="#5E5652">On altı ekran ve kolay atlanan üç durum: klavye açık, sunucu hatası, yükleme sürüyor. Koyu varyant birincil.</text>
 <text x="56" y="126" font-size="13" fill="#5E5652">Metinler uygulamanın kendi metinleri. Ölçüler göstergesel: birincil eylem 56 piksel, sayaç 01 / 06, seçili durum kızıl kenarlık ve soluk dolgu.</text>
 <line x1="56" y1="142" x2="1372" y2="142" stroke="#DDD6CE"/>
@@ -42,7 +42,7 @@
 <rect x="56" y="168" width="296" height="610" rx="30" fill="#0B0B0B" stroke="#2A2529"/>
 <text x="78" y="194" font-size="10.5" fill="#D5D0CB">9:41</text>
 <rect x="300" y="186" width="30" height="10" rx="3" fill="#D5D0CB"/>
-<text x="204" y="468" font-size="32" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif" text-anchor="middle">Onboarding</text>
+<text x="204" y="468" font-size="32" fill="#F5F2ED" font-family="'Fraunces','Iowan Old Style',Georgia,serif" text-anchor="middle">Hoş geldin</text>
 <text x="204" y="500" font-size="12" fill="#D5D0CB" text-anchor="middle">Hazırlanıyor</text>
 <text x="204" y="520" font-size="10" fill="#D5D0CB" text-anchor="middle">Senin için her şeyi yoluna koyuyoruz.</text>
 <rect x="78" y="720" width="252" height="3" rx="1.5" fill="#2A2529"/>
@@ -502,7 +502,7 @@
 <text x="92" y="2968" font-size="10.5" fill="#D5D0CB" font-weight="500">Fotoğraf</text>
 <text x="316" y="2968" font-size="10.5" fill="#F5F2ED" font-weight="500" text-anchor="end">2 fotoğraf</text>
 <rect x="78" y="3004" width="252" height="41" rx="20.5" fill="url(#clayFill)"/>
-<text x="204" y="3030" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Onboarding’a gir</text>
+<text x="204" y="3030" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Uygulamaya gir</text>
 <rect x="78" y="3053" width="252" height="41" rx="20.5" fill="none" stroke="#F5F2ED" stroke-opacity="0.4"/>
 <text x="204" y="3079" font-size="13" fill="#F5F2ED" font-weight="600" text-anchor="middle">Profilimi düzenle</text>
 <text x="56" y="3142" font-size="11" fill="#5E5652">Kapanış kullanıcıya ne kurduğunu gösteriyor: kapak</text>

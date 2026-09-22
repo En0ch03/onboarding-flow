@@ -8,5 +8,5 @@
 export const storageKeys = {
   accessToken: 'onboarding.auth.access_token.v1',
   refreshToken: 'onboarding.auth.refresh_token.v1',
-  onboardingDraft: 'onboarding.onboarding.draft.v1',
+  onboardingDraft: 'onboarding.draft.v1',
 } as const;
